@@ -1,0 +1,8 @@
+# archivio ridondante (170 MB): la cartella scompattata è già nel repo
+costruisciearreda-static.zip
+
+# tooling locale
+_migrazione/node_modules/
+
+# baseline visiva: 101 MB di PNG, rigenerabile con screenshot.js
+_migrazione/baseline/shots-*/

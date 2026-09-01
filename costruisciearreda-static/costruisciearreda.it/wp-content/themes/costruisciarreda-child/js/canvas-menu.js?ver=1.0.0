@@ -1,0 +1,52 @@
+var canvasMenu = jQuery('#canvas-menu');
+var mainContent = jQuery('#page');
+var widthMenu = 300;
+var duration = 200;
+var mask = '<div id="maskCanvas" style="'+widthMenu+'"></div>';
+
+function openCanvas(){
+	jQuery(canvasMenu).width(widthMenu);
+	jQuery('#closeMenu').show();
+	canvasMenu.show().animate({ left: 0 }, { duration:duration, queue:true });
+	mainContent.animate({
+		'left': widthMenu
+	},{ duration:duration, queue:true });
+	mainContent.append(mask);
+	jQuery('#maskCanvas').fadeIn( duration );
+}
+
+function closeCanvas(){
+	jQuery('#closeMenu').hide();
+	canvasMenu.animate({ left: -widthMenu }, { duration:duration, queue:true });
+	mainContent.animate({
+		left: 0
+	},{
+		duration:duration,
+		queue:true,
+		complete: function(){
+			jQuery('#closeMenu').hide();
+		}
+	});
+	jQuery('#maskCanvas').fadeOut( duration, function(){ jQuery(this).remove() } );
+}
+
+function toggleSubmenu($el){
+	jQuery($el).next('.sub-menu').slideToggle(duration);
+	jQuery($el).next('.sub-menu').toggleClass('subMenuOpen');
+	jQuery($el).find('i').toggleClass('isOpen');
+}
+
+jQuery( document ).ready(function() {
+	jQuery( ".mobileHeader .menuButton" ).on( "click", function() {
+	   openCanvas();
+	});
+
+	jQuery( "#closeMenu, #maskCanvas" ).on( "click", function() {
+	   closeCanvas();
+	});
+
+	jQuery( "li.menu-item-has-children .arrow" ).on( "click", function() {
+	   toggleSubmenu(this);
+	});
+
+});
