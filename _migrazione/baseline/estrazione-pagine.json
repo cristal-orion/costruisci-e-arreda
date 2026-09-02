@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-02T09:43:20.915Z",
+  "generated": "2026-09-02T12:17:38.887Z",
   "pagine": {
     "/": {
       "slug": "home",
@@ -174,8 +174,8 @@
       ],
       "tipi": {
         "titolo": 4,
-        "immagine": 1,
         "testo": 3,
+        "immagine": 1,
         "scheda": 15,
         "bottone": 1,
         "ultimeNews": 1,
@@ -608,8 +608,8 @@
       "tipi": {
         "titolo": 3,
         "testo": 2,
-        "immagine": 19,
         "elencoVoci": 1,
+        "immagine": 19,
         "form": 1
       },
       "parole": 145,
@@ -638,8 +638,8 @@
       "tipi": {
         "titolo": 3,
         "testo": 2,
-        "immagine": 22,
         "elencoVoci": 1,
+        "immagine": 22,
         "form": 1
       },
       "parole": 88,
@@ -686,8 +686,8 @@
       "tipi": {
         "titolo": 2,
         "testo": 2,
-        "immagine": 1,
         "elencoVoci": 1,
+        "immagine": 1,
         "form": 1,
         "riquadri": 1
       },

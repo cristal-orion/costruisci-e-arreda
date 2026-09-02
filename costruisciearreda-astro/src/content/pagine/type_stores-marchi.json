@@ -39,162 +39,6 @@
         "w-130"
       ],
       "livello": 2,
-      "testo": "marchi Rivendita Edile",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi Ceramiche",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi rubinetteria e sanitari",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi piatti doccia, vasche e saune",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi mobili bagno",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi termo arredo",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi Porte e infissi",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi Illuminazione",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi oggettistica",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi parati",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi tendaggi e tessuti",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
-      "testo": "marchi resine",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [
-        "titolettoBorder",
-        "black",
-        "w-130"
-      ],
-      "livello": 2,
       "testo": "marchi Ferramenta",
       "href": null,
       "soloMobile": false
@@ -473,6 +317,19 @@
       "soloMobile": false
     },
     {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi Rivendita Edile",
+      "href": null,
+      "soloMobile": false
+    },
+    {
       "tipo": "immagine",
       "visibile": true,
       "varianti": [],
@@ -707,6 +564,19 @@
       "soloMobile": false
     },
     {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi Ceramiche",
+      "href": null,
+      "soloMobile": false
+    },
+    {
       "tipo": "immagine",
       "visibile": true,
       "varianti": [],
@@ -824,6 +694,19 @@
       "soloMobile": false
     },
     {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi rubinetteria e sanitari",
+      "href": null,
+      "soloMobile": false
+    },
+    {
       "tipo": "immagine",
       "visibile": true,
       "varianti": [],
@@ -912,6 +795,19 @@
       "height": 300,
       "href": null,
       "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi piatti doccia, vasche e saune",
+      "href": null,
       "soloMobile": false
     },
     {
@@ -1006,6 +902,19 @@
       "soloMobile": false
     },
     {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi mobili bagno",
+      "href": null,
+      "soloMobile": false
+    },
+    {
       "tipo": "immagine",
       "visibile": true,
       "varianti": [],
@@ -1071,6 +980,19 @@
       "soloMobile": false
     },
     {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi termo arredo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
       "tipo": "immagine",
       "visibile": true,
       "varianti": [],
@@ -1123,6 +1045,19 @@
       "soloMobile": false
     },
     {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi Porte e infissi",
+      "href": null,
+      "soloMobile": false
+    },
+    {
       "tipo": "immagine",
       "visibile": true,
       "varianti": [],
@@ -1146,6 +1081,19 @@
       "height": 300,
       "href": null,
       "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi Illuminazione",
+      "href": null,
       "soloMobile": false
     },
     {
@@ -1211,6 +1159,19 @@
       "height": 300,
       "href": null,
       "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi oggettistica",
+      "href": null,
       "soloMobile": false
     },
     {
@@ -1289,6 +1250,19 @@
       "height": 300,
       "href": null,
       "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi parati",
+      "href": null,
       "soloMobile": false
     },
     {
@@ -1500,6 +1474,19 @@
       "soloMobile": false
     },
     {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi tendaggi e tessuti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
       "tipo": "immagine",
       "visibile": true,
       "varianti": [],
@@ -1510,6 +1497,19 @@
       "height": 300,
       "href": null,
       "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi resine",
+      "href": null,
       "soloMobile": false
     },
     {

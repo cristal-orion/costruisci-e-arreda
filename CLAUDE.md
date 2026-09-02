@@ -2,8 +2,8 @@
 
 > ## ⏯ PUNTO DI RIPRESA — leggere per primo
 >
-> **Ultima sessione: 2026-09-02.** **Fase A completa: 54 rotte costruite, tutti i 56
-> URL indicizzati coperti** (51 diretti + 5 redirect 301). Fatti: scaffold, design
+> **Ultima sessione: 2026-09-02.** **Fase A completa: 52 rotte costruite, tutti i 56
+> URL indicizzati coperti** (49 diretti + 7 redirect 301). Fatti: scaffold, design
 > system misurato, i 4 componenti, hero, contenuti, header/footer, i 4 template,
 > gli archivi, la homepage, le 11 one-off, le landing, le thank-you, i 6 form,
 > i redirect.
@@ -28,7 +28,7 @@
 > Misure, deviazioni dichiarate e verifiche: `_migrazione/CHANGELOG.md`, voci **A00–A07**.
 >
 > Comandi: `cd costruisciearreda-astro && npm run dev` · `npm run build` · `npm run preview`.
-> Cancello di qualità: `cd _migrazione && node check-build.js` (54 rotte × 3 viewport).
+> Cancello di qualità: `cd _migrazione && node check-build.js` (52 rotte × 3 viewport).
 > **Attenzione:** non mandare gli script di `_migrazione/` in pipe a `head` — la pipe
 > chiusa li interrompe a metà e i file restano scritti solo in parte.
 >
@@ -43,9 +43,15 @@
 > 5. **Prima del cutover**: impostare `PUBLIC_FORM_ENDPOINT` (senza, i form
 >    mostrano i recapiti al posto del modulo — è voluto).
 >
+> ### Deciso: `/promo-casa/` è stata ritirata (2026-09-02)
+> L'offerta era scaduta ("€ 166 al mese, valida fino al 31 Dicembre"), e la pagina
+> era **interamente** quella promozione. Rimossa insieme alla sua thank-you
+> `/thankyou-promo-6500/` e al form `4473`. I due URL erano indicizzati, quindi
+> rispondono con un **301 verso `/richiedi-preventivo/`**. Il contenuto estratto
+> resta in `src/content/pagine/promo-casa.json`: se l'offerta verrà rifatta, i
+> testi e i campi del form sono lì.
+>
 > ### Da far decidere al proprietario
-> - **`/promo-casa/`**: l'offerta ha una scadenza ("valida fino al 31 Dicembre").
->   Ricostruita ma in `noindex`: va aggiornata o ritirata.
 > - **Endpoint dei form**: il form `775` di `/lavora-con-noi/` ha un **allegato**
 >   (curriculum), quindi EmailJS non basta.
 > - **Alt delle immagini**: scritti quelli delle sezioni principali; restano da
@@ -85,9 +91,9 @@
 > fingerprint · decisioni di comportamento (es. "hero a 60px dal bordo, font fluido").
 >
 > ### Cosa è già ricostruito
-> **54 rotte**: homepage · 8 servizi · 7 realizzazioni · 5 store · 8 articoli ·
+> **52 rotte**: homepage · 8 servizi · 7 realizzazioni · 5 store · 8 articoli ·
 > 3 archivi `cat_realizzazioni` · archivio blog · 9 one-off · 5 archivi
-> `type_stores` · 2 landing · 4 thank-you · pagina di controllo.
+> `type_stores` · 1 landing · 3 thank-you · pagina di controllo.
 > Contenuti in 5 content collections generate da `extract-content.js` (i 4 tipi a
 > template) e `extract-pages.js` (le pagine one-off, come elenco di blocchi).
 > Fedeltà verificata con `fingerprint.py diff` su 47 rotte: le uniche parole

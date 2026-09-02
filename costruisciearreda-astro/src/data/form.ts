@@ -149,25 +149,9 @@ export const forms: Record<string, Form> = {
     ],
   },
 
-  'landing-promo': {
-    idCf7: '4473',
-    nome: 'Richiesta appuntamento',
-    invio: 'Blocca offerta',
-    successo: 'Grazie, ti ricontattiamo per fissare l’appuntamento.',
-    thankyou: '/thankyou-promo-6500/',
-    campi: [
-      ...anagrafica,
-      { name: 'citta', label: 'Città', tipo: 'text', obbligatorio: true, autocomplete: 'address-level2' },
-      {
-        name: 'disponibilita',
-        label: 'Quando saresti disponibile per un appuntamento',
-        tipo: 'text',
-        obbligatorio: true,
-        intero: true,
-      },
-      privacy,
-    ],
-  },
+  /* Il form `4473` della landing `/promo-casa/` è stato rimosso insieme alla
+     pagina: l'offerta era scaduta. Se la promozione verrà rifatta, la
+     definizione si ricostruisce dai campi elencati nel CHANGELOG (voce A08). */
 
   'landing-ceramiche': {
     idCf7: '4395',

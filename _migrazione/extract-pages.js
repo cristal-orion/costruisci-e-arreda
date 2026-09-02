@@ -544,8 +544,18 @@ const firma = (b) => {
         dupDesktop += 1;
         /* Fra due copie con la stessa firma va tenuta quella **visibile**: nel
            DOM dell'originale la copia nascosta viene spesso prima, e tenere la
-           prima faceva sparire sezioni intere della homepage. */
-        if (b.visibile && !viste.get(f).visibile) viste.set(f, { ...b, soloMobile: false });
+           prima faceva sparire sezioni intere della homepage.
+           Va spostata anche la **posizione**: la copia nascosta sta in un ramo
+           del DOM che precede quello visibile, e tenere la posizione vecchia
+           rompe l'ordine. Su `/type_stores/marchi/` i 13 titoli dei gruppi
+           finivano tutti all'inizio e i 103 loghi tutti in coda, in una sola
+           sezione — misurato: la pagina veniva alta 142.430px. */
+        if (b.visibile && !viste.get(f).visibile) {
+          viste.set(f, { ...b, soloMobile: false });
+          const i = ordine.indexOf(f);
+          if (i >= 0) ordine.splice(i, 1);
+          ordine.push(f);
+        }
         continue;
       }
       viste.set(f, { ...b, soloMobile: false });

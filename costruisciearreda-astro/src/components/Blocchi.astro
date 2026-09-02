@@ -57,27 +57,38 @@ for (const b of daRendere) {
  *   `testo`     solo testo.
  * È un'euristica, ma deterministica e uguale per tutte le pagine.
  */
-type Modo = 'schede' | 'galleria' | 'due' | 'piena' | 'testo';
+type Modo = 'schede' | 'loghi' | 'galleria' | 'due' | 'testo';
 
-const disposizione = (s: Sezione): Modo => {
-  const conta = (t: Dato['tipo']) => s.corpo.filter((b) => b.tipo === t).length;
-  if (
-    conta('riquadri') ||
-    conta('galleria') ||
-    conta('carousel') ||
-    conta('servizinumerati') ||
-    conta('elencoStore') ||
-    conta('ultimeNews') ||
-    conta('form')
-  ) {
-    return 'piena';
-  }
-  /* Un accordion non è una scheda: in una cella di griglia il suo titolo (60px
-     nell'originale) sfonda a destra — misurato, 16px di scorrimento
-     orizzontale su `/la-nostra-storia/`. Va sempre a piena colonna. */
-  if (conta('accordion')) return 'testo';
-  if (conta('scheda') > 2 || conta('contatore') > 2) return 'schede';
+/**
+ * Blocchi che occupano **sempre** la larghezza piena e non entrano in una
+ * griglia. Vanno separati dal resto della sezione e resi dopo: infilati in una
+ * cella sfondano — misurato, il blocco dei recapiti in una cella della griglia
+ * dei loghi era largo 233px in una colonna da 113 e produceva 72px di
+ * scorrimento orizzontale su `/type_stores/ferramenta/`.
+ * L'accordion è nella lista per lo stesso motivo: il suo titolo, 60px
+ * nell'originale, sfondava di 16px su `/la-nostra-storia/`.
+ */
+const LARGHI: Dato['tipo'][] = [
+  'form',
+  'riquadri',
+  'galleria',
+  'carousel',
+  'elencoStore',
+  'ultimeNews',
+  'servizinumerati',
+  'accordion',
+];
+
+const disposizione = (corpo: Dato[]): Modo => {
+  const conta = (t: Dato['tipo']) => corpo.filter((b) => b.tipo === t).length;
   const img = conta('immagine');
+
+  /* Molte immagini piccole = una griglia di **loghi**, non una galleria di foto.
+     Su `/type_stores/marchi/` sono 103 marchi in 13 gruppi; nell'originale sono
+     riquadri di 97×97px. Resi come foto a piena colonna la pagina veniva alta
+     142.430px contro i 7.213px dell'originale — misurato. */
+  if (img > 3) return 'loghi';
+  if (conta('scheda') > 2 || conta('contatore') > 2) return 'schede';
   if (img > 2) return 'galleria';
   if (img >= 1 && conta('testo') >= 1) return 'due';
   return 'testo';
@@ -86,9 +97,9 @@ const disposizione = (s: Sezione): Modo => {
 /** `sizes` giusto per l'impaginazione: evita di scaricare immagini troppo grandi. */
 const sizesPer: Record<Modo, string> = {
   schede: '(min-width: 992px) 22vw, (min-width: 769px) 45vw, 92vw',
+  loghi: '160px',
   galleria: '(min-width: 992px) 30vw, (min-width: 769px) 45vw, 92vw',
   due: '(min-width: 992px) 46vw, 92vw',
-  piena: '100vw',
   testo: '(min-width: 992px) 60vw, 92vw',
 };
 
@@ -117,11 +128,14 @@ const conBr = (testo: string) => escapeHtml(testo).split('\n').join('<br /> ');
 <div class:list={['blocchi', extraClass]}>
   {
     sezioni.map((s) => {
-      const modo = disposizione(s);
+      /* I blocchi larghi escono dalla griglia e si rendono dopo il corpo. */
+      const larghi = s.corpo.filter((b) => LARGHI.includes(b.tipo));
+      const corpo = s.corpo.filter((b) => !LARGHI.includes(b.tipo));
+      const modo = disposizione(corpo);
       const tag = livello(s.titolo?.livello);
       const urlTitolo = rotta(s.titolo?.href);
-      const immaginiSezione = modo === 'due' ? s.corpo.filter((b) => b.tipo === 'immagine') : [];
-      const resto = modo === 'due' ? s.corpo.filter((b) => b.tipo !== 'immagine') : s.corpo;
+      const immaginiSezione = modo === 'due' ? corpo.filter((b) => b.tipo === 'immagine') : [];
+      const resto = modo === 'due' ? corpo.filter((b) => b.tipo !== 'immagine') : corpo;
 
       return (
         <section class:list={['sez', `sez--${modo}`]}>
@@ -150,8 +164,18 @@ const conBr = (testo: string) => escapeHtml(testo).split('\n').join('<br /> ');
                 </div>
               </div>
             ) : (
-              <div class="sez__corpo">
-                {resto.map((b) => <Blocco blocco={b} livelloBase={livelloBase} sizes={sizesPer[modo]} />)}
+              resto.length > 0 && (
+                <div class="sez__corpo">
+                  {resto.map((b) => <Blocco blocco={b} livelloBase={livelloBase} sizes={sizesPer[modo]} />)}
+                </div>
+              )
+            )
+          }
+
+          {
+            larghi.length > 0 && (
+              <div class="sez__larghi">
+                {larghi.map((b) => <Blocco blocco={b} livelloBase={livelloBase} sizes="100vw" />)}
               </div>
             )
           }
@@ -214,13 +238,44 @@ const conBr = (testo: string) => escapeHtml(testo).split('\n').join('<br /> ');
     gap: var(--s-6);
   }
 
-  /* --- solo testo: colonna leggibile ---------------------------------------
-     L'accordion fa eccezione: nell'originale occupa tutta la larghezza. */
+  /* --- loghi: griglia densa, altezza contenuta -----------------------------
+     Nell'originale i loghi dei marchi sono riquadri di 97×97px. `contain`
+     perché hanno proporzioni diverse fra loro e non vanno tagliati. */
+  .sez--loghi .sez__corpo {
+    grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+    gap: var(--s-5);
+    align-items: center;
+  }
+  .sez--loghi :global(.blocco__figura) {
+    display: grid;
+    place-items: center;
+    padding: var(--s-3);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+  }
+  .sez--loghi :global(.blocco__figura img) {
+    width: auto;
+    max-width: 100%;
+    height: 6rem;
+    object-fit: contain;
+  }
+  .sez--loghi :global(.blocco__figura img[src$='.svg']) {
+    max-width: 100%;
+  }
+
+  /* --- solo testo: colonna leggibile --------------------------------------- */
   .sez--testo .sez__corpo {
     max-width: var(--container-text);
   }
-  .sez--testo .sez__corpo:has(.accordion) {
-    max-width: none;
+
+  /* --- i blocchi larghi: sempre a piena larghezza, mai in una cella -------- */
+  .sez__larghi {
+    display: grid;
+    gap: var(--s-10);
+    margin-top: var(--s-10);
+  }
+  .sez__larghi:first-child {
+    margin-top: 0;
   }
 
   .sez__titoloLink {

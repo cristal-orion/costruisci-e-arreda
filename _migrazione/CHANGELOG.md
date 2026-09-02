@@ -1039,3 +1039,64 @@ Ognuno **misurato**, non dedotto:
 ### Cosa resta
 Deploy su Coolify e cutover DNS; endpoint dei form; le decisioni di contenuto
 elencate in `CLAUDE.md` sotto "Da far decidere al proprietario".
+
+---
+
+## A08 — Ritirata la landing con l'offerta scaduta, e due difetti miei
+**2026-09-02 · decisione del proprietario**
+
+### `/promo-casa/` rimossa
+
+La pagina era **interamente** l'offerta scaduta: titolo "PROMO casa", prezzo
+"€ 166 al mese per 48 mesi", scadenza "valida fino al 31 Dicembre", listino dei
+materiali, omaggi, form "BLOCCA OFFERTA". Non c'era nulla da salvare togliendo
+solo la parte scaduta.
+
+Rimossa insieme a:
+- la sua thank-you `/thankyou-promo-6500/`, che senza la landing non ha senso;
+- il form CF7 `4473`, che era usato solo lì.
+
+Entrambi gli URL erano nella sitemap del live, quindi rispondono con un **301
+verso `/richiedi-preventivo/`**: chi arriva da un vecchio link o da un annuncio
+cerca un preventivo, ed è dove lo trova.
+
+Il contenuto estratto resta in `src/content/pagine/promo-casa.json`. Se la
+promozione verrà rifatta, i testi ci sono e i campi del form erano: nome,
+cognome, email, telefono, città, disponibilità per l'appuntamento, consenso.
+
+Copertura invariata: **56 URL su 56** — 49 serviti direttamente, 7 con redirect.
+
+### Due difetti del mio lavoro, trovati nel giro visivo
+
+**1. `/type_stores/marchi/` alta 142.430px.** L'originale è 7.213px con i loghi
+in riquadri di 97×97. Due cause sovrapposte:
+
+- **l'ordine dei blocchi era sbagliato.** La deduplica desktop/mobile preferiva
+  la copia visibile ma teneva la **posizione** della copia nascosta, che nel DOM
+  sta in un ramo precedente. Risultato: i 13 titoli dei gruppi tutti all'inizio
+  e i 103 loghi tutti in coda, in una sola sezione. Ora la posizione si aggiorna
+  insieme alla copia, e i loghi tornano sotto il proprio gruppo (21 ferramenta,
+  18 rivendita edile, 9 ceramiche, …);
+- **i loghi erano resi come fotografie**, a piena colonna. Aggiunta la
+  disposizione `loghi`: griglia densa da 7rem, altezza 6rem, `object-fit:
+  contain` perché hanno proporzioni diverse e non vanno tagliati.
+
+Risultato: **11.438px**, con i marchi leggibili e raggruppati.
+
+**2. Scorrimento orizzontale su `/type_stores/ferramenta/`.** Il blocco dei
+recapiti (la variante del form senza endpoint) finiva in una cella della griglia
+dei loghi: 233px di contenuto in una colonna da 113, 72px di sfondamento a 390px.
+
+Corretto alla radice: i blocchi che occupano **sempre** la larghezza piena —
+form, riquadri, gallerie, carousel, elenchi, accordion, servizi numerati — ora
+escono dalla griglia della sezione e si rendono dopo il corpo. Prima erano
+gestiti con controlli sparsi in `disposizione`, e ogni caso nuovo era un cerotto.
+Questo elimina anche il vecchio correttivo per l'accordion, che sfondava per lo
+stesso motivo.
+
+### Giro visivo su 23 pagine
+
+Tutte con **un solo `<h1>`**, nessuno scorrimento orizzontale, nessuna sezione
+vuota, nessun errore JavaScript.
+
+`check-build.js`: **52 rotte × 3 viewport, nessun problema.**

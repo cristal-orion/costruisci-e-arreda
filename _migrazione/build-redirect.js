@@ -71,6 +71,17 @@ const DECISE = {
     a: '/store/via-argine-625-80147-napoli-na/',
     perche: 'copia identica della pagina di Via Argine: due URL per lo stesso punto vendita',
   },
+  '/promo-casa/': {
+    a: '/richiedi-preventivo/',
+    perche:
+      "landing con offerta scaduta (\u20ac 166 al mese, valida fino al 31 Dicembre), " +
+      'ritirata su decisione del proprietario il 2026-09-02. Chi arriva da un vecchio ' +
+      'link cerca un preventivo',
+  },
+  '/thankyou-promo-6500/': {
+    a: '/richiedi-preventivo/',
+    perche: 'thank-you della landing /promo-casa/: senza la landing non ha più senso',
+  },
   '/author/admin/': {
     a: '/category/ultime-news-e-articoli/',
     perche: 'archivio autore di WordPress con un solo autore ("admin"): non è contenuto',

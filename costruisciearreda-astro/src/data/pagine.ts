@@ -201,15 +201,6 @@ export const pagineOneOff: PaginaOneOff[] = [
     senzaBloccoContatti: true,
   },
   {
-    slug: 'thankyou-promo-6500',
-    rotta: '/thankyou-promo-6500/',
-    h1: 'Grazie per averci contattati',
-    descrizione: 'La tua richiesta è stata inviata: ti ricontattiamo presto.',
-    impaginazione: 'testo',
-    noindex: true,
-    senzaBloccoContatti: true,
-  },
-  {
     slug: 'thankyou-progetta-gli-spazi',
     rotta: '/thankyou-progetta-gli-spazi/',
     h1: 'Grazie per averci contattati',
@@ -220,22 +211,17 @@ export const pagineOneOff: PaginaOneOff[] = [
   },
 
   /* --- Landing pubblicitarie ------------------------------------------------
-     `/promo-casa/` contiene un'offerta con scadenza ("valida fino al 31
-     Dicembre") ed è ancora `index, follow`: una promozione scaduta nei risultati
-     di ricerca danneggia chi la trova e chi la pubblica. Ricostruita fedelmente
-     ma in `noindex` finché il proprietario non decide se aggiornare l'offerta o
-     ritirare la pagina. Vale lo stesso per l'altra landing.                   */
-  {
-    slug: 'promo-casa',
-    rotta: '/promo-casa/',
-    h1: 'Promo casa',
-    descrizione:
-      'Offerta Costruisci e Arreda per la casa: pavimenti, rivestimenti e arredo bagno ' +
-      'in un\'unica soluzione.',
-    impaginazione: 'colonna',
-    noindex: true,
-    nota: "offerta con scadenza: da aggiornare o ritirare, decisione del proprietario",
-  },
+     `/promo-casa/` **non viene più costruita**: era interamente un'offerta
+     scaduta — "€ 166 al mese, valida fino al 31 Dicembre", listino, omaggi — e
+     il proprietario ha deciso di toglierla (2026-09-02). L'URL era indicizzato,
+     quindi risponde con un **301 verso `/richiedi-preventivo/`**, che è l'azione
+     equivalente per chi arriva da un vecchio link. Stessa sorte per la sua
+     thank-you `/thankyou-promo-6500/`, che senza la landing non ha più senso.
+     Il contenuto estratto resta in `src/content/pagine/promo-casa.json`: se
+     l'offerta verrà rifatta, i testi sono lì.
+
+     L'altra landing resta, in `noindex`: non ha scadenze, ma competerebbe con
+     le pagine del sito sulle stesse ricerche.                                 */
   {
     slug: 'soluzione-ceramiche',
     rotta: '/soluzione-ceramiche/',

@@ -31,19 +31,6 @@
       "soloMobile": false
     },
     {
-      "tipo": "immagine",
-      "visibile": true,
-      "varianti": [],
-      "path": "2024/06/Raggruppa-1704.jpg",
-      "src": "Raggruppa-1704.jpg",
-      "alt": "",
-      "width": 860,
-      "height": 656,
-      "href": null,
-      "didascalia": null,
-      "soloMobile": false
-    },
-    {
       "tipo": "testo",
       "visibile": true,
       "varianti": [],
@@ -70,6 +57,19 @@
       "varianti": [],
       "html": "<p>Valutiamo i risultati piuttosto che gli orari, promuovendo la <b>libertà</b> e la flessibilità. Questo ci permette di mantenere una <b>squadra umile</b> e orientata al risultato, pronta ad affrontare ogni sfida con dedizione e spirito di collaborazione.</p>",
       "parole": 36,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1704.jpg",
+      "src": "Raggruppa-1704.jpg",
+      "alt": "",
+      "width": 860,
+      "height": 656,
+      "href": null,
+      "didascalia": null,
       "soloMobile": false
     },
     {
