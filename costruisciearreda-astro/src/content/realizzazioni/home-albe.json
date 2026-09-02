@@ -1,0 +1,467 @@
+{
+  "slug": "home-albe",
+  "urlOriginale": "/realizzazioni/home-albe/",
+  "title": "HOME ALBE",
+  "seoTitle": "HOME ALBE",
+  "metaDescription": null,
+  "hero": {
+    "image": "Raggruppa-1649-3.jpg",
+    "titleTag": "h2",
+    "title": "I NOSTRI PROGETTI",
+    "kicker": "REALIZZAZIONI"
+  },
+  "campi": {
+    "LOCALITÀ": "Napoli (NA) Italy",
+    "TIPOLOGIA": "Casa",
+    "CATEGORIA": "Progettazione e ristrutturazione d’interni e esterni",
+    "TEMPI REALIZZAZIONE": "10 mesi"
+  },
+  "headings": [
+    {
+      "tag": "span",
+      "text": "LOCALITÀ: Napoli (NA) Italy"
+    },
+    {
+      "tag": "span",
+      "text": "TIPOLOGIA: Casa"
+    },
+    {
+      "tag": "span",
+      "text": "CATEGORIA: Progettazione e ristrutturazione d’interni e esterni"
+    },
+    {
+      "tag": "span",
+      "text": "TEMPI REALIZZAZIONE: 10 mesi"
+    },
+    {
+      "tag": "h2",
+      "text": "DETTAGLI"
+    }
+  ],
+  "corpo": [
+    {
+      "html": "<p class=\"p1\">Per questo progetto di appartamento moderno, la palette cromatica si concentra su eleganti toni di grigio e bianco, creando un ambiente sofisticato e coeso. Immagina un’area ingresso che accoglie con pavimenti in gres porcellanato effetto marmo bianco, che conferiscono una sensazione di spazio e luminosità, lasciando il ruolo di protagonista al soffitto con un telo personalizzato di inkiostro bianco retroilluminato. Le pareti di questo appartamento , tinte con il grigio ghiaccio, riflettono la luce naturale e amplificano la sensazione di apertura. L’illuminazione sarà progettata per accentuare le superfici grigio antracite, utilizzando faretti e lampade dal design minimalista. Il risultato è un appartamento raffinato, dove la sobrietà del bianco e la sofisticazione del grigio antracite si intrecciano per creare un contesto contemporaneo e accogliente.</p>",
+      "type": "text-editor"
+    },
+    {
+      "html": "<p class=\"p1\">Nel progettare un appartamento di 80 mq, l’obiettivo principale è massimizzare ogni centimetro per creare un ambiente confortevole e funzionale. La disposizione prevede una zona giorno ben definita, separata dalla cucina, per garantire la massima fruibilità degli spazi. La zona notte comprende tre camere da letto: una matrimoniale e due singole, perfette per una famiglia. Due bagni, posizionati strategicamente vicino alle camere, assicurano praticità e privacy. Per ottimizzare lo spazio, si integreranno armadi a muro e porte scorrevoli, permettendo di sfruttare al meglio ogni ambiente. L’intera progettazione è pensata per un equilibrio tra estetica e funzionalità, garantendo un’abitazione confortevole e ben organizzata.</p>",
+      "type": "text-editor"
+    }
+  ],
+  "immagini": [
+    {
+      "src": "Albe.jpg",
+      "alt": "",
+      "width": null,
+      "height": null,
+      "visibileDesktop": true
+    }
+  ],
+  "featuredImage": null,
+  "gallery": [
+    {
+      "full": "3d_1_11zon.jpg",
+      "src": "3d_1_11zon.jpg",
+      "alt": "3d_1_11zon",
+      "width": 900,
+      "height": 1600
+    },
+    {
+      "full": "bagno-prima_2_11zon.jpg",
+      "src": "bagno-prima_2_11zon.jpg",
+      "alt": "bagno prima_2_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "bagno-scuro-prima-1_3_11zon.jpg",
+      "src": "bagno-scuro-prima-1_3_11zon.jpg",
+      "alt": "bagno scuro prima 1_3_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "bagno-scuro-prima_4_11zon.jpg",
+      "src": "bagno-scuro-prima_4_11zon.jpg",
+      "alt": "bagno scuro prima_4_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "camera-1_5_11zon.jpg",
+      "src": "camera-1_5_11zon.jpg",
+      "alt": "camera 1_5_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "cameretta_6_11zon.jpg",
+      "src": "cameretta_6_11zon.jpg",
+      "alt": "cameretta_6_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "cappotto-termico-facciata-appartamento_7_11zon.jpg",
+      "src": "cappotto-termico-facciata-appartamento_7_11zon.jpg",
+      "alt": "cappotto termico facciata appartamento_7_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "cucina-1_8_11zon.jpg",
+      "src": "cucina-1_8_11zon.jpg",
+      "alt": "cucina 1_8_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "cucina-2_9_11zon.jpg",
+      "src": "cucina-2_9_11zon.jpg",
+      "alt": "cucina 2_9_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "cucina-boiserie-pittura_10_11zon.jpg",
+      "src": "cucina-boiserie-pittura_10_11zon.jpg",
+      "alt": "cucina boiserie pittura_10_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "cucina_11_11zon.jpg",
+      "src": "cucina_11_11zon.jpg",
+      "alt": "cucina_11_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "demolizione-giardino_12_11zon.jpg",
+      "src": "demolizione-giardino_12_11zon.jpg",
+      "alt": "demolizione giardino_12_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "direzione-lavori_13_11zon.jpg",
+      "src": "direzione-lavori_13_11zon.jpg",
+      "alt": "direzione lavori_13_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "disimpegno_14_11zon.jpg",
+      "src": "disimpegno_14_11zon.jpg",
+      "alt": "disimpegno_14_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "esterno_15_11zon.jpg",
+      "src": "esterno_15_11zon.jpg",
+      "alt": "esterno_15_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "giardino-2_16_11zon.jpg",
+      "src": "giardino-2_16_11zon.jpg",
+      "alt": "giardino 2_16_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "giardino_17_11zon.jpg",
+      "src": "giardino_17_11zon.jpg",
+      "alt": "giardino_17_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "giarino-durante_18_11zon.jpg",
+      "src": "giarino-durante_18_11zon.jpg",
+      "alt": "giarino durante_18_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "ingresso-prima-rev01_19_11zon.jpg",
+      "src": "ingresso-prima-rev01_19_11zon.jpg",
+      "alt": "ingresso prima rev01_19_11zon",
+      "width": 1600,
+      "height": 1200
+    },
+    {
+      "full": "ingresso-prima_20_11zon.jpg",
+      "src": "ingresso-prima_20_11zon.jpg",
+      "alt": "ingresso prima_20_11zon",
+      "width": 1600,
+      "height": 1200
+    },
+    {
+      "full": "ingresso-vuoto_21_11zon.jpg",
+      "src": "ingresso-vuoto_21_11zon.jpg",
+      "alt": "ingresso vuoto_21_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "posa-boiserie-per-interno_22_11zon.jpg",
+      "src": "posa-boiserie-per-interno_22_11zon.jpg",
+      "alt": "posa boiserie per interno_22_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "posa-rivestimenti-per-esterno_23_11zon.jpg",
+      "src": "posa-rivestimenti-per-esterno_23_11zon.jpg",
+      "alt": "posa rivestimenti per esterno_23_11zon",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "full": "salone-prima_24_11zon.jpg",
+      "src": "salone-prima_24_11zon.jpg",
+      "alt": "salone prima_24_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "salone-vuoto_25_11zon.jpg",
+      "src": "salone-vuoto_25_11zon.jpg",
+      "alt": "salone vuoto_25_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "scale-cucina_26_11zon.jpg",
+      "src": "scale-cucina_26_11zon.jpg",
+      "alt": "scale cucina_26_11zon",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "sospensione-cucina_27_11zon.jpg",
+      "src": "sospensione-cucina_27_11zon.jpg",
+      "alt": "sospensione cucina_27_11zon",
+      "width": 900,
+      "height": 1600
+    },
+    {
+      "full": "BAGNO-ROSA-A-1.jpeg",
+      "src": "BAGNO-ROSA-A-1.jpeg",
+      "alt": "BAGNO ROSA A",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "BAGNO-ROSA-1.jpeg",
+      "src": "BAGNO-ROSA-1.jpeg",
+      "alt": "BAGNO ROSA",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "BIOCLIMATICA-GIARDINO-1.jpeg",
+      "src": "BIOCLIMATICA-GIARDINO-1.jpeg",
+      "alt": "BIOCLIMATICA GIARDINO",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "BOISERIE-BLACK-1.jpeg",
+      "src": "BOISERIE-BLACK-1.jpeg",
+      "alt": "BOISERIE BLACK",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "BOISERIE-CON-VANO-TV-1.jpeg",
+      "src": "BOISERIE-CON-VANO-TV-1.jpeg",
+      "alt": "BOISERIE CON VANO TV",
+      "width": 1600,
+      "height": 1200
+    },
+    {
+      "full": "BOISERIE-NERA-1.jpeg",
+      "src": "BOISERIE-NERA-1.jpeg",
+      "alt": "BOISERIE NERA",
+      "width": 1600,
+      "height": 1200
+    },
+    {
+      "full": "CAB-ARMADIO-1.jpeg",
+      "src": "CAB-ARMADIO-1.jpeg",
+      "alt": "CAB ARMADIO",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "CABINA-ARMADIO-1.jpeg",
+      "src": "CABINA-ARMADIO-1.jpeg",
+      "alt": "CABINA ARMADIO",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "CAMERA-AA-1.jpeg",
+      "src": "CAMERA-AA-1.jpeg",
+      "alt": "CAMERA AA",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "CAMERA-MATRIMONIALE-1.jpeg",
+      "src": "CAMERA-MATRIMONIALE-1.jpeg",
+      "alt": "CAMERA MATRIMONIALE",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "CAMERETTA-BOY-1.jpeg",
+      "src": "CAMERETTA-BOY-1.jpeg",
+      "alt": "CAMERETTA BOY",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "DISIMPEGNO-1.jpeg",
+      "src": "DISIMPEGNO-1.jpeg",
+      "alt": "DISIMPEGNO",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "GIARDINO-2.jpeg",
+      "src": "GIARDINO-2.jpeg",
+      "alt": "GIARDINO",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "INGRESSO-CASA-1.jpeg",
+      "src": "INGRESSO-CASA-1.jpeg",
+      "alt": "INGRESSO CASA",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "INKIOSTRO-BIANCO-1.jpeg",
+      "src": "INKIOSTRO-BIANCO-1.jpeg",
+      "alt": "INKIOSTRO BIANCO",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "LASTRA-ATLAS-1.jpeg",
+      "src": "LASTRA-ATLAS-1.jpeg",
+      "alt": "LASTRA ATLAS",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "LAVABO-IN-GRES-1.jpeg",
+      "src": "LAVABO-IN-GRES-1.jpeg",
+      "alt": "LAVABO IN GRES",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "MOBILE-ARTESI-1.jpeg",
+      "src": "MOBILE-ARTESI-1.jpeg",
+      "alt": "MOBILE ARTESI",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "MOBILE-CAMERA-DA-LETTOu-1.jpeg",
+      "src": "MOBILE-CAMERA-DA-LETTOu-1.jpeg",
+      "alt": "MOBILE CAMERA DA LETTOù",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "MOBILE-ROSA-1.jpeg",
+      "src": "MOBILE-ROSA-1.jpeg",
+      "alt": "MOBILE ROSA",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "NICCHIA-BAGNO-1.jpeg",
+      "src": "NICCHIA-BAGNO-1.jpeg",
+      "alt": "NICCHIA BAGNO",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "PARATO-CAM-1.jpeg",
+      "src": "PARATO-CAM-1.jpeg",
+      "alt": "PARATO CAM",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "POSTAZIONE-TRUCCO-1.jpeg",
+      "src": "POSTAZIONE-TRUCCO-1.jpeg",
+      "alt": "POSTAZIONE TRUCCO",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "SOFFITTO-BAGNO-ROSA-1.jpeg",
+      "src": "SOFFITTO-BAGNO-ROSA-1.jpeg",
+      "alt": "SOFFITTO BAGNO ROSA",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "VANO-ZONA-GIORNO-1.jpeg",
+      "src": "VANO-ZONA-GIORNO-1.jpeg",
+      "alt": "VANO ZONA GIORNO",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "VETRATA-BIO-1.jpeg",
+      "src": "VETRATA-BIO-1.jpeg",
+      "alt": "VETRATA BIO",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "VETRATE-1.jpeg",
+      "src": "VETRATE-1.jpeg",
+      "alt": "VETRATE",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "cameretta-maschio-1.jpg",
+      "src": "cameretta-maschio-1.jpg",
+      "alt": "cameretta-maschio",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "full": "igienici-bagno-scuro-cielo-1.jpg",
+      "src": "igienici-bagno-scuro-cielo-1.jpg",
+      "alt": "igienici-bagno-scuro-cielo",
+      "width": 1200,
+      "height": 1600
+    }
+  ],
+  "formCf7": [
+    "95"
+  ],
+  "postInfo": {},
+  "tassonomie": [
+    "prima-dopo",
+    "progetti"
+  ],
+  "avvisi": [
+    "7 immagini su 57 senza un alt vero, da scrivere",
+    "meta description assente nell originale, da scrivere"
+  ]
+}

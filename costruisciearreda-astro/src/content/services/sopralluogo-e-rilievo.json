@@ -1,0 +1,37 @@
+{
+  "slug": "sopralluogo-e-rilievo",
+  "urlOriginale": "/services/sopralluogo-e-rilievo/",
+  "title": "Sopralluogo e rilievo",
+  "seoTitle": "Sopralluogo e rilievo",
+  "metaDescription": null,
+  "hero": {
+    "image": "Raggruppa-1647.jpg",
+    "titleTag": "h1",
+    "title": "Dalla progettazione alla realizzazione",
+    "kicker": "SERVIZI"
+  },
+  "campi": {},
+  "headings": [],
+  "corpo": [
+    {
+      "html": "<p>Il sopralluogo e rilievo consiste nella visita preliminare al sito o edificio per raccogliere dati essenziali sullo stato attuale degli <strong>spazi</strong>, delle <strong>strutture</strong> e del <strong>contesto circostante</strong>.</p>",
+      "type": "text-editor"
+    },
+    {
+      "html": "<p><strong>Misurazioni:</strong> Raccolta di dimensioni e dati fisici dell’area (ad esempio, metratura, altezze, inclinazioni).</p>\n<p><strong>Fotografie:</strong> Documentazione visiva dello stato dei luoghi.</p>\n<p><strong>Analisi del contesto:</strong> Osservazione delle condizioni ambientali, eventuali vincoli e caratteristiche del terreno o dell’edificio.</p>\n<p><strong>Rilievo dettagliato:</strong> Creazione di una rappresentazione grafica (spesso tramite software CAD) delle misurazioni raccolte, utile per il successivo sviluppo del progetto.</p>",
+      "type": "text-editor"
+    }
+  ],
+  "immagini": [],
+  "featuredImage": null,
+  "gallery": [],
+  "formCf7": [
+    "95"
+  ],
+  "postInfo": {},
+  "tassonomie": [],
+  "avvisi": [
+    "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+    "meta description assente nell originale, da scrivere"
+  ]
+}

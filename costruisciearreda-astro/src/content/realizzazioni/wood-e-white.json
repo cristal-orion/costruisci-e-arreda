@@ -1,0 +1,93 @@
+{
+  "slug": "wood-e-white",
+  "urlOriginale": "/realizzazioni/wood-e-white/",
+  "title": "Wood e white",
+  "seoTitle": "Wood e white",
+  "metaDescription": null,
+  "hero": {
+    "image": "Raggruppa-1647-2.jpg",
+    "titleTag": "h2",
+    "title": "I NOSTRI PROGETTI",
+    "kicker": "REALIZZAZIONI"
+  },
+  "campi": {},
+  "headings": [
+    {
+      "tag": "h2",
+      "text": "DETTAGLI"
+    }
+  ],
+  "corpo": [],
+  "immagini": [],
+  "featuredImage": null,
+  "gallery": [
+    {
+      "full": "3.png",
+      "src": "3.png",
+      "alt": "3",
+      "width": 2160,
+      "height": 2160
+    },
+    {
+      "full": "1.jpg",
+      "src": "1.jpg",
+      "alt": "1",
+      "width": 2037,
+      "height": 2160
+    },
+    {
+      "full": "opzione-2-BAGNO-PICCOLO-2.jpg",
+      "src": "opzione-2-BAGNO-PICCOLO-2.jpg",
+      "alt": "opzione 2 BAGNO PICCOLO (2)",
+      "width": 1819,
+      "height": 2159
+    },
+    {
+      "full": "opzione-2-BAGNO-PICCOLO-1.jpg",
+      "src": "opzione-2-BAGNO-PICCOLO-1.jpg",
+      "alt": "opzione 2 BAGNO PICCOLO (1)",
+      "width": 1816,
+      "height": 2160
+    },
+    {
+      "full": "BAGNO-GRANDE-2.jpg",
+      "src": "BAGNO-GRANDE-2.jpg",
+      "alt": "BAGNO GRANDE (2)",
+      "width": 2160,
+      "height": 2138
+    },
+    {
+      "full": "BAGNO-GRANDE-1.jpg",
+      "src": "BAGNO-GRANDE-1.jpg",
+      "alt": "BAGNO GRANDE (1)",
+      "width": 2160,
+      "height": 2160
+    },
+    {
+      "full": "3.jpg",
+      "src": "3.jpg",
+      "alt": "3",
+      "width": 2160,
+      "height": 2160
+    },
+    {
+      "full": "2.jpg",
+      "src": "2.jpg",
+      "alt": "2",
+      "width": 2160,
+      "height": 2160
+    }
+  ],
+  "formCf7": [
+    "95"
+  ],
+  "postInfo": {},
+  "tassonomie": [
+    "render"
+  ],
+  "avvisi": [
+    "4 immagini su 8 senza un alt vero, da scrivere",
+    "meta description assente nell originale, da scrivere",
+    "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
+  ]
+}

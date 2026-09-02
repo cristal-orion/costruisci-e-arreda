@@ -1,0 +1,27 @@
+---
+/**
+ * Layout del sito: `BaseLayout` più header e footer.
+ * Le pagine usano questo; `BaseLayout` resta per i casi senza cornice
+ * (thank-you page essenziali, pagine di controllo interne).
+ */
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+  bodyClass?: string;
+}
+
+const { title, description, image, noindex, bodyClass }: Props = Astro.props;
+---
+
+<BaseLayout {title} {description} {image} {noindex} {bodyClass}>
+  <slot name="head" slot="head" />
+  <Header slot="header" pathname={Astro.url.pathname} />
+  <slot />
+  <Footer slot="footer" />
+</BaseLayout>

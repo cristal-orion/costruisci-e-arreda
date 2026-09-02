@@ -1,0 +1,37 @@
+{
+  "slug": "rendering",
+  "urlOriginale": "/services/rendering/",
+  "title": "Rendering",
+  "seoTitle": "Rendering",
+  "metaDescription": null,
+  "hero": {
+    "image": "Raggruppa-1647.jpg",
+    "titleTag": "h1",
+    "title": "Dalla progettazione alla realizzazione",
+    "kicker": "SERVIZI"
+  },
+  "campi": {},
+  "headings": [],
+  "corpo": [
+    {
+      "html": "<p>Il servizio di <strong>rendering di interni per appartamenti</strong> è una tecnica che permette di creare immagini digitali altamente realistiche degli spazi interni di una casa o di un appartamento, prima che siano effettivamente realizzati o ristrutturati. Questo strumento è particolarmente utile per visualizzare e pianificare il design degli ambienti, offrendo una visione dettagliata di come saranno gli interni una volta completati.</p>",
+      "type": "text-editor"
+    },
+    {
+      "html": "<p><strong>Creazione del modello 3D:</strong> Si parte da una planimetria o dai disegni dell’appartamento, che vengono utilizzati per costruire un modello tridimensionale dell’ambiente. Questo modello include pareti, pavimenti, soffitti e altri elementi strutturali.</p>\n<p><strong>Design degli interni:</strong> All’interno del modello 3D, vengono inseriti i vari elementi d’arredo, come mobili, elettrodomestici, illuminazione, e decorazioni. Si possono anche scegliere materiali per pavimenti, pareti e soffitti, nonché i colori e le texture.</p>\n<p><strong>Illuminazione e ambientazione:</strong> Viene simulata l’illuminazione naturale e artificiale, per vedere come la luce interagisce con gli spazi e gli arredi. Questo aiuta a capire l’atmosfera e il comfort degli ambienti.</p>\n<p><strong>Generazione delle immagini:</strong> Una volta completato il design, vengono generate le immagini renderizzate. Queste immagini sono talmente realistiche da sembrare fotografie, permettendo di visualizzare in dettaglio come sarà l’appartamento una volta arredato.</p>\n<p><strong>Revisione e modifiche:</strong> Il cliente può visionare i rendering e richiedere eventuali modifiche, come cambiare il colore delle pareti, sostituire un mobile, o modificare l’illuminazione, fino a raggiungere il risultato desiderato.</p>",
+      "type": "text-editor"
+    }
+  ],
+  "immagini": [],
+  "featuredImage": null,
+  "gallery": [],
+  "formCf7": [
+    "95"
+  ],
+  "postInfo": {},
+  "tassonomie": [],
+  "avvisi": [
+    "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+    "meta description assente nell originale, da scrivere"
+  ]
+}

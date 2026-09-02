@@ -1,0 +1,37 @@
+{
+  "slug": "progetto",
+  "urlOriginale": "/services/progetto/",
+  "title": "Progetto",
+  "seoTitle": "Progetto",
+  "metaDescription": null,
+  "hero": {
+    "image": "Raggruppa-1648.jpg",
+    "titleTag": "h1",
+    "title": "Dalla progettazione \n alla realizzazione",
+    "kicker": "SERVIZI"
+  },
+  "campi": {},
+  "headings": [],
+  "corpo": [
+    {
+      "html": "<p>Il progetto è il processo di ideazione e sviluppo di soluzioni architettoniche, ingegneristiche o urbanistiche, che rispondono alle esigenze del cliente e rispettano le <strong>normative vigenti</strong>.</p>",
+      "type": "text-editor"
+    },
+    {
+      "html": "<p><strong>Progettazione preliminare:</strong> Definizione degli schemi iniziali e concettuali (layout, volumi, orientamento, ecc.).</p>\n<p><strong>Progettazione definitiva:</strong> Sviluppo dettagliato delle soluzioni tecniche e funzionali, spesso con tavole tecniche specifiche.</p>\n<p><strong>Progettazione esecutiva:</strong> Redazione degli elaborati finali necessari per la costruzione, con dettagli costruttivi, materiali, specifiche tecniche e computo metrico.</p>",
+      "type": "text-editor"
+    }
+  ],
+  "immagini": [],
+  "featuredImage": null,
+  "gallery": [],
+  "formCf7": [
+    "95"
+  ],
+  "postInfo": {},
+  "tassonomie": [],
+  "avvisi": [
+    "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+    "meta description assente nell originale, da scrivere"
+  ]
+}

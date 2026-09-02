@@ -1,0 +1,528 @@
+{
+  "generated": "2026-09-02T07:25:33.236Z",
+  "base": "http://127.0.0.1:8099",
+  "collezioni": {
+    "services": [
+      {
+        "slug": "sopralluogo-e-rilievo",
+        "parole": 85,
+        "blocchiTesto": 2,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 2,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "progetto",
+        "parole": 72,
+        "blocchiTesto": 2,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 2,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "rendering",
+        "parole": 222,
+        "blocchiTesto": 2,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 2,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "consulenza-finiture",
+        "parole": 89,
+        "blocchiTesto": 2,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 2,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "disbrigo-pratiche",
+        "parole": 71,
+        "blocchiTesto": 2,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 2,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "direzione-lavori",
+        "parole": 76,
+        "blocchiTesto": 2,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 2,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "impianti",
+        "parole": 75,
+        "blocchiTesto": 2,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 2,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "certificazioni",
+        "parole": 83,
+        "blocchiTesto": 2,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 2,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+          "meta description assente nell originale, da scrivere"
+        ]
+      }
+    ],
+    "realizzazioni": [
+      {
+        "slug": "home-albe",
+        "parole": 225,
+        "blocchiTesto": 2,
+        "campi": [
+          "LOCALITÀ",
+          "TIPOLOGIA",
+          "CATEGORIA",
+          "TEMPI REALIZZAZIONE"
+        ],
+        "immagini": 1,
+        "decorativeTolte": 1,
+        "gallery": 56,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "prima-dopo",
+          "progetti"
+        ],
+        "warnings": [
+          "7 immagini su 57 senza un alt vero, da scrivere",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "green-house",
+        "parole": 175,
+        "blocchiTesto": 2,
+        "campi": [
+          "LOCALITÀ",
+          "TIPOLOGIA",
+          "CATEGORIA",
+          "TEMPI REALIZZAZIONE"
+        ],
+        "immagini": 1,
+        "decorativeTolte": 1,
+        "gallery": 20,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "prima-dopo",
+          "progetti"
+        ],
+        "warnings": [
+          "2 immagini su 21 senza un alt vero, da scrivere",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "wood-e-white",
+        "parole": 0,
+        "blocchiTesto": 0,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 8,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "render"
+        ],
+        "warnings": [
+          "4 immagini su 8 senza un alt vero, da scrivere",
+          "meta description assente nell originale, da scrivere",
+          "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
+        ]
+      },
+      {
+        "slug": "bar-tabacchi",
+        "parole": 0,
+        "blocchiTesto": 0,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 10,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "render"
+        ],
+        "warnings": [
+          "1 immagini su 10 senza un alt vero, da scrivere",
+          "meta description assente nell originale, da scrivere",
+          "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
+        ]
+      },
+      {
+        "slug": "casa-prima-e-dopo",
+        "parole": 0,
+        "blocchiTesto": 0,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 12,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "prima-dopo"
+        ],
+        "warnings": [
+          "1 immagini su 12 senza un alt vero, da scrivere",
+          "meta description assente nell originale, da scrivere",
+          "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
+        ]
+      },
+      {
+        "slug": "appartamento-moderno-prima-e-dopo",
+        "parole": 0,
+        "blocchiTesto": 0,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 20,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "render"
+        ],
+        "warnings": [
+          "meta description assente nell originale, da scrivere",
+          "IMMAGINE HERO ASSENTE nell'originale: il riquadro è vuoto e il titolo bianco è invisibile",
+          "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
+        ]
+      },
+      {
+        "slug": "soluzioni-per-la-famiglia",
+        "parole": 0,
+        "blocchiTesto": 0,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 23,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "render"
+        ],
+        "warnings": [
+          "12 immagini su 23 senza un alt vero, da scrivere",
+          "meta description assente nell originale, da scrivere",
+          "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
+        ]
+      }
+    ],
+    "stores": [
+      {
+        "slug": "via-martiri-della-liberta-na",
+        "parole": 77,
+        "blocchiTesto": 1,
+        "campi": [
+          "tipo",
+          "indirizzo"
+        ],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 45,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "galleria duplicata nell'originale (versione desktop + mobile): 45 immagini unite",
+          "45 immagini su 45 senza un alt vero, da scrivere",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "via-martiri-della-liberta-nola-na",
+        "parole": 67,
+        "blocchiTesto": 1,
+        "campi": [
+          "tipo",
+          "indirizzo"
+        ],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 35,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "galleria duplicata nell'originale (versione desktop + mobile): 35 immagini unite",
+          "35 immagini su 35 senza un alt vero, da scrivere",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "via-san-massimo-na",
+        "parole": 75,
+        "blocchiTesto": 1,
+        "campi": [
+          "tipo",
+          "indirizzo"
+        ],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 44,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [],
+        "warnings": [
+          "galleria duplicata nell'originale (versione desktop + mobile): 44 immagini unite",
+          "44 immagini su 44 senza un alt vero, da scrivere",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "via-argine-625-80147-napoli-na",
+        "parole": 0,
+        "blocchiTesto": 0,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 0,
+        "gallery": 0,
+        "form": [],
+        "tassonomie": [],
+        "warnings": [
+          "meta description assente nell originale, da scrivere",
+          "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
+        ]
+      },
+      {
+        "slug": "via-argine-625-80147-napoli-na-2",
+        "parole": 0,
+        "blocchiTesto": 0,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 0,
+        "gallery": 0,
+        "form": [],
+        "tassonomie": [],
+        "warnings": [
+          "meta description assente nell originale, da scrivere",
+          "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
+        ]
+      }
+    ],
+    "posts": [
+      {
+        "slug": "5-errori-da-evitare-nella-scelta-dei-materiali-per-ledilizia",
+        "parole": 469,
+        "blocchiTesto": 1,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "ultime-news-e-articoli"
+        ],
+        "warnings": []
+      },
+      {
+        "slug": "come-scegliere-le-finiture-perfette-per-la-tua-casa",
+        "parole": 595,
+        "blocchiTesto": 1,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "ultime-news-e-articoli"
+        ],
+        "warnings": []
+      },
+      {
+        "slug": "corso-di-formazione-gestione-delle-grandi-lastre",
+        "parole": 128,
+        "blocchiTesto": 1,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "ultime-news-e-articoli"
+        ],
+        "warnings": [
+          "1 immagini su 1 senza un alt vero, da scrivere"
+        ]
+      },
+      {
+        "slug": "grande-novita-una-nuova-area-formativa-nel-nostro-store-di-via-argine",
+        "parole": 148,
+        "blocchiTesto": 1,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "ultime-news-e-articoli"
+        ],
+        "warnings": [
+          "1 immagini su 1 senza un alt vero, da scrivere",
+          "meta description assente nell originale, da scrivere"
+        ]
+      },
+      {
+        "slug": "gres-costruisciearreda-consigli",
+        "parole": 590,
+        "blocchiTesto": 1,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "ultime-news-e-articoli"
+        ],
+        "warnings": []
+      },
+      {
+        "slug": "mobili-bagno-quale-scegliere-per-uno-spazio-funzionale-e-di-design",
+        "parole": 595,
+        "blocchiTesto": 1,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "ultime-news-e-articoli"
+        ],
+        "warnings": [
+          "1 immagini su 1 senza un alt vero, da scrivere"
+        ]
+      },
+      {
+        "slug": "perche-il-rendering-3d-e-essenziale-per-la-ristrutturazione-dei-tuoi-spazi",
+        "parole": 628,
+        "blocchiTesto": 1,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "ultime-news-e-articoli"
+        ],
+        "warnings": []
+      },
+      {
+        "slug": "rivestimenti-con-pattern-stile-e-personalita-per-i-tuoi-spazi",
+        "parole": 492,
+        "blocchiTesto": 1,
+        "campi": [],
+        "immagini": 0,
+        "decorativeTolte": 1,
+        "gallery": 0,
+        "form": [
+          "95"
+        ],
+        "tassonomie": [
+          "ultime-news-e-articoli"
+        ],
+        "warnings": []
+      }
+    ]
+  }
+}

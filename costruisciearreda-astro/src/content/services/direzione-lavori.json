@@ -1,0 +1,37 @@
+{
+  "slug": "direzione-lavori",
+  "urlOriginale": "/services/direzione-lavori/",
+  "title": "Direzione lavori",
+  "seoTitle": "Direzione lavori",
+  "metaDescription": null,
+  "hero": {
+    "image": "Raggruppa-1647.jpg",
+    "titleTag": "h1",
+    "title": "Dalla progettazione alla realizzazione",
+    "kicker": "SERVIZI"
+  },
+  "campi": {},
+  "headings": [],
+  "corpo": [
+    {
+      "html": "<p>La direzione lavori riguarda la supervisione del cantiere per assicurare che i lavori vengano eseguiti secondo il <strong>progetto</strong> e le <strong>normative</strong>.</p>",
+      "type": "text-editor"
+    },
+    {
+      "html": "<p><strong>Coordinamento delle maestranze:</strong> Organizzazione e controllo delle squadre di lavoro sul cantiere.</p>\n<p><strong>Verifica dell’esecuzione:</strong> Controllo della corretta esecuzione delle opere in conformità con il progetto esecutivo.</p>\n<p><strong>Gestione delle varianti:</strong> Gestione delle modifiche al progetto durante la costruzione, se necessario.</p>\n<p><strong>Controllo dei tempi e dei costi:</strong> Monitoraggio del rispetto del cronoprogramma e del budget previsto.</p>",
+      "type": "text-editor"
+    }
+  ],
+  "immagini": [],
+  "featuredImage": null,
+  "gallery": [],
+  "formCf7": [
+    "95"
+  ],
+  "postInfo": {},
+  "tassonomie": [],
+  "avvisi": [
+    "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+    "meta description assente nell originale, da scrivere"
+  ]
+}

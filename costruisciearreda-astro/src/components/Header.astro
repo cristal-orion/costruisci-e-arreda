@@ -1,0 +1,410 @@
+---
+/**
+ * Header — logo e menu. Misurato: 101px su desktop, 69px sotto i 992px,
+ * `position: static`, fondo trasparente, link 16px peso 700 senza maiuscolo.
+ *
+ * **Il menu sta nel DOM una volta sola.** Nell'originale è ripetuto **tre volte**
+ * (canvas mobile + header mobile + header desktop), tutte e tre con lo stesso
+ * `id="menuContainer"` — HTML non valido e ~250 parole di boilerplate duplicate
+ * prima del contenuto vero di ogni pagina. Qui una sola copia, resa da barra
+ * orizzontale a pannello laterale dal CSS.
+ *
+ * Il punto di rottura è **992px**, quello del tema originale (`lg` di Bootstrap),
+ * non i 1025px che il resto del design system usa per le colonne: a 1024px —
+ * un iPad in orizzontale — l'originale mostra il menu completo, e vale tenerlo.
+ */
+import logo from '../assets/logo.svg';
+import { menuPrincipale } from '../data/menu';
+import { site } from '../data/site';
+
+interface Props {
+  /** Percorso della pagina corrente, per marcare la voce attiva. */
+  pathname?: string;
+}
+
+const { pathname = '' }: Props = Astro.props;
+
+const attiva = (href: string | null) =>
+  !!href && href !== '/' && pathname.startsWith(href);
+
+const ramoAttivo = (voce: (typeof menuPrincipale)[number]) =>
+  attiva(voce.href) || (voce.figli ?? []).some((f) => attiva(f.href));
+---
+
+<header class="header">
+  <div class="container header__bar">
+    <a class="header__logo" href="/" aria-label={`${site.shortName} — vai alla homepage`}>
+      <img src={logo.src} width={logo.width} height={logo.height} alt="" />
+    </a>
+
+    <button
+      class="header__burger"
+      type="button"
+      aria-expanded="false"
+      aria-controls="menu-principale"
+      aria-label="Apri il menu"
+      data-menu-toggle
+    >
+      <span class="header__burgerBox" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+
+    <!-- velo dietro al pannello: chiude al click e stacca il menu dalla pagina -->
+    <div class="header__velo" data-menu-velo hidden></div>
+
+    <nav class="header__nav" id="menu-principale" aria-label="Menu principale" data-menu>
+      <ul class="menu">
+        {
+          menuPrincipale.map((voce) => (
+            <li class:list={['menu__item', { 'menu__item--attivo': ramoAttivo(voce) }]}>
+              {voce.figli?.length ? (
+                <>
+                  <button
+                    class="menu__link menu__link--toggle"
+                    type="button"
+                    aria-expanded="false"
+                    data-submenu-toggle
+                  >
+                    {voce.label}
+                    <span class="menu__chevron" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6" /></svg>
+                    </span>
+                  </button>
+                  <ul class="menu__sub">
+                    {voce.figli.map((f) => (
+                      <li>
+                        <a
+                          class:list={['menu__subLink', { 'menu__subLink--attivo': attiva(f.href) }]}
+                          href={f.href ?? '#'}
+                          aria-current={attiva(f.href) ? 'page' : undefined}
+                        >
+                          {f.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <a
+                  class="menu__link"
+                  href={voce.href ?? '#'}
+                  aria-current={attiva(voce.href) ? 'page' : undefined}
+                  {...(voce.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  {voce.label}
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: relative;
+    z-index: var(--z-header);
+    background: transparent;
+  }
+
+  .header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-6);
+    /* 69px sotto i 992px, 101px sopra: l'altezza viene dal logo più il padding */
+    min-height: var(--header-h-mobile);
+  }
+
+  .header__logo {
+    flex: none;
+    display: block;
+  }
+  .header__logo img {
+    width: auto;
+    height: 49px;
+  }
+
+  /* --- bottone del menu: solo sotto i 992px --------------------------------- */
+  .header__burger {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--c-ink);
+    appearance: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  .header__burgerBox {
+    display: grid;
+    gap: 5px;
+    width: 22px;
+  }
+  .header__burgerBox span {
+    height: 2px;
+    background: currentcolor;
+    transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  }
+  .header__burger[aria-expanded='true'] .header__burgerBox span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .header__burger[aria-expanded='true'] .header__burgerBox span:nth-child(2) {
+    opacity: 0;
+  }
+  .header__burger[aria-expanded='true'] .header__burgerBox span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* --- il menu sotto i 992px: pannello laterale ----------------------------- */
+  .header__nav {
+    position: fixed;
+    inset: 0 0 0 auto;
+    z-index: var(--z-overlay);
+    width: min(88vw, 22rem);
+    padding: var(--s-20) var(--s-6) var(--s-8);
+    overflow-y: auto;
+    background: var(--c-surface);
+    box-shadow: -4px 0 24px rgb(0 0 0 / 12%);
+    transform: translateX(100%);
+    transition: transform var(--dur-slow) var(--ease);
+    visibility: hidden;
+  }
+  .header__nav[data-aperto] {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .menu {
+    display: grid;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .menu__item {
+    margin: 0;
+  }
+
+  .menu__link {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    width: 100%;
+    padding: var(--s-3) 0;
+    color: var(--c-ink);
+    font-family: inherit;
+    font-size: var(--t-base);
+    font-weight: var(--w-bold);
+    text-align: left;
+    text-decoration: none;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: color var(--dur) var(--ease);
+  }
+  .menu__link:hover,
+  .menu__link[aria-current='page'] {
+    color: var(--c-brand);
+  }
+  .menu__item--attivo > .menu__link {
+    color: var(--c-brand);
+  }
+
+  .menu__chevron {
+    display: inline-grid;
+    transition: transform var(--dur) var(--ease);
+  }
+  .menu__link[aria-expanded='true'] .menu__chevron {
+    transform: rotate(180deg);
+  }
+
+  .menu__sub {
+    display: none;
+    margin: 0 0 var(--s-3);
+    padding: 0 0 0 var(--s-4);
+    list-style: none;
+    border-left: 1px solid var(--c-border);
+  }
+  .menu__link[aria-expanded='true'] + .menu__sub {
+    display: grid;
+  }
+  .menu__sub li {
+    margin: 0;
+  }
+  .menu__subLink {
+    display: block;
+    padding: var(--s-2) 0;
+    color: var(--c-ink-soft);
+    font-size: var(--t-sm);
+    text-decoration: none;
+  }
+  .menu__subLink:hover,
+  .menu__subLink--attivo {
+    color: var(--c-brand);
+  }
+
+  .header__velo {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    background: rgb(51 51 51 / 45%);
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease);
+  }
+  .header__velo[data-aperto] {
+    opacity: 1;
+  }
+
+  /* --- da 992px: barra orizzontale ----------------------------------------- */
+  @media (min-width: 992px) {
+    .header__bar {
+      min-height: var(--header-h);
+    }
+    /* Il logo si restringe scendendo, come nell'originale (220px a 1920,
+       135px a 992): è quello che lascia spazio al menu. */
+    .header__logo img {
+      height: clamp(42px, 3.9vw, 56px);
+    }
+    .header__burger,
+    .header__velo {
+      display: none;
+    }
+
+    .header__nav {
+      position: static;
+      width: auto;
+      padding: 0;
+      overflow: visible;
+      background: none;
+      box-shadow: none;
+      transform: none;
+      visibility: visible;
+    }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      /* 19px è il gap misurato sull'originale; sotto i 1200px si stringe per
+         tenere la barra su una riga sola il più possibile. L'originale invece
+         arriva a **145px di header con il menu su tre righe** fra 992 e 1280:
+         qui resta su due righe e 112px. Differenza voluta. */
+      gap: clamp(0.75rem, 1.5vw, 1.1875rem);
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .menu__item {
+      position: relative;
+    }
+    .menu__link {
+      width: auto;
+      padding: var(--s-2) 0;
+      white-space: nowrap;
+    }
+
+    /* sottomenu a tendina: si apre col passaggio del mouse o col focus, e
+       resta raggiungibile da tastiera perché il bottone lo apre comunque */
+    .menu__sub {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: grid;
+      min-width: 15rem;
+      margin: 0;
+      padding: var(--s-3) var(--s-4);
+      background: var(--c-surface);
+      border-left: 0;
+      box-shadow: 0 6px 24px rgb(0 0 0 / 12%);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--dur) var(--ease);
+    }
+    .menu__item:hover > .menu__sub,
+    .menu__item:focus-within > .menu__sub,
+    .menu__link[aria-expanded='true'] + .menu__sub {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header__nav,
+    .menu__chevron,
+    .header__burgerBox span {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Apre e chiude il pannello del menu sotto i 992px e i sottomenu.
+   * Senza JavaScript il pannello resterebbe chiuso: per questo il bottone è
+   * nascosto da 992px in su, dove il menu è una barra sempre visibile, e sotto
+   * i 992px la navigazione completa resta comunque nel footer.
+   */
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const nav = document.querySelector<HTMLElement>('[data-menu]');
+  const velo = document.querySelector<HTMLElement>('[data-menu-velo]');
+
+  if (toggle && nav) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
+      nav.toggleAttribute('data-aperto', open);
+      if (velo) {
+        // `hidden` prima della transizione, così il velo non intercetta i click
+        if (open) {
+          velo.hidden = false;
+          requestAnimationFrame(() => velo.setAttribute('data-aperto', ''));
+        } else {
+          velo.removeAttribute('data-aperto');
+          setTimeout(() => (velo.hidden = true), 400);
+        }
+      }
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+    };
+
+    toggle.addEventListener('click', () =>
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true'),
+    );
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // click sul velo o fuori dal pannello: chiude
+    document.addEventListener('click', (e) => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      const t = e.target as Node;
+      if (!nav.contains(t) && !toggle.contains(t)) setOpen(false);
+    });
+
+    // tornando sopra i 992px il pannello non ha più senso
+    matchMedia('(min-width: 992px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+
+  // sottomenu
+  for (const b of document.querySelectorAll<HTMLButtonElement>('[data-submenu-toggle]')) {
+    b.addEventListener('click', () => {
+      const open = b.getAttribute('aria-expanded') === 'true';
+      // sotto i 992px si comporta da accordion: uno aperto per volta
+      if (!open && !matchMedia('(min-width: 992px)').matches) {
+        document
+          .querySelectorAll<HTMLButtonElement>('[data-submenu-toggle][aria-expanded="true"]')
+          .forEach((o) => o.setAttribute('aria-expanded', 'false'));
+      }
+      b.setAttribute('aria-expanded', String(!open));
+    });
+  }
+</script>

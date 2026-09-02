@@ -29,23 +29,38 @@ export const company = {
 } as const;
 
 export type Sede = {
-  tipo: 'showroom' | 'ferramenta' | 'punto-edile' | 'uffici';
-  indirizzo: string;
-  citta: string;
+  tipo: 'Showroom' | 'Ferramenta' | 'Punto edile' | 'Uffici';
+  /** Righe dell'indirizzo come le stampa il footer dell'originale. */
+  righe: [string, string];
   nota?: string;
 };
 
+/**
+ * Sedi, trascritte **dal footer del mirror**, che è la fonte più completa
+ * (con CAP e comune). Sono raggruppate per tipo esattamente come là.
+ *
+ * Nota: lo showroom di Via Martiri della Libertà 11 compare **due volte**
+ * nell'originale, la seconda con l'aggiunta "(Home)". Riprodotto come sta:
+ * se è un doppione va chiesto al proprietario, non deciso qui.
+ */
 export const sedi: Sede[] = [
-  { tipo: 'showroom', indirizzo: 'Via Martiri della Libertà 11', citta: 'Napoli' },
-  { tipo: 'showroom', indirizzo: 'Via San Massimo', citta: 'Nola', nota: 'Mercury Center' },
-  { tipo: 'ferramenta', indirizzo: 'Corso Ponticelli 28/C', citta: 'Napoli' },
-  { tipo: 'ferramenta', indirizzo: 'Via della Libertà 56', citta: 'Portici' },
-  { tipo: 'punto-edile', indirizzo: 'Via Argine 625', citta: 'Napoli' },
-  { tipo: 'uffici', indirizzo: 'Via Gennaro Paparo 74', citta: 'Massa di Somma' },
+  { tipo: 'Showroom', righe: ['Via Martiri della Libertà, 11', '80147 – Napoli (NA)'] },
+  { tipo: 'Showroom', righe: ['Via Martiri della Libertà (Home)', '11, 80147 – Napoli (NA)'] },
+  { tipo: 'Showroom', righe: ['Via San Massimo, SNC', 'Mercury Center, 80035 – Nola (NA)'] },
+  { tipo: 'Ferramenta', righe: ['Corso Ponticelli, 28/C', '80147 – Napoli (NA)'] },
+  { tipo: 'Ferramenta', righe: ['Via della Libertà, 56', '80055 – Portici (NA)'] },
+  { tipo: 'Punto edile', righe: ['Via Argine, 625', '80147 – Napoli (NA)'] },
+  { tipo: 'Uffici', righe: ['Via Gennaro Paparo, 74', '80040 – Massa di Somma (NA)'] },
 ];
 
+/** Le sedi raggruppate per tipo, nell'ordine in cui appaiono nel footer. */
+export const sediPerTipo = (['Showroom', 'Ferramenta', 'Punto edile', 'Uffici'] as const).map(
+  (tipo) => ({ tipo, sedi: sedi.filter((s) => s.tipo === tipo) }),
+);
+
+/** URL social esatti presi dal footer del mirror. */
 export const social = [
-  { nome: 'LinkedIn', url: 'https://www.linkedin.com/company/costruisci-arreda/' },
-  { nome: 'Facebook', url: 'https://www.facebook.com/costruisciearreda/' },
-  { nome: 'Instagram', url: 'https://www.instagram.com/costruisciearreda/' },
+  { nome: 'LinkedIn', url: 'https://it.linkedin.com/company/costruisci-e-arreda-srl' },
+  { nome: 'Facebook', url: 'https://www.facebook.com/costruisciearreda/?locale=it_IT' },
+  { nome: 'Instagram', url: 'https://www.instagram.com/costruisciearreda/?hl=it' },
 ] as const;

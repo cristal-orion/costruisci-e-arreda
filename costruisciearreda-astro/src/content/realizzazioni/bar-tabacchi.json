@@ -1,0 +1,107 @@
+{
+  "slug": "bar-tabacchi",
+  "urlOriginale": "/realizzazioni/bar-tabacchi/",
+  "title": "Bar/tabacchi",
+  "seoTitle": "Bar/tabacchi",
+  "metaDescription": null,
+  "hero": {
+    "image": "Raggruppa-1647-2.jpg",
+    "titleTag": "h2",
+    "title": "I NOSTRI PROGETTI",
+    "kicker": "REALIZZAZIONI"
+  },
+  "campi": {},
+  "headings": [
+    {
+      "tag": "h2",
+      "text": "DETTAGLI"
+    }
+  ],
+  "corpo": [],
+  "immagini": [],
+  "featuredImage": null,
+  "gallery": [
+    {
+      "full": "02_PLANIMETRICA-1-scaled.jpg",
+      "src": "02_PLANIMETRICA-1-scaled.jpg",
+      "alt": "02_PLANIMETRICA",
+      "width": 2560,
+      "height": 1811
+    },
+    {
+      "full": "03-VISTA-INGRESSO-SX-scaled.jpg",
+      "src": "03-VISTA-INGRESSO-SX-scaled.jpg",
+      "alt": "03 VISTA INGRESSO SX",
+      "width": 2560,
+      "height": 1811
+    },
+    {
+      "full": "04-VISTA-INGRESSO-FRONT-scaled.jpg",
+      "src": "04-VISTA-INGRESSO-FRONT-scaled.jpg",
+      "alt": "04 VISTA INGRESSO FRONT",
+      "width": 2560,
+      "height": 1811
+    },
+    {
+      "full": "05-VISTA-INGRESSO-DX-scaled.jpg",
+      "src": "05-VISTA-INGRESSO-DX-scaled.jpg",
+      "alt": "05 VISTA INGRESSO DX",
+      "width": 2560,
+      "height": 1811
+    },
+    {
+      "full": "06_VISTA-BANCO-scaled.jpg",
+      "src": "06_VISTA-BANCO-scaled.jpg",
+      "alt": "06_VISTA BANCO",
+      "width": 2560,
+      "height": 1811
+    },
+    {
+      "full": "07_VISTA-BANCO-scaled.jpg",
+      "src": "07_VISTA-BANCO-scaled.jpg",
+      "alt": "07_VISTA BANCO",
+      "width": 2560,
+      "height": 1811
+    },
+    {
+      "full": "08_VISTA-BANCO-scaled.jpg",
+      "src": "08_VISTA-BANCO-scaled.jpg",
+      "alt": "08_VISTA BANCO",
+      "width": 2560,
+      "height": 1811
+    },
+    {
+      "full": "10_PLANIMETRICA-scaled.jpg",
+      "src": "10_PLANIMETRICA-scaled.jpg",
+      "alt": "10_PLANIMETRICA",
+      "width": 2560,
+      "height": 1811
+    },
+    {
+      "full": "11_SOLUZIONE-B-scaled.jpg",
+      "src": "11_SOLUZIONE-B-scaled.jpg",
+      "alt": "11_SOLUZIONE B",
+      "width": 2560,
+      "height": 1811
+    },
+    {
+      "full": "12-PRIMA-DOPO-scaled.jpg",
+      "src": "12-PRIMA-DOPO-scaled.jpg",
+      "alt": "12 - PRIMA DOPO",
+      "width": 2560,
+      "height": 1811
+    }
+  ],
+  "formCf7": [
+    "95"
+  ],
+  "postInfo": {},
+  "tassonomie": [
+    "render"
+  ],
+  "avvisi": [
+    "1 immagini su 10 senza un alt vero, da scrivere",
+    "meta description assente nell originale, da scrivere",
+    "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
+  ]
+}

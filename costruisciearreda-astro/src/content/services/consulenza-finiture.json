@@ -1,0 +1,37 @@
+{
+  "slug": "consulenza-finiture",
+  "urlOriginale": "/services/consulenza-finiture/",
+  "title": "Consulenza finiture",
+  "seoTitle": "Consulenza finiture",
+  "metaDescription": null,
+  "hero": {
+    "image": "Raggruppa-1647.jpg",
+    "titleTag": "h1",
+    "title": "Dalla progettazione alla realizzazione",
+    "kicker": "SERVIZI"
+  },
+  "campi": {},
+  "headings": [],
+  "corpo": [
+    {
+      "html": "<p>La consulenza sulle finiture e materiali prevede la scelta e la raccomandazione di elementi che determinano l’aspetto estetico e funzionale di un progetto.</p>",
+      "type": "text-editor"
+    },
+    {
+      "html": "<p><strong>Selezione materiali:</strong> Proposta di materiali adatti per pavimenti, rivestimenti, serramenti, ecc., tenendo conto di fattori estetici, funzionali, di durata e di costo.</p>\n<p><strong>Consulenza sulle finiture:</strong> Consigli su texture, colori e tipologie di superfici per ottenere il risultato estetico desiderato.</p>\n<p><strong>Compatibilità e sostenibilità:</strong> Valutazione dell’impatto ambientale e della compatibilità dei materiali scelti con il contesto e le normative (ad esempio, per edifici storici o in zone vincolate).</p>",
+      "type": "text-editor"
+    }
+  ],
+  "immagini": [],
+  "featuredImage": null,
+  "gallery": [],
+  "formCf7": [
+    "95"
+  ],
+  "postInfo": {},
+  "tassonomie": [],
+  "avvisi": [
+    "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
+    "meta description assente nell originale, da scrivere"
+  ]
+}
