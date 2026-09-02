@@ -1,0 +1,220 @@
+---
+/**
+ * Carousel — sostituisce Swiper (140 KB) e slick (42 KB) del sito originale.
+ *
+ * Configurazione reale, letta dai `data-settings` di Elementor (20 istanze di
+ * image-carousel su 8 pagine + 3 di loop-carousel, tutte con la stessa config):
+ *   autoplay 5000ms · infinite · transizione 500ms · pausa su hover e su
+ *   interazione · navigazione a **punti**, nessuna freccia.
+ *
+ * Misurato nel browser: le istanze di image-carousel sono **nascoste su desktop**
+ * (il contenuto lì è mostrato come griglia) e attive a 2 slide per vista a 900px,
+ * 1 a 390px. Il loop-carousel delle tassonomie ha 10px di spazio fra le slide.
+ *
+ * Come è fatto qui: una striscia con `scroll-snap`. Senza JavaScript resta
+ * perfettamente usabile — scorre col dito, con la rotella e con la tastiera.
+ * Il JS aggiunge solo punti, autoplay e ripartenza dal primo: ~1,5 KB, non 182.
+ */
+interface Props {
+  /** Slide per vista, per fascia. I valori misurati sull'originale sono 1 / 2 / 3. */
+  perView?: { base?: number; tablet?: number; desktop?: number };
+  /** Millisecondi fra gli avanzamenti. 0 disattiva l'autoplay. Originale: 5000. */
+  autoplay?: number;
+  /** Torna alla prima slide dopo l'ultima. Originale: sì. */
+  loop?: boolean;
+  /** Spazio fra le slide. Originale: 0 per image-carousel, 10px per loop-carousel. */
+  gap?: string;
+  /** Etichetta per chi usa uno screen reader. */
+  label: string;
+  class?: string;
+}
+
+const {
+  perView = { base: 1, tablet: 2, desktop: 3 },
+  autoplay = 5000,
+  loop = true,
+  gap = '0px',
+  label,
+  class: extraClass,
+} = Astro.props;
+
+const id = `car-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<section
+  class:list={['carousel', extraClass]}
+  data-carousel
+  data-autoplay={autoplay}
+  data-loop={loop ? 'true' : 'false'}
+  aria-roledescription="carousel"
+  aria-label={label}
+  style={`--car-gap:${gap};--car-per-base:${perView.base ?? 1};--car-per-tablet:${perView.tablet ?? 2};--car-per-desktop:${perView.desktop ?? 3}`}
+>
+  <div class="carousel__track" id={`${id}-track`} tabindex="0" role="group" aria-label="Slide">
+    <slot />
+  </div>
+
+  <!-- I punti li costruisce il JS: senza JS la striscia scorre già da sé
+       e una fila di punti inerti sarebbe solo un ostacolo. -->
+  <div class="carousel__dots" data-carousel-dots hidden aria-controls={`${id}-track`}></div>
+</section>
+
+<style>
+  .carousel {
+    position: relative;
+  }
+
+  .carousel__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc(
+      (100% - (var(--car-per-base) - 1) * var(--car-gap)) / var(--car-per-base)
+    );
+    gap: var(--car-gap);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    /* la barra di scorrimento nativa resta disponibile alla tastiera ma non si vede */
+    scrollbar-width: none;
+  }
+  .carousel__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel__track > :global(*) {
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  @media (min-width: 769px) {
+    .carousel__track {
+      grid-auto-columns: calc(
+        (100% - (var(--car-per-tablet) - 1) * var(--car-gap)) / var(--car-per-tablet)
+      );
+    }
+  }
+  @media (min-width: 1025px) {
+    .carousel__track {
+      grid-auto-columns: calc(
+        (100% - (var(--car-per-desktop) - 1) * var(--car-gap)) / var(--car-per-desktop)
+      );
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel__track {
+      scroll-behavior: auto;
+    }
+  }
+
+  .carousel__dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    justify-content: center;
+    margin-top: var(--s-5);
+  }
+
+  .carousel__dot {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--c-border-strong);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: background-color var(--dur) var(--ease);
+  }
+  .carousel__dot[aria-current='true'] {
+    background: var(--c-brand);
+    border-color: var(--c-brand);
+  }
+</style>
+
+<script>
+  /**
+   * Progressive enhancement del carousel: punti, autoplay, pausa su hover e su
+   * interazione. Se questo script non parte, la striscia resta scorrevole.
+   */
+  type Carousel = HTMLElement & { dataset: { autoplay: string; loop: string } };
+
+  const setup = (root: Carousel) => {
+    const track = root.querySelector<HTMLElement>('.carousel__track');
+    const dotsBox = root.querySelector<HTMLElement>('[data-carousel-dots]');
+    if (!track || !dotsBox) return;
+
+    const slides = Array.from(track.children) as HTMLElement[];
+    if (slides.length < 2) return;
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const delay = Number(root.dataset.autoplay) || 0;
+    const loop = root.dataset.loop === 'true';
+
+    // --- punti: uno per slide, come nell'originale
+    dotsBox.hidden = false;
+    const dots = slides.map((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'carousel__dot';
+      b.setAttribute('aria-label', `Vai alla slide ${i + 1} di ${slides.length}`);
+      b.addEventListener('click', () => {
+        stop();
+        slides[i].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest', inline: 'start' });
+      });
+      dotsBox.appendChild(b);
+      return b;
+    });
+
+    // --- quale slide è in vista: lo dice l'osservatore, non un contatore nostro
+    let current = 0;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const i = slides.indexOf(e.target as HTMLElement);
+          if (i < 0) continue;
+          current = i;
+          dots.forEach((d, j) => d.setAttribute('aria-current', String(j === i)));
+        }
+      },
+      { root: track, threshold: 0.6 },
+    );
+    slides.forEach((s) => io.observe(s));
+
+    // --- autoplay
+    let timer: number | undefined;
+    const stop = () => {
+      if (timer) clearInterval(timer);
+      timer = undefined;
+    };
+    const start = () => {
+      if (!delay || reduced || timer) return;
+      timer = window.setInterval(() => {
+        const next = current + 1;
+        if (next >= slides.length) {
+          if (!loop) return stop();
+          track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          slides[next].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        }
+      }, delay);
+    };
+
+    root.addEventListener('pointerenter', stop);
+    root.addEventListener('pointerleave', start);
+    root.addEventListener('focusin', stop);
+    track.addEventListener('pointerdown', stop, { passive: true });
+    track.addEventListener('wheel', stop, { passive: true });
+    track.addEventListener('keydown', stop);
+
+    // niente autoplay fuori dallo schermo: consuma senza mostrare nulla
+    new IntersectionObserver(
+      (entries) => entries.forEach((e) => (e.isIntersecting ? start() : stop())),
+      { threshold: 0.2 },
+    ).observe(root);
+  };
+
+  document.querySelectorAll<Carousel>('[data-carousel]').forEach(setup);
+</script>

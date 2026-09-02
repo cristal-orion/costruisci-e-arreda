@@ -1,0 +1,104 @@
+---
+/**
+ * Accordion — una sola istanza nel sito, su /la-nostra-storia/ (MISSION, VISION,
+ * VALUES). Misurato: 3 voci, la **prima aperta** all'avvio, titolo `<h2>` di 60px
+ * peso 400 su desktop e 35px su mobile, padding 15px 20px, nessun bordo.
+ *
+ * Qui è fatto con `<details>`/`<summary>` nativi: **zero JavaScript**, tastiera e
+ * screen reader funzionano da soli. L'attributo `name` condiviso rende le voci
+ * mutuamente esclusive come nell'accordion di Elementor; dove il browser non lo
+ * supporta si possono aprire più voci insieme, che è un peggioramento accettabile.
+ *
+ * Il titolo resta un `<h2>`: cambiarlo altererebbe l'outline degli heading, che
+ * `fingerprint.py` confronta contro la baseline del mirror.
+ */
+interface Item {
+  title: string;
+  /** Contenuto in HTML. Arriva dal contenuto estratto, non è input di un utente. */
+  html?: string;
+}
+
+interface Props {
+  items: Item[];
+  /** Indice della voce aperta all'avvio. `-1` per tenerle tutte chiuse. */
+  openIndex?: number;
+  /** Livello dell'heading del titolo. Originale: 2. */
+  headingLevel?: 2 | 3 | 4;
+  class?: string;
+}
+
+const { items, openIndex = 0, headingLevel = 2, class: extraClass } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+const group = `acc-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class:list={['accordion', extraClass]}>
+  {
+    items.map((item, i) => (
+      <details class="accordion__item" name={group} open={i === openIndex}>
+        <summary class="accordion__summary">
+          <Heading class="accordion__title">{item.title}</Heading>
+          <span class="accordion__marker" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </span>
+        </summary>
+        <div class="accordion__content">
+          {item.html ? <Fragment set:html={item.html} /> : <slot name={`item-${i}`} />}
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .accordion__item + .accordion__item {
+    margin-top: var(--s-2);
+  }
+
+  .accordion__summary {
+    display: flex;
+    gap: var(--s-4);
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    cursor: pointer;
+    list-style: none;
+  }
+  /* Safari mostra ancora il triangolino nativo senza questa riga */
+  .accordion__summary::-webkit-details-marker {
+    display: none;
+  }
+  .accordion__summary:hover .accordion__title {
+    color: var(--c-brand);
+  }
+
+  .accordion__title {
+    margin: 0;
+    font-size: var(--t-display);
+    font-weight: var(--w-regular);
+    line-height: 1.1;
+    text-transform: uppercase;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .accordion__marker {
+    flex: none;
+    color: var(--c-ink-soft);
+    transition: transform var(--dur) var(--ease);
+  }
+  .accordion__item[open] .accordion__marker {
+    transform: rotate(180deg);
+  }
+
+  .accordion__content {
+    padding: 0 20px 15px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .accordion__marker {
+      transition: none;
+    }
+  }
+</style>

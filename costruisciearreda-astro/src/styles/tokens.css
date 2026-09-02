@@ -64,6 +64,9 @@
   --t-display-sm: clamp(1.875rem, 5.56vw, 3.125rem); /* 30 → 50px @900, peso 300 */
   --t-display: clamp(1.875rem, 6.67vw, 3.75rem);     /* 30 → 60px @900, peso 200 */
   --t-display-lg: clamp(2.5rem, 7.78vw, 4.375rem);   /* 40 → 70px @900, peso 400 */
+  /* Il numero del contatore è l'unica misura tipografica **fissa** dell'originale:
+     80px peso 300 a tutti e tre i viewport, mobile compreso. Non va reso fluido. */
+  --t-counter: 5rem; /* 80px */
 
   --w-extralight: 200;
   --w-light: 300;

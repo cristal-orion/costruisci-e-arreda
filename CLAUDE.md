@@ -2,8 +2,8 @@
 
 > ## ⏯ PUNTO DI RIPRESA — leggere per primo
 >
-> **Ultima sessione: 2026-09-02.** Lo **scaffold Astro è fatto** (passo 1 completo).
-> Il prossimo passo sono i **4 componenti con logica reale**, poi l'**hero**.
+> **Ultima sessione: 2026-09-02.** Fatti lo **scaffold + design system** (passo 1) e i
+> **4 componenti** (passo 2). Il prossimo passo è l'**hero**.
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
 >
 > ### Stato del rebuild: `costruisciearreda-astro/`
@@ -19,16 +19,14 @@
 > gestibile con `astro dev stop|status|logs`) · `npm run build` · `npm run preview`.
 >
 > ### Prossimo passo, in ordine
-> 1. I **4 componenti**: carousel (Swiper su 11 pagine + slick su 2 → un solo componente),
->    gallery/lightbox (10 pagine), counter animato (2), accordion (1).
-> 2. L'**hero**: `--hero-h` 750px desktop e tablet / 400px mobile, titolo
+> 1. L'**hero**: `--hero-h` 750px desktop e tablet / 400px mobile, titolo
 >    `--hero-title-size`, testo nello stesso `.container` del resto più `--hero-inset`.
 >    Mai `left` negativo in % dentro un `overflow:hidden` (bug delle patch 001/002).
-> 3. Estrazione contenuti in content collections con uno script sull'HTML del mirror.
-> 4. I **5 template**, poi le **11 pagine one-off**, validando con `fingerprint.py diff`
+> 2. Estrazione contenuti in content collections con uno script sull'HTML del mirror.
+> 3. I **5 template**, poi le **11 pagine one-off**, validando con `fingerprint.py diff`
 >    e confronto visivo contro `shots-000-live-originale`.
-> 5. Pipeline immagini `astro:assets` sulle 476 immagini usate.
-> 6. Form, SEO, redirect 301. Poi deploy Coolify e cutover DNS.
+> 4. Pipeline immagini `astro:assets` sulle 476 immagini usate.
+> 5. Form, SEO, redirect 301. Poi deploy Coolify e cutover DNS.
 >
 > ### Decisione strategica presa
 > Il sito **non** va messo online come mirror statico. Va **ricostruito in Astro** (perché
@@ -58,10 +56,11 @@
 > mappa rotte e redirect 301 · scelte sulle landing e sulle offerte scadute · baseline e
 > fingerprint · decisioni di comportamento (es. "hero a 60px dal bordo, font fluido").
 >
-> ### Passo 1 — fatto
-> Scaffold + design system dai token misurati. Restano da fare: **una sola icon font**
-> (l'originale ne ha tre sovrapposte) e le content collections
-> (`services`, `realizzazioni`, `posts`).
+> ### Passi 1 e 2 — fatti
+> Scaffold + design system dai token misurati, e i 4 componenti
+> (`Carousel`, `Gallery` con lightbox, `Counter`, `Accordion`) — 2,9 KB di JS in tutto,
+> zero librerie, nessuna icon font (SVG in linea). Restano le content collections
+> (`services`, `realizzazioni`, `posts`). Dettagli e verifiche: CHANGELOG voci A00 e A01.
 >
 > ### Due fasi, da tenere separate
 > **Fase A** ricostruzione 1:1, gate = fingerprint pulito. **Fase B** modifiche volute

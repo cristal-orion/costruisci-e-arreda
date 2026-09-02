@@ -1,0 +1,274 @@
+---
+/**
+ * Gallery con lightbox — sostituisce la gallery di Elementor e il suo lightbox.
+ *
+ * Configurazione reale (dai `data-settings`, 13 istanze su 10 pagine):
+ *   layout masonry · gap 10px · lazyload · `link_to: file` (apre l'immagine
+ *   piena nel lightbox) · overlay in dissolvenza sull'hover.
+ *   Colonne: 3 desktop / 2 tablet / 2 mobile sulle realizzazioni,
+ *   3–4 desktop / 2 tablet / 1–2 mobile sugli store.
+ *
+ * **Bug dell'originale che qui sparisce:** sugli store la gallery è duplicata
+ * (una versione per desktop, una per mobile) e le classi `elementor-hidden-*`
+ * sono messe male: a 900px **non se ne vede nessuna delle due**. Misurato.
+ * Qui c'è una gallery sola con colonne responsive, quindi il problema non esiste.
+ *
+ * Masonry senza JavaScript: `columns` del multi-colonna CSS. L'ordine di lettura
+ * scende per colonna invece di andare per righe — accettabile per una galleria
+ * di foto, e in cambio non serve nessuna libreria di posizionamento.
+ */
+interface Item {
+  /** Immagine visibile nella griglia. */
+  src: string;
+  /** Immagine a piena risoluzione aperta dal lightbox. Se manca si usa `src`. */
+  full?: string;
+  alt: string;
+  width?: number;
+  height?: number;
+}
+
+interface Props {
+  items: Item[];
+  columns?: { base?: number; tablet?: number; desktop?: number };
+  gap?: string;
+  /** Etichetta della regione, obbligatoria: la galleria è un gruppo navigabile. */
+  label: string;
+  class?: string;
+}
+
+const {
+  items,
+  columns = { base: 2, tablet: 2, desktop: 3 },
+  gap = '10px',
+  label,
+  class: extraClass,
+} = Astro.props;
+
+/* Ogni istanza ha il proprio lightbox, legato per id: se una pagina ha due
+   gallerie (negli store dell'originale succede) ognuna apre il suo. */
+const id = `gal-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<section
+  class:list={['gallery', extraClass]}
+  data-gallery={id}
+  aria-label={label}
+  style={`--gal-gap:${gap};--gal-cols-base:${columns.base ?? 2};--gal-cols-tablet:${columns.tablet ?? 2};--gal-cols-desktop:${columns.desktop ?? 3}`}
+>
+  {
+    items.map((it, i) => (
+      <a
+        class="gallery__item"
+        href={it.full ?? it.src}
+        data-gallery-item
+        data-index={i}
+        aria-label={`Apri l'immagine: ${it.alt}`}
+      >
+        <img
+          src={it.src}
+          alt={it.alt}
+          width={it.width}
+          height={it.height}
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="gallery__overlay" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M11 8v6M8 11h6M16.5 16.5 21 21" />
+          </svg>
+        </span>
+      </a>
+    ))
+  }
+</section>
+
+<!-- Il lightbox: un solo <dialog> per pagina, riempito dal JS.
+     `<dialog>` dà da sé la cattura del focus, la chiusura con Esc e lo sfondo. -->
+<dialog class="lightbox" data-lightbox={id} aria-label="Immagine ingrandita">
+  <figure class="lightbox__figure">
+    <img class="lightbox__img" alt="" />
+    <figcaption class="lightbox__caption"></figcaption>
+  </figure>
+  <button class="lightbox__btn lightbox__btn--prev" type="button" aria-label="Immagine precedente">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button class="lightbox__btn lightbox__btn--next" type="button" aria-label="Immagine successiva">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <button class="lightbox__btn lightbox__btn--close" type="button" aria-label="Chiudi">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</dialog>
+
+<style>
+  .gallery {
+    columns: var(--gal-cols-base);
+    column-gap: var(--gal-gap);
+  }
+  @media (min-width: 769px) {
+    .gallery {
+      columns: var(--gal-cols-tablet);
+    }
+  }
+  @media (min-width: 1025px) {
+    .gallery {
+      columns: var(--gal-cols-desktop);
+    }
+  }
+
+  .gallery__item {
+    position: relative;
+    display: block;
+    margin-bottom: var(--gal-gap);
+    overflow: hidden;
+    /* evita che una foto sia spezzata a metà fra due colonne */
+    break-inside: avoid;
+  }
+
+  .gallery__item img {
+    width: 100%;
+    transition: transform var(--dur-slow) var(--ease);
+  }
+  .gallery__item:hover img,
+  .gallery__item:focus-visible img {
+    transform: scale(1.03);
+  }
+
+  .gallery__overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--c-white);
+    background: rgb(51 51 51 / 55%);
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease);
+  }
+  .gallery__item:hover .gallery__overlay,
+  .gallery__item:focus-visible .gallery__overlay {
+    opacity: 1;
+  }
+
+  /* ---------------------------------------------------------------- lightbox */
+  .lightbox {
+    width: min(100vw, 100%);
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    padding: 0;
+    color: var(--c-white);
+    background: rgb(0 0 0 / 92%);
+    border: 0;
+  }
+  .lightbox::backdrop {
+    background: rgb(0 0 0 / 92%);
+  }
+
+  .lightbox__figure {
+    display: grid;
+    gap: var(--s-4);
+    place-content: center;
+    height: 100%;
+    margin: 0;
+    padding: var(--s-12) var(--s-15);
+  }
+  .lightbox__img {
+    max-width: 100%;
+    max-height: 80vh;
+    margin-inline: auto;
+    object-fit: contain;
+  }
+  .lightbox__caption {
+    color: var(--c-white);
+    font-size: var(--t-sm);
+    text-align: center;
+  }
+
+  .lightbox__btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--c-white);
+    appearance: none;
+    background: rgb(255 255 255 / 10%);
+    border: 0;
+    cursor: pointer;
+    transition: background-color var(--dur) var(--ease);
+  }
+  .lightbox__btn:hover {
+    background: var(--c-brand);
+  }
+  .lightbox__btn--prev {
+    top: 50%;
+    left: var(--s-3);
+    transform: translateY(-50%);
+  }
+  .lightbox__btn--next {
+    top: 50%;
+    right: var(--s-3);
+    transform: translateY(-50%);
+  }
+  .lightbox__btn--close {
+    top: var(--s-3);
+    right: var(--s-3);
+  }
+</style>
+
+<script>
+  /**
+   * Lightbox: se questo script non parte, ogni voce della galleria resta un link
+   * all'immagine piena — il contenuto è raggiungibile comunque.
+   */
+  const setupGallery = (gal: HTMLElement) => {
+    const id = gal.dataset.gallery;
+    const dialog = document.querySelector<HTMLDialogElement>(`[data-lightbox="${id}"]`);
+    if (!dialog) return;
+
+    const img = dialog.querySelector<HTMLImageElement>('.lightbox__img')!;
+    const caption = dialog.querySelector<HTMLElement>('.lightbox__caption')!;
+    const links = Array.from(gal.querySelectorAll<HTMLAnchorElement>('[data-gallery-item]'));
+    if (!links.length) return;
+
+    let i = 0;
+
+    const show = (n: number) => {
+      i = (n + links.length) % links.length;
+      const link = links[i];
+      const thumb = link.querySelector('img');
+      img.src = link.href;
+      img.alt = thumb?.alt ?? '';
+      caption.textContent = `${thumb?.alt ?? ''} (${i + 1} di ${links.length})`.trim();
+    };
+
+    links.forEach((link, n) =>
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        show(n);
+        dialog.showModal();
+      }),
+    );
+
+    dialog.querySelector('.lightbox__btn--prev')!.addEventListener('click', () => show(i - 1));
+    dialog.querySelector('.lightbox__btn--next')!.addEventListener('click', () => show(i + 1));
+    dialog.querySelector('.lightbox__btn--close')!.addEventListener('click', () => dialog.close());
+
+    // click sullo sfondo, fuori dalla figura: chiude
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(i - 1);
+      if (e.key === 'ArrowRight') show(i + 1);
+    });
+
+    // riporta il focus sulla miniatura da cui si è partiti
+    dialog.addEventListener('close', () => links[i]?.focus());
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach(setupGallery);
+</script>

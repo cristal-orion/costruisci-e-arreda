@@ -240,3 +240,105 @@ Token calcolati nel browser, confrontati con la misura del mirror:
 I 4 componenti con logica reale (carousel, gallery/lightbox, counter, accordion),
 poi l'hero. Il "prima/dopo" non è un componente: è la tassonomia
 `cat_realizzazioni-prima-dopo`.
+
+---
+
+## A01 — I 4 componenti con logica reale
+**2026-09-02 · fase A**
+
+`Carousel.astro` · `Gallery.astro` (con lightbox) · `Counter.astro` · `Accordion.astro`.
+Nessuna libreria: al posto di Swiper (140 KB), slick (42 KB), isotope (35 KB) e del
+lightbox di Elementor ci sono **2,9 KB di JS in tutto**, in linea nella pagina.
+Ogni componente resta usabile se il JS non parte.
+
+### Configurazione, presa dai `data-settings` di Elementor
+
+Le config non sono state indovinate: `data-settings` è l'attributo dove Elementor
+serializza le impostazioni del widget, e in 88 pagine del mirror ce n'è una sola per tipo.
+
+| Widget | Istanze | Config reale |
+|---|---|---|
+| `image-carousel` | 20 su 8 pagine | autoplay 5000ms · infinite · speed 500ms · pausa su hover e su interazione · **navigazione a punti, nessuna freccia** |
+| `loop-carousel` | 3 su 3 pagine | idem + 10px fra le slide, paginazione a bullet |
+| `gallery` | 13 su 10 pagine | masonry · gap 10px · lazyload · `link_to: file` · overlay in dissolvenza · colonne 3/2/2 (realizzazioni), 3–4/2/1–2 (store) |
+| `counter` | 8 su 2 pagine | durata 2000ms · da 0 · valori 24, 40+, 100, 10 |
+| `accordion` | 1 su 1 pagina | 3 voci, la prima aperta all'avvio |
+
+Inventario completo dei widget: 19 tipi, di cui solo questi 4 hanno logica.
+`image` 238 · `heading` 192 · `text-editor` 92 · `theme-post-title` 64 · `button` 56 ·
+`theme-post-featured-image` 49 · `shortcode` 40 (= form CF7) · `post-info` 22 ·
+`image-box` 19 (schede del team) · `icon-list` 18 · `divider` 8 · `search-form` 8 ·
+`social-icons` 8 · `loop-grid` 5 (3 colonne desktop / 2 tablet / 1 mobile, paginazione ajax).
+
+### Due bug dell'originale, trovati misurando
+
+1. **Le gallerie degli store sono invisibili a 900px.** Sugli store la gallery è
+   duplicata — una versione per desktop, una per mobile — con le classi
+   `elementor-hidden-*` messe male: una è `hidden-mobile hidden-tablet`, l'altra
+   `hidden-desktop hidden-tablet`. A 900px **nessuna delle due si vede**. Misurato su
+   `/store/via-san-massimo-na/` e `/store/via-martiri-della-liberta-na/`.
+   Qui la gallery è una sola con colonne responsive: il problema non può ripresentarsi.
+2. **Il contatore mostra `0` finché non si scorre**, e resta a zero se il JS non parte:
+   nell'originale il valore finale vive solo nel JavaScript. Qui il numero vero è
+   nell'HTML e l'animazione parte da zero — leggibile senza JS e dai motori.
+
+Inoltre: **20 istanze di image-carousel su 20 sono nascoste su desktop** (il contenuto
+lì è mostrato come griglia), e 3 di loro sono nascoste a *tutti* i viewport — markup morto
+da non riportare.
+
+### Scelte tecniche
+
+- **Carousel:** striscia con `scroll-snap` e `grid-auto-columns` calcolate dalle slide
+  per vista. Senza JS scorre già col dito, con la rotella e con la tastiera; il JS
+  aggiunge punti, autoplay, pausa su hover/focus/interazione e stop fuori dallo schermo.
+  La slide attiva la determina un `IntersectionObserver`, non un contatore nostro:
+  così i punti restano giusti anche se l'utente scorre a mano.
+- **Gallery:** masonry col multi-colonna CSS (`columns`), zero libreria di
+  posizionamento. Conseguenza accettata: l'ordine di lettura scende per colonna
+  invece di andare per righe.
+- **Lightbox:** `<dialog>` nativo — cattura del focus, chiusura con Esc e sfondo li dà
+  il browser. Frecce, click sullo sfondo e ritorno del focus alla miniatura di partenza.
+  Ogni gallery ha il proprio dialog legato per id: due gallerie sulla stessa pagina
+  non si pestano i piedi.
+- **Accordion:** `<details>`/`<summary>` nativi, **zero JS**. L'attributo `name`
+  condiviso rende le voci mutuamente esclusive come in Elementor; dove non è supportato
+  si possono aprire più voci insieme — peggioramento accettabile. Il titolo resta un
+  `<h2>`: cambiarlo altererebbe l'outline degli heading che `fingerprint.py` confronta.
+- **Nessuna icon font.** Le tre famiglie sovrapposte dell'originale (Font Awesome 4,
+  FA 5/6, fontello) sono sostituite da SVG in linea nei componenti.
+
+### Token aggiunto
+
+`--t-counter: 5rem` (80px). È l'**unica** misura tipografica fissa dell'originale:
+il numero del contatore è 80px peso 300 a tutti e tre i viewport, mobile compreso.
+Non va reso fluido — inizialmente gli avevo dato `--t-display-lg` (70px): sbagliato,
+corretto dopo la misura.
+
+### Verifica nel browser
+
+| | 1440px | 900px | 390px |
+|---|---|---|---|
+| carousel, slide per vista | 3 | 2 | 1 |
+| carousel, punti | 5, l'attivo segue lo scorrimento | idem | idem |
+| gallery, colonne | 3 | 2 | 2 |
+| gallery, gap | 10px | 10px | 10px |
+| contatore | 80px · peso 300 · `#C20E1A` | idem | idem |
+| accordion | 3 voci, 1 aperta, `<h2>` 60px | idem | `<h2>` 30px |
+| scorrimento orizzontale | no | no | no |
+| errori JS in console | nessuno | nessuno | nessuno |
+
+Provato interattivamente: click sul punto 3 → `scrollLeft` 0 → 871 · lightbox apre con
+didascalia "(1 di 8)" → freccia destra → "(2 di 8)" → Esc chiude · click sulla 2ª voce
+dell'accordion → `[false, true, false]`, quindi l'esclusività funziona · contatori dopo
+lo scorrimento → 24, 40, 100, 10.
+
+### Un difetto di Astro da conoscere
+
+Astro **elimina lo spazio** fra testo e tag inline quando il tag va a capo nel sorgente:
+`…vengono dai\n<code>data-settings</code>` viene reso `vengono daidata-settings`.
+Succedeva in 6 punti della pagina di controllo. Serve uno spazio esplicito `{' '}`
+oppure tenere il tag sulla stessa riga. Aggiunto un controllo automatico che cerca
+gli inline "incollati" leggendo i nodi di testo nel DOM, riutilizzabile su ogni pagina.
+
+### Da fare nel passo successivo
+L'hero, poi l'estrazione dei contenuti in content collections.

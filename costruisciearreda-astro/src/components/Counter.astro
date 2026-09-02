@@ -1,0 +1,106 @@
+---
+/**
+ * Contatore animato — usato su 2 pagine (homepage e /la-nostra-storia/), 4 istanze
+ * per pagina. Valori misurati: 24, 40+, 100, 10 · durata 2000ms · da 0 ·
+ * numero 80px peso 300 nel rosso del brand · etichetta 15px peso 400.
+ *
+ * **Differenza voluta rispetto all'originale:** lì il numero finale sta solo nel
+ * JavaScript, quindi in HTML c'è uno zero. Misurato: senza far scorrere la pagina
+ * il contatore mostra `0`, e se il JS non parte resta zero per sempre.
+ * Qui il valore vero è nell'HTML e l'animazione, quando c'è, parte da zero:
+ * il dato è leggibile anche senza JavaScript e dai motori di ricerca.
+ */
+interface Props {
+  /** Valore finale. */
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  /** Etichetta sotto il numero. */
+  label: string;
+  /** Durata dell'animazione in ms. Originale: 2000. */
+  duration?: number;
+  class?: string;
+}
+
+const { value, prefix = '', suffix = '', label, duration = 2000, class: extraClass } = Astro.props;
+
+// separatore delle migliaia come nell'originale (`data-delimiter=","`),
+// ma nella convenzione italiana: il punto.
+const formatted = value.toLocaleString('it-IT');
+---
+
+<div class:list={['counter', extraClass]} data-counter data-to={value} data-duration={duration}>
+  <p class="counter__number">
+    {prefix && <span class="counter__affix">{prefix}</span>}<span
+      class="counter__value"
+      data-counter-value>{formatted}</span
+    >{suffix && <span class="counter__affix">{suffix}</span>}
+  </p>
+  <p class="counter__label">{label}</p>
+</div>
+
+<style>
+  .counter {
+    text-align: center;
+  }
+
+  .counter__number {
+    margin: 0;
+    color: var(--c-brand);
+    /* misurato fisso a 80px su desktop, tablet e mobile: non va reso fluido */
+    font-size: var(--t-counter);
+    font-weight: var(--w-light);
+    line-height: 1;
+    /* le cifre non devono ballare mentre il numero sale */
+    font-variant-numeric: tabular-nums;
+  }
+
+  .counter__label {
+    margin: var(--s-3) 0 0;
+    color: var(--c-ink);
+    font-size: var(--t-md);
+    font-weight: var(--w-regular);
+    line-height: var(--t-md-lh);
+  }
+</style>
+
+<script>
+  /**
+   * Anima il numero da 0 al valore già presente in HTML, una volta sola, quando
+   * il contatore entra nello schermo. Con `prefers-reduced-motion` non anima.
+   */
+  const counters = document.querySelectorAll<HTMLElement>('[data-counter]');
+  if (counters.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const fmt = new Intl.NumberFormat('it-IT');
+
+    const run = (root: HTMLElement) => {
+      const out = root.querySelector<HTMLElement>('[data-counter-value]');
+      const to = Number(root.dataset.to);
+      const dur = Number(root.dataset.duration) || 2000;
+      if (!out || !Number.isFinite(to)) return;
+
+      const t0 = performance.now();
+      const step = (now: number) => {
+        const p = Math.min(1, (now - t0) / dur);
+        // easing morbido in uscita: parte veloce e si ferma dolce
+        const eased = 1 - (1 - p) ** 3;
+        out.textContent = fmt.format(Math.round(to * eased));
+        if (p < 1) requestAnimationFrame(step);
+        else out.textContent = fmt.format(to);
+      };
+      requestAnimationFrame(step);
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          io.unobserve(e.target);
+          run(e.target as HTMLElement);
+        }
+      },
+      { threshold: 0.5 },
+    );
+    counters.forEach((c) => io.observe(c));
+  }
+</script>

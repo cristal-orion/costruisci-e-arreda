@@ -6,6 +6,10 @@
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/Button.astro';
+import Carousel from '../../components/Carousel.astro';
+import Gallery from '../../components/Gallery.astro';
+import Counter from '../../components/Counter.astro';
+import Accordion from '../../components/Accordion.astro';
 
 const colori = [
   ['--c-brand', '#C20E1A', 'Primario del brand. Usato sul testo di accento e su fondi pieni, mai sui bottoni.'],
@@ -28,6 +32,7 @@ const scala = [
   ['--t-xl', '22px', 'var(--t-xl)', 'var(--t-xl-lh)', 'Titoli di card'],
   ['--t-2xl', '25px', 'var(--t-2xl)', 'var(--t-2xl-lh)', 'Titoli di blocco'],
   ['--t-3xl', '30px', 'var(--t-3xl)', 'var(--t-3xl-lh)', 'Titoli di sezione'],
+  ['--t-counter', '80px', 'var(--t-counter)', '1', 'Numero del contatore — fisso, non fluido'],
 ];
 
 const display = [
@@ -47,6 +52,52 @@ const pesi = [
   ['--w-extralight', 200], ['--w-light', 300], ['--w-regular', 400],
   ['--w-medium', 500], ['--w-semibold', 600], ['--w-bold', 700],
 ];
+
+/**
+ * Segnaposto per provare i componenti senza tirare dentro immagini vere:
+ * un SVG inline con proporzioni variabili, così il masonry si vede davvero.
+ */
+const ph = (w: number, h: number, n: number) =>
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">` +
+      `<rect width="100%" height="100%" fill="${n % 2 ? '#333' : '#c20e1a'}"/>` +
+      `<text x="50%" y="50%" fill="#fff" font-family="sans-serif" font-size="${Math.round(w / 6)}"` +
+      ` text-anchor="middle" dominant-baseline="middle">${w}×${h}</text></svg>`,
+  );
+
+const galleryItems = [
+  [800, 1200], [800, 600], [800, 800], [800, 1000], [800, 500], [800, 1100],
+  [800, 700], [800, 900],
+].map(([w, h], i) => ({ src: ph(w, h, i), alt: `Immagine di prova ${i + 1}`, width: w, height: h }));
+
+const carouselSlides = [[800, 600], [800, 600], [800, 600], [800, 600], [800, 600]].map(
+  ([w, h], i) => ({ src: ph(w, h, i), alt: `Slide di prova ${i + 1}`, width: w, height: h }),
+);
+
+/** Valori misurati sull'originale (durata 2000ms, da 0). */
+const contatori = [
+  { value: 24, label: 'Anni di esperienza' },
+  { value: 40, suffix: '+', label: 'Progetti Terminati' },
+  { value: 100, label: 'Clienti soddisfatti' },
+  { value: 10, label: 'obiettivi aziendali' },
+];
+
+/** Testi reali di /la-nostra-storia/, accorciati. */
+const vociAccordion = [
+  {
+    title: 'Mission',
+    html: '<p>La nostra missione è diventare <b>leader nel settore</b>, offrendo innovazione continua e nuove proposte di valore.</p>',
+  },
+  {
+    title: 'Vision',
+    html: '<p>Vogliamo essere riconosciuti come <b>leader del settore per innovazione e qualità</b>.</p>',
+  },
+  {
+    title: 'Values',
+    html: '<p><b>Meritocrazia:</b> il sacrificio e il duro lavoro portano ai risultati. <b>Ambizione:</b> sognare in grande. <b>Umiltà:</b> riconoscere i propri limiti.</p>',
+  },
+];
 ---
 
 <BaseLayout
@@ -61,8 +112,8 @@ const pesi = [
       <p class="ds__lede">
         Ogni valore di questa pagina è <strong>misurato</strong> sul sito originale
         con <code>getComputedStyle</code> su 16 pagine e 3 viewport, non dedotto
-        leggendo il CSS di Elementor. Le fonti sono
-        <code>_migrazione/baseline/tokens-mirror.json</code> e
+        leggendo il CSS di Elementor. Le fonti sono{' '}
+        <code>_migrazione/baseline/tokens-mirror.json</code> e{' '}
         <code>_migrazione/baseline/layout-mirror.json</code>, rigenerabili
         con <code>harvest-tokens.js</code> e <code>harvest-layout.js</code>.
       </p>
@@ -89,7 +140,7 @@ const pesi = [
       <p class="ds__note">
         Un solo font: <strong>Montserrat variable</strong> (asse 100–900, latino, 40 KB).
         Il sito originale caricava 90 <code>@font-face</code> statici di Montserrat più Roboto
-        e Roboto Slab. Roboto Slab non veniva mai reso; Roboto sì, ma solo perché
+        e Roboto Slab. Roboto Slab non veniva mai reso; Roboto sì, ma solo perché{' '}
         <code>.elementor-widget-text-editor</code> lo forza su 34 pagine — un default di
         Elementor che trapela. Qui è unificato su Montserrat.
       </p>
@@ -167,6 +218,61 @@ const pesi = [
         Ritmo verticale delle sezioni: <code>--section-y</code> 60 → 100px,
         e <code>--section-y-lg</code> 80 → 150px (misurati 100px e 150px a 1440px).
       </p>
+    </section>
+
+    <!-- -------------------------------------------------------- componenti -->
+    <section class="ds__block">
+      <h2 class="ds__h2">Componenti</h2>
+      <p class="ds__note">
+        I quattro componenti con logica reale del sito. Le configurazioni vengono
+        dai <code>data-settings</code> di Elementor e dalla misura nel browser, non da come
+        sembrano a occhio. Nessuna libreria: al posto di Swiper (140 KB), slick (42 KB),
+        isotope (35 KB) e del lightbox di Elementor ci sono in tutto poche righe di JS,
+        e ogni componente resta usabile anche se il JS non parte.
+      </p>
+
+      <h3 class="ds__h3">Carousel</h3>
+      <p class="ds__note">
+        Autoplay 5s, infinito, transizione 500ms, pausa su hover e su interazione,
+        navigazione a punti e nessuna freccia — la configurazione unica delle 23 istanze
+        dell'originale. Misurato: 1 slide per vista a 390px, 2 a 900px. Qui è una striscia
+        con <code>scroll-snap</code>: senza JavaScript scorre comunque col dito e con la tastiera.
+      </p>
+      <Carousel label="Esempio di carousel" perView={{ base: 1, tablet: 2, desktop: 3 }} gap="10px">
+        {carouselSlides.map((s) => (
+          <figure style="margin:0"><img src={s.src} alt={s.alt} width={s.width} height={s.height} /></figure>
+        ))}
+      </Carousel>
+
+      <h3 class="ds__h3">Gallery e lightbox</h3>
+      <p class="ds__note">
+        Masonry a 3 colonne su desktop, 2 su tablet e mobile, 10px di spazio, lightbox
+        sull'immagine piena — come nei <code>data-settings</code>. Il masonry è il
+        multi-colonna CSS, quindi zero libreria di posizionamento. Il lightbox è
+        un <code>&lt;dialog&gt;</code> nativo: cattura del focus, Esc e sfondo li dà il browser.
+        Senza JavaScript ogni voce resta un link all'immagine piena.
+      </p>
+      <Gallery items={galleryItems} label="Esempio di galleria" columns={{ base: 2, tablet: 2, desktop: 3 }} />
+
+      <h3 class="ds__h3">Contatore</h3>
+      <p class="ds__note">
+        Valori e durata dell'originale. Differenza voluta: qui il numero finale sta{' '}
+        <strong>nell'HTML</strong> e l'animazione parte da zero. Nell'originale il valore
+        vive solo nel JavaScript, quindi senza scorrere la pagina il contatore mostra{' '}
+        <code>0</code> — misurato — e se il JS non parte resta zero.
+      </p>
+      <div class="grid grid--4">
+        {contatori.map((c) => <Counter value={c.value} suffix={c.suffix} label={c.label} />)}
+      </div>
+
+      <h3 class="ds__h3">Accordion</h3>
+      <p class="ds__note">
+        Tre voci, la prima aperta, titolo <code>&lt;h2&gt;</code> — come misurato su{' '}
+        <code>/la-nostra-storia/</code>. Fatto con <code>&lt;details&gt;</code> nativi:
+        zero JavaScript, e l'attributo <code>name</code> condiviso rende le voci
+        mutuamente esclusive senza scrivere una riga.
+      </p>
+      <Accordion items={vociAccordion} />
     </section>
 
     <!-- ---------------------------------------------------------- geometrie -->
