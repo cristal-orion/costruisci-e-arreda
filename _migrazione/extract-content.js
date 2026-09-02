@@ -533,6 +533,16 @@ const dedupGallery = (items, warnings) => {
   const IMMAGINI_TEMPLATE = ['2024/06/LogoServizio.png'];
   for (const p of IMMAGINI_TEMPLATE) percorsiUsati.add(p);
 
+  /* Le immagini delle pagine one-off: l'elenco lo produce `extract-pages.js`,
+     che gira separatamente. Se il file esiste, i suoi percorsi entrano nel
+     modulo generato — altrimenti quelle pagine non troverebbero le immagini. */
+  const daPagine = path.resolve(__dirname, 'baseline', 'immagini-pagine.json');
+  if (fs.existsSync(daPagine)) {
+    const elenco = JSON.parse(fs.readFileSync(daPagine, 'utf8'));
+    for (const p of elenco) percorsiUsati.add(p);
+    process.stderr.write(`  + ${elenco.length} immagini dalle pagine one-off\n`);
+  }
+
   /* Modulo con gli import **espliciti** delle sole immagini usate.
      Serve perché `import.meta.glob` eager su tutta la cartella uploads tira nel
      build tutte le 668 immagini del mirror (164 MB di output): misurato.

@@ -1,0 +1,158 @@
+{
+  "slug": "type_stores-progettazione-e-ristrutturazione-edile",
+  "urlOriginale": "/type_stores/progettazione-e-ristrutturazione-edile/",
+  "titleCompleto": "Progettazione e ristrutturazione edile Archivi - Costruisci e Arreda S.r.l.",
+  "title": "Progettazione e ristrutturazione edile Archivi",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": null,
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1647-3.jpg",
+        "image": "Raggruppa-1647-3.jpg",
+        "titolo": "Progettazione e ristrutturazione edile",
+        "titoloTag": "h1",
+        "kicker": "STORE"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "Creazione di spazi su misura tra estetica e funzionalità",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>La progettazione e la ristrutturazione edile rappresentano due <b>pilastri fondamentali</b> nella creazione e trasformazione di ambienti funzionali ed esteticamente accattivanti. La progettazione edile è un processo che integra<b> visione creativa</b>, <b>competenze tecniche</b> e <b>conoscenze normative</b> per realizzare spazi su misura, rispondendo alle esigenze e ai desideri dei clienti. Dalla concezione iniziale alla selezione dei materiali, ogni fase è progettata per garantire un risultato che unisca <b>estetica</b>, <b>funzionalità</b> e <b>sostenibilità</b>.</p>",
+      "parole": 69,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1647-1.jpg",
+      "src": "Raggruppa-1647-1.jpg",
+      "alt": "",
+      "width": 860,
+      "height": 656,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "Modernizzare e innovare nel rispetto della struttura esistente",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Le ristrutturazioni offrono l’<b>opportunità di reinventare spazi esistenti</b>, modernizzandoli e adattandoli alle nuove esigenze, senza compromettere la loro integrità strutturale e storica. Questo processo richiede un’<b>analisi approfondita</b> delle condizioni preesistenti e un’attenta pianificazione per integrare interventi innovativi e migliorativi.</p>",
+      "parole": 39,
+      "soloMobile": false
+    },
+    {
+      "tipo": "elencoVoci",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "testo": "Via Gennaro Paparo, 74, 80040 – Massa di Somma (NA)",
+          "href": null
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "progetti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "render",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "prima/dopo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "form",
+      "visibile": true,
+      "varianti": [],
+      "id": [
+        "95"
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "riquadri",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "titolo": "progetti",
+          "titoloLivello": 2,
+          "href": "../../cat_realizzazioni/progetti/index.html",
+          "path": null,
+          "fondoRotto": true
+        },
+        {
+          "titolo": "render",
+          "titoloLivello": 2,
+          "href": "../../cat_realizzazioni/render/index.html",
+          "path": null,
+          "fondoRotto": true
+        },
+        {
+          "titolo": "prima/dopo",
+          "titoloLivello": 2,
+          "href": "../../cat_realizzazioni/prima-dopo/index.html",
+          "path": null,
+          "fondoRotto": true
+        }
+      ],
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "4 blocchi duplicati nell'originale, uniti in uno",
+    "era indicizzabile nell originale"
+  ]
+}

@@ -1,0 +1,429 @@
+{
+  "slug": "la-nostra-storia",
+  "urlOriginale": "/la-nostra-storia/",
+  "titleCompleto": "La nostra storia - Costruisci e Arreda S.r.l.",
+  "title": "La nostra storia",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "100",
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/07/Raggruppa-1646.jpg",
+        "image": "Raggruppa-1646.jpg",
+        "titolo": "La nostra storia",
+        "titoloTag": "h1",
+        "kicker": "PROFILO"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black"
+      ],
+      "livello": 2,
+      "testo": "IL NOSTRO IMPEGNO, LA NOSTRA CRESCITA.",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Costruisci e Arreda è un punto di riferimento nel settore dei<b> materiali per l’edilizia</b>, <b>ferramenta</b>, <b>arredo bagno</b> e <b>ceramiche</b>. Fondata nel 2000 da <b>Giorgio Gallo</b>, la nostra azienda è cresciuta da un piccolo punto vendita di ferramenta a <b>Ponticelli</b> fino a diventare leader nel mercato, con 3 showroom in Campania, 2 negozi di ferramenta e un negozio di rivendita edile .</p>\n<p>Ogni progetto che realizziamo è il frutto di un impegno costante verso l’<b>innovazione</b> e l’<b>eccellenza</b>, combinando qualità e design per creare ambienti che rispecchiano il comfort e l’estetica desiderati dai nostri clienti. Il sogno di Giorgio di trasformare la sua visione in realtà inizia con l’apertura di una ferramenta di 65 mq, superando le difficoltà iniziali con creatività e determinazione.&nbsp;</p>\n<p>Da allora, l’azienda si è espansa con nuovi punti vendita e showroom:</p>\n<ul>\n<li>nel <b>2009</b>, il primo showroom di Napoli 250 mq, poi ampliato a 500 mq;</li>\n<li>nel <b>2012</b>, il primo punto vendita di edilizia in via Argine;&nbsp;</li>\n<li>nel<b> 2018</b>, la ferramenta a Portici&nbsp;</li>\n<li>e nel <b>2021</b>, lo showroom a Nola.&nbsp;</li>\n</ul>\n<p>Il <b>2024 </b>segna l’apertura del nostro <b>showroom Home</b>, dedicato all’oggettistica e alla composizione. Ogni tappa della nostra crescita racconta la nostra dedizione al miglioramento continuo e all’innovazione.</p>",
+      "parole": 198,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "Come nascono i nostri progetti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>L’<b>ambizione di Giorgio</b> l’ha portato a rincorrere e raggiungere il suo sogno, di realizzare qualcosa di concreto per la comunità. Ogni progetto è pensato per rispondere alle <b>esigenze dei nostri clienti</b> e per arricchire il nostro quartiere, offrendo nuove opportunità di lavoro e innovazione. Lavoriamo con un team di architetti e ingegneri per garantire risultati eccellenti, trasformando le idee in realtà concrete e soddisfacenti.</p>",
+      "parole": 64,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/05/Raggruppa-1649.jpg",
+      "src": "Raggruppa-1649.jpg",
+      "alt": "",
+      "width": 860,
+      "height": 656,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "highlights",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "contatore",
+      "visibile": true,
+      "varianti": [],
+      "valore": 24,
+      "durata": 2000,
+      "prefisso": "",
+      "suffisso": "",
+      "etichetta": "Anni di esperienza",
+      "soloMobile": false
+    },
+    {
+      "tipo": "contatore",
+      "visibile": true,
+      "varianti": [],
+      "valore": 40,
+      "durata": 2000,
+      "prefisso": "",
+      "suffisso": "+",
+      "etichetta": "Progetti Terminati",
+      "soloMobile": false
+    },
+    {
+      "tipo": "contatore",
+      "visibile": true,
+      "varianti": [],
+      "valore": 100,
+      "durata": 2000,
+      "prefisso": "",
+      "suffisso": "+",
+      "etichetta": "Clienti soddisfatti",
+      "soloMobile": false
+    },
+    {
+      "tipo": "contatore",
+      "visibile": true,
+      "varianti": [],
+      "valore": 10,
+      "durata": 2000,
+      "prefisso": "",
+      "suffisso": "",
+      "etichetta": "obiettivi aziendali",
+      "soloMobile": false
+    },
+    {
+      "tipo": "accordion",
+      "visibile": true,
+      "varianti": [
+        "boxAccordion"
+      ],
+      "voci": [
+        {
+          "titolo": "MISSION",
+          "html": "<p>La nostra missione è diventare <b>leader nel settore</b>, offrendo innovazione continua e nuove proposte di valore. Puntiamo a creare una mega-struttura che possa essere un <b>esempio di valore</b> per i nostri&nbsp; concorrenti, ma che diventi anche un punto di riferimento per l’intero territorio.</p>"
+        },
+        {
+          "titolo": "VISION",
+          "html": "<p>Vogliamo essere riconosciuti come <b>leader del settore per innovazione e qualità</b>. La nostra visione è quella di creare un ambiente di lavoro inclusivo, dove ogni collaboratore possa sentirsi valorizzato e parte di una squadra di successo.</p>"
+        },
+        {
+          "titolo": "VALUES",
+          "html": "<p><b>Meritocrazia:</b> Crediamo che il sacrificio e il duro lavoro portino ai risultati e alla possibilità di vedere riconosciuto il proprio valore all’interno dell’azienda. <b>Ambizione:</b> Sognare in grande ci spinge a perseguire obiettivi elevati e a realizzare grandi progetti. <b>Umiltà:</b> Riconosciamo i nostri errori e lavoriamo continuamente per migliorare. <b>Ascolto:</b> Valutiamo e ascoltiamo ogni opinione per costruire una visione condivisa e un ambiente collaborativo. <b>Libertà e Flessibilità:</b> Offriamo libertà nella gestione del lavoro, premiando i risultati piuttosto che il tempo trascorso in ufficio.</p>\n<div class=\"mailmunch-forms-in-post-middle\" style=\"display: none !important;\"></div>"
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "Il nostro team di Professionisti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Il nostro team è composto da professionisti dedicati e appassionati.<b><br></b>La nostra forza risiede nella <b>determinazione</b> e nella <b>visione condivisa</b> che guidano il nostro lavoro quotidiano, creando un ambiente stimolante e collaborativo.</p>",
+      "parole": 31,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [
+        "btn",
+        "blackBorder"
+      ],
+      "testo": "Scopri di più",
+      "href": "../index.html%3Fp=102.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Rettangolo-614.jpg",
+      "alt": "",
+      "titolo": "CEO Amministratore Delegato",
+      "html": "Giorgio Gallo",
+      "href": "../index.html%3Fp=100.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Rettangolo-613.jpg",
+      "alt": "",
+      "titolo": "Project Manager",
+      "html": "Giulio Gallo",
+      "href": "../index.html%3Fp=100.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Rettangolo-612.jpg",
+      "alt": "",
+      "titolo": "Direttore Commerciale Showroom",
+      "html": "Raffaele Gallo",
+      "href": "../index.html%3Fp=100.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Rettangolo-611.jpg",
+      "alt": "",
+      "titolo": "Responsabile Amministrativo",
+      "html": "Giulio Grimaldi",
+      "href": "../index.html%3Fp=100.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "store",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Showroom.svg",
+      "src": "Showroom.svg",
+      "alt": "",
+      "width": 229,
+      "height": 233,
+      "href": "../type_stores/showroom-cat/index.html",
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/PuntoEdile.svg",
+      "src": "PuntoEdile.svg",
+      "alt": "",
+      "width": 229,
+      "height": 233,
+      "href": "../type_stores/rivendita-edile/index.html",
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Ferramenta-1.svg",
+      "src": "Ferramenta-1.svg",
+      "alt": "",
+      "width": 233,
+      "height": 233,
+      "href": "../type_stores/ferramenta/index.html",
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "Le nostre realizzazioni",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Ogni progetto di architettura inizia con una <strong>visione creativa</strong> che prende forma attraverso dettagli accurati e innovativi. Grazie al <strong>rendering 3D</strong>, puoi vedere in anteprima il risultato finale, garantendo che ogni aspetto rispecchi <strong>le tue aspettative</strong>.</p>",
+      "parole": 36,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [
+        "btn",
+        "blackBorder"
+      ],
+      "testo": "Scopri di più",
+      "href": "../index.html%3Fp=1398.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "progetti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "render",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "prima/dopo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "riquadri",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "titolo": "progetti",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/progetti/index.html",
+          "elementorId": "8d586ca",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
+        },
+        {
+          "titolo": "render",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/render/index.html",
+          "elementorId": "1c71eea",
+          "path": "2024/06/Raggruppa-1695.jpg",
+          "fondoApplicato": false
+        },
+        {
+          "titolo": "prima/dopo",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/prima-dopo/index.html",
+          "elementorId": "46cd464",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
+        }
+      ],
+      "soloMobile": false
+    }
+  ],
+  "fondiSezione": [
+    {
+      "elementorId": "02964c4",
+      "fondoApplicato": true,
+      "testo": "",
+      "altezza": 650,
+      "path": "2024/06/Raggruppa-1707.jpg"
+    },
+    {
+      "elementorId": "898a8bd",
+      "fondoApplicato": false,
+      "testo": "",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1709.jpg"
+    },
+    {
+      "elementorId": "7c0aecf",
+      "fondoApplicato": false,
+      "testo": "store",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1679.jpg"
+    },
+    {
+      "elementorId": "8d586ca",
+      "fondoApplicato": false,
+      "testo": "progetti",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    },
+    {
+      "elementorId": "1c71eea",
+      "fondoApplicato": false,
+      "testo": "render",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1695.jpg"
+    },
+    {
+      "elementorId": "46cd464",
+      "fondoApplicato": false,
+      "testo": "prima/dopo",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "1 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+    "3 riquadri con immagine di fondo NON applicata nell'originale (buco bianco con titolo bianco su bianco): nel rebuild il fondo si vede",
+    "era indicizzabile nell originale"
+  ]
+}

@@ -1,0 +1,432 @@
+{
+  "slug": "il-nostro-team",
+  "urlOriginale": "/il-nostro-team/",
+  "titleCompleto": "Il nostro Team - Costruisci e Arreda S.r.l.",
+  "title": "Il nostro Team",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "102",
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1650.jpg",
+        "image": "Raggruppa-1650.jpg",
+        "titolo": "Il nostro team",
+        "titoloTag": "h1",
+        "kicker": "PROFESSIONISTI"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black"
+      ],
+      "livello": 2,
+      "testo": "un team composto da i migliori professionisti.",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1704.jpg",
+      "src": "Raggruppa-1704.jpg",
+      "alt": "",
+      "width": 860,
+      "height": 656,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Il nostro lavoro si fonda su tre valori chiave: <b>meritocrazia</b>, <b>ambizione </b>e <b>umiltà</b>. Crediamo che il sacrificio e il duro lavoro portino a risultati e opportunità di crescita. Siamo spinti a sognare in grande, riconoscendo e correggendo gli errori per<b> migliorare continuamente</b>. Ogni voce è ascoltata per costruire una <b>visione condivisa</b>, mentre il nostro codice etico assicura un ambiente giusto e rispettoso.</p>",
+      "parole": 62,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "I VALORI DEL NOSTRO TEAM",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Valutiamo i risultati piuttosto che gli orari, promuovendo la <b>libertà</b> e la flessibilità. Questo ci permette di mantenere una <b>squadra umile</b> e orientata al risultato, pronta ad affrontare ogni sfida con dedizione e spirito di collaborazione.</p>",
+      "parole": 36,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "professionisti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team1.jpg",
+      "alt": "",
+      "titolo": "CEO Amministratore Delegato",
+      "html": "Giorgio Gallo",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team2.jpg",
+      "alt": "",
+      "titolo": "Project Manager",
+      "html": "Giulio Gallo",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team3.jpg",
+      "alt": "",
+      "titolo": "Direttore Commerciale Showroom",
+      "html": "Raffaele Gallo",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team4.jpg",
+      "alt": "",
+      "titolo": "Responsabile Amministrativo",
+      "html": "Giulio Grimaldi",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-1.jpg",
+      "alt": "",
+      "titolo": "Agente di Commercio",
+      "html": "Christian Lucatiello",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-2.jpg",
+      "alt": "",
+      "titolo": "Direttore Commerciale Edilizia e Ferramenta",
+      "html": "Angelo Francesco Manfellotto",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-3.jpg",
+      "alt": "",
+      "titolo": "Responsabile Ufficio Acquisti",
+      "html": "Giuseppe Purcaro",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-4.jpg",
+      "alt": "",
+      "titolo": "Impiegata Amministrativa",
+      "html": "Valeria Varriale",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-5.jpg",
+      "alt": "",
+      "titolo": "Renderista",
+      "html": "Antonio Esposito",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-6.jpg",
+      "alt": "",
+      "titolo": "Architetto",
+      "html": "Rosalia Mezzacapo",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-7.jpg",
+      "alt": "",
+      "titolo": "Impiegata Amministrativa",
+      "html": "Emilia Ricci",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-8.jpg",
+      "alt": "",
+      "titolo": "Addetto Ufficio Acquisti",
+      "html": "Ilaria Grieco",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-9.jpg",
+      "alt": "",
+      "titolo": "Addetto Ufficio Gare",
+      "html": "Emmanuele Pianese",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-10.jpg",
+      "alt": "",
+      "titolo": "Store Manager Showroom Home",
+      "html": "Alessandro Cozzolino",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "scheda",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red"
+      ],
+      "path": "2024/06/Team-12.jpg",
+      "alt": "",
+      "titolo": "Architetto",
+      "html": "Giovanna Cirella",
+      "href": "../index.html%3Fp=102.html#",
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "Le nostre realizzazioni",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "Ogni progetto di architettura inizia con una <strong>visione creativa</strong> che prende forma attraverso dettagli accurati e innovativi. Grazie al <strong>rendering 3D</strong>, puoi vedere in anteprima il risultato finale, garantendo che ogni aspetto rispecchi <strong>le tue aspettative</strong>.",
+      "parole": 36,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [
+        "btn",
+        "blackBorder"
+      ],
+      "testo": "Scopri di più",
+      "href": "../index.html%3Fp=1398.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "progetti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "render",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "prima/dopo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "riquadri",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "titolo": "progetti",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/progetti/index.html",
+          "elementorId": "5b71dae",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
+        },
+        {
+          "titolo": "render",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/render/index.html",
+          "elementorId": "71f6204",
+          "path": "2024/06/Raggruppa-1695.jpg",
+          "fondoApplicato": false
+        },
+        {
+          "titolo": "prima/dopo",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/prima-dopo/index.html",
+          "elementorId": "7c1623e",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
+        }
+      ],
+      "soloMobile": false
+    }
+  ],
+  "fondiSezione": [
+    {
+      "elementorId": "483ba5f",
+      "fondoApplicato": true,
+      "testo": "un team composto da i migliori professionisti. Il nostro lavoro si fon",
+      "altezza": 764,
+      "path": "2024/06/Raggruppa-1703.png"
+    },
+    {
+      "elementorId": "5e8c4b8",
+      "fondoApplicato": false,
+      "testo": "I VALORI DEL NOSTRO TEAM Valutiamo i risultati piuttosto che gli orari",
+      "altezza": 520,
+      "path": "2024/05/Raggruppa-1665.jpg"
+    },
+    {
+      "elementorId": "5b71dae",
+      "fondoApplicato": false,
+      "testo": "progetti",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    },
+    {
+      "elementorId": "71f6204",
+      "fondoApplicato": false,
+      "testo": "render",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1695.jpg"
+    },
+    {
+      "elementorId": "7c1623e",
+      "fondoApplicato": false,
+      "testo": "prima/dopo",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "6 blocchi duplicati nell'originale, uniti in uno",
+    "1 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+    "3 riquadri con immagine di fondo NON applicata nell'originale (buco bianco con titolo bianco su bianco): nel rebuild il fondo si vede",
+    "era indicizzabile nell originale"
+  ]
+}

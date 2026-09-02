@@ -1,0 +1,125 @@
+{
+  "slug": "soluzione-ceramiche",
+  "urlOriginale": "/soluzione-ceramiche/",
+  "titleCompleto": "Soluzione Ceramiche - Costruisci e Arreda S.r.l.",
+  "title": "Soluzione Ceramiche",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "4392",
+  "hero": {
+    "slides": []
+  },
+  "blocchi": [
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/11/Raggruppa-31.svg",
+      "src": "Raggruppa-31.svg",
+      "alt": "",
+      "width": 198,
+      "height": 54,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/11/SoluzioneCeramiche.jpg",
+      "src": "SoluzioneCeramiche.jpg",
+      "alt": "",
+      "width": 1024,
+      "height": 647,
+      "href": "index.html#form",
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "scegli Ceramiche di qualità per i tuoi spazi",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Cerchi un <strong>partner di fiducia</strong> per i tuoi <strong>progetti</strong>? Scopri la nostra selezione di <strong>pavimenti</strong> e <strong>rivestimenti</strong> di alta qualità ideali per trasformare ogni spazio con stile.</p>",
+      "parole": 27,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "FISSA il TUO APPUNTAMENTO",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "form",
+      "visibile": true,
+      "varianti": [],
+      "id": [
+        "4395"
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/11/Raggruppa-1358-1.svg",
+      "src": "Raggruppa-1358-1.svg",
+      "alt": "",
+      "width": 318,
+      "height": 86,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "elencoVoci",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "testo": "",
+          "href": null
+        },
+        {
+          "testo": "",
+          "href": null
+        },
+        {
+          "testo": "",
+          "href": null
+        },
+        {
+          "testo": "",
+          "href": null
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": null,
+      "testo": "© 2024 Costruisci & Arreda S.R.L – P.IVA:08562161219 | Privacy Policy | Cookie Policy",
+      "href": null,
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "era indicizzabile nell originale"
+  ]
+}

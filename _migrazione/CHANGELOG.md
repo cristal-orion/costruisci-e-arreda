@@ -608,3 +608,112 @@ dell'originale. Con `auto-fit` a 1440px ne comparivano quattro.
 ### Da fare nel passo successivo
 Le **11 pagine one-off** (homepage per prima), gli archivi `type_stores`, i 6
 form, i redirect 301, poi il deploy.
+
+---
+
+## A04 — Homepage, e il difetto peggiore dell'originale
+**2026-09-02 · fase A**
+
+### Il difetto: cinque sezioni su sette sono buchi bianchi
+
+Misurando i fondi delle sezioni della homepage con `getComputedStyle` si scopre
+che **5 immagini di fondo su 7 non vengono applicate** — né sul mirror né sul
+sito live. Le conseguenze sono visibili nella baseline
+`shots-000-live-originale/desktop/home.png`:
+
+| sezione | cosa dovrebbe esserci | cosa c'è sul sito live |
+|---|---|---|
+| **store** | foto di showroom + 3 loghi + titolo | **buco bianco di 700px**: titolo bianco su bianco, tre SVG scuri invisibili, restano solo tre trattini rossi |
+| **progetti / render / prima-dopo** | tre riquadri da 700px con foto | **buco bianco di 700px**: tre titoli bianchi su bianco |
+| la nostra storia, dal progetto | fondo decorativo | senza fondo (meno grave: il testo è nero e si legge) |
+
+Il fondo è dichiarato nel CSS di Elementor (`background-image:url(...)` sul
+selettore dell'elemento) ma il browser non lo applica. Il valore quindi **non è
+misurabile**: l'unica fonte è la dichiarazione, e l'estrattore la legge dai 30
+bundle CSS del mirror associandola al `data-id` Elementor. È l'unico punto del
+progetto dove si legge il CSS invece di misurare, ed è documentato nel codice.
+
+Nel rebuild i fondi si vedono tutti. Le due sezioni che nell'originale erano
+buchi ora sono sezioni vere.
+
+### Altri difetti della homepage, corretti
+
+- **3 `<h1>`**, uno per slide dell'hero, ciascuno sotto un `<h2>` identico
+  "Edilizia, design e ferramenta". Ora l'`<h1>` è uno: il titolo della prima
+  slide. Le altre due slide usano `<p>`, il contenuto è lo stesso.
+- **I contatori mostravano `0`** finché non si scorreva la pagina.
+- **Nessuna meta description.**
+- Tutti i link puntavano a `index.html%3Fp=976.html`.
+- I tre loghi degli store avevano `alt=""` pur essendo l'unico contenuto del
+  link: ora hanno "Showroom", "Rivendita edile", "Ferramenta".
+
+### Estrazione delle pagine one-off
+
+`_migrazione/extract-pages.js`, nuovo. Le 4 collezioni a template hanno una
+struttura fissa; le one-off no, ognuna ha la sua sequenza. Lo script estrae
+quindi un **elenco ordinato di blocchi** tipizzati (titolo, testo, immagine,
+bottone, contatore, galleria, carousel, elenco, accordion, scheda, form,
+riquadri, servizi numerati…), leggendo la pagina a **due larghezze** e unendo
+per firma: così il duplicato desktop/mobile dell'originale si scioglie senza
+perdere i blocchi che esistono solo in una delle due varianti.
+
+22 pagine estratte: le 11 one-off, le 2 landing, le 4 thank-you, i 5 archivi
+`type_stores`.
+
+Due bug trovati nel mio stesso estrattore, entrambi visibili solo guardando il
+risultato:
+1. la deduplica teneva la **prima** copia incontrata, ma nel DOM dell'originale
+   la copia **nascosta** viene spesso prima: la homepage perdeva 9 blocchi, fra
+   cui "La nostra storia" e "Dal progetto alla realizzazione". Ora fra due copie
+   con la stessa firma vince quella visibile;
+2. l'hero della homepage è uno slider slick con 3 slide, non un riquadro solo:
+   cercavo `.singleImage` e ne trovavo uno, perdendo due slide su tre.
+
+Inoltre due blocchi della homepage non sono widget Elementor ma markup del tema
+(`.listProducts`, la card bianca con i 4 servizi numerati) o contenitori con il
+fondo nel CSS (i riquadri): senza estrarli a parte la homepage perdeva altre due
+sezioni.
+
+### Componenti nuovi
+
+`HeroSlider` (3 slide, `scroll-snap`, punti, autoplay, un solo `<h1>`) ·
+`ServiziNumerati` (la card bianca sovrapposta all'hero, misurata 970×150px) ·
+`Riquadri` (i tre riquadri di tassonomia, 700px, con il fondo che ora si vede).
+
+`immagini.ts` ha ora `rotta()`: riscrive gli href dell'originale
+(`index.html%3Fp=976.html`, `../../type_stores/showroom-cat/index.html`) in rotte
+pulite tramite la mappa page-id → URL. Un href che non si risolve torna `null` e
+il link non viene reso: meglio nessun link che un link rotto, e il cancello di
+qualità lo segnala.
+
+### Assegnazione delle immagini
+
+Le 5 immagini delle sezioni sono state assegnate **guardandole una per una**:
+l'ordine nel DOM non basta. `Raggruppa-1648` è il disegno tecnico di una casa,
+`1649` la foto di due professionisti su una tavola di progetto, `1668` il render
+di una villa, `1674` la vista dall'alto di un appartamento, `1679` lo showroom.
+La prima assegnazione, fatta per posizione, metteva la foto al posto del disegno.
+
+Gli `alt` sono stati scritti di conseguenza: erano tutti vuoti nell'originale.
+
+### Verifica
+
+| | desktop | mobile |
+|---|---|---|
+| `<h1>` | 1 | 1 |
+| slide dell'hero / punti | 3 / 3 | 3 / 3 |
+| servizi numerati | 4 | 4 |
+| contatori (valore reso) | 24, 40, 100, 10 | idem |
+| loghi store | 3 | 3 |
+| riquadri **con immagine** | 3 | 3 |
+| card news | 3 | 3 |
+| link rotti (`#`, `%3F`, `index.html`) | 0 | 0 |
+| scorrimento orizzontale | no | no |
+| errori JS | nessuno | nessuno |
+
+`check-build.js`: **34 rotte × 3 viewport, nessun problema.**
+
+### Da fare nel passo successivo
+Le altre 10 pagine one-off (storia, team, contatti, lavora-con-noi, hub servizi,
+hub lavori, preventivo, 2 legal, archivio blog già fatto), i 5 archivi
+`type_stores`, i 6 form, i redirect 301.

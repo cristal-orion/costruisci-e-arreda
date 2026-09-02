@@ -1,0 +1,350 @@
+{
+  "slug": "type_stores-rivendita-edile",
+  "urlOriginale": "/type_stores/rivendita-edile/",
+  "titleCompleto": "Rivendita edile Archivi - Costruisci e Arreda S.r.l.",
+  "title": "Rivendita edile Archivi",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": null,
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1646.jpg",
+        "image": "Raggruppa-1646.jpg",
+        "titolo": "Rivendita edile",
+        "titoloTag": "h1",
+        "kicker": "STORE"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "Soluzioni complete per l'edilizia: Prodotti e servizi per professionisti e imprese",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Offriamo una vasta gamma di prodotti e servizi per professionisti e imprese del settore edilizio. Da materiali tecnici a soluzioni per edilizia ordinaria e pesante, siamo il partner ideale per ogni progetto di costruzione e ristrutturazione.</p>\n<p>Trattiamo edilizia tecnica con soluzioni per isolamenti termici e acustici, impermeabilizzazioni in polietilene e poliuretano, e consolidamenti strutturali. Offriamo anche deumidificazione, restauro e bioedilizia.Per l’edilizia ordinaria, disponiamo di malte, cartongesso, laterizi, lapillo, blocchi cellulari, intonaci, rasanti, reti e guaine liquide e minerali.</p>",
+      "parole": 78,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/07/RivenditaEdile.jpg",
+      "src": "RivenditaEdile.jpg",
+      "alt": "",
+      "width": 1024,
+      "height": 781,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "COSA TROVI NEL NOSTRO STORE",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Nell’<b>edilizia pesante</b>, forniamo ferro, calcestruzzo e pacchi in CLS. Il nostro <b>colorificio</b> può realizzare colori personalizzati direttamente in sede grazie a tintometri avanzati. Nello store sono presenti una vasta gamma di<b> utensili</b> ed <b>elettroutensili</b> per l’edilizia, <b>soluzioni termoidrauliche e materiali per impiantistica elettrica</b>. Inoltre, disponiamo di <b>sistemi di condizionamento</b> come condizionatori, caldaie e pompe di calore. Offriamo anche <b>installatori qualificati</b> per garantire un servizio completo e professionale.</p>",
+      "parole": 67,
+      "soloMobile": false
+    },
+    {
+      "tipo": "elencoVoci",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "testo": "Via Argine, 625, 80147 Napoli (NA)",
+          "href": null
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi Rivendita Edile",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0000_vetroasfalto.png",
+      "src": "0000_vetroasfalto.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0001_adesivi-makita-logo.png",
+      "src": "0001_adesivi-makita-logo.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0002_montolit-logo.png",
+      "src": "0002_montolit-logo.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0003_moccia.png",
+      "src": "0003_moccia.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0004_fornaci-dcb.png",
+      "src": "0004_fornaci-dcb.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0005_Gyproc_Logo_RGB.png",
+      "src": "0005_Gyproc_Logo_RGB.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0006_marmorinotools_logo.png",
+      "src": "0006_marmorinotools_logo.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0007_linvea.png",
+      "src": "0007_linvea.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0008_Ellisse-1.png",
+      "src": "0008_Ellisse-1.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0009_calceforte.png",
+      "src": "0009_calceforte.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0010_five.png",
+      "src": "0010_five.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0011_gasbeton.png",
+      "src": "0011_gasbeton.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0012_schluter-systems.png",
+      "src": "0012_schluter-systems.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0013_ECLISSE.png",
+      "src": "0013_ECLISSE.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/0014_CVR.png",
+      "src": "0014_CVR.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Isolmant.png",
+      "src": "Isolmant.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Mapei.png",
+      "src": "Mapei.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Polymerbit.png",
+      "src": "Polymerbit.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "form",
+      "visibile": true,
+      "varianti": [],
+      "id": [
+        "95"
+      ],
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "4 blocchi duplicati nell'originale, uniti in uno",
+    "2 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+    "era indicizzabile nell originale"
+  ]
+}

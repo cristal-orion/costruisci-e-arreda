@@ -1,0 +1,619 @@
+{
+  "slug": "dalla-progettazione-alla-realizzazione",
+  "urlOriginale": "/dalla-progettazione-alla-realizzazione/",
+  "titleCompleto": "Servizi - Costruisci e Arreda S.r.l.",
+  "title": "Servizi",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "905",
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1648.jpg",
+        "image": "Raggruppa-1648.jpg",
+        "titolo": "Dalla progettazione \n alla realizzazione",
+        "titoloTag": "h1",
+        "kicker": "SERVIZI"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black"
+      ],
+      "livello": 2,
+      "testo": "offriamo un servizio in cui siamo un punto di riferimento per tutte le fasi del tuo progetto.",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Tracciato-1190.jpg",
+      "src": "Tracciato-1190.jpg",
+      "alt": "",
+      "width": 390,
+      "height": 345,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "le fasi di realizzazione",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1489-2.svg",
+      "src": "Raggruppa-1489-2.svg",
+      "alt": "",
+      "width": 92,
+      "height": 104,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "sopralluogo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Il nostro team effettua un sopralluogo dettagliato per analizzare lo stato dell’immobile e rilevare tutte le misure necessarie, garantendo una base solida per lo sviluppo del progetto di ristrutturazione.</p>",
+      "parole": 29,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1490-1.svg",
+      "src": "Raggruppa-1490-1.svg",
+      "alt": "",
+      "width": 92,
+      "height": 104,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "progettazione",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Creiamo un progetto personalizzato che rispecchia le esigenze e i desideri del cliente, con particolare attenzione alla funzionalità e all’estetica degli spazi, nel rispetto dlle normative vigenti.</p>",
+      "parole": 27,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1488-1.svg",
+      "src": "Raggruppa-1488-1.svg",
+      "alt": "",
+      "width": 92,
+      "height": 104,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "Rendering",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Offriamo rendering 3D fotorealistici che permettono di visualizzare in anteprima il risultato finale della ristrutturazione, facilitando la scelta delle soluzioni estetiche e funzionali.</p>",
+      "parole": 23,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black"
+      ],
+      "livello": 2,
+      "testo": "I nostri servizi",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "elenco",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "titolo": "Sopralluogo e rilievo",
+          "testo": "Il nostro team effettua un sopralluogo dettagliato per analizzare lo stato dell’immobile e rilevare tutte le misure necessarie, garantendo una base solida per lo sviluppo del progetto di ristrutturazione.",
+          "href": "../index.html%3Fp=975.html",
+          "path": "2024/06/Raggruppa-1620.png",
+          "alt": ""
+        },
+        {
+          "titolo": "Progetto",
+          "testo": "Creiamo un progetto personalizzato che rispecchia le esigenze e i desideri del cliente, con particolare attenzione alla funzionalità e all’estetica degli spazi, nel rispetto delle normative vigenti.",
+          "href": "../index.html%3Fp=976.html",
+          "path": "2024/06/Raggruppa-1623.png",
+          "alt": ""
+        },
+        {
+          "titolo": "Rendering",
+          "testo": "Offriamo rendering 3D fotorealistici che permettono di visualizzare in anteprima il risultato finale della ristrutturazione, facilitando la scelta delle soluzioni estetiche e funzionali.",
+          "href": "../index.html%3Fp=977.html",
+          "path": "2024/06/Raggruppa-1621.png",
+          "alt": ""
+        },
+        {
+          "titolo": "Consulenza finiture",
+          "testo": "Forniamo una consulenza professionale nella scelta delle finiture, guidandoti nella selezione di materiali, colori e dettagli che esaltino la bellezza e la qualità degli ambienti ristrutturati.",
+          "href": "../index.html%3Fp=978.html",
+          "path": "2024/06/Raggruppa-1526.png",
+          "alt": ""
+        },
+        {
+          "titolo": "Disbrigo pratiche",
+          "testo": "Ci occupiamo del disbrigo di tutte le pratiche burocratiche necessarie per l’avvio e la realizzazione dei lavori, sollevando il cliente da ogni incombenza amministrativa.",
+          "href": "../index.html%3Fp=979.html",
+          "path": "2024/06/Raggruppa-1626.png",
+          "alt": ""
+        },
+        {
+          "titolo": "Direzione lavori",
+          "testo": "Seguiamo personalmente la direzione dei lavori, coordinando le varie fasi della ristrutturazione e garantendo il rispetto dei tempi, del budget e degli standard qualitativi.",
+          "href": "../index.html%3Fp=980.html",
+          "path": "2024/06/Raggruppa-1628.png",
+          "alt": ""
+        },
+        {
+          "titolo": "Impianti",
+          "testo": "Progettiamo e realizziamo impianti elettrici, idraulici e di climatizzazione all’avanguardia, assicurando efficienza energetica e conformità alle normative di sicurezza.",
+          "href": "../index.html%3Fp=981.html",
+          "path": "2024/06/Raggruppa-1633.png",
+          "alt": ""
+        },
+        {
+          "titolo": "Certificazioni",
+          "testo": "Al termine dei lavori, forniamo tutte le certificazioni necessarie che attestano la conformità degli impianti e delle strutture alle normative vigenti, garantendo la sicurezza e la qualità dell’intervento.",
+          "href": "../index.html%3Fp=982.html",
+          "path": "2024/06/Raggruppa-1527.png",
+          "alt": ""
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1620.png",
+      "src": "Raggruppa-1620.png",
+      "alt": "",
+      "width": 176,
+      "height": 176,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 1,
+      "testo": "Sopralluogo e rilievo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Il nostro team effettua un sopralluogo dettagliato per analizzare lo stato dell’immobile e rilevare tutte le misure necessarie, garantendo una base solida per lo sviluppo del <strong>progetto di ristrutturazione</strong>.</p>",
+      "parole": 29,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [],
+      "testo": "Scopri il servizio",
+      "href": "../index.html%3Fp=975.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1623.png",
+      "src": "Raggruppa-1623.png",
+      "alt": "",
+      "width": 176,
+      "height": 176,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 1,
+      "testo": "Progetto",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Creiamo un progetto personalizzato che rispecchia le esigenze e i desideri del cliente, con particolare attenzione alla <strong>funzionalità</strong> e all’estetica degli spazi, nel rispetto delle <strong>normative vigenti</strong>.</p>",
+      "parole": 27,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [],
+      "testo": "Scopri il servizio",
+      "href": "../index.html%3Fp=976.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1621.png",
+      "src": "Raggruppa-1621.png",
+      "alt": "",
+      "width": 176,
+      "height": 176,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 1,
+      "testo": "Rendering",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Offriamo <strong>rendering 3D</strong> <strong>fotorealistici</strong> che permettono di visualizzare in anteprima il risultato finale della ristrutturazione, facilitando la scelta delle soluzioni estetiche e funzionali.</p>",
+      "parole": 23,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [],
+      "testo": "Scopri il servizio",
+      "href": "../index.html%3Fp=977.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1526.png",
+      "src": "Raggruppa-1526.png",
+      "alt": "",
+      "width": 176,
+      "height": 176,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 1,
+      "testo": "Consulenza finiture",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Forniamo una <strong>consulenza professionale</strong> nella scelta delle finiture, guidandoti nella selezione di materiali, colori e dettagli che esaltino la bellezza e la qualità degli <strong>ambienti ristrutturati</strong>.</p>",
+      "parole": 26,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [],
+      "testo": "Scopri il servizio",
+      "href": "../index.html%3Fp=978.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1626.png",
+      "src": "Raggruppa-1626.png",
+      "alt": "",
+      "width": 176,
+      "height": 176,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 1,
+      "testo": "Disbrigo pratiche",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Ci occupiamo del disbrigo di tutte le pratiche burocratiche necessarie per l’avvio e la <strong>realizzazione dei lavori</strong>, sollevando il cliente da ogni incombenza amministrativa.</p>",
+      "parole": 24,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [],
+      "testo": "Scopri il servizio",
+      "href": "../index.html%3Fp=979.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1628.png",
+      "src": "Raggruppa-1628.png",
+      "alt": "",
+      "width": 176,
+      "height": 176,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 1,
+      "testo": "Direzione lavori",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Seguiamo personalmente la <strong>direzione dei lavori</strong>, coordinando le varie fasi della ristrutturazione e garantendo il rispetto dei tempi, del budget e degli standard qualitativi.</p>",
+      "parole": 24,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [],
+      "testo": "Scopri il servizio",
+      "href": "../index.html%3Fp=980.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1633.png",
+      "src": "Raggruppa-1633.png",
+      "alt": "",
+      "width": 176,
+      "height": 176,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 1,
+      "testo": "Impianti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Progettiamo e realizziamo<strong> impianti elettrici</strong>, <strong>idraulici</strong> e di <strong>climatizzazione</strong> all’avanguardia, assicurando efficienza energetica e conformità alle normative di sicurezza.</p>",
+      "parole": 19,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [],
+      "testo": "Scopri il servizio",
+      "href": "../index.html%3Fp=981.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1527.png",
+      "src": "Raggruppa-1527.png",
+      "alt": "",
+      "width": 176,
+      "height": 176,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 1,
+      "testo": "Certificazioni",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Al termine dei lavori, forniamo tutte le certificazioni necessarie che attestano la <strong>conformità degli impianti</strong> e delle strutture alle normative vigenti, garantendo la sicurezza e la<strong> qualità dell’intervento</strong>.</p>",
+      "parole": 28,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [],
+      "testo": "Scopri il servizio",
+      "href": "../index.html%3Fp=982.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "Le nostre realizzazioni",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Ogni progetto di architettura inizia con una <strong>visione creativa</strong> che prende forma attraverso dettagli accurati e innovativi. Grazie al <strong>rendering 3D</strong>, puoi vedere in anteprima il risultato finale, garantendo che ogni aspetto rispecchi <strong>le tue aspettative</strong>.</p>",
+      "parole": 36,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [
+        "btn",
+        "blackBorder"
+      ],
+      "testo": "Scopri di più",
+      "href": "../index.html%3Fp=1398.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "progetti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "render",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "prima/dopo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "riquadri",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "titolo": "progetti",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/progetti/index.html",
+          "path": null,
+          "fondoRotto": true
+        },
+        {
+          "titolo": "render",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/render/index.html",
+          "path": null,
+          "fondoRotto": true
+        },
+        {
+          "titolo": "prima/dopo",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/prima-dopo/index.html",
+          "path": null,
+          "fondoRotto": true
+        }
+      ],
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "9 blocchi duplicati nell'originale, uniti in uno",
+    "1 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+    "era indicizzabile nell originale"
+  ]
+}

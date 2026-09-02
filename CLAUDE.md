@@ -77,10 +77,20 @@
 > proporzionale invece che a gradini Bootstrap.
 > Dettagli e verifiche: CHANGELOG voci **A00**, **A01**, **A02**.
 >
-> **Due deviazioni da far confermare a Michele** (implementate, documentate, reversibili
-> in un punto solo): (1) Roboto → Montserrat, che cambia il corpo del testo su 34 pagine;
-> (2) contenitore proporzionale invece che a gradini, che cambia la larghezza del
-> contenuto fra 769px e 1400px.
+> ### Indirizzo confermato dal proprietario (2026-09-02)
+> «lo scopo è avere il sito **pressoché uguale o molto simile ma migliore, più veloce
+> e migliorato da tutti i difetti** del sito WordPress con Elementor; poi una volta
+> fatto questo facciamo le modifiche che cerca il cliente.»
+>
+> Quindi: **i difetti dell'originale si correggono, non si riproducono.** Non serve
+> più chiedere conferma per le deviazioni che sistemano un difetto — vanno fatte e
+> registrate nel CHANGELOG. Già confermate così: Roboto → Montserrat (default
+> Elementor che trapelava su 34 pagine), contenitore proporzionale invece dei gradini
+> Bootstrap, archivi di tassonomia filtrati davvero per categoria, un solo `<h1>`
+> per pagina, contenuto non più duplicato per desktop e mobile.
+>
+> Restano **due fasi distinte**: prima la ricostruzione migliorata (questa), poi le
+> modifiche volute dal cliente. Non mescolarle.
 >
 > ### Due fasi, da tenere separate
 > **Fase A** ricostruzione 1:1, gate = fingerprint pulito. **Fase B** modifiche volute

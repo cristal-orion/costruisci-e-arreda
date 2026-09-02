@@ -1,0 +1,259 @@
+---
+/**
+ * Hero della homepage: 3 slide con immagine, titoletto e titolo grande.
+ *
+ * Misurato sull'originale: riquadro 750px (400px mobile) come l'hero interno,
+ * titolo 70px peso 200 maiuscolo, titoletto 23px peso 500, 3 punti di
+ * navigazione, autoplay via slick.
+ *
+ * **Un solo `<h1>`.** Nell'originale ogni slide ha il **proprio** `<h1>`, quindi
+ * la homepage ne ha tre — con sopra tre `<h2>` identici "Edilizia, design e
+ * ferramenta". Qui l'`<h1>` è uno: il titolo della prima slide resta un `<h1>`,
+ * gli altri due sono `<p>`. Il contenuto è lo stesso, la semantica corretta.
+ *
+ * Come l'hero interno: `scroll-snap`, nessuna libreria. Senza JavaScript le tre
+ * slide restano scorrevoli col dito e con la tastiera.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Slide {
+  image: ImageMetadata;
+  /** Un `\n` diventa un'interruzione di riga, come i `<br>` dell'originale. */
+  titolo: string;
+  kicker?: string | null;
+}
+
+interface Props {
+  slides: Slide[];
+  /** Millisecondi fra gli avanzamenti; 0 disattiva. */
+  autoplay?: number;
+}
+
+const { slides, autoplay = 6000 }: Props = Astro.props;
+---
+
+<section
+  class="hs"
+  data-hs
+  data-autoplay={autoplay}
+  aria-roledescription="carousel"
+  aria-label="Presentazione"
+>
+  <div class="hs__track" tabindex="0" role="group" aria-label="Slide">
+    {
+      slides.map((s, i) => {
+        const Tag = i === 0 ? 'h1' : 'p';
+        return (
+          <article class="hs__slide" aria-roledescription="slide" aria-label={`${i + 1} di ${slides.length}`}>
+            <Image
+              class="hs__img"
+              src={s.image}
+              alt=""
+              widths={[640, 960, 1280, 1600, 1920]}
+              sizes="100vw"
+              format="webp"
+              quality={72}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : undefined}
+              decoding="async"
+            />
+            <div class="hs__body">
+              <div class="container">
+                <div class="hs__content">
+                  {s.kicker && <p class="hs__kicker">{s.kicker}</p>}
+                  <Tag class="hs__titolo">
+                    {/* Le righe si separano con `<br>` ma il testo va tenuto
+                        leggibile a chi usa uno screen reader e ai motori: senza
+                        lo spazio esplicito "professionisti" e "del settore" si
+                        incollano nel testo estratto. */}
+                    {s.titolo.split('\n').map((riga, n) => (n === 0 ? riga.trim() : [<br />, ' ', riga.trim()]))}
+                  </Tag>
+                </div>
+              </div>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+
+  <div class="hs__dots" data-hs-dots hidden></div>
+</section>
+
+<style>
+  .hs {
+    position: relative;
+  }
+
+  .hs__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .hs__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hs__slide {
+    position: relative;
+    height: var(--hero-h-mobile);
+    overflow: clip;
+    scroll-snap-align: start;
+  }
+  @media (min-width: 769px) {
+    .hs__slide {
+      height: var(--hero-h);
+    }
+  }
+
+  .hs__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* velatura: il testo bianco su una foto qualsiasi non garantisce contrasto */
+  .hs__slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(0 0 0 / 45%) 0%, rgb(0 0 0 / 0%) 60%);
+    pointer-events: none;
+  }
+
+  .hs__body {
+    position: absolute;
+    right: 0;
+    bottom: 100px;
+    left: 0;
+    z-index: 1;
+  }
+  .hs__content {
+    padding-inline: var(--hero-inset);
+  }
+
+  .hs__kicker {
+    margin: 0 0 var(--s-3);
+    color: var(--c-white);
+    font-size: 1.4375rem; /* 23px, misurato */
+    font-weight: var(--w-medium);
+    font-style: italic;
+    line-height: 1.2;
+  }
+
+  .hs__titolo {
+    max-width: 60rem;
+    margin: 0;
+    color: var(--c-white);
+    font-size: var(--hero-title-size);
+    font-weight: var(--w-extralight);
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .hs__dots {
+    position: absolute;
+    bottom: var(--s-6);
+    left: 0;
+    z-index: 2;
+    display: flex;
+    gap: var(--s-3);
+    width: 100%;
+    padding-inline: var(--hero-inset);
+    justify-content: flex-start;
+  }
+  .hs__dot {
+    width: 28px;
+    height: 3px;
+    padding: 0;
+    appearance: none;
+    background: rgb(255 255 255 / 45%);
+    border: 0;
+    cursor: pointer;
+    transition: background-color var(--dur) var(--ease);
+  }
+  .hs__dot[aria-current='true'] {
+    background: var(--c-brand);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hs__track {
+      scroll-behavior: auto;
+    }
+  }
+</style>
+
+<script>
+  /** Punti e autoplay dell'hero. Senza JS la striscia resta scorrevole. */
+  const root = document.querySelector<HTMLElement>('[data-hs]');
+  const track = root?.querySelector<HTMLElement>('.hs__track');
+  const dotsBox = root?.querySelector<HTMLElement>('[data-hs-dots]');
+
+  if (root && track && dotsBox) {
+    const slides = Array.from(track.children) as HTMLElement[];
+    if (slides.length > 1) {
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const delay = Number(root.dataset.autoplay) || 0;
+
+      dotsBox.hidden = false;
+      const dots = slides.map((_, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'hs__dot';
+        b.setAttribute('aria-label', `Vai alla slide ${i + 1} di ${slides.length}`);
+        b.addEventListener('click', () => {
+          stop();
+          slides[i].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest', inline: 'start' });
+        });
+        dotsBox.appendChild(b);
+        return b;
+      });
+
+      let current = 0;
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            const i = slides.indexOf(e.target as HTMLElement);
+            if (i < 0) continue;
+            current = i;
+            dots.forEach((d, j) => d.setAttribute('aria-current', String(j === i)));
+          }
+        },
+        { root: track, threshold: 0.6 },
+      );
+      slides.forEach((s) => io.observe(s));
+
+      let timer: number | undefined;
+      const stop = () => { if (timer) clearInterval(timer); timer = undefined; };
+      const start = () => {
+        if (!delay || reduced || timer) return;
+        timer = window.setInterval(() => {
+          const next = (current + 1) % slides.length;
+          if (next === 0) track.scrollTo({ left: 0, behavior: 'smooth' });
+          else slides[next].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        }, delay);
+      };
+
+      root.addEventListener('pointerenter', stop);
+      root.addEventListener('pointerleave', start);
+      root.addEventListener('focusin', stop);
+      track.addEventListener('pointerdown', stop, { passive: true });
+      track.addEventListener('wheel', stop, { passive: true });
+      track.addEventListener('keydown', stop);
+
+      new IntersectionObserver(
+        (entries) => entries.forEach((e) => (e.isIntersecting ? start() : stop())),
+        { threshold: 0.2 },
+      ).observe(root);
+    }
+  }
+</script>

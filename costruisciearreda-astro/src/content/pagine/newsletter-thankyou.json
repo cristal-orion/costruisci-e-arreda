@@ -1,0 +1,67 @@
+{
+  "slug": "newsletter-thankyou",
+  "urlOriginale": "/newsletter-thankyou/",
+  "titleCompleto": "Newsletter ThankYou - Costruisci e Arreda S.r.l.",
+  "title": "Newsletter ThankYou",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "4631",
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1649-3.jpg",
+        "image": "Raggruppa-1649-3.jpg",
+        "titolo": "RICHIEDI \nPREVENTIVO",
+        "titoloTag": "h1",
+        "kicker": "PREVENTIVO"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "Grazie per averci contattati",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Grazie per aver inviato la tua richiesta, verrai ricontattato il prima possibile da un nostro operatore mediante i dati da le forniti.</p>",
+      "parole": 22,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [],
+      "testo": "Torna al sito",
+      "href": "https://costruisciearreda.it",
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Schermata-2024-03-20-alle-10.54.07.png",
+      "src": "Schermata-2024-03-20-alle-10.54.07.png",
+      "alt": "",
+      "width": 843,
+      "height": 719,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "era indicizzabile nell originale"
+  ]
+}

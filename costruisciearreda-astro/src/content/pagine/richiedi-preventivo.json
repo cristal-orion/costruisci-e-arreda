@@ -1,0 +1,76 @@
+{
+  "slug": "richiedi-preventivo",
+  "urlOriginale": "/richiedi-preventivo/",
+  "titleCompleto": "Richiedi preventivo - Costruisci e Arreda S.r.l.",
+  "title": "Richiedi preventivo",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "1524",
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1649-3.jpg",
+        "image": "Raggruppa-1649-3.jpg",
+        "titolo": "RICHIEDI \nPREVENTIVO",
+        "titoloTag": "h1",
+        "kicker": "PREVENTIVO"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "valutazione dei costi",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "Il nostro processo di valutazione dei costi è studiato per offrirti un quadro quanto più <strong>chiaro</strong> e <strong>trasparente</strong> delle spese previste. Dopo un attento sopralluogo e i rilievi necessari, il nostro team di esperti elaborerà un <strong>progetto personalizzato</strong>, completo di rendering realistici. La nostra consulenza sulle finiture e la gestione delle pratiche amministrative garantiscono un servizio chiavi in mano, che include la direzione dei lavori e l’installazione degli impianti con le relative certificazioni. Richiedi ora il tuo preventivo dettagliato e scopri come possiamo trasformare i tuoi spazi.",
+      "parole": 87,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "richiedi il tuo preventivo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Il preventivo fornito è di natura preliminare. Solo dopo un eventuale sopralluogo sarà possibile definire con maggior precisione il costo dell’intervento.</p>",
+      "parole": 21,
+      "soloMobile": false
+    },
+    {
+      "tipo": "form",
+      "visibile": true,
+      "varianti": [],
+      "id": [
+        "1548"
+      ],
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "2 blocchi duplicati nell'originale, uniti in uno",
+    "era indicizzabile nell originale"
+  ]
+}

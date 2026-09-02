@@ -1,0 +1,133 @@
+---
+/**
+ * La card bianca sotto l'hero della homepage: 4 servizi numerati.
+ *
+ * Misurato sull'originale (`.listProducts`): 970×150px, sovrapposta al bordo
+ * inferiore dell'hero, numero 16px nel rosso del brand, titolo 16px peso 700
+ * maiuscolo, ogni voce è un link con "Scopri di più".
+ *
+ * Non è un widget Elementor ma markup del tema, quindi l'estrattore lo prende a
+ * parte: senza quello la homepage perdeva questa sezione.
+ */
+import { rotta } from '../lib/immagini';
+
+interface Voce {
+  numero: string | null;
+  titolo: string | null;
+  href: string | null;
+}
+
+interface Props {
+  voci: Voce[];
+  class?: string;
+}
+
+const { voci, class: extraClass }: Props = Astro.props;
+const risolte = voci
+  .map((v) => ({ ...v, url: rotta(v.href) }))
+  .filter((v): v is Voce & { url: string; titolo: string } => !!v.url && !!v.titolo);
+---
+
+{
+  risolte.length > 0 && (
+    <div class:list={['sn', extraClass]}>
+      <div class="container">
+        <ul class="sn__lista">
+          {risolte.map((v) => (
+            <li class="sn__voce">
+              <a class="sn__link" href={v.url}>
+                {v.numero && <span class="sn__numero">{v.numero}</span>}
+                <span class="sn__titolo">{v.titolo}</span>
+                <span class="sn__azione" aria-hidden="true">Scopri di più</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .sn {
+    position: relative;
+    z-index: 2;
+  }
+
+  .sn__lista {
+    display: grid;
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--c-surface);
+  }
+  @media (min-width: 769px) {
+    .sn {
+      /* sovrapposta al bordo inferiore dell'hero, come nell'originale */
+      margin-top: -75px;
+    }
+    .sn__lista {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      /* la riga di separazione fra le voci è il fondo che traspare dal gap */
+      background: var(--c-border);
+      box-shadow: 0 8px 30px rgb(0 0 0 / 8%);
+    }
+  }
+
+  .sn__voce {
+    margin: 0;
+    background: var(--c-surface);
+  }
+
+  .sn__link {
+    display: grid;
+    align-content: center;
+    gap: var(--s-2);
+    height: 100%;
+    padding: var(--s-6);
+    text-decoration: none;
+    transition: background-color var(--dur) var(--ease);
+  }
+  .sn__link:hover {
+    background: var(--c-surface-alt);
+  }
+
+  .sn__numero {
+    color: var(--c-brand);
+    font-size: var(--t-base);
+    font-weight: var(--w-regular);
+    line-height: 1;
+  }
+
+  .sn__titolo {
+    color: var(--c-ink);
+    font-size: var(--t-base);
+    font-weight: var(--w-bold);
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  .sn__azione {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    color: var(--c-ink-soft);
+    font-size: var(--t-xs);
+  }
+  .sn__azione::before {
+    content: '';
+    width: 14px;
+    height: 1px;
+    background: var(--c-brand);
+  }
+  .sn__link:hover .sn__azione {
+    color: var(--c-brand);
+  }
+
+  @media (min-width: 769px) {
+    .sn__link {
+      padding: var(--s-6) var(--s-5);
+    }
+  }
+</style>

@@ -1,22 +1,466 @@
 ---
 /**
- * Segnaposto della homepage. Sarà sostituita nel passo 5 (le 11 pagine one-off).
- * Esiste solo perché il build sia coerente e la rotta / risponda.
+ * Homepage.
+ *
+ * Struttura ricostruita dai blocchi estratti (`src/content/pagine/home.json`),
+ * nell'ordine dell'originale:
+ *   hero a 3 slide · card dei 4 servizi numerati · titolo "Realizziamo il
+ *   progetto dei tuoi sogni" con il disegno tecnico · "La nostra storia" ·
+ *   "Dal progetto alla realizzazione" · highlights con i 4 contatori ·
+ *   i 3 store · "Le nostre realizzazioni" · i 3 riquadri di tassonomia ·
+ *   News and Event · blocco contatti (dal layout).
+ *
+ * Difetti dell'originale corretti qui:
+ *  - **3 `<h1>`** (uno per slide dell'hero, con sopra tre `<h2>` identici):
+ *    ora uno solo;
+ *  - i **riquadri di tassonomia** erano un buco bianco di 700px, perché il
+ *    fondo dichiarato nel CSS non veniva applicato e i titoli bianchi
+ *    finivano su bianco;
+ *  - i **contatori** mostravano `0` finché non si scorreva;
+ *  - **nessuna meta description**;
+ *  - i link puntavano a `index.html%3Fp=976.html`.
  */
-import BaseLayout from '../layouts/SiteLayout.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import HeroSlider from '../components/HeroSlider.astro';
+import ServiziNumerati from '../components/ServiziNumerati.astro';
+import Riquadri from '../components/Riquadri.astro';
+import Titoletto from '../components/Titoletto.astro';
+import Counter from '../components/Counter.astro';
 import Button from '../components/Button.astro';
-import { site } from '../data/site';
+import Card from '../components/Card.astro';
+import { immagine, rotta } from '../lib/immagini';
+
+const pagina = await getEntry('pagine', 'home');
+if (!pagina) throw new Error('Contenuto della homepage assente: eseguire _migrazione/extract-pages.js');
+const { blocchi, hero } = pagina.data;
+
+/** Un blocco per tipo, nell'ordine in cui l'estrattore li ha trovati. */
+const primo = <T extends (typeof blocchi)[number]['tipo']>(tipo: T) =>
+  blocchi.find((b) => b.tipo === tipo) as Extract<(typeof blocchi)[number], { tipo: T }> | undefined;
+const tutti = <T extends (typeof blocchi)[number]['tipo']>(tipo: T) =>
+  blocchi.filter((b) => b.tipo === tipo) as Extract<(typeof blocchi)[number], { tipo: T }>[];
+
+const titoli = tutti('titolo');
+const testi = tutti('testo');
+const bottoni = tutti('bottone');
+const immagini = tutti('immagine');
+const contatori = tutti('contatore');
+
+/** Il titolo con quel testo, cercato per contenuto e non per posizione. */
+const titolo = (frammento: string) =>
+  titoli.find((t) => t.testo.toLowerCase().includes(frammento.toLowerCase()));
+
+const slides = (hero?.slides ?? [])
+  .map((s) => ({ img: immagine(s.imagePath), titolo: s.titolo, kicker: s.kicker }))
+  .filter((s) => !!s.img && !!s.titolo)
+  .map((s) => ({ image: s.img!, titolo: s.titolo!, kicker: s.kicker }));
+
+/* Le tre immagini-link degli store: sono SVG con il nome del tipo di punto
+   vendita, quindi l'`alt` va scritto — nell'originale era vuoto. */
+const ETICHETTE_STORE: Record<string, string> = {
+  '/type_stores/showroom-cat/': 'Showroom',
+  '/type_stores/rivendita-edile/': 'Rivendita edile',
+  '/type_stores/ferramenta/': 'Ferramenta',
+};
+const store = immagini
+  .filter((i) => i.href && /type_stores/.test(i.href))
+  .map((i) => ({ img: immagine(i.path), url: rotta(i.href), path: i.path }))
+  .filter((s) => !!s.img && !!s.url)
+  .map((s) => ({ img: s.img!, url: s.url!, etichetta: ETICHETTE_STORE[s.url!] ?? 'Punto vendita' }));
+
+/**
+ * Le immagini delle sezioni, assegnate per file dopo averle guardate una per
+ * una: l'ordine nel DOM non basta a capire quale va dove.
+ *   Raggruppa-1648  disegno tecnico di una casa (fondo della sezione "claim")
+ *   Raggruppa-1649  foto: due professionisti su una tavola di progetto
+ *   Raggruppa-1668  render di una villa moderna
+ *   Raggruppa-1674  vista dall'alto di un appartamento arredato
+ *   Raggruppa-1679  foto di uno showroom (fondo della sezione "store")
+ */
+const imgPer = (nome: string) => immagine(immagini.find((i) => i.path?.includes(nome))?.path);
+const fondo = (nome: string) =>
+  immagine(pagina.data.fondiSezione.find((f) => f.path.includes(nome))?.path);
+
+const disegnoTecnico = fondo('Raggruppa-1648');
+const fotoStoria = imgPer('Raggruppa-1649');
+const renderVilla = imgPer('Raggruppa-1668');
+const vistaAppartamento = imgPer('Raggruppa-1674');
+const fondoStore = fondo('Raggruppa-1679');
+
+/** Gli ultimi 3 articoli, per la sezione News and Event. */
+const posts = (await getCollection('posts'))
+  .map((v) => v.data)
+  .map((d) => ({
+    titolo: d.title,
+    href: `/${d.slug}/`,
+    data: d.postInfo.DATA_iso ?? null,
+    immagine: immagine(d.featuredImage?.path),
+    immagineAlt: d.featuredImage?.alt ?? '',
+  }))
+  .sort((a, b) => (b.data ?? '').localeCompare(a.data ?? ''))
+  .slice(0, 3);
+
+const descrizione =
+  pagina.data.metaDescription ??
+  'Edilizia, arredo bagno, ceramiche e ferramenta in Campania. Quattro showroom, ' +
+    'punto edile, ferramenta e un servizio completo di progettazione e ristrutturazione.';
 ---
 
-<BaseLayout title="Homepage" description={site.description} noindex>
-  <div class="container" style="padding-block: var(--s-20)">
-    <h1 style="font-size: var(--t-display-sm)">{site.shortName}</h1>
-    <p style="max-width: 60ch; color: var(--c-ink-soft); font-size: var(--t-lg)">
-      Ricostruzione in corso. Il design system misurato sul sito originale è visibile
-      nella pagina di controllo.
-    </p>
-    <p style="margin-top: var(--s-8)">
-      <Button href="/design-system/" variant="outline-dark">Design system</Button>
-    </p>
-  </div>
-</BaseLayout>
+<SiteLayout title="Homepage" titleFull={pagina.data.titleCompleto ?? undefined} description={descrizione}>
+  {slides.length > 0 && <HeroSlider slides={slides} />}
+
+  {primo('servizinumerati') && <ServiziNumerati voci={primo('servizinumerati')!.voci} />}
+
+  <!-- Realizziamo il progetto dei tuoi sogni -->
+  <section class="section home__claim">
+    <div class="container home__claimInner">
+      <Titoletto as="h2" size="lg" tone="muted">
+        {titolo('Realizziamo')?.testo ?? 'Realizziamo il Progetto dei tuoi sogni'}
+      </Titoletto>
+      {
+        disegnoTecnico && (
+          <Image
+            class="home__disegno"
+            src={disegnoTecnico}
+            alt=""
+            widths={[480, 720, 960]}
+            sizes="(min-width: 992px) 46vw, 92vw"
+            format="webp"
+            quality={80}
+            loading="lazy"
+            decoding="async"
+          />
+        )
+      }
+    </div>
+  </section>
+
+  <!-- La nostra storia -->
+  <section class="section home__storia">
+    <div class="container home__duePer">
+      {
+        fotoStoria && (
+          <Image
+            class="home__foto"
+            src={fotoStoria}
+            alt="Due professionisti di Costruisci e Arreda al lavoro su una tavola di progetto"
+            widths={[480, 720, 1080]}
+            sizes="(min-width: 992px) 46vw, 92vw"
+            format="webp"
+            quality={78}
+            loading="lazy"
+            decoding="async"
+          />
+        )
+      }
+      <div class="home__testo">
+        <Titoletto as="h2" size="sm" tone="muted">
+          {titolo('La nostra storia')?.testo ?? 'La nostra storia'}
+        </Titoletto>
+        {testi[0] && <div class="home__paragrafo" set:html={testi[0].html} />}
+        {
+          bottoni[0]?.href && rotta(bottoni[0].href) && (
+            <p class="home__azione">
+              <Button href={rotta(bottoni[0].href)!} variant="outline-dark">{bottoni[0].testo}</Button>
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Dal progetto alla realizzazione -->
+  <section class="section home__progetto">
+    <div class="container home__duePer home__duePer--invertito">
+      <div class="home__testo">
+        <Titoletto as="h2" size="sm" tone="muted">
+          {titolo('Dal progetto')?.testo ?? 'Dal progetto alla realizzazione'}
+        </Titoletto>
+        {testi[1] && <div class="home__paragrafo" set:html={testi[1].html} />}
+        {
+          bottoni[1]?.href && rotta(bottoni[1].href) && (
+            <p class="home__azione">
+              <Button href={rotta(bottoni[1].href)!} variant="outline-dark">{bottoni[1].testo}</Button>
+            </p>
+          )
+        }
+      </div>
+      <div class="home__coppiaFoto">
+        {
+          renderVilla && (
+            <Image
+              class="home__foto"
+              src={renderVilla}
+              alt="Rendering di una villa moderna con grandi vetrate"
+              widths={[480, 720, 1080]}
+              sizes="(min-width: 992px) 46vw, 92vw"
+              format="webp"
+              quality={78}
+              loading="lazy"
+              decoding="async"
+            />
+          )
+        }
+        {
+          vistaAppartamento && (
+            <Image
+              class="home__foto"
+              src={vistaAppartamento}
+              alt="Vista dall'alto di un appartamento arredato, con soggiorno e terrazzo"
+              widths={[480, 720, 1080]}
+              sizes="(min-width: 992px) 46vw, 92vw"
+              format="webp"
+              quality={78}
+              loading="lazy"
+              decoding="async"
+            />
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlights -->
+  {
+    contatori.length > 0 && (
+      <section class="section section--alt home__highlights">
+        <div class="container">
+          <Titoletto as="h2" size="sm" tone="muted" class="home__titoloSezione">
+            {titolo('highlights')?.testo ?? 'Highlights'}
+          </Titoletto>
+          <div class="home__contatori">
+            {contatori.map((c) => (
+              <Counter
+                value={c.valore ?? 0}
+                prefix={c.prefisso}
+                suffix={c.suffisso}
+                label={c.etichetta}
+                duration={c.durata}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Store -->
+  {
+    store.length > 0 && (
+      <section class="section home__store">
+        {
+          fondoStore && (
+            <Image
+              class="home__storeFondo"
+              src={fondoStore}
+              alt=""
+              widths={[960, 1440, 1920]}
+              sizes="100vw"
+              format="webp"
+              quality={70}
+              loading="lazy"
+              decoding="async"
+            />
+          )
+        }
+        <div class="container home__storeInner">
+          <Titoletto as="h2" size="sm" tone={fondoStore ? 'light' : 'muted'} class="home__titoloSezione">
+            {titolo('store')?.testo ?? 'Store'}
+          </Titoletto>
+          <ul class="home__storeLista">
+            {store.map((s) => (
+              <li>
+                <a class="home__storeLink" href={s.url}>
+                  {/* SVG: si serve tale e quale, non ha senso rasterizzarlo in WebP */}
+                  <img
+                    src={s.img.src}
+                    width={s.img.width}
+                    height={s.img.height}
+                    alt={s.etichetta}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Le nostre realizzazioni -->
+  <section class="section home__realizzazioni">
+    <div class="container home__duePer">
+      <Titoletto as="h2" size="sm" tone="muted">
+        {titolo('Le nostre realizzazioni')?.testo ?? 'Le nostre realizzazioni'}
+      </Titoletto>
+      <div class="home__testo">
+        {testi[2] && <div class="home__paragrafo" set:html={testi[2].html} />}
+        {
+          bottoni[2]?.href && rotta(bottoni[2].href) && (
+            <p class="home__azione">
+              <Button href={rotta(bottoni[2].href)!} variant="outline-dark">{bottoni[2].testo}</Button>
+            </p>
+          )
+        }
+      </div>
+    </div>
+
+    {
+      primo('riquadri') && (
+        <div class="container home__riquadri">
+          <Riquadri voci={primo('riquadri')!.voci} />
+        </div>
+      )
+    }
+  </section>
+
+  <!-- News and Event -->
+  {
+    posts.length > 0 && (
+      <section class="section section--alt home__news">
+        <div class="container">
+          <Titoletto as="h2" size="sm" tone="muted" class="home__titoloSezione">
+            News and Event
+          </Titoletto>
+          <div class="grid grid--3-fisse home__newsGriglia">
+            {posts.map((p) => <Card {...p} kicker="News" headingLevel="h3" />)}
+          </div>
+          <p class="home__azione home__azione--centrata">
+            <Button href="/category/ultime-news-e-articoli/" variant="outline-dark">
+              Tutte le news
+            </Button>
+          </p>
+        </div>
+      </section>
+    )
+  }
+</SiteLayout>
+
+<style>
+  .home__claimInner,
+  .home__duePer {
+    display: grid;
+    gap: var(--s-12);
+    align-items: center;
+  }
+  @media (min-width: 992px) {
+    .home__claimInner,
+    .home__duePer {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-20);
+    }
+  }
+
+  .home__duePer--invertito > *:first-child {
+    order: 2;
+  }
+  @media (max-width: 991px) {
+    .home__duePer--invertito > *:first-child {
+      order: 0;
+    }
+  }
+
+  .home__disegno,
+  .home__foto {
+    width: 100%;
+  }
+
+  .home__testo {
+    display: grid;
+    gap: var(--s-6);
+    align-content: start;
+  }
+  .home__paragrafo {
+    font-size: var(--t-base);
+    line-height: var(--t-base-lh);
+  }
+  .home__azione {
+    margin: 0;
+  }
+  .home__azione--centrata {
+    margin-top: var(--s-12);
+    text-align: center;
+  }
+
+  .home__titoloSezione {
+    margin-bottom: var(--s-15);
+  }
+
+  .home__contatori {
+    display: grid;
+    gap: var(--s-12) var(--s-8);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  }
+
+  .home__coppiaFoto {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  /* La sezione store nell'originale ha un'immagine di fondo dichiarata nel CSS
+     che non viene applicata: risultato, un buco bianco di 700px con il titolo
+     bianco su bianco e i tre loghi invisibili. Qui il fondo si vede. */
+  .home__store {
+    position: relative;
+    overflow: clip;
+  }
+  .home__storeFondo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* Velo abbastanza scuro per il contrasto del testo bianco, abbastanza chiaro
+     perché la foto dello showroom resti riconoscibile: al 55% diventava una
+     campitura grigia piatta. */
+  .home__store::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 55%) 0%, rgb(0 0 0 / 30%) 45%, rgb(0 0 0 / 50%) 100%);
+  }
+  .home__storeInner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .home__storeLista {
+    display: grid;
+    gap: var(--s-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 769px) {
+    .home__storeLista {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .home__storeLista li {
+    margin: 0;
+  }
+  .home__storeLink {
+    display: block;
+    transition: opacity var(--dur) var(--ease);
+  }
+  /* i tre loghi sono SVG scuri: sopra un fondo scuro vanno schiariti */
+  .home__store .home__storeLink img {
+    filter: brightness(0) invert(1);
+  }
+  .home__storeLink:hover {
+    opacity: 0.75;
+  }
+
+  .home__riquadri {
+    margin-top: var(--s-15);
+  }
+
+  .home__newsGriglia {
+    gap: var(--s-12) var(--s-8);
+  }
+</style>

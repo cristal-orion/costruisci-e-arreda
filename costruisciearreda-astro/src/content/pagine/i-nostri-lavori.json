@@ -1,0 +1,102 @@
+{
+  "slug": "i-nostri-lavori",
+  "urlOriginale": "/i-nostri-lavori/",
+  "titleCompleto": "I nostri lavori - Costruisci e Arreda S.r.l.",
+  "title": "I nostri lavori",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "1398",
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1647-2.jpg",
+        "image": "Raggruppa-1647-2.jpg",
+        "titolo": "I NOSTRI PROGETTI",
+        "titoloTag": "h1",
+        "kicker": "REALIZZAZIONI"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black"
+      ],
+      "livello": 2,
+      "testo": "Progetti, rendering e ristrutturazioni",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<div>Nel mondo dell’<b>architettura</b> e del <b>design</b>, la progettazione e la ristrutturazione di spazi abitativi e commerciali rappresentano un’opportunità unica per <b>trasformare visioni</b> e <b>idee</b> in realtà tangibili. Ogni progetto, dal più ambizioso al più intimo, inizia con una <b>concezione creativa</b> che si evolve attraverso dettagli accurati e soluzioni innovative. La fase di<b> rendering</b> gioca un ruolo cruciale, offrendo una visione realistica e dettagliata del risultato finale, permettendo ai clienti di esplorare e perfezionare il loro <b>progetto</b> prima della sua realizzazione concreta.</div>",
+      "parole": 81,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "progetti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "render",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "prima/dopo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "riquadri",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "titolo": "progetti",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/progetti/index.html",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoRotto": false
+        },
+        {
+          "titolo": "render",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/render/index.html",
+          "path": "2024/06/Raggruppa-1695.jpg",
+          "fondoRotto": false
+        },
+        {
+          "titolo": "prima/dopo",
+          "titoloLivello": 2,
+          "href": "../cat_realizzazioni/prima-dopo/index.html",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoRotto": false
+        }
+      ],
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "era indicizzabile nell originale"
+  ]
+}

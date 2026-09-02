@@ -91,6 +91,62 @@ const comuni = {
   avvisi: z.array(z.string()).default([]),
 };
 
+/**
+ * Le pagine **one-off** non hanno una struttura fissa: ognuna è una sequenza sua
+ * di blocchi. Lo schema descrive quindi un elenco ordinato di blocchi tipizzati,
+ * generato da `_migrazione/extract-pages.js`.
+ */
+const immagineVoce = z.object({
+  path: z.string().nullable().default(null),
+  fullPath: z.string().nullable().default(null),
+  src: z.string().nullable().default(null),
+  alt: z.string().default(''),
+  titolo: z.string().nullable().default(null),
+  href: z.string().nullable().default(null),
+  width: z.number().nullable().default(null),
+  height: z.number().nullable().default(null),
+});
+
+const comuniBlocco = {
+  visibile: z.boolean().default(true),
+  varianti: z.array(z.string()).default([]),
+  soloMobile: z.boolean().default(false),
+};
+
+const blocco = z.discriminatedUnion('tipo', [
+  z.object({ tipo: z.literal('titolo'), ...comuniBlocco, livello: z.number().nullable(), testo: z.string(), href: z.string().nullable().default(null) }),
+  z.object({ tipo: z.literal('testo'), ...comuniBlocco, html: z.string(), parole: z.number().default(0) }),
+  z.object({ tipo: z.literal('immagine'), ...comuniBlocco, path: z.string().nullable(), src: z.string().nullable().default(null), alt: z.string().default(''), width: z.number().nullable().default(null), height: z.number().nullable().default(null), href: z.string().nullable().default(null), didascalia: z.string().nullable().default(null) }),
+  z.object({ tipo: z.literal('bottone'), ...comuniBlocco, testo: z.string(), href: z.string().nullable() }),
+  z.object({ tipo: z.literal('contatore'), ...comuniBlocco, valore: z.number().nullable(), durata: z.number().default(2000), prefisso: z.string().default(''), suffisso: z.string().default(''), etichetta: z.string().default('') }),
+  z.object({ tipo: z.literal('galleria'), ...comuniBlocco, voci: z.array(immagineVoce) }),
+  z.object({ tipo: z.literal('carousel'), ...comuniBlocco, voci: z.array(immagineVoce) }),
+  z.object({ tipo: z.literal('elenco'), ...comuniBlocco, voci: z.array(z.object({ titolo: z.string().nullable(), testo: z.string().nullable().default(null), href: z.string().nullable(), path: z.string().nullable().default(null), alt: z.string().default('') })) }),
+  z.object({ tipo: z.literal('accordion'), ...comuniBlocco, voci: z.array(z.object({ titolo: z.string(), html: z.string() })) }),
+  z.object({ tipo: z.literal('elencoVoci'), ...comuniBlocco, voci: z.array(z.object({ testo: z.string(), href: z.string().nullable() })) }),
+  z.object({ tipo: z.literal('scheda'), ...comuniBlocco, path: z.string().nullable(), alt: z.string().default(''), titolo: z.string().nullable(), html: z.string().default(''), href: z.string().nullable().default(null) }),
+  z.object({ tipo: z.literal('form'), ...comuniBlocco, id: z.array(z.string()) }),
+  z.object({ tipo: z.literal('separatore'), ...comuniBlocco }),
+  z.object({ tipo: z.literal('cornice'), ...comuniBlocco, sottotipo: z.string() }),
+  z.object({ tipo: z.literal('servizinumerati'), ...comuniBlocco, voci: z.array(z.object({ numero: z.string().nullable(), titolo: z.string().nullable(), href: z.string().nullable() })) }),
+  z.object({
+    tipo: z.literal('riquadri'),
+    ...comuniBlocco,
+    voci: z.array(
+      z.object({
+        titolo: z.string(),
+        titoloLivello: z.number().nullable().default(null),
+        href: z.string().nullable(),
+        elementorId: z.string().nullable().default(null),
+        path: z.string().nullable().default(null),
+        /** false = nell'originale il fondo non si vedeva (buco bianco). */
+        fondoApplicato: z.boolean().default(true),
+      }),
+    ),
+  }),
+  z.object({ tipo: z.literal('sconosciuto'), ...comuniBlocco, sottotipo: z.string(), testo: z.string().default('') }),
+]);
+
 const loader = (dir: string) => glob({ pattern: '**/*.json', base: `./src/content/${dir}` });
 
 export const collections = {
@@ -112,5 +168,52 @@ export const collections = {
   posts: defineCollection({
     loader: loader('posts'),
     schema: z.object(comuni),
+  }),
+
+  pagine: defineCollection({
+    loader: loader('pagine'),
+    schema: z.object({
+      slug: z.string(),
+      urlOriginale: z.string(),
+      title: z.string().nullable(),
+      titleCompleto: z.string().nullable(),
+      metaDescription: z.string().nullable(),
+      /** Il `<meta name="robots">` dell'originale: dice cosa era indicizzabile. */
+      robots: z.string().nullable().default(null),
+      postId: z.string().nullable().default(null),
+      hero: z
+        .object({
+          slides: z.array(
+            z.object({
+              imagePath: z.string().nullable(),
+              image: z.string().nullable(),
+              titolo: z.string().nullable(),
+              titoloTag: z.string().nullable(),
+              kicker: z.string().nullable(),
+            }),
+          ),
+        })
+        .nullable()
+        .default(null),
+      blocchi: z.array(blocco).default([]),
+      /**
+       * Immagini di fondo delle sezioni, dichiarate nel CSS di Elementor.
+       * `fondoApplicato: false` significa che nell'originale **non si vedevano**:
+       * sulla homepage sono 5 su 7, e producono buchi bianchi di 700px con
+       * titoli bianchi su bianco. Nel rebuild si vedono.
+       */
+      fondiSezione: z
+        .array(
+          z.object({
+            elementorId: z.string(),
+            path: z.string(),
+            fondoApplicato: z.boolean().default(false),
+            testo: z.string().default(''),
+            altezza: z.number().default(0),
+          }),
+        )
+        .default([]),
+      avvisi: z.array(z.string()).default([]),
+    }),
   }),
 };

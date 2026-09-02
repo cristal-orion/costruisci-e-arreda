@@ -1,0 +1,26 @@
+{
+  "slug": "cookie-policy",
+  "urlOriginale": "/cookie-policy/",
+  "titleCompleto": "Cookie Policy - Costruisci e Arreda S.r.l.",
+  "title": "Cookie Policy",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "4335",
+  "hero": {
+    "slides": []
+  },
+  "blocchi": [
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<a href=\"https://www.iubenda.com/privacy-policy/19235990/cookie-policy\" class=\"iubenda-nostyle no-brand iubenda-noiframe iubenda-embed iubenda-noiframe iub-body-embed\" title=\"Cookie Policy\">Cookie Policy</a><script type=\"text/javascript\">(function (w,d) {var loader = function () {var s = d.createElement(\"script\"), tag = d.getElementsByTagName(\"script\")[0]; s.src=\"https://cdn.iubenda.com/iubenda.js\"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener(\"load\", loader, false);}else if(w.attachEvent){w.attachEvent(\"onload\", loader);}else{w.onload = loader;}})(window, document);</script>",
+      "parole": 25,
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "era indicizzabile nell originale"
+  ]
+}

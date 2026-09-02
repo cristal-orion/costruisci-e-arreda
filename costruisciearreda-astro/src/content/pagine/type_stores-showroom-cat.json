@@ -1,0 +1,142 @@
+{
+  "slug": "type_stores-showroom-cat",
+  "urlOriginale": "/type_stores/showroom-cat/",
+  "titleCompleto": "Showroom Archivi - Costruisci e Arreda S.r.l.",
+  "title": "Showroom Archivi",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": null,
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1648-1.jpg",
+        "image": "Raggruppa-1648-1.jpg",
+        "titolo": "Showroom",
+        "titoloTag": "h1",
+        "kicker": "STORE"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "LA NOSTRA IDEA DI SHOWROOM",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Il nostro showroom è il luogo ideale per esplorare soluzioni uniche e ispiranti per la tua casa. Qui, puoi toccare con mano materiali pregiati e visionare i prodotti più innovativi per pavimenti, rivestimenti e arredo bagno. Ogni spazio è progettato per offrirti un’esperienza immersiva, aiutandoti a visualizzare e realizzare il tuo progetto ideale.</p>",
+      "parole": 53,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "Le nostre realizzazioni",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Ogni progetto di architettura inizia con una <strong>visione creativa</strong> che prende forma attraverso dettagli accurati e innovativi. Grazie al <strong>rendering 3D</strong>, puoi vedere in anteprima il risultato finale, garantendo che ogni aspetto rispecchi <strong>le tue aspettative</strong>.</p>",
+      "parole": 36,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [
+        "btn",
+        "blackBorder"
+      ],
+      "testo": "Scopri di più",
+      "href": "../../index.html%3Fp=1398.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "progetti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "render",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "prima/dopo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "form",
+      "visibile": true,
+      "varianti": [],
+      "id": [
+        "95"
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "riquadri",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "titolo": "progetti",
+          "titoloLivello": 2,
+          "href": "../../cat_realizzazioni/progetti/index.html",
+          "path": null,
+          "fondoRotto": true
+        },
+        {
+          "titolo": "render",
+          "titoloLivello": 2,
+          "href": "../../cat_realizzazioni/render/index.html",
+          "path": null,
+          "fondoRotto": true
+        },
+        {
+          "titolo": "prima/dopo",
+          "titoloLivello": 2,
+          "href": "../../cat_realizzazioni/prima-dopo/index.html",
+          "path": null,
+          "fondoRotto": true
+        }
+      ],
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "era indicizzabile nell originale"
+  ]
+}

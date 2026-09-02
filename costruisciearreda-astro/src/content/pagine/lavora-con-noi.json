@@ -1,0 +1,95 @@
+{
+  "slug": "lavora-con-noi",
+  "urlOriginale": "/lavora-con-noi/",
+  "titleCompleto": "Lavora con Noi - Costruisci e Arreda S.r.l.",
+  "title": "Lavora con Noi",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "106",
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1729.jpg",
+        "image": "Raggruppa-1729.jpg",
+        "titolo": "lavora con noi",
+        "titoloTag": "h1",
+        "kicker": "JOB OPPORTUNITY"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black"
+      ],
+      "livello": 2,
+      "testo": "Ricerchiamo nuove figure da inserire nel nostro team.",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1732.jpg",
+      "src": "Raggruppa-1732.jpg",
+      "alt": "",
+      "width": 860,
+      "height": 656,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "COSA CERCHIAMO",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>In Costruisci e Arreda, crediamo che il cuore del nostro successo risieda nelle <b>persone</b> che fanno parte del nostro <b>team</b>. Siamo sempre alla ricerca di talenti motivati e appassionati che condividano la nostra visione e siano pronti a crescere con noi. Valorizziamo la collaborazione e l’impegno di ogni individuo, credendo che ognuno possa contribuire al <b>nostro successo</b> con idee fresche e soluzioni innovative. La capacità di lavorare bene in <b>team </b>e comunicare efficacemente è fondamentale, così come il desiderio di innovare e contribuire con dedizione. Se ti riconosci in questi valori e sei pronto a fare la differenza, inviaci la tua candidatura!</p>",
+      "parole": 102,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black"
+      ],
+      "livello": 2,
+      "testo": "INVIA LA TUA CANDIDATURA",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "form",
+      "visibile": true,
+      "varianti": [],
+      "id": [
+        "775"
+      ],
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "4 blocchi duplicati nell'originale, uniti in uno",
+    "1 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+    "era indicizzabile nell originale"
+  ]
+}

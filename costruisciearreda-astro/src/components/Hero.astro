@@ -101,7 +101,9 @@ const righe = title.split('\n');
     <div class="container hero__container">
       <div class="hero__content">
         <Tag class="hero__title">
-          {righe.map((riga, i) => (i === 0 ? riga : [<br />, riga]))}
+          {/* lo spazio dopo il `<br>` tiene separate le parole nel testo
+              estratto: senza, "progettazione" e "alla" si incollano */}
+          {righe.map((riga, i) => (i === 0 ? riga.trim() : [<br />, ' ', riga.trim()]))}
         </Tag>
         {
           kicker && (

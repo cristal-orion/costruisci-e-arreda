@@ -1,0 +1,389 @@
+{
+  "slug": "type_stores-ferramenta",
+  "urlOriginale": "/type_stores/ferramenta/",
+  "titleCompleto": "Ferramenta Archivi - Costruisci e Arreda S.r.l.",
+  "title": "Ferramenta Archivi",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": null,
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1647-3.jpg",
+        "image": "Raggruppa-1647-3.jpg",
+        "titolo": "Ferramenta",
+        "titoloTag": "h1",
+        "kicker": "STORE"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "Il punto di riferimento per privati, imbianchini, impiantisti, installatori e idraulici.",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Nel nostro store trovi tutto ciò che serve per i tuoi progetti: soluzioni per <b>impianti termoidraulici</b> ed <b>elettrici</b>, strumenti e materiali per il fai-da-te, chiavi e serrature per la sicurezza della tua casa, e vernici personalizzate.</p>",
+      "parole": 36,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/08/Ferramenta2.jpg",
+      "src": "Ferramenta2.jpg",
+      "alt": "",
+      "width": 1024,
+      "height": 781,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "La nostra sede",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Abbiamo anche<b> ricambi per aspirapolvere Folletto</b>, una vasta gamma di elettroutensili e utensili manuali, viti e sistemi di fissaggio, articoli per la casa e il giardino, e dispositivi di protezione individuale. Inoltre, offriamo prodotti per l’<b>illuminazione</b>, abbigliamento lavorativo, rubinetteria e maniglie di alta qualità, sistemi di condizionamento e tappeti per ogni ambiente.</p>",
+      "parole": 52,
+      "soloMobile": false
+    },
+    {
+      "tipo": "elencoVoci",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "testo": "Corso Ponticelli, 28/C 80147 – Napoli (NA)",
+          "href": null
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "marchi Ferramenta",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/well-done.png",
+      "src": "well-done.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Upower.png",
+      "src": "Upower.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Tremolada.png",
+      "src": "Tremolada.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Total.png",
+      "src": "Total.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Teorema.png",
+      "src": "Teorema.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Spadeitalia.png",
+      "src": "Spadeitalia.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/silca.png",
+      "src": "silca.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/ITALKALI.png",
+      "src": "ITALKALI.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Impercot.png",
+      "src": "Impercot.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/GROHEpng.png",
+      "src": "GROHEpng.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Fischer.png",
+      "src": "Fischer.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Far.png",
+      "src": "Far.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/comisa.png.png",
+      "src": "comisa.png.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/CISA.png",
+      "src": "CISA.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Chaffoteaux.png",
+      "src": "Chaffoteaux.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Catis.png",
+      "src": "Catis.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Castoro.png",
+      "src": "Castoro.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Carson.png",
+      "src": "Carson.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/bostik.png",
+      "src": "bostik.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/AUX_logo.png.png",
+      "src": "AUX_logo.png.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/arcansas.png",
+      "src": "arcansas.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "form",
+      "visibile": true,
+      "varianti": [],
+      "id": [
+        "95"
+      ],
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "3 blocchi duplicati nell'originale, uniti in uno",
+    "3 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+    "era indicizzabile nell originale"
+  ]
+}

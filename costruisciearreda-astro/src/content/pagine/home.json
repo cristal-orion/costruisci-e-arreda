@@ -1,0 +1,430 @@
+{
+  "slug": "home",
+  "urlOriginale": "/",
+  "titleCompleto": "Homepage - Costruisci e Arreda S.r.l.",
+  "title": "Homepage",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "2",
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/05/Raggruppa-1650.jpg",
+        "image": "Raggruppa-1650.jpg",
+        "titolo": "professionisti \ndel settore",
+        "titoloTag": "h1",
+        "kicker": "Edilizia, design e ferramenta"
+      },
+      {
+        "imagePath": "2024/05/Raggruppa-1652.jpg",
+        "image": "Raggruppa-1652.jpg",
+        "titolo": "materie prime \n di qualità",
+        "titoloTag": "h1",
+        "kicker": "Edilizia, design e ferramenta"
+      },
+      {
+        "imagePath": "2024/05/Raggruppa-1655.jpg",
+        "image": "Raggruppa-1655.jpg",
+        "titolo": "estetica e\n funzionalità",
+        "titoloTag": "h1",
+        "kicker": "Edilizia, design e ferramenta"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "black"
+      ],
+      "livello": 2,
+      "testo": "Realizziamo il Progetto dei tuoi sogni",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/05/Raggruppa-1649.jpg",
+      "src": "Raggruppa-1649.jpg",
+      "alt": "",
+      "width": 860,
+      "height": 656,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "La nostra storia",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Da una piccola ferramenta a Ponticelli, siamo cresciuti fino a diventare leader in <strong>Campania</strong> con<strong> quattro showroom</strong> dedicati all’<strong>edilizia</strong>,<strong> arredo bagno</strong>,<strong> ceramiche</strong> e <strong>ferramenta</strong>.</p>",
+      "parole": 24,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [
+        "btn",
+        "blackBorder"
+      ],
+      "testo": "Scopri di più",
+      "href": "index.html%3Fp=100.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/05/Raggruppa-1674.jpg",
+      "src": "Raggruppa-1674.jpg",
+      "alt": "",
+      "width": 760,
+      "height": 830,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/05/Raggruppa-1668.jpg",
+      "src": "Raggruppa-1668.jpg",
+      "alt": "",
+      "width": 859,
+      "height": 496,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "Dal progetto alla realizzazione",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Affidati al nostro team per un servizio di <strong>ristrutturazione completo</strong>, che ti accompagna in ogni fase del processo, dal <strong>sopralluogo</strong> iniziale alla <strong>consegna</strong> finale del progetto.</p>",
+      "parole": 26,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [
+        "btn",
+        "blackBorder"
+      ],
+      "testo": "Scopri di più",
+      "href": "index.html%3Fp=905.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "highlights",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "contatore",
+      "visibile": true,
+      "varianti": [],
+      "valore": 24,
+      "durata": 2000,
+      "prefisso": "",
+      "suffisso": "",
+      "etichetta": "Anni di esperienza",
+      "soloMobile": false
+    },
+    {
+      "tipo": "contatore",
+      "visibile": true,
+      "varianti": [],
+      "valore": 40,
+      "durata": 2000,
+      "prefisso": "",
+      "suffisso": "+",
+      "etichetta": "Progetti Terminati",
+      "soloMobile": false
+    },
+    {
+      "tipo": "contatore",
+      "visibile": true,
+      "varianti": [],
+      "valore": 100,
+      "durata": 2000,
+      "prefisso": "",
+      "suffisso": "",
+      "etichetta": "Clienti soddisfatti",
+      "soloMobile": false
+    },
+    {
+      "tipo": "contatore",
+      "visibile": true,
+      "varianti": [],
+      "valore": 10,
+      "durata": 2000,
+      "prefisso": "",
+      "suffisso": "",
+      "etichetta": "obiettivi aziendali",
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "store",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Showroom.svg",
+      "src": "Showroom.svg",
+      "alt": "",
+      "width": 229,
+      "height": 233,
+      "href": "type_stores/showroom-cat/index.html",
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/PuntoEdile.svg",
+      "src": "PuntoEdile.svg",
+      "alt": "",
+      "width": 229,
+      "height": 233,
+      "href": "type_stores/rivendita-edile/index.html",
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Ferramenta-1.svg",
+      "src": "Ferramenta-1.svg",
+      "alt": "",
+      "width": 233,
+      "height": 233,
+      "href": "type_stores/ferramenta/index.html",
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey"
+      ],
+      "livello": 2,
+      "testo": "Le nostre realizzazioni",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Ogni progetto di architettura inizia con una <strong>visione creativa</strong> che prende forma attraverso dettagli accurati e innovativi. Grazie al <strong>rendering 3D</strong>, puoi vedere in anteprima il risultato finale, garantendo che ogni aspetto rispecchi <strong>le tue aspettative</strong>.</p>",
+      "parole": 36,
+      "soloMobile": false
+    },
+    {
+      "tipo": "bottone",
+      "visibile": true,
+      "varianti": [
+        "btn",
+        "blackBorder"
+      ],
+      "testo": "Scopri di più",
+      "href": "index.html%3Fp=1398.html",
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "progetti",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "render",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "prima/dopo",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "servizinumerati",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "numero": "01",
+          "titolo": "Disbrigo pratiche",
+          "href": "index.html%3Fp=979.html"
+        },
+        {
+          "numero": "02",
+          "titolo": "Direzione lavori",
+          "href": "index.html%3Fp=980.html"
+        },
+        {
+          "numero": "03",
+          "titolo": "Consulenza finiture",
+          "href": "index.html%3Fp=978.html"
+        },
+        {
+          "numero": "04",
+          "titolo": "Certificazioni",
+          "href": "index.html%3Fp=982.html"
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "riquadri",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "titolo": "progetti",
+          "titoloLivello": 2,
+          "href": "cat_realizzazioni/progetti/index.html",
+          "elementorId": "ce58642",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
+        },
+        {
+          "titolo": "render",
+          "titoloLivello": 2,
+          "href": "cat_realizzazioni/render/index.html",
+          "elementorId": "f044c05",
+          "path": "2024/06/Raggruppa-1695.jpg",
+          "fondoApplicato": false
+        },
+        {
+          "titolo": "prima/dopo",
+          "titoloLivello": 2,
+          "href": "cat_realizzazioni/prima-dopo/index.html",
+          "elementorId": "2c9b66d",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
+        }
+      ],
+      "soloMobile": false
+    }
+  ],
+  "fondiSezione": [
+    {
+      "elementorId": "bc94f23",
+      "fondoApplicato": true,
+      "testo": "",
+      "altezza": 573,
+      "path": "2024/05/Raggruppa-1648.jpg"
+    },
+    {
+      "elementorId": "b2a9258",
+      "fondoApplicato": false,
+      "testo": "La nostra storia Da una piccola ferramenta a Ponticelli, siamo cresciu",
+      "altezza": 500,
+      "path": "2024/05/Raggruppa-1665.jpg"
+    },
+    {
+      "elementorId": "80982c6",
+      "fondoApplicato": false,
+      "testo": "Dal progetto alla realizzazione Affidati al nostro team per un servizi",
+      "altezza": 949,
+      "path": "2024/05/Raggruppa-1665.jpg"
+    },
+    {
+      "elementorId": "7985c83",
+      "fondoApplicato": false,
+      "testo": "store",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1679.jpg"
+    },
+    {
+      "elementorId": "ce58642",
+      "fondoApplicato": false,
+      "testo": "progetti",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    },
+    {
+      "elementorId": "f044c05",
+      "fondoApplicato": false,
+      "testo": "render",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1695.jpg"
+    },
+    {
+      "elementorId": "2c9b66d",
+      "fondoApplicato": false,
+      "testo": "prima/dopo",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "9 blocchi duplicati nell'originale, uniti in uno",
+    "3 riquadri con immagine di fondo NON applicata nell'originale (buco bianco con titolo bianco su bianco): nel rebuild il fondo si vede",
+    "era indicizzabile nell originale"
+  ]
+}

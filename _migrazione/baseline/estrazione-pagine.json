@@ -1,0 +1,447 @@
+{
+  "generated": "2026-09-02T08:38:57.576Z",
+  "pagine": {
+    "/": {
+      "slug": "home",
+      "title": "Homepage",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 3,
+      "blocchi": 27,
+      "tipi": {
+        "titolo": 9,
+        "immagine": 6,
+        "testo": 3,
+        "bottone": 3,
+        "contatore": 4,
+        "servizinumerati": 1,
+        "riquadri": 1
+      },
+      "parole": 86,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "9 blocchi duplicati nell'originale, uniti in uno",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/la-nostra-storia/": {
+      "slug": "la-nostra-storia",
+      "title": "La nostra storia",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 29,
+      "tipi": {
+        "titolo": 9,
+        "testo": 4,
+        "immagine": 4,
+        "contatore": 4,
+        "accordion": 1,
+        "bottone": 2,
+        "scheda": 4,
+        "riquadri": 1
+      },
+      "parole": 329,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "1 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/il-nostro-team/": {
+      "slug": "il-nostro-team",
+      "title": "Il nostro Team",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 28,
+      "tipi": {
+        "titolo": 7,
+        "immagine": 1,
+        "testo": 3,
+        "scheda": 15,
+        "bottone": 1,
+        "riquadri": 1
+      },
+      "parole": 134,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "6 blocchi duplicati nell'originale, uniti in uno",
+        "1 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/lavora-con-noi/": {
+      "slug": "lavora-con-noi",
+      "title": "Lavora con Noi",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 6,
+      "tipi": {
+        "titolo": 3,
+        "immagine": 1,
+        "testo": 1,
+        "form": 1
+      },
+      "parole": 102,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "4 blocchi duplicati nell'originale, uniti in uno",
+        "1 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/contatti/": {
+      "slug": "contatti",
+      "title": "Contatti",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 14,
+      "tipi": {
+        "titolo": 5,
+        "testo": 1,
+        "elencoVoci": 4,
+        "immagine": 4
+      },
+      "parole": 45,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "10 blocchi duplicati nell'originale, uniti in uno",
+        "2 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/dalla-progettazione-alla-realizzazione/": {
+      "slug": "dalla-progettazione-alla-realizzazione",
+      "title": "Servizi",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 53,
+      "tipi": {
+        "titolo": 18,
+        "immagine": 12,
+        "testo": 12,
+        "elenco": 1,
+        "bottone": 9,
+        "riquadri": 1
+      },
+      "parole": 315,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "9 blocchi duplicati nell'originale, uniti in uno",
+        "1 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/i-nostri-lavori/": {
+      "slug": "i-nostri-lavori",
+      "title": "I nostri lavori",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 6,
+      "tipi": {
+        "titolo": 4,
+        "testo": 1,
+        "riquadri": 1
+      },
+      "parole": 81,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/richiedi-preventivo/": {
+      "slug": "richiedi-preventivo",
+      "title": "Richiedi preventivo",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 5,
+      "tipi": {
+        "titolo": 2,
+        "testo": 2,
+        "form": 1
+      },
+      "parole": 108,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "2 blocchi duplicati nell'originale, uniti in uno",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/privacy-policy/": {
+      "slug": "privacy-policy",
+      "title": "Privacy Policy",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 0,
+      "blocchi": 1,
+      "tipi": {
+        "testo": 1
+      },
+      "parole": 25,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/cookie-policy/": {
+      "slug": "cookie-policy",
+      "title": "Cookie Policy",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 0,
+      "blocchi": 1,
+      "tipi": {
+        "testo": 1
+      },
+      "parole": 25,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/promo-casa/": {
+      "slug": "promo-casa",
+      "title": "Promo Casa",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 0,
+      "blocchi": 12,
+      "tipi": {
+        "immagine": 3,
+        "titolo": 3,
+        "testo": 4,
+        "form": 1,
+        "elencoVoci": 1
+      },
+      "parole": 131,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/soluzione-ceramiche/": {
+      "slug": "soluzione-ceramiche",
+      "title": "Soluzione Ceramiche",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 0,
+      "blocchi": 9,
+      "tipi": {
+        "immagine": 3,
+        "titolo": 3,
+        "testo": 1,
+        "form": 1,
+        "elencoVoci": 1
+      },
+      "parole": 27,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/richiedi-preventivo-2/": {
+      "slug": "richiedi-preventivo-2",
+      "title": "Preventivo",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 0,
+      "blocchi": 0,
+      "tipi": {},
+      "parole": 0,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/preventivo-thankyou/": {
+      "slug": "preventivo-thankyou",
+      "title": "Preventivo ThankYou",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 4,
+      "tipi": {
+        "titolo": 1,
+        "testo": 1,
+        "bottone": 1,
+        "immagine": 1
+      },
+      "parole": 22,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/newsletter-thankyou/": {
+      "slug": "newsletter-thankyou",
+      "title": "Newsletter ThankYou",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 4,
+      "tipi": {
+        "titolo": 1,
+        "testo": 1,
+        "bottone": 1,
+        "immagine": 1
+      },
+      "parole": 22,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/thankyou-promo-6500/": {
+      "slug": "thankyou-promo-6500",
+      "title": "Thankyou promo 6500",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 0,
+      "blocchi": 8,
+      "tipi": {
+        "immagine": 3,
+        "titolo": 2,
+        "testo": 1,
+        "bottone": 1,
+        "elencoVoci": 1
+      },
+      "parole": 22,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/thankyou-progetta-gli-spazi/": {
+      "slug": "thankyou-progetta-gli-spazi",
+      "title": "Thankyou progetta gli spazi",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 0,
+      "blocchi": 8,
+      "tipi": {
+        "immagine": 3,
+        "titolo": 2,
+        "testo": 1,
+        "bottone": 1,
+        "elencoVoci": 1
+      },
+      "parole": 22,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/type_stores/showroom-cat/": {
+      "slug": "type_stores-showroom-cat",
+      "title": "Showroom Archivi",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 10,
+      "tipi": {
+        "titolo": 5,
+        "testo": 2,
+        "bottone": 1,
+        "form": 1,
+        "riquadri": 1
+      },
+      "parole": 89,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/type_stores/rivendita-edile/": {
+      "slug": "type_stores-rivendita-edile",
+      "title": "Rivendita edile Archivi",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 26,
+      "tipi": {
+        "titolo": 3,
+        "testo": 2,
+        "immagine": 19,
+        "elencoVoci": 1,
+        "form": 1
+      },
+      "parole": 145,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "4 blocchi duplicati nell'originale, uniti in uno",
+        "2 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/type_stores/ferramenta/": {
+      "slug": "type_stores-ferramenta",
+      "title": "Ferramenta Archivi",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 29,
+      "tipi": {
+        "titolo": 3,
+        "testo": 2,
+        "immagine": 22,
+        "elencoVoci": 1,
+        "form": 1
+      },
+      "parole": 88,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "3 blocchi duplicati nell'originale, uniti in uno",
+        "3 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/type_stores/progettazione-e-ristrutturazione-edile/": {
+      "slug": "type_stores-progettazione-e-ristrutturazione-edile",
+      "title": "Progettazione e ristrutturazione edile Archivi",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 11,
+      "tipi": {
+        "titolo": 5,
+        "testo": 2,
+        "immagine": 1,
+        "elencoVoci": 1,
+        "form": 1,
+        "riquadri": 1
+      },
+      "parole": 108,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "4 blocchi duplicati nell'originale, uniti in uno",
+        "era indicizzabile nell originale"
+      ]
+    },
+    "/type_stores/marchi/": {
+      "slug": "type_stores-marchi",
+      "title": "Marchi Archivi",
+      "metaDescription": false,
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      "slide": 1,
+      "blocchi": 118,
+      "tipi": {
+        "titolo": 14,
+        "immagine": 103,
+        "form": 1
+      },
+      "parole": 0,
+      "avvisi": [
+        "meta description assente nell originale, da scrivere",
+        "12 blocchi duplicati nell'originale, uniti in uno",
+        "14 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+        "era indicizzabile nell originale"
+      ]
+    }
+  }
+}

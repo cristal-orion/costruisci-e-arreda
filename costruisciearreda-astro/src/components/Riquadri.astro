@@ -1,0 +1,135 @@
+---
+/**
+ * I tre riquadri delle tassonomie delle realizzazioni: progetti, render,
+ * prima/dopo. Immagine di fondo, titolo grande bianco, tutto cliccabile.
+ *
+ * Misurato sull'originale: 470×700px, griglia a 3 colonne con 15px di gap,
+ * titolo 40px peso 400 maiuscolo bianco.
+ *
+ * **Difetto dell'originale che qui è corretto:** l'immagine di fondo di questi
+ * riquadri è dichiarata nel CSS di Elementor ma **non viene applicata** — né sul
+ * mirror né sul sito live. Risultato, verificabile nella baseline
+ * `shots-000-live-originale/desktop/home.png`: al posto dei tre riquadri c'è un
+ * **buco bianco di 700px**, con i titoli bianchi invisibili su fondo bianco.
+ * Qui l'immagine si vede, quindi la sezione esiste davvero.
+ */
+import { Image } from 'astro:assets';
+import { immagine, rotta } from '../lib/immagini';
+
+interface Voce {
+  titolo: string;
+  titoloLivello?: number | null;
+  href: string | null;
+  path?: string | null;
+}
+
+interface Props {
+  voci: Voce[];
+  /** Livello degli heading. Nell'originale sono `h2`. */
+  headingLevel?: 'h2' | 'h3';
+  class?: string;
+}
+
+const { voci, headingLevel = 'h2', class: extraClass }: Props = Astro.props;
+const Heading = headingLevel;
+
+const risolte = voci
+  .map((v) => ({ ...v, url: rotta(v.href), img: immagine(v.path) }))
+  .filter((v) => !!v.url);
+---
+
+{
+  risolte.length > 0 && (
+    <ul class:list={['riquadri', extraClass]}>
+      {risolte.map((v) => (
+        <li class="riquadri__voce">
+          <a class="riquadri__link" href={v.url!}>
+            {v.img && (
+              <Image
+                class="riquadri__img"
+                src={v.img}
+                alt=""
+                widths={[480, 720, 960]}
+                sizes="(min-width: 1025px) 32vw, (min-width: 769px) 48vw, 92vw"
+                format="webp"
+                quality={74}
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+            <Heading class="riquadri__titolo">{v.titolo}</Heading>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .riquadri {
+    display: grid;
+    gap: 15px; /* misurato sull'originale */
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 769px) {
+    .riquadri {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .riquadri__voce {
+    margin: 0;
+  }
+
+  .riquadri__link {
+    position: relative;
+    display: grid;
+    align-content: end;
+    /* 700px su desktop, più bassi su mobile per non occupare tre schermate */
+    min-height: 20rem;
+    padding: var(--s-8);
+    overflow: clip;
+    background: var(--c-surface-dark);
+    text-decoration: none;
+  }
+  @media (min-width: 769px) {
+    .riquadri__link {
+      min-height: 700px;
+    }
+  }
+
+  .riquadri__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease);
+  }
+  .riquadri__link:hover .riquadri__img {
+    transform: scale(1.04);
+  }
+
+  /* velatura: serve al contrasto del titolo bianco, che nell'originale era
+     bianco su bianco perché il fondo non veniva applicato */
+  .riquadri__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(0 0 0 / 55%) 0%, rgb(0 0 0 / 10%) 70%);
+    transition: background-color var(--dur) var(--ease);
+  }
+
+  .riquadri__titolo {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: var(--c-white);
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem); /* 28 → 40px, misurato 40px */
+    font-weight: var(--w-regular);
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+</style>

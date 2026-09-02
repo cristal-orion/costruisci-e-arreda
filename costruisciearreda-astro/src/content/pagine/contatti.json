@@ -1,0 +1,213 @@
+{
+  "slug": "contatti",
+  "urlOriginale": "/contatti/",
+  "titleCompleto": "Contatti - Costruisci e Arreda S.r.l.",
+  "title": "Contatti",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "107",
+  "hero": {
+    "slides": [
+      {
+        "imagePath": "2024/06/Raggruppa-1649-1.jpg",
+        "image": "Raggruppa-1649-1.jpg",
+        "titolo": "CONTATTI",
+        "titoloTag": "h1",
+        "kicker": "INFORMAZIONI UTILI"
+      }
+    ]
+  },
+  "blocchi": [
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "red",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "entra in contattocon noi",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Ogni grande progetto inizia con una semplice conversazione. Che tu abbia bisogno di un sopralluogo, di un preventivo dettagliato o di una consulenza professionale, siamo pronti ad assisterti in ogni fase. <strong>Costruisci e Arreda</strong> è qui per aiutarti a trasformare le tue idee in realtà.</p>",
+      "parole": 45,
+      "soloMobile": false
+    },
+    {
+      "tipo": "elencoVoci",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "testo": "Via Gennaro Paparo, 74, 80040 - Massa di Somma (NA)",
+          "href": null
+        },
+        {
+          "testo": "+39 3762024360",
+          "href": null
+        },
+        {
+          "testo": "shop@costruisciearreda.com",
+          "href": null
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/06/Raggruppa-1650-1.jpg",
+      "src": "Raggruppa-1650-1.jpg",
+      "alt": "",
+      "width": 843,
+      "height": 719,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [
+        "titolettoBorder",
+        "grey",
+        "w-130"
+      ],
+      "livello": 2,
+      "testo": "I nostri store",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/08/ShowroomCont.png",
+      "src": "ShowroomCont.png",
+      "alt": "",
+      "width": 180,
+      "height": 180,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "Showroom",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "elencoVoci",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "testo": "Via Martiri della Libertà, 1180147, Napoli (NA)",
+          "href": null
+        },
+        {
+          "testo": "Via Martiri della Libertà (Home)11, 80147, Napoli (NA)",
+          "href": null
+        },
+        {
+          "testo": "Via San Massimo, SNC Mercury Center80035, Nola (NA)",
+          "href": null
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/08/EdileCont.png",
+      "src": "EdileCont.png",
+      "alt": "",
+      "width": 180,
+      "height": 180,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "Punto edile",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "elencoVoci",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "testo": "Via Argine, 625, 80147 Napoli (NA)",
+          "href": null
+        },
+        {
+          "testo": "Via Gennaro Paparo, 7480040, Massa di Somma (NA)",
+          "href": null
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/08/FerraCont.png",
+      "src": "FerraCont.png",
+      "alt": "",
+      "width": 180,
+      "height": 180,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "ferramenta",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "elencoVoci",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "testo": "Corso Ponticelli, 28/C, 80147 Napoli (NA)",
+          "href": null
+        },
+        {
+          "testo": "Via della Libertà, 56, 80055 Portici (NA)",
+          "href": null
+        }
+      ],
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "10 blocchi duplicati nell'originale, uniti in uno",
+    "2 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+    "era indicizzabile nell originale"
+  ]
+}

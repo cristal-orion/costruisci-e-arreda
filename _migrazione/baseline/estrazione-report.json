@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-02T07:59:17.956Z",
+  "generated": "2026-09-02T08:51:27.113Z",
   "base": "http://127.0.0.1:8099",
   "collezioni": {
     "services": [
@@ -526,7 +526,7 @@
     ]
   },
   "immagini": {
-    "usate": 298,
+    "usate": 462,
     "nonTrovate": []
   },
   "archivi": {

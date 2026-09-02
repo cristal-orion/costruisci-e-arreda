@@ -1,0 +1,149 @@
+{
+  "slug": "promo-casa",
+  "urlOriginale": "/promo-casa/",
+  "titleCompleto": "Promo Casa - Costruisci e Arreda S.r.l.",
+  "title": "Promo Casa",
+  "metaDescription": null,
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "postId": "4474",
+  "hero": {
+    "slides": []
+  },
+  "blocchi": [
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/11/Raggruppa-31.svg",
+      "src": "Raggruppa-31.svg",
+      "alt": "",
+      "width": 198,
+      "height": 54,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/11/Promo2CA.jpg",
+      "src": "Promo2CA.jpg",
+      "alt": "",
+      "width": 1024,
+      "height": 647,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "PROMO casa",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>Promo tua a <strong>€ 166 al mese</strong> per <strong>48 mesi</strong>. Valida fino al <strong>31 Dicembre</strong>&nbsp; presso lo Showroom di Nola.</p>",
+      "parole": 20,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p><strong>•</strong> 120 mq pavimento formato a scelta tra 100×100 – 90×90 – 60×120 – 60×60 – 20×120 – 22.50×90<br><strong>•</strong> 100 ml battiscopa <br><strong>•</strong> Fuga pavimento <br><strong>•</strong> ⁠30 mq rivestimento bagno<br><strong>•</strong> Fuga rivestimento<br><strong>•</strong> ⁠Vaso + coprivaso + bidet <br><strong>•</strong> ⁠Cassetta di scarico + placca</p>",
+      "parole": 43,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p><strong>•</strong> ⁠Piatto doccia marmoresina 80×120<br><strong>•</strong> ⁠Box doccia 80×120<br><strong>•</strong> ⁠Rubinetteria a scelta colore cromo o nera completo di kit doccia<br><strong>•</strong> ⁠Mobile bagno a scelta misure 80/90/100 cm compreso di specchio<br><strong>•</strong> ⁠Kit accessori bagno<br><strong>•</strong> ⁠Termo arredo H 120 cm bianco o cromo completo di valvole</p>",
+      "parole": 43,
+      "soloMobile": false
+    },
+    {
+      "tipo": "testo",
+      "visibile": true,
+      "varianti": [],
+      "html": "<p>𝐈𝐍 𝐎𝐌𝐀𝐆𝐆𝐈𝐎<br><strong>• </strong>TV 55” <br><strong>• </strong>3 ROTOLI DI CARTA DA PARATO</p>\n<p>𝐌𝐀𝐑𝐂𝐇𝐈 𝐓𝐑𝐀𝐓𝐓𝐀𝐓𝐈<br>Atlas concorde – Navarti- keratile – ceramica cielo – Hatria e molti altri</p>",
+      "parole": 25,
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": 2,
+      "testo": "Blocca la tua offerta",
+      "href": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "form",
+      "visibile": true,
+      "varianti": [],
+      "id": [
+        "4473"
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "immagine",
+      "visibile": true,
+      "varianti": [],
+      "path": "2024/11/Raggruppa-1358-1.svg",
+      "src": "Raggruppa-1358-1.svg",
+      "alt": "",
+      "width": 318,
+      "height": 86,
+      "href": null,
+      "didascalia": null,
+      "soloMobile": false
+    },
+    {
+      "tipo": "elencoVoci",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "testo": "",
+          "href": null
+        },
+        {
+          "testo": "",
+          "href": null
+        },
+        {
+          "testo": "",
+          "href": null
+        },
+        {
+          "testo": "",
+          "href": null
+        }
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "titolo",
+      "visibile": true,
+      "varianti": [],
+      "livello": null,
+      "testo": "© 2024 Costruisci & Arreda S.R.L – P.IVA:08562161219 | Privacy Policy | Cookie Policy",
+      "href": null,
+      "soloMobile": false
+    }
+  ],
+  "avvisi": [
+    "meta description assente nell originale, da scrivere",
+    "era indicizzabile nell originale"
+  ]
+}
