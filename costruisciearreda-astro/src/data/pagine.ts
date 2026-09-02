@@ -26,6 +26,12 @@ export type PaginaOneOff = {
   impaginazione: Impaginazione;
   /** Titolo dell'hero, se la pagina ne ha uno. */
   heroKicker?: string;
+  /** Tiene la pagina fuori dall'indice dei motori. */
+  noindex?: boolean;
+  /** Nasconde il blocco contatti: le thank-you devono restare essenziali. */
+  senzaBloccoContatti?: boolean;
+  /** Nota interna sul perché di una scelta, non resa nella pagina. */
+  nota?: string;
   /**
    * true = la pagina contiene un documento incorporato di terze parti che
    * inietta un proprio `<h1>`. Serve alle due legal: il testo è un embed
@@ -169,5 +175,76 @@ export const pagineOneOff: PaginaOneOff[] = [
       'I marchi trattati da Costruisci e Arreda: ceramiche, sanitari, rubinetteria, ' +
       'utensileria e materiali per l\'edilizia.',
     impaginazione: 'colonna',
+  },
+
+  /* --- Thank-you page -------------------------------------------------------
+     Nell'originale sono **`index, follow`**, quindi indicizzabili: una pagina di
+     ringraziamento nei risultati di ricerca è un difetto, perché chi la apre da
+     Google non ha inviato nulla. Qui vanno in `noindex` e restano essenziali:
+     nessun blocco contatti, nessun carosello news.                            */
+  {
+    slug: 'preventivo-thankyou',
+    rotta: '/preventivo-thankyou/',
+    h1: 'Grazie per averci contattati',
+    descrizione: 'La tua richiesta di preventivo è stata inviata: ti ricontattiamo presto.',
+    impaginazione: 'testo',
+    noindex: true,
+    senzaBloccoContatti: true,
+  },
+  {
+    slug: 'newsletter-thankyou',
+    rotta: '/newsletter-thankyou/',
+    h1: 'Grazie per l\'iscrizione',
+    descrizione: 'Iscrizione alla newsletter di Costruisci e Arreda completata.',
+    impaginazione: 'testo',
+    noindex: true,
+    senzaBloccoContatti: true,
+  },
+  {
+    slug: 'thankyou-promo-6500',
+    rotta: '/thankyou-promo-6500/',
+    h1: 'Grazie per averci contattati',
+    descrizione: 'La tua richiesta è stata inviata: ti ricontattiamo presto.',
+    impaginazione: 'testo',
+    noindex: true,
+    senzaBloccoContatti: true,
+  },
+  {
+    slug: 'thankyou-progetta-gli-spazi',
+    rotta: '/thankyou-progetta-gli-spazi/',
+    h1: 'Grazie per averci contattati',
+    descrizione: 'La tua richiesta è stata inviata: ti ricontattiamo presto.',
+    impaginazione: 'testo',
+    noindex: true,
+    senzaBloccoContatti: true,
+  },
+
+  /* --- Landing pubblicitarie ------------------------------------------------
+     `/promo-casa/` contiene un'offerta con scadenza ("valida fino al 31
+     Dicembre") ed è ancora `index, follow`: una promozione scaduta nei risultati
+     di ricerca danneggia chi la trova e chi la pubblica. Ricostruita fedelmente
+     ma in `noindex` finché il proprietario non decide se aggiornare l'offerta o
+     ritirare la pagina. Vale lo stesso per l'altra landing.                   */
+  {
+    slug: 'promo-casa',
+    rotta: '/promo-casa/',
+    h1: 'Promo casa',
+    descrizione:
+      'Offerta Costruisci e Arreda per la casa: pavimenti, rivestimenti e arredo bagno ' +
+      'in un\'unica soluzione.',
+    impaginazione: 'colonna',
+    noindex: true,
+    nota: "offerta con scadenza: da aggiornare o ritirare, decisione del proprietario",
+  },
+  {
+    slug: 'soluzione-ceramiche',
+    rotta: '/soluzione-ceramiche/',
+    h1: 'Soluzione ceramiche',
+    descrizione:
+      'Ceramiche, gres e rivestimenti Costruisci e Arreda: scegli le finiture con i ' +
+      'nostri consulenti.',
+    impaginazione: 'colonna',
+    noindex: true,
+    nota: 'landing pubblicitaria: fuori indice per non competere con le pagine del sito',
   },
 ];

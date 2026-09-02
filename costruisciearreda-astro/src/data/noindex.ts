@@ -1,27 +1,37 @@
+import { pagineOneOff } from './pagine';
+
 /**
  * Rotte che NON devono finire in sitemap né nei motori di ricerca.
  *
- * Fonte unica: la lista è letta da `astro.config.mjs` per filtrare la sitemap
- * e va passata come `noindex` al BaseLayout della pagina corrispondente.
+ * La lista si costruisce **dalle pagine stesse**: ogni voce di `pagineOneOff`
+ * con `noindex: true` entra qui automaticamente. Tenere due elenchi allineati a
+ * mano non funziona — è già capitato che la sitemap includesse le landing messe
+ * in `noindex`.
  *
- * Le 4 thank-you page del sito originale erano `index, follow` — quindi
- * indicizzabili. Le 3 root di archivio dei custom post type sono pagine thin
- * con `<h1>` doppio e title generico "Archivi: …": o si progettano davvero,
- * o restano fuori dall'indice (decisione da confermare col proprietario).
+ * Perché queste rotte stanno fuori dall'indice:
+ *  - **thank-you page**: nell'originale sono `index, follow`, quindi
+ *    indicizzabili. Chi le apre da una ricerca non ha inviato nulla;
+ *  - **landing pubblicitarie**: `/promo-casa/` porta un'offerta con scadenza
+ *    ancora indicizzata; competono con le pagine del sito sulle stesse ricerche;
+ *  - **root di archivio dei custom post type**: pagine thin con `<h1>` doppio e
+ *    titolo generico "Archivi: …";
+ *  - **`/design-system/`**: pagina di controllo interna, non fa parte del sito.
  */
+const daPagine = pagineOneOff.filter((p) => p.noindex).map((p) => p.rotta);
+
 export const noindexRoutes: string[] = [
-  '/design-system/', // pagina di controllo interna, non fa parte del sito
+  '/design-system/',
+  ...daPagine,
 
-  // thank-you page (target dei redirect dei form)
-  '/preventivo-thankyou/',
-  '/newsletter-thankyou/',
-  '/thankyou-promo-6500/',
-  '/thankyou-progetta-gli-spazi/',
-
-  // root di archivio dei custom post type: thin, title generico
+  // root di archivio dei custom post type: thin, titolo generico
   '/services/',
   '/realizzazioni/',
   '/store/',
+
+  // le due copie del punto edile di Via Argine: nell'originale non hanno
+  // contenuto e non sono linkate da nessuna pagina
+  '/store/via-argine-625-80147-napoli-na/',
+  '/store/via-argine-625-80147-napoli-na-2/',
 ];
 
 /** true se la rotta indicata è fra quelle da tenere fuori dall'indice. */

@@ -819,3 +819,55 @@ root di archivio CPT — nessuna linkata dalle pagine del sito.
 
 ### Da fare nel passo successivo
 Le 4 thank-you page e le 2 landing, i 6 form, i redirect 301, il deploy.
+
+---
+
+## A06 — Thank-you, landing e i redirect 301: copertura completa delle rotte
+**2026-09-02 · fase A**
+
+### 54 rotte costruite, 66 coperte
+
+| | rotte | |
+|---|---|---|
+| costruite dal rebuild | **54** | di cui 45 in sitemap, 9 in `noindex` |
+| servite da un **301** | 5 | `/author/admin/`, `/services/`, `/realizzazioni/`, `/store/`, `/richiedi-preventivo-2/` |
+| **non** replicate per scelta | 9 | 8 archivi data `/2024/MM/GG/` e `/feed/`: fuori sitemap, non sono contenuto |
+
+**Tutti i 56 URL indicizzati sono coperti**: 51 serviti direttamente, 5 con
+redirect, **zero da decidere**.
+
+### Decisioni SEO che l'originale sbagliava
+
+- **Le 4 thank-you page erano `index, follow`.** Una pagina di ringraziamento
+  nei risultati di ricerca è un difetto: chi la apre da Google non ha inviato
+  nulla. Ora sono in `noindex`, e restano essenziali — niente blocco contatti,
+  niente carosello news (l'originale ce l'ha anche lì).
+- **`/promo-casa/` porta un'offerta con scadenza** ("valida fino al 31 Dicembre")
+  ed è ancora indicizzabile. Ricostruita fedelmente ma in `noindex` finché il
+  proprietario non decide se aggiornare l'offerta o ritirare la pagina. Stessa
+  cosa per l'altra landing, che competeva con le pagine del sito.
+- **La riga legale dentro il contenuto delle landing** è stata rimossa: quelle
+  pagine nell'originale non usano il footer del sito e se la portano dentro.
+  Qui il footer c'è, e ripeterla due volte non ha senso.
+- **`noindex.ts` ora si costruisce dalle pagine**: ogni voce con `noindex: true`
+  entra da sé nella lista che filtra la sitemap. Tenere due elenchi allineati a
+  mano non funziona — la sitemap includeva le landing messe in `noindex`.
+
+### I redirect, generati e non scritti a memoria
+
+`_migrazione/build-redirect.js` incrocia tre fonti verificabili: i 56 URL della
+sitemap del live, le rotte che il build produce davvero, e la mappa page-id →
+rotta generata dal mirror. Per ogni URL che il rebuild non serve più cerca la
+destinazione e **registra il perché**; quelli senza destinazione ovvia restano
+elencati come "da decidere" invece di ricevere un 301 a caso (l'elenco è vuoto).
+
+Produce `baseline/redirect.json` (con le motivazioni) e
+`costruisciearreda-astro/redirect.conf` per nginx, che include anche la mappa
+dei vecchi URL `/?p=ID` — 44 voci, che WordPress risolveva e che possono essere
+linkati dall'esterno.
+
+### Verifica
+`check-build.js`: **54 rotte × 3 viewport, nessun problema.**
+
+### Da fare nel passo successivo
+I 6 form, poi il deploy su Coolify e il cutover DNS.

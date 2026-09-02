@@ -20,6 +20,7 @@ import Hero from '../components/Hero.astro';
 import Titoletto from '../components/Titoletto.astro';
 import Blocchi from '../components/Blocchi.astro';
 import { pagineOneOff } from '../data/pagine';
+import { isNoindex } from '../data/noindex';
 import { immagine } from '../lib/immagini';
 
 export async function getStaticPaths() {
@@ -46,7 +47,20 @@ const primoTitolo = blocchi.find((b) => b.tipo === 'titolo');
 const ripete =
   primoTitolo?.tipo === 'titolo' &&
   primoTitolo.testo.trim().toLowerCase() === meta.h1.trim().toLowerCase();
-const daRendere = ripete ? blocchi.filter((b) => b !== primoTitolo) : blocchi;
+let daRendere = ripete ? blocchi.filter((b) => b !== primoTitolo) : blocchi;
+
+/* Le thank-you devono restare essenziali: il carosello delle news su una pagina
+   di ringraziamento è rumore, e nell'originale c'è. */
+if (meta.senzaBloccoContatti) {
+  daRendere = daRendere.filter((b) => b.tipo !== 'ultimeNews');
+}
+
+/* Le landing hanno la riga legale **dentro** il contenuto, perché nell'originale
+   non usano il footer del sito: qui il footer c'è, quindi va tolta per non
+   ripeterla due volte. */
+daRendere = daRendere.filter(
+  (b) => !(b.tipo === 'titolo' && /P\.IVA|©\s*\d{4}/.test(b.testo)),
+);
 
 /**
  * Il documento di Iubenda inietta un proprio `<h1>`, che duplicherebbe quello
@@ -88,6 +102,8 @@ const classeContenuto =
   title={meta.h1}
   titleFull={pagina.data.titleCompleto ?? undefined}
   description={pagina.data.metaDescription ?? meta.descrizione}
+  noindex={meta.noindex || isNoindex(meta.rotta)}
+  bloccoContatti={!meta.senzaBloccoContatti}
 >
   {
     heroImg && slide && (

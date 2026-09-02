@@ -1,0 +1,64 @@
+{
+  "generated": "2026-09-02T10:04:56.585Z",
+  "indicizzati": 56,
+  "servitiDirettamente": 51,
+  "redirect": [
+    {
+      "da": "/author/admin/",
+      "a": "/category/ultime-news-e-articoli/",
+      "perche": "archivio autore di WordPress con un solo autore (\"admin\"): non è contenuto",
+      "fonte": "sitemap del live"
+    },
+    {
+      "da": "/realizzazioni/",
+      "a": "/i-nostri-lavori/",
+      "perche": "root di archivio del CPT, thin. La pagina vera delle realizzazioni è quella",
+      "fonte": "sitemap del live"
+    },
+    {
+      "da": "/richiedi-preventivo-2/",
+      "a": "/richiedi-preventivo/",
+      "perche": "duplicato di /richiedi-preventivo/ senza form: 226 parole di solo carosello news. Contenuto duplicato indicizzato",
+      "fonte": "sitemap del live"
+    },
+    {
+      "da": "/services/",
+      "a": "/dalla-progettazione-alla-realizzazione/",
+      "perche": "root di archivio del CPT, pagina thin con 2 <h1> e titolo \"Archivi: …\". La pagina vera dei servizi è quella",
+      "fonte": "sitemap del live"
+    },
+    {
+      "da": "/store/",
+      "a": "/type_stores/showroom-cat/",
+      "perche": "root di archivio del CPT, thin. L'elenco vero dei punti vendita è l'archivio showroom",
+      "fonte": "sitemap del live"
+    }
+  ],
+  "daDecidere": [],
+  "queryString": {
+    "nota": "I vecchi URL nella forma /?p=ID vanno rediretti alla rotta corrispondente. La mappa è generata dal mirror, non scritta a mano.",
+    "voci": 44,
+    "esempi": [
+      {
+        "id": "2",
+        "rotta": "/"
+      },
+      {
+        "id": "100",
+        "rotta": "/la-nostra-storia/"
+      },
+      {
+        "id": "102",
+        "rotta": "/il-nostro-team/"
+      },
+      {
+        "id": "106",
+        "rotta": "/lavora-con-noi/"
+      },
+      {
+        "id": "107",
+        "rotta": "/contatti/"
+      }
+    ]
+  }
+}
