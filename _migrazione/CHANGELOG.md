@@ -933,3 +933,109 @@ Collegare il servizio di invio impostando `PUBLIC_FORM_ENDPOINT`. Il form
 `candidatura` porta un allegato: EmailJS non basta, serve un endpoint che accetti
 file. I campi arrivano come `multipart/form-data` con in più `_form` (quale form)
 e `_url` (campo trappola: se compilato, è un bot).
+
+---
+
+## Fase A completa — il risultato, misurato
+**2026-09-02**
+
+### Copertura delle rotte
+
+| | |
+|---|---|
+| rotte costruite | **54** (45 in sitemap, 9 in `noindex`) |
+| URL indicizzati coperti | **56 su 56** — 51 diretti, 5 con redirect 301 |
+| rotte non replicate per scelta | 9 (8 archivi data, 1 feed: non sono contenuto) |
+| cancello di qualità | 54 rotte × 3 viewport, **nessun problema** |
+
+### Peso reale, misurato nel browser
+
+Byte effettivamente trasferiti a 1440px con lo scorrimento completo della pagina
+(lazy-load innescato), tracker bloccati su entrambi i lati:
+
+| rotta | mirror | rebuild | |
+|---|---|---|---|
+| `/type_stores/showroom-cat/` | **58,04 MB** · 179 richieste | **0,20 MB** · 7 | −100% |
+| `/store/via-san-massimo-na/` | 28,94 MB · 141 | 0,63 MB · 29 | −98% |
+| `/il-nostro-team/` | 7,29 MB · 63 | 0,35 MB · 26 | −95% |
+| `/category/ultime-news-e-articoli/` | 6,70 MB · 54 | 0,26 MB · 13 | −96% |
+| `/` homepage | 5,16 MB · 55 | 0,48 MB · 17 | −91% |
+| `/la-nostra-storia/` | 3,96 MB · 55 | 0,22 MB · 13 | −94% |
+| `/gres-costruisciearreda-consigli/` | 3,91 MB · 43 | 0,20 MB · 6 | −95% |
+| `/contatti/` | 2,74 MB · 44 | 0,22 MB · 9 | −92% |
+| `/realizzazioni/home-albe/` | 2,65 MB · 53 | 0,63 MB · 21 | −76% |
+| `/services/progetto/` | 2,35 MB · 42 | 0,17 MB · 6 | −93% |
+| **totale** | **121,74 MB** | **3,36 MB** | **−97%** |
+
+Non viene da compressione aggressiva: viene dall'aver tolto ciò che non serviva.
+CSS da 22 bundle di 685 KB a un file solo; JS da 790 KB in 26 file (jQuery,
+Bootstrap, Swiper, slick, isotope, PixelYourSite, reCAPTCHA su ogni pagina) a
+poche righe in linea; immagini in WebP con `srcset` invece degli originali a
+piena risoluzione; nessun contenuto duplicato per desktop e mobile.
+
+### I difetti dell'originale, tutti quelli trovati
+
+Ognuno **misurato**, non dedotto:
+
+**Contenuto invisibile o rotto**
+1. 5 immagini di fondo su 7 non applicate sulla homepage: la sezione "store" e i
+   tre riquadri di tassonomia erano **buchi bianchi di 700px** con i titoli
+   bianchi su bianco.
+2. `/realizzazioni/appartamento-moderno-prima-e-dopo/`: `background-image: url('')`
+   — hero bianco vuoto di 750px, titolo bianco su bianco.
+3. Le gallerie degli store **invisibili a 900px** (gallery duplicata con le classi
+   `elementor-hidden-*` che non coprono la fascia tablet).
+4. Il corpo del testo dei servizi mostrato **due volte** a 900px, stessa causa.
+5. I contatori mostravano `0` finché non si scorreva, e restavano a zero senza JS.
+6. `linea.png`, referenziata 24 volte, è **404 sul sito live**.
+
+**SEO e semantica**
+7. Homepage con **3 `<h1>`**, hub servizi con 9, archivio blog con 7, e 17 pagine
+   senza nessun `<h1>`.
+8. Meta description assente su 49 pagine su 56.
+9. Due `<title>` identici su ogni pagina (uno dal tema, uno da Yoast).
+10. `<html class="" lang="it-IT" class="no-js">`: attributo duplicato.
+11. Le 4 thank-you page erano `index, follow`.
+12. `/promo-casa/` con offerta scaduta, indicizzabile.
+13. `/richiedi-preventivo-2/`: duplicato senza form, indicizzato.
+14. Le due pagine di Via Argine identiche, entrambe indicizzate.
+15. **Lorem ipsum italiano nell'`og:description`** di Via Argine, pubblicato.
+16. Titoli Yoast "Showroom **Archivi**".
+17. I tre archivi di tassonomia mostravano lo stesso elenco, senza rapporto con
+    le categorie assegnate.
+18. Il menu nel DOM **3 volte**, tutte con lo stesso `id`: HTML non valido e
+    ~250 parole duplicate prima del contenuto di ogni pagina.
+19. Tutti i link interni nella forma `index.html%3Fp=976.html`.
+20. "Company profile" nel footer: link a `#`.
+
+**Accessibilità**
+21. `user-scalable=no, maximum-scale=1.0`: zoom bloccato (WCAG 1.4.4).
+22. 594 immagini senza `alt`; negli store l'`alt` è il nome del file (`DSC03145`).
+23. Nessuna `<label>` nei form, solo `placeholder`.
+24. Il campo curriculum accettava `audio/*,video/*,image/*` — **non i PDF**.
+25. Nessun `autocomplete` sui campi.
+26. Il link all'informativa privacy puntava a `pagina#`.
+27. Nessuno stato di focus visibile.
+28. Titoli e indirizzi con le parole incollate (`<br>` ignorato da `textContent`).
+
+**Peso**
+29. reCAPTCHA v3 e Contact Form 7 su tutte le 56 pagine, anche senza form.
+30. `theme-functions.js`: codice copiato da un altro progetto ("edilcom"), con
+    branching su domini di sviluppo altrui.
+31. `isotope.js` (35 KB) su 54 pagine con **zero** inizializzazioni;
+    `slick.min.js` (42 KB) su 54 pagine, inizializzato su 2.
+32. Due librerie carousel insieme (Swiper 140 KB + slick 42 KB).
+33. Tre famiglie di icon font sovrapposte.
+34. Montserrat caricato due volte (90 `@font-face` self-hosted + Google Fonts),
+    più Roboto e Roboto Slab.
+35. 22 bundle CSS distinti da ~700 KB: la cache del browser inutilizzabile.
+36. La pagina showroom mostrava le gallerie complete di ogni store: 281 immagini.
+
+**Altro**
+37. Typo "Risrtutturazione" in un'opzione del form preventivo.
+38. Il preloader era `<img src="index.html">`: un'immagine rotta che riscaricava
+    la pagina.
+
+### Cosa resta
+Deploy su Coolify e cutover DNS; endpoint dei form; le decisioni di contenuto
+elencate in `CLAUDE.md` sotto "Da far decidere al proprietario".

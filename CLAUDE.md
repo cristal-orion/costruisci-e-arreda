@@ -2,36 +2,59 @@
 
 > ## ⏯ PUNTO DI RIPRESA — leggere per primo
 >
-> **Ultima sessione: 2026-09-02.** **34 rotte su 66 sono ricostruite.** Fatti:
-> scaffold + design system, i 4 componenti, hero + titoletto, l'estrazione dei
-> contenuti, header e footer, i template di servizi/realizzazioni/store/articoli
-> e gli archivi di blog e `cat_realizzazioni`.
-> Il prossimo passo sono le **11 pagine one-off**, homepage per prima.
+> **Ultima sessione: 2026-09-02.** **Fase A completa: 54 rotte costruite, tutti i 56
+> URL indicizzati coperti** (51 diretti + 5 redirect 301). Fatti: scaffold, design
+> system misurato, i 4 componenti, hero, contenuti, header/footer, i 4 template,
+> gli archivi, la homepage, le 11 one-off, le landing, le thank-you, i 6 form,
+> i redirect.
+> **Il prossimo passo è il deploy su Coolify e il cutover DNS.**
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
+>
+> ### Peso reale misurato nel browser (byte trasferiti, 1440px, scroll completo)
+> | rotta | mirror | rebuild | |
+> |---|---|---|---|
+> | `/type_stores/showroom-cat/` | **58,04 MB** · 179 richieste | **0,20 MB** · 7 | −100% |
+> | `/store/via-san-massimo-na/` | 28,94 MB · 141 | 0,63 MB · 29 | −98% |
+> | `/il-nostro-team/` | 7,29 MB · 63 | 0,35 MB · 26 | −95% |
+> | `/` homepage | 5,16 MB · 55 | 0,48 MB · 17 | −91% |
+> | **10 rotte campione** | **121,74 MB** | **3,36 MB** | **−97%** |
+>
+> CSS: 685 KB in 22 bundle → **un file**. JS: 790 KB in 26 file → poche righe in linea.
 >
 > ### Stato del rebuild: `costruisciearreda-astro/`
 > Astro 7.2.10 · Node 22.22 · `trailingSlash: 'always'` · sitemap filtrata sui noindex.
-> Design system **misurato** (non letto dal CSS) e verificato nel browser ai tre viewport:
-> `src/styles/{fonts,tokens,base,global}.css`, `src/components/Button.astro`,
-> `src/layouts/BaseLayout.astro`, `src/data/{site,noindex}.ts`.
+> Design system **misurato** (non letto dal CSS): `src/styles/{fonts,tokens,base,global}.css`.
 > Pagina di controllo dei token: `/design-system/` (noindex).
-> CSS a **10,3 KB** (3,0 KB gzip) contro i 685 KB dell'originale; zero JS.
-> Misure, deviazioni dichiarate e verifiche: `_migrazione/CHANGELOG.md`, voce **A00**.
+> Misure, deviazioni dichiarate e verifiche: `_migrazione/CHANGELOG.md`, voci **A00–A07**.
 >
-> Comandi: `cd costruisciearreda-astro && npm run dev` (oppure `astro dev --background`,
-> gestibile con `astro dev stop|status|logs`) · `npm run build` · `npm run preview`.
+> Comandi: `cd costruisciearreda-astro && npm run dev` · `npm run build` · `npm run preview`.
+> Cancello di qualità: `cd _migrazione && node check-build.js` (54 rotte × 3 viewport).
+> **Attenzione:** non mandare gli script di `_migrazione/` in pipe a `head` — la pipe
+> chiusa li interrompe a metà e i file restano scritti solo in parte.
 >
-> ### Prossimo passo, in ordine
-> 1. Le **11 pagine one-off**: homepage, storia, team, lavora-con-noi, contatti,
->    hub servizi, hub lavori, preventivo, 2 legal, archivio blog. Serve estenderne
->    l'estrazione: `extract-content.js` copre i 4 tipi a template, non le one-off.
-> 2. Gli archivi **`type_stores`** (5 rotte): sono pagine con contenuto proprio,
->    non semplici elenchi. `/type_stores/showroom-cat/` nell'originale pesa 56 MB.
-> 3. I **6 form** (`95` contatti, `467` newsletter footer, `1548` preventivo,
->    `775` lavora-con-noi **con allegato**, `4473` e `4395` landing). Sono le
->    ultime parole che mancano nel diff del fingerprint.
-> 4. Confronto visivo pagina per pagina contro `shots-000-live-originale`.
-> 5. Redirect 301 dai 56 URL indicizzati, poi deploy Coolify e cutover DNS.
+> ### Prossimo passo: deploy
+> 1. **Dockerfile** con nginx o Caddy che serve `dist/`, includendo
+>    `costruisciearreda-astro/redirect.conf` (generato: 5 redirect + mappa dei 44
+>    vecchi URL `?p=ID`).
+> 2. `robots.txt` con il riferimento alla sitemap.
+> 3. Config server: gzip + brotli, `Cache-Control` lungo sugli asset con hash e
+>    breve sull'HTML, `try_files`, pagina 404, header di sicurezza.
+> 4. Coolify: app di tipo Dockerfile, TLS Let's Encrypt.
+> 5. **Prima del cutover**: impostare `PUBLIC_FORM_ENDPOINT` (senza, i form
+>    mostrano i recapiti al posto del modulo — è voluto).
+>
+> ### Da far decidere al proprietario
+> - **`/promo-casa/`**: l'offerta ha una scadenza ("valida fino al 31 Dicembre").
+>   Ricostruita ma in `noindex`: va aggiornata o ritirata.
+> - **Endpoint dei form**: il form `775` di `/lavora-con-noi/` ha un **allegato**
+>   (curriculum), quindi EmailJS non basta.
+> - **Alt delle immagini**: scritti quelli delle sezioni principali; restano da
+>   scrivere quelli delle gallerie (nell'originale sono il nome del file, tipo
+>   `DSC03145`). L'elenco per pagina sta in `baseline/estrazione-report.json`.
+> - **Le due pagine di Via Argine** sono identiche e senza contenuto: una va
+>   tenuta e riempita, l'altra rediretta (il 301 c'è già).
+> - **Meta description**: scritte tutte, una per pagina. Vanno riviste da chi
+>   conosce il posizionamento commerciale.
 >
 > ### Decisione strategica presa
 > Il sito **non** va messo online come mirror statico. Va **ricostruito in Astro** (perché
@@ -62,15 +85,16 @@
 > fingerprint · decisioni di comportamento (es. "hero a 60px dal bordo, font fluido").
 >
 > ### Cosa è già ricostruito
-> **34 rotte**: 8 servizi · 7 realizzazioni · 5 store · 8 articoli · 3 archivi
-> `cat_realizzazioni` · archivio blog · pagina di controllo · segnaposto homepage.
-> Contenuti in 4 content collections (28 voci, 5.037 parole) generate da
-> `_migrazione/extract-content.js`. Fedeltà verificata con `fingerprint.py diff`:
-> sulle 33 rotte confrontabili il conteggio parole di store e realizzazioni è
-> **identico**, e le uniche parole davvero mancanti sono l'etichetta privacy dei
-> form. Peso reale misurato: la pagina store da **28,9 MB a 0,60 MB**.
+> **54 rotte**: homepage · 8 servizi · 7 realizzazioni · 5 store · 8 articoli ·
+> 3 archivi `cat_realizzazioni` · archivio blog · 9 one-off · 5 archivi
+> `type_stores` · 2 landing · 4 thank-you · pagina di controllo.
+> Contenuti in 5 content collections generate da `extract-content.js` (i 4 tipi a
+> template) e `extract-pages.js` (le pagine one-off, come elenco di blocchi).
+> Fedeltà verificata con `fingerprint.py diff` su 47 rotte: le uniche parole
+> davvero mancanti erano le etichette dei form, ora presenti. Il resto delle
+> differenze è duplicato rimosso, filtro voluto o contenuto in più.
 >
-> ### Passi 1, 2 e 3 — fatti
+> ### Tutti i passi della fase A — fatti
 > Scaffold + design system dai token misurati · i 4 componenti (`Carousel`, `Gallery`
 > con lightbox, `Counter`, `Accordion`) — 2,9 KB di JS in tutto, zero librerie, nessuna
 > icon font (SVG in linea) · `Hero` e `Titoletto`, con il contenitore rifatto
