@@ -2,9 +2,11 @@
 
 > ## ⏯ PUNTO DI RIPRESA — leggere per primo
 >
-> **Ultima sessione: 2026-09-02.** Fatti lo **scaffold + design system** (passo 1), i
-> **4 componenti** (passo 2) e l'**hero + titoletto** (passo 3). Il prossimo passo è
-> l'**estrazione dei contenuti** in content collections, poi header e footer.
+> **Ultima sessione: 2026-09-02.** **34 rotte su 66 sono ricostruite.** Fatti:
+> scaffold + design system, i 4 componenti, hero + titoletto, l'estrazione dei
+> contenuti, header e footer, i template di servizi/realizzazioni/store/articoli
+> e gli archivi di blog e `cat_realizzazioni`.
+> Il prossimo passo sono le **11 pagine one-off**, homepage per prima.
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
 >
 > ### Stato del rebuild: `costruisciearreda-astro/`
@@ -20,15 +22,16 @@
 > gestibile con `astro dev stop|status|logs`) · `npm run build` · `npm run preview`.
 >
 > ### Prossimo passo, in ordine
-> 1. Estrazione contenuti in content collections (`services`, `realizzazioni`, `posts`)
->    con uno script sull'HTML del mirror.
-> 2. **Header e footer**: servono a ogni template. Header 101px/69px, `position: static`,
->    fondo trasparente; footer 1057px su fondo `#F5F5F5`. Nell'originale il menu è nel
->    DOM **3 volte** (canvas mobile + header mobile + header desktop): qui una sola.
-> 3. I **5 template**, poi le **11 pagine one-off**, validando con `fingerprint.py diff`
->    e confronto visivo contro `shots-000-live-originale`.
-> 4. Pipeline immagini `astro:assets` sulle 476 immagini usate.
-> 5. Form, SEO, redirect 301. Poi deploy Coolify e cutover DNS.
+> 1. Le **11 pagine one-off**: homepage, storia, team, lavora-con-noi, contatti,
+>    hub servizi, hub lavori, preventivo, 2 legal, archivio blog. Serve estenderne
+>    l'estrazione: `extract-content.js` copre i 4 tipi a template, non le one-off.
+> 2. Gli archivi **`type_stores`** (5 rotte): sono pagine con contenuto proprio,
+>    non semplici elenchi. `/type_stores/showroom-cat/` nell'originale pesa 56 MB.
+> 3. I **6 form** (`95` contatti, `467` newsletter footer, `1548` preventivo,
+>    `775` lavora-con-noi **con allegato**, `4473` e `4395` landing). Sono le
+>    ultime parole che mancano nel diff del fingerprint.
+> 4. Confronto visivo pagina per pagina contro `shots-000-live-originale`.
+> 5. Redirect 301 dai 56 URL indicizzati, poi deploy Coolify e cutover DNS.
 >
 > ### Decisione strategica presa
 > Il sito **non** va messo online come mirror statico. Va **ricostruito in Astro** (perché
@@ -57,6 +60,15 @@
 > Testi riscritti · meta description / title / H1 · `alt` delle immagini (594 mancanti) ·
 > mappa rotte e redirect 301 · scelte sulle landing e sulle offerte scadute · baseline e
 > fingerprint · decisioni di comportamento (es. "hero a 60px dal bordo, font fluido").
+>
+> ### Cosa è già ricostruito
+> **34 rotte**: 8 servizi · 7 realizzazioni · 5 store · 8 articoli · 3 archivi
+> `cat_realizzazioni` · archivio blog · pagina di controllo · segnaposto homepage.
+> Contenuti in 4 content collections (28 voci, 5.037 parole) generate da
+> `_migrazione/extract-content.js`. Fedeltà verificata con `fingerprint.py diff`:
+> sulle 33 rotte confrontabili il conteggio parole di store e realizzazioni è
+> **identico**, e le uniche parole davvero mancanti sono l'etichetta privacy dei
+> form. Peso reale misurato: la pagina store da **28,9 MB a 0,60 MB**.
 >
 > ### Passi 1, 2 e 3 — fatti
 > Scaffold + design system dai token misurati · i 4 componenti (`Carousel`, `Gallery`

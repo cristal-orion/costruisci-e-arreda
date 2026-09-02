@@ -3,9 +3,11 @@
   "urlOriginale": "/realizzazioni/appartamento-moderno-prima-e-dopo/",
   "title": "Appartamento Moderno prima e dopo",
   "seoTitle": "Appartamento Moderno prima e dopo",
+  "seoTitleCompleto": "Appartamento Moderno prima e dopo - Costruisci e Arreda S.r.l.",
   "metaDescription": null,
   "hero": {
     "image": null,
+    "imagePath": null,
     "titleTag": "h2",
     "title": "I NOSTRI PROGETTI",
     "kicker": "REALIZZAZIONI"
@@ -23,140 +25,180 @@
   "gallery": [
     {
       "full": "001-PLANIMETRICA-scaled.jpg",
+      "fullPath": "2024/08/001-PLANIMETRICA-scaled.jpg",
       "src": "001-PLANIMETRICA-scaled.jpg",
+      "path": "2024/08/001-PLANIMETRICA-scaled.jpg",
       "alt": "001 PLANIMETRICA",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "002-PLANIMETRICA-scaled.jpg",
+      "fullPath": "2024/08/002-PLANIMETRICA-scaled.jpg",
       "src": "002-PLANIMETRICA-scaled.jpg",
+      "path": "2024/08/002-PLANIMETRICA-scaled.jpg",
       "alt": "002 PLANIMETRICA",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "003-VISTA-INGRESSO-scaled.jpg",
+      "fullPath": "2024/08/003-VISTA-INGRESSO-scaled.jpg",
       "src": "003-VISTA-INGRESSO-scaled.jpg",
+      "path": "2024/08/003-VISTA-INGRESSO-scaled.jpg",
       "alt": "003 VISTA INGRESSO",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "004-VISTA-INGRESSO-scaled.jpg",
+      "fullPath": "2024/08/004-VISTA-INGRESSO-scaled.jpg",
       "src": "004-VISTA-INGRESSO-scaled.jpg",
+      "path": "2024/08/004-VISTA-INGRESSO-scaled.jpg",
       "alt": "004 VISTA INGRESSO",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "005-VISTA-SALONE-CUCINA-scaled.jpg",
+      "fullPath": "2024/08/005-VISTA-SALONE-CUCINA-scaled.jpg",
       "src": "005-VISTA-SALONE-CUCINA-scaled.jpg",
+      "path": "2024/08/005-VISTA-SALONE-CUCINA-scaled.jpg",
       "alt": "005 VISTA SALONE CUCINA",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "006-VISTA-SALONE-CUCINA-scaled.jpg",
+      "fullPath": "2024/08/006-VISTA-SALONE-CUCINA-scaled.jpg",
       "src": "006-VISTA-SALONE-CUCINA-scaled.jpg",
+      "path": "2024/08/006-VISTA-SALONE-CUCINA-scaled.jpg",
       "alt": "006 VISTA SALONE CUCINA",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "007-VISTA-SALONE-CUCINA-scaled.jpg",
+      "fullPath": "2024/08/007-VISTA-SALONE-CUCINA-scaled.jpg",
       "src": "007-VISTA-SALONE-CUCINA-scaled.jpg",
+      "path": "2024/08/007-VISTA-SALONE-CUCINA-scaled.jpg",
       "alt": "007 VISTA SALONE CUCINA",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "008-BAGNO-scaled.jpg",
+      "fullPath": "2024/08/008-BAGNO-scaled.jpg",
       "src": "008-BAGNO-scaled.jpg",
+      "path": "2024/08/008-BAGNO-scaled.jpg",
       "alt": "008 BAGNO",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "009-BAGNO-scaled.jpg",
+      "fullPath": "2024/08/009-BAGNO-scaled.jpg",
       "src": "009-BAGNO-scaled.jpg",
+      "path": "2024/08/009-BAGNO-scaled.jpg",
       "alt": "009 BAGNO",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "010-CORRIDOIO-scaled.jpg",
+      "fullPath": "2024/08/010-CORRIDOIO-scaled.jpg",
       "src": "010-CORRIDOIO-scaled.jpg",
+      "path": "2024/08/010-CORRIDOIO-scaled.jpg",
       "alt": "010 CORRIDOIO",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "011-CAMERA-MATRIMONIALE-scaled.jpg",
+      "fullPath": "2024/08/011-CAMERA-MATRIMONIALE-scaled.jpg",
       "src": "011-CAMERA-MATRIMONIALE-scaled.jpg",
+      "path": "2024/08/011-CAMERA-MATRIMONIALE-scaled.jpg",
       "alt": "011 CAMERA MATRIMONIALE",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "012-CAMERA-MATRIMONIALE-scaled.jpg",
+      "fullPath": "2024/08/012-CAMERA-MATRIMONIALE-scaled.jpg",
       "src": "012-CAMERA-MATRIMONIALE-scaled.jpg",
+      "path": "2024/08/012-CAMERA-MATRIMONIALE-scaled.jpg",
       "alt": "012 CAMERA MATRIMONIALE",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "013-CAMERA-MATRIMONIALE-scaled.jpg",
+      "fullPath": "2024/08/013-CAMERA-MATRIMONIALE-scaled.jpg",
       "src": "013-CAMERA-MATRIMONIALE-scaled.jpg",
+      "path": "2024/08/013-CAMERA-MATRIMONIALE-scaled.jpg",
       "alt": "013 CAMERA MATRIMONIALE",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "014-CAMERA-MATRIMONIALE-scaled.jpg",
+      "fullPath": "2024/08/014-CAMERA-MATRIMONIALE-scaled.jpg",
       "src": "014-CAMERA-MATRIMONIALE-scaled.jpg",
+      "path": "2024/08/014-CAMERA-MATRIMONIALE-scaled.jpg",
       "alt": "014 CAMERA MATRIMONIALE",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "015-CAMERETTA-FEMMINA-scaled.jpg",
+      "fullPath": "2024/08/015-CAMERETTA-FEMMINA-scaled.jpg",
       "src": "015-CAMERETTA-FEMMINA-scaled.jpg",
+      "path": "2024/08/015-CAMERETTA-FEMMINA-scaled.jpg",
       "alt": "015 CAMERETTA FEMMINA",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "016-CAMERETTA-FEMMINA-scaled.jpg",
+      "fullPath": "2024/08/016-CAMERETTA-FEMMINA-scaled.jpg",
       "src": "016-CAMERETTA-FEMMINA-scaled.jpg",
+      "path": "2024/08/016-CAMERETTA-FEMMINA-scaled.jpg",
       "alt": "016 CAMERETTA FEMMINA",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "017-CAMERETTA-MASCHIO-scaled.jpg",
+      "fullPath": "2024/08/017-CAMERETTA-MASCHIO-scaled.jpg",
       "src": "017-CAMERETTA-MASCHIO-scaled.jpg",
+      "path": "2024/08/017-CAMERETTA-MASCHIO-scaled.jpg",
       "alt": "017 CAMERETTA MASCHIO",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "018-CAMERETTA-MASCHIO-scaled.jpg",
+      "fullPath": "2024/08/018-CAMERETTA-MASCHIO-scaled.jpg",
       "src": "018-CAMERETTA-MASCHIO-scaled.jpg",
+      "path": "2024/08/018-CAMERETTA-MASCHIO-scaled.jpg",
       "alt": "018 CAMERETTA MASCHIO",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "019-BAGNO-ROMA-IMP-scaled.jpg",
+      "fullPath": "2024/08/019-BAGNO-ROMA-IMP-scaled.jpg",
       "src": "019-BAGNO-ROMA-IMP-scaled.jpg",
+      "path": "2024/08/019-BAGNO-ROMA-IMP-scaled.jpg",
       "alt": "019 BAGNO ROMA IMP",
       "width": 2560,
       "height": 1811
     },
     {
       "full": "020-BAGNO-ROMA-IMP-scaled.jpg",
+      "fullPath": "2024/08/020-BAGNO-ROMA-IMP-scaled.jpg",
       "src": "020-BAGNO-ROMA-IMP-scaled.jpg",
+      "path": "2024/08/020-BAGNO-ROMA-IMP-scaled.jpg",
       "alt": "020 BAGNO ROMA IMP",
       "width": 2560,
       "height": 1811
@@ -169,9 +211,15 @@
   "tassonomie": [
     "render"
   ],
+  "postId": "4208",
   "avvisi": [
     "meta description assente nell originale, da scrivere",
     "IMMAGINE HERO ASSENTE nell'originale: il riquadro è vuoto e il titolo bianco è invisibile",
     "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
-  ]
+  ],
+  "cardImage": {
+    "src": "render3copertina.jpg",
+    "path": "2024/08/render3copertina.jpg",
+    "alt": ""
+  }
 }

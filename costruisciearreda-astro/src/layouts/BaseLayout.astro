@@ -14,6 +14,12 @@ import { site } from '../data/site';
 interface Props {
   /** Titolo della pagina, senza il suffisso del nome sito. */
   title: string;
+  /**
+   * `<title>` completo, da usare verbatim invece di comporre
+   * "titolo - nome sito". Serve dove l'originale non seguiva quello schema:
+   * gli 8 articoli del blog hanno un `<title>` senza il nome del sito.
+   */
+  titleFull?: string;
   /** Obbligatoria: nessuna pagina può uscire senza meta description. */
   description: string;
   /** Immagine per Open Graph, percorso assoluto dalla root del sito. */
@@ -24,10 +30,10 @@ interface Props {
   bodyClass?: string;
 }
 
-const { title, description, image, noindex = false, bodyClass } = Astro.props;
+const { title, titleFull, description, image, noindex = false, bodyClass } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const fullTitle = `${title} - ${site.name}`;
+const fullTitle = titleFull ?? `${title} - ${site.name}`;
 const ogImage = image ? new URL(image, Astro.site).href : undefined;
 ---
 

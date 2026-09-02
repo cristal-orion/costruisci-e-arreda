@@ -3,9 +3,11 @@
   "urlOriginale": "/rivestimenti-con-pattern-stile-e-personalita-per-i-tuoi-spazi/",
   "title": "Rivestimenti con pattern: stile e personalità per i tuoi spazi",
   "seoTitle": "Rivestimenti con pattern: stile e personalità per i tuoi spazi",
+  "seoTitleCompleto": "Rivestimenti con pattern: stile e personalità per i tuoi spazi",
   "metaDescription": "I rivestimenti con pattern possono trasformare i tuoi spazi, unendo stile e personalità. Idee, materiali e tendenze.",
   "hero": {
     "image": "Raggruppa-1648-3.jpg",
+    "imagePath": "2024/06/Raggruppa-1648-3.jpg",
     "titleTag": "h2",
     "title": "Ultime news",
     "kicker": "NEWS AND EVENT"
@@ -38,6 +40,7 @@
   "immagini": [],
   "featuredImage": {
     "src": "COPERTINA-ARTICOLI-3.png",
+    "path": "2024/12/COPERTINA-ARTICOLI-3.png",
     "alt": "rivestimenti con pattern"
   },
   "gallery": [],
@@ -52,5 +55,6 @@
   "tassonomie": [
     "ultime-news-e-articoli"
   ],
+  "postId": "4611",
   "avvisi": []
 }

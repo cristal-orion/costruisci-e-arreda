@@ -15,16 +15,22 @@
  * container Bootstrap dentro un `overflow:hidden` — era quella la causa del titolo
  * tranciato fra 769px e 1450px.
  *
- * L'immagine è un `<img>`, non una `background-image`: nell'originale i 119 fondi
- * inline non erano né responsive né rinviabili. Così invece prende `srcset` da
- * `astro:assets` e `fetchpriority="high"` perché è l'elemento LCP.
+ * L'immagine passa da `astro:assets`, non da una `background-image` inline:
+ * nell'originale i 119 fondi inline non erano né responsive né rinviabili.
+ * Qui diventa WebP con `srcset` a cinque larghezze e `fetchpriority="high"`,
+ * essendo l'elemento LCP della pagina.
+ *
+ * `image` accetta un `ImageMetadata` (immagine importata, che viene ottimizzata)
+ * oppure una stringa (per i segnaposto della pagina di controllo).
  */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 interface Props {
   /** Titolo. Un `\n` diventa un'interruzione di riga, come i `<br>` dell'originale. */
   title: string;
   /** Titoletto sotto il titolo: "SERVIZI", "REALIZZAZIONI", … */
   kicker?: string;
-  image: string;
+  image: ImageMetadata | string;
   /**
    * Testo alternativo. L'hero è decorativo: se il titolo dice già tutto,
    * passare la stringa vuota è la scelta giusta, non una dimenticanza.
@@ -32,8 +38,13 @@ interface Props {
   imageAlt: string;
   imageWidth?: number;
   imageHeight?: number;
-  /** Livello del titolo. Default `h1`: nell'originale 17 pagine non ne avevano nessuno. */
-  as?: 'h1' | 'h2';
+  /**
+   * Livello del titolo. Default `h1`: nell'originale 17 pagine non ne avevano
+   * nessuno. Va messo `p` dove il titolo dell'hero è generico e ripetuto su
+   * tutte le pagine del template (servizi, realizzazioni, articoli): in quei
+   * casi l'`<h1>` della pagina è il titolo della voce, non il banner.
+   */
+  as?: 'h1' | 'h2' | 'p';
   /**
    * Velatura in basso per staccare il testo bianco dalla foto.
    * Non c'è nell'originale: aggiunta perché il bianco su foto qualsiasi non
@@ -59,15 +70,32 @@ const righe = title.split('\n');
 ---
 
 <section class:list={['hero', { 'hero--scrim': scrim }, extraClass]}>
-  <img
-    class="hero__img"
-    src={image}
-    alt={imageAlt}
-    width={imageWidth}
-    height={imageHeight}
-    fetchpriority="high"
-    decoding="async"
-  />
+  {
+    typeof image === 'string' ? (
+      <img
+        class="hero__img"
+        src={image}
+        alt={imageAlt}
+        width={imageWidth}
+        height={imageHeight}
+        fetchpriority="high"
+        decoding="async"
+      />
+    ) : (
+      <Image
+        class="hero__img"
+        src={image}
+        alt={imageAlt}
+        widths={[640, 960, 1280, 1600, 1920]}
+        sizes="100vw"
+        format="webp"
+        quality={72}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    )
+  }
 
   <div class="hero__body">
     <div class="container hero__container">

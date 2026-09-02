@@ -21,7 +21,8 @@ export const company = {
   legalName: 'Costruisci & Arreda S.R.L.',
   vat: '08562161219',
   phone: '+393762024360',
-  phoneLabel: '+39 376 2024360',
+  /** Come lo scrive l'originale, senza spazi dentro il numero. */
+  phoneLabel: '+39 3762024360',
   email: 'shop@costruisciearreda.com',
   /** E-commerce su dominio separato, non fa parte di questo sito. */
   shopUrl: 'https://costruisciearreda.com',

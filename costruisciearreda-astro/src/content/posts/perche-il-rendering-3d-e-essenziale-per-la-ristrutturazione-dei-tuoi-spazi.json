@@ -3,9 +3,11 @@
   "urlOriginale": "/perche-il-rendering-3d-e-essenziale-per-la-ristrutturazione-dei-tuoi-spazi/",
   "title": "Perché il rendering 3D è essenziale per la ristrutturazione dei tuoi spazi",
   "seoTitle": "Il Rendering 3D è la chiave per ristrutturazioni senza sorprese.",
+  "seoTitleCompleto": "Il Rendering 3D è la chiave per ristrutturazioni senza sorprese.",
   "metaDescription": "Come il rendering 3D rivoluziona la ristrutturazione, offrendo visioni realistiche, personalizzazioni senza rischi.",
   "hero": {
     "image": "Raggruppa-1648-3.jpg",
+    "imagePath": "2024/06/Raggruppa-1648-3.jpg",
     "titleTag": "h2",
     "title": "Ultime news",
     "kicker": "NEWS AND EVENT"
@@ -38,6 +40,7 @@
   "immagini": [],
   "featuredImage": {
     "src": "Render3D.jpg",
+    "path": "2024/12/Render3D.jpg",
     "alt": "Rendering 3D"
   },
   "gallery": [],
@@ -52,5 +55,6 @@
   "tassonomie": [
     "ultime-news-e-articoli"
   ],
+  "postId": "4615",
   "avvisi": []
 }

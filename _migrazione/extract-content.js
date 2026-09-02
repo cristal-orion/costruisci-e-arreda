@@ -24,6 +24,9 @@ const path = require('path');
 const BASE = process.env.MIRROR || 'http://127.0.0.1:8099';
 const OUT_ROOT = path.resolve(__dirname, '..', 'costruisciearreda-astro', 'src', 'content');
 const REPORT = path.resolve(__dirname, 'baseline', 'estrazione-report.json');
+const MODULO_IMMAGINI = path.resolve(
+  __dirname, '..', 'costruisciearreda-astro', 'src', 'lib', 'immagini-generate.ts',
+);
 
 const BLOCK = [
   'googletagmanager', 'google-analytics', 'connect.facebook', 'facebook.com',
@@ -82,10 +85,23 @@ const normImg = (src) => {
 
 const extract = () => {
   const txt = (el) => (el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : '');
+  /** Nome del file, senza il suffisso -WxH delle miniature (come fingerprint.py). */
   const norm = (src) => {
     if (!src) return null;
     const file = src.split('?')[0].split('#')[0].split('/').pop();
     return file.replace(/-\d+x\d+(\.\w+)$/, '$1');
+  };
+  /**
+   * Percorso relativo a `wp-content/uploads`, es. `2024/06/Albe.jpg`.
+   * Serve perché due nomi di file compaiono in cartelle diverse
+   * (`Raggruppa-1648.jpg` e `Raggruppa-1646.jpg`): il solo nome è ambiguo.
+   */
+  const percorso = (src) => {
+    if (!src) return null;
+    const clean = src.split('?')[0].split('#')[0];
+    const m = clean.match(/wp-content\/uploads\/(.+)$/);
+    if (!m) return null;
+    return m[1].replace(/-\d+x\d+(\.\w+)$/, '$1');
   };
 
   const out = {
@@ -106,6 +122,11 @@ const extract = () => {
     warnings: [],
   };
 
+  /* L'id WordPress della pagina: serve a risolvere i link `index.html%3Fp=ID`
+     che l'originale usa negli archivi. Sta nella classe del <body>. */
+  const mId = document.body.className.match(/\b(?:postid|page-id)-(\d+)\b/);
+  out.postId = mId ? mId[1] : null;
+
   /* --- tassonomie: WordPress le mette come classi, ma non sul <body>:
      stanno sull'elemento del Theme Builder (`.elementor-location-single`).
      Verificato: sul <body> non ci sono. */
@@ -118,7 +139,13 @@ const extract = () => {
 
   // --- title e meta description dal <head>
   const t = document.querySelector('title');
-  if (t) out.title = txt(t).replace(/\s*-\s*Costruisci e Arreda S\.r\.l\.\s*$/i, '');
+  if (t) {
+    /* `titleCompleto` è il `<title>` **verbatim**: va riprodotto tale e quale,
+       perché lo schema di Yoast non è uniforme — gli articoli del blog non
+       hanno il suffisso col nome del sito, tutte le altre pagine sì. */
+    out.titleCompleto = txt(t);
+    out.title = out.titleCompleto.replace(/\s*-\s*Costruisci e Arreda S\.r\.l\.\s*$/i, '');
+  }
   const md = document.querySelector('meta[name="description"]');
   if (md) out.metaDescription = md.content.trim() || null;
 
@@ -131,6 +158,7 @@ const extract = () => {
     const kickerEl = heroBox.querySelector('.infoImg .titoletto');
     out.hero = {
       image: m ? norm(m[1]) : null,
+      imagePath: m ? percorso(m[1]) : null,
       titleTag: titleEl ? titleEl.tagName.toLowerCase() : null,
       // i <br> del titolo diventano \n: sono interruzioni volute nel contenuto
       title: titleEl ? titleEl.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/[ \t]+/g, ' ').trim() : null,
@@ -178,7 +206,13 @@ const extract = () => {
 
     if (type === 'theme-post-featured-image') {
       const img = el.querySelector('img');
-      if (img) out.featuredImage = { src: norm(img.getAttribute('src')), alt: img.alt || '' };
+      if (img) {
+        out.featuredImage = {
+          src: norm(img.getAttribute('src')),
+          path: percorso(img.getAttribute('src')),
+          alt: img.alt || '',
+        };
+      }
       continue;
     }
 
@@ -187,6 +221,7 @@ const extract = () => {
       if (img) {
         out.images.push({
           src: norm(img.getAttribute('src')),
+          path: percorso(img.getAttribute('src')),
           alt: img.alt || '',
           width: img.getAttribute('width') ? Number(img.getAttribute('width')) : null,
           height: img.getAttribute('height') ? Number(img.getAttribute('height')) : null,
@@ -201,7 +236,9 @@ const extract = () => {
         const im = a.querySelector('.e-gallery-image');
         out.gallery.push({
           full: norm(a.getAttribute('href')),
+          fullPath: percorso(a.getAttribute('href')),
           src: norm(im ? im.dataset.thumbnail : null),
+          path: percorso(im ? im.dataset.thumbnail : null),
           alt: (im && im.getAttribute('aria-label')) || a.dataset.elementorLightboxTitle || '',
           width: im && im.dataset.width ? Number(im.dataset.width) : null,
           height: im && im.dataset.height ? Number(im.dataset.height) : null,
@@ -286,6 +323,10 @@ const dedupGallery = (items, warnings) => {
   const page = await ctx.newPage();
 
   const report = { generated: new Date().toISOString(), base: BASE, collezioni: {} };
+  /** Percorsi (relativi a uploads) di tutte le immagini che i contenuti usano. */
+  const percorsiUsati = new Set();
+  /** id WordPress → slug, per risolvere i link `index.html%3Fp=ID` degli archivi. */
+  const slugPerId = {};
 
   for (const [collection, entries] of Object.entries(COLLECTIONS)) {
     const dir = path.join(OUT_ROOT, collection);
@@ -345,6 +386,8 @@ const dedupGallery = (items, warnings) => {
         urlOriginale: url,
         title: raw.postTitle || raw.title,
         seoTitle: raw.title,
+        /** Il `<title>` dell'originale, verbatim. */
+        seoTitleCompleto: raw.titleCompleto ?? null,
         metaDescription: raw.metaDescription,
         hero: raw.hero,
         campi: raw.fields,
@@ -356,8 +399,20 @@ const dedupGallery = (items, warnings) => {
         formCf7: [...new Set(raw.forms)],
         postInfo: raw.postInfo,
         tassonomie: raw.tassonomie || [],
+        postId: raw.postId ?? null,
         avvisi: warnings,
       };
+
+      if (raw.postId) slugPerId[raw.postId] = { collection, slug, title: entry.title };
+
+      for (const p of [
+        raw.hero && raw.hero.imagePath,
+        raw.featuredImage && raw.featuredImage.path,
+        ...images.map((i) => i.path),
+        ...gallery.flatMap((g) => [g.path, g.fullPath]),
+      ]) {
+        if (p) percorsiUsati.add(p);
+      }
 
       fs.writeFileSync(path.join(dir, `${slug}.json`), JSON.stringify(entry, null, 2) + '\n');
 
@@ -378,8 +433,146 @@ const dedupGallery = (items, warnings) => {
     }
   }
 
+  /* ---------------------------------------------------------------------------
+     Seconda passata: gli archivi di tassonomia.
+     Le card del `loop-grid` usano un'immagine in evidenza che sulle pagine
+     singole **non compare**: sta solo nel template del loop. Senza questa
+     passata le card del rebuild userebbero la prima foto della galleria, che è
+     un'altra immagine — il fingerprint lo segnala come immagine assente.
+     Qui si legge la mappa slug → immagine dalle pagine di archivio.
+     Si prende anche l'intestazione introduttiva dell'archivio, che è contenuto. */
+  const ARCHIVI = ['/cat_realizzazioni/progetti/', '/cat_realizzazioni/render/', '/cat_realizzazioni/prima-dopo/'];
+  const cardPerSlug = {};
+  const datiArchivi = {};
+
+  for (const url of ARCHIVI) {
+    try {
+      await page.goto(BASE + url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+      await page.waitForTimeout(900);
+      const res = await page.evaluate(() => {
+        const clean = (s) => (s || '').replace(/\s+/g, ' ').trim();
+        const perc = (src) => {
+          if (!src) return null;
+          const m = src.split('?')[0].match(/wp-content\/uploads\/(.+)$/);
+          return m ? m[1].replace(/-\d+x\d+(\.\w+)$/, '$1') : null;
+        };
+        const card = [];
+        for (const c of document.querySelectorAll('[data-elementor-type="loop-item"]')) {
+          const a = c.querySelector('a[href]');
+          const img = c.querySelector('img');
+          card.push({
+            href: a ? a.getAttribute('href') : null,
+            titolo: clean(c.querySelector('h1,h2,h3,h4')?.textContent),
+            imgPath: perc(img ? img.getAttribute('src') : null),
+            imgAlt: img ? img.alt || '' : '',
+          });
+        }
+        const t = document.querySelector('title');
+        const md = document.querySelector('meta[name="description"]');
+        const h1 = document.querySelector('#content h1, .boxSlider .title');
+        // l'intestazione introduttiva dell'archivio, dopo l'hero
+        const intro = [...document.querySelectorAll('#content h2')]
+          .map((x) => clean(x.textContent))
+          .find((x) => x && !/^(REALIZZAZIONI|Le nostre realizzazioni|progetti|render|prima\/dopo|Realizza con noi)/i.test(x));
+        return {
+          titleCompleto: t ? clean(t.textContent) : null,
+          metaDescription: md ? md.content.trim() || null : null,
+          h1: h1 ? clean(h1.textContent) : null,
+          intro: intro || null,
+          card,
+        };
+      });
+      datiArchivi[url] = res;
+      for (const c of res.card) {
+        if (!c.imgPath || !c.href) continue;
+        /* Gli href degli archivi sono nella forma rotta `index.html%3Fp=4155.html`:
+           si risolvono con la mappa id → slug raccolta nella passata principale. */
+        const perId = c.href.match(/p=(\d+)/);
+        const perSlug = c.href.match(/realizzazioni\/([^/]+)\/?/);
+        const slug = perId
+          ? slugPerId[perId[1]] && slugPerId[perId[1]].slug
+          : perSlug && perSlug[1];
+        if (slug) cardPerSlug[slug] = { path: c.imgPath, alt: c.imgAlt, titolo: c.titolo };
+      }
+      process.stderr.write(`  archivio ${url}  ${res.card.length} card\n`);
+    } catch (e) {
+      process.stderr.write(`  !! archivio ${url}: ${e.message}\n`);
+    }
+  }
+
+  /* L'immagine delle card finisce sulle voci delle realizzazioni. Gli href
+     dell'originale sono nella forma rotta `index.html%3Fp=ID`, quindi la mappa
+     per slug si costruisce anche confrontando i titoli. */
+  const dirReal = path.join(OUT_ROOT, 'realizzazioni');
+  for (const f of fs.readdirSync(dirReal).filter((x) => x.endsWith('.json'))) {
+    const file = path.join(dirReal, f);
+    const voce = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const perSlug = cardPerSlug[voce.slug];
+    const perTitolo = Object.values(cardPerSlug).find(
+      (c) => c.titolo && c.titolo.toLowerCase() === String(voce.title).toLowerCase(),
+    );
+    const scelta = perSlug || perTitolo;
+    if (scelta) {
+      voce.cardImage = { src: scelta.path.split('/').pop(), path: scelta.path, alt: scelta.alt };
+      for (const p of [scelta.path]) percorsiUsati.add(p);
+      fs.writeFileSync(file, JSON.stringify(voce, null, 2) + '\n');
+    }
+  }
+  const senzaCard = fs.readdirSync(dirReal).filter((x) => x.endsWith('.json'))
+    .filter((f) => !JSON.parse(fs.readFileSync(path.join(dirReal, f), 'utf8')).cardImage);
+
+  fs.writeFileSync(
+    path.resolve(__dirname, 'baseline', 'archivi-mirror.json'),
+    JSON.stringify(datiArchivi, null, 2) + '\n',
+  );
+
   await browser.close();
+
+  /* Immagini di template, usate dai layout e non dai contenuti: vanno nel modulo
+     comunque, altrimenti i template non le trovano. */
+  const IMMAGINI_TEMPLATE = ['2024/06/LogoServizio.png'];
+  for (const p of IMMAGINI_TEMPLATE) percorsiUsati.add(p);
+
+  /* Modulo con gli import **espliciti** delle sole immagini usate.
+     Serve perché `import.meta.glob` eager su tutta la cartella uploads tira nel
+     build tutte le 668 immagini del mirror (164 MB di output): misurato.
+     Con gli import statici Astro emette solo queste. */
+  const ordinati = [...percorsiUsati].sort();
+  const esistenti = ordinati.filter((rel) =>
+    fs.existsSync(path.resolve(__dirname, '..', 'costruisciearreda-static',
+      'costruisciearreda.it', 'wp-content', 'uploads', rel)),
+  );
+  const perse = ordinati.filter((r) => !esistenti.includes(r));
+
+  const righe = [
+    '/* GENERATO da _migrazione/extract-content.js — non modificare a mano.',
+    ' *',
+    ' * Import espliciti delle sole immagini che i contenuti usano davvero.',
+    ' * Un `import.meta.glob` eager sulla cartella uploads tirerebbe nel build',
+    ' * tutte le 668 immagini del mirror: misurato, 164 MB di output.',
+    ` * Qui sono ${esistenti.length}.`,
+    ' */',
+    "import type { ImageMetadata } from 'astro';",
+    '',
+    ...esistenti.map((rel, i) => `import i${i} from '../assets/uploads/${rel}';`),
+    '',
+    'export const immaginiGenerate: Record<string, ImageMetadata> = {',
+    ...esistenti.map((rel, i) => `  ${JSON.stringify(rel)}: i${i},`),
+    '};',
+    '',
+  ];
+  fs.mkdirSync(path.dirname(MODULO_IMMAGINI), { recursive: true });
+  fs.writeFileSync(MODULO_IMMAGINI, righe.join('\n'));
+
   fs.mkdirSync(path.dirname(REPORT), { recursive: true });
+  report.immagini = { usate: esistenti.length, nonTrovate: perse };
+  report.archivi = Object.fromEntries(
+    Object.entries(datiArchivi).map(([u, d]) => [u, { card: d.card.length, h1: d.h1, intro: d.intro, title: d.titleCompleto }]),
+  );
+  report.realizzazioniSenzaCardImage = senzaCard;
+  report.slugPerId = slugPerId;
   fs.writeFileSync(REPORT, JSON.stringify(report, null, 2) + '\n');
   process.stderr.write(`\nScritto ${REPORT}\n`);
+  process.stderr.write(`Scritto ${MODULO_IMMAGINI} (${esistenti.length} immagini`);
+  process.stderr.write(perse.length ? `, ${perse.length} non trovate)\n` : ')\n');
 })();

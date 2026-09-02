@@ -1,0 +1,112 @@
+---
+/**
+ * Template degli store — 5 pagine (3 con contenuto, 2 duplicati vuoti).
+ * Nell'originale la similarità è del 100%.
+ *
+ * Struttura misurata: tipo di punto vendita, indirizzo, descrizione, galleria.
+ * Qui l'`<h1>` è il titolo dell'hero, che su queste pagine è **specifico**
+ * (l'indirizzo del punto vendita) e non generico come sui servizi.
+ *
+ * **Bug dell'originale che qui non può ripresentarsi:** la galleria è duplicata,
+ * una versione per desktop e una per mobile, con le classi `elementor-hidden-*`
+ * messe male — a 900px **non se ne vede nessuna delle due**. Misurato.
+ * Qui è una galleria sola con colonne responsive.
+ *
+ * `/store/via-argine-625-80147-napoli-na/` e la sua copia `-2/` nell'originale
+ * non hanno né testo né galleria, e non sono linkate da nessuna pagina: restano
+ * fuori dall'indice tramite `src/data/noindex.ts`. Vanno decise col proprietario.
+ */
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Titoletto from '../../components/Titoletto.astro';
+import Gallery from '../../components/Gallery.astro';
+import { immagine } from '../../lib/immagini';
+import { isNoindex } from '../../data/noindex';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const voci = await getCollection('stores');
+  return voci.map((v) => ({ params: { slug: v.data.slug }, props: { dati: v.data } }));
+}
+
+const { dati } = Astro.props;
+
+const heroImg = immagine(dati.hero?.imagePath);
+const galleria = dati.gallery
+  .map((g) => ({ img: immagine(g.path), alt: g.alt }))
+  .filter((g) => !!g.img)
+  .map((g) => ({ src: g.img!, alt: g.alt }));
+
+const tipo = dati.campi.tipo ?? null;
+const indirizzo = dati.campi.indirizzo ?? dati.title;
+
+const primoTesto = dati.corpo[0]?.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
+const descrizione =
+  dati.metaDescription ??
+  (primoTesto
+    ? primoTesto.slice(0, 155).trim() + '…'
+    : `${tipo ?? 'Punto vendita'} ${indirizzo} — ${site.shortName}.`);
+---
+
+<SiteLayout
+  title={dati.title}
+  titleFull={dati.seoTitleCompleto ?? undefined}
+  description={descrizione}
+  noindex={isNoindex(`/store/${dati.slug}/`)}
+>
+  {
+    heroImg && dati.hero && (
+      <Hero
+        title={dati.hero.title ?? dati.title}
+        kicker={dati.hero.kicker ?? undefined}
+        image={heroImg}
+        imageAlt=""
+      />
+    )
+  }
+
+  <div class="container store">
+    {tipo && <Titoletto as="p" size="label" tone="brand" class="store__tipo">{tipo}</Titoletto>}
+    <Titoletto as={heroImg ? 'h2' : 'h1'} size="sm" tone="dark" class="store__indirizzo">
+      {indirizzo}
+    </Titoletto>
+
+    {dati.corpo[0] && <div class="store__testo" set:html={dati.corpo[0].html} />}
+  </div>
+
+  {
+    galleria.length > 0 && (
+      <section class="section store__galleria">
+        <div class="container">
+          <Titoletto as="h2" size="sm" tone="dark" class="store__galleriaTitolo">Galleria</Titoletto>
+          <Gallery
+            items={galleria}
+            label={`Galleria fotografica di ${dati.title}`}
+            columns={{ base: 2, tablet: 2, desktop: 3 }}
+          />
+        </div>
+      </section>
+    )
+  }
+</SiteLayout>
+
+<style>
+  .store {
+    padding-block: var(--section-y-lg) 0;
+  }
+  .store__tipo {
+    margin-bottom: var(--s-8);
+  }
+  .store__indirizzo {
+    margin-bottom: var(--s-12);
+  }
+  .store__testo {
+    max-width: var(--container-text);
+    font-size: var(--t-lg);
+    line-height: var(--t-lg-lh);
+  }
+  .store__galleriaTitolo {
+    margin-bottom: var(--s-12);
+  }
+</style>

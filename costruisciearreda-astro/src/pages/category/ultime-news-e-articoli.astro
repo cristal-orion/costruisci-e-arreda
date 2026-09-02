@@ -1,0 +1,74 @@
+---
+/**
+ * Archivio del blog — gli 8 articoli, ordinati dal più recente.
+ *
+ * Nell'originale è un `loop-grid` di Elementor a 3 colonne su desktop, 2 su
+ * tablet, 1 su mobile, con paginazione via AJAX su 6 card per pagina. Con 8
+ * articoli in tutto la paginazione è rumore: qui stanno tutti in una griglia.
+ *
+ * **Un solo `<h1>`.** Nell'originale questa pagina ne ha **7**, uno per card,
+ * perché il template del loop usa `<h1>` per il titolo dell'articolo.
+ */
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Titoletto from '../../components/Titoletto.astro';
+import Card from '../../components/Card.astro';
+import { immagine } from '../../lib/immagini';
+
+const voci = await getCollection('posts');
+
+const articoli = voci
+  .map((v) => v.data)
+  .map((d) => ({
+    titolo: d.title,
+    href: `/${d.slug}/`,
+    data: d.postInfo.DATA_iso ?? null,
+    immagine: immagine(d.featuredImage?.path),
+    immagineAlt: d.featuredImage?.alt ?? '',
+  }))
+  .sort((a, b) => (b.data ?? '').localeCompare(a.data ?? ''));
+
+/* L'hero di questo archivio: nell'originale ha titolo "Ultime news e articoli"
+   e titoletto "NEWS AND EVENT". L'immagine è la stessa dei singoli articoli. */
+const heroImg = immagine(voci[0]?.data.hero?.imagePath);
+---
+
+<SiteLayout
+  title="Ultime news e articoli"
+  description="News, guide e approfondimenti di Costruisci e Arreda su edilizia, ceramiche, arredo bagno e ristrutturazione."
+>
+  {
+    heroImg && (
+      <Hero
+        as="p"
+        title="Ultime news"
+        kicker="NEWS AND EVENT"
+        image={heroImg}
+        imageAlt=""
+      />
+    )
+  }
+
+  <div class="container archivio">
+    <Titoletto as="h1" size="lg" tone="muted" class="archivio__titolo">
+      Ultime news e articoli
+    </Titoletto>
+
+    <div class="grid grid--3 archivio__griglia">
+      {articoli.map((a) => <Card {...a} kicker="News" headingLevel="h2" />)}
+    </div>
+  </div>
+</SiteLayout>
+
+<style>
+  .archivio {
+    padding-block: var(--section-y-lg) var(--section-y);
+  }
+  .archivio__titolo {
+    margin-bottom: var(--s-15);
+  }
+  .archivio__griglia {
+    gap: var(--s-12) var(--s-8);
+  }
+</style>

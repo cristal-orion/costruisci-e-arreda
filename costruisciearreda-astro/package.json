@@ -7,9 +7,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/prune-assets.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "build:no-prune": "astro build"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

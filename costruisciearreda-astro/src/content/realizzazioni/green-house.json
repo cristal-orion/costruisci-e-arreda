@@ -3,9 +3,11 @@
   "urlOriginale": "/realizzazioni/green-house/",
   "title": "Green House",
   "seoTitle": "Green House",
+  "seoTitleCompleto": "Green House - Costruisci e Arreda S.r.l.",
   "metaDescription": null,
   "hero": {
     "image": "Raggruppa-1647-2.jpg",
+    "imagePath": "2024/06/Raggruppa-1647-2.jpg",
     "titleTag": "h2",
     "title": "I NOSTRI PROGETTI",
     "kicker": "REALIZZAZIONI"
@@ -51,6 +53,7 @@
   "immagini": [
     {
       "src": "GreenHouse.jpg",
+      "path": "2024/08/GreenHouse.jpg",
       "alt": "",
       "width": null,
       "height": null,
@@ -61,140 +64,180 @@
   "gallery": [
     {
       "full": "CAMERA-DA-LETTO-1_1_11zon.jpg",
+      "fullPath": "2024/08/CAMERA-DA-LETTO-1_1_11zon.jpg",
       "src": "CAMERA-DA-LETTO-1_1_11zon.jpg",
+      "path": "2024/08/CAMERA-DA-LETTO-1_1_11zon.jpg",
       "alt": "CAMERA DA LETTO 1_1_11zon",
       "width": 1600,
       "height": 900
     },
     {
       "full": "CAMERA-DA-LETTO_2_11zon.jpg",
+      "fullPath": "2024/08/CAMERA-DA-LETTO_2_11zon.jpg",
       "src": "CAMERA-DA-LETTO_2_11zon.jpg",
+      "path": "2024/08/CAMERA-DA-LETTO_2_11zon.jpg",
       "alt": "CAMERA DA LETTO_2_11zon",
       "width": 1600,
       "height": 900
     },
     {
       "full": "CUCINA-DURANTE_3_11zon.jpg",
+      "fullPath": "2024/08/CUCINA-DURANTE_3_11zon.jpg",
       "src": "CUCINA-DURANTE_3_11zon.jpg",
+      "path": "2024/08/CUCINA-DURANTE_3_11zon.jpg",
       "alt": "CUCINA DURANTE_3_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "CUCINA_4_11zon.jpg",
+      "fullPath": "2024/08/CUCINA_4_11zon.jpg",
       "src": "CUCINA_4_11zon.jpg",
+      "path": "2024/08/CUCINA_4_11zon.jpg",
       "alt": "CUCINA_4_11zon",
       "width": 1600,
       "height": 900
     },
     {
       "full": "VISUALE-APPENA-ENTRI_5_11zon.jpg",
+      "fullPath": "2024/08/VISUALE-APPENA-ENTRI_5_11zon.jpg",
       "src": "VISUALE-APPENA-ENTRI_5_11zon.jpg",
+      "path": "2024/08/VISUALE-APPENA-ENTRI_5_11zon.jpg",
       "alt": "VISUALE APPENA ENTRI_5_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "ZONA-GIORNO-DURANTE_6_11zon.jpg",
+      "fullPath": "2024/08/ZONA-GIORNO-DURANTE_6_11zon.jpg",
       "src": "ZONA-GIORNO-DURANTE_6_11zon.jpg",
+      "path": "2024/08/ZONA-GIORNO-DURANTE_6_11zon.jpg",
       "alt": "ZONA GIORNO DURANTE_6_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "BAGNO-1-DOPO_1_11zon.jpg",
+      "fullPath": "2024/08/BAGNO-1-DOPO_1_11zon.jpg",
       "src": "BAGNO-1-DOPO_1_11zon.jpg",
+      "path": "2024/08/BAGNO-1-DOPO_1_11zon.jpg",
       "alt": "BAGNO 1 DOPO_1_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "BAGNO-DOP-REV-03_2_11zon.jpg",
+      "fullPath": "2024/08/BAGNO-DOP-REV-03_2_11zon.jpg",
       "src": "BAGNO-DOP-REV-03_2_11zon.jpg",
+      "path": "2024/08/BAGNO-DOP-REV-03_2_11zon.jpg",
       "alt": "BAGNO DOP REV 03_2_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "BAGNO-DOPO_3_11zon.jpg",
+      "fullPath": "2024/08/BAGNO-DOPO_3_11zon.jpg",
       "src": "BAGNO-DOPO_3_11zon.jpg",
+      "path": "2024/08/BAGNO-DOPO_3_11zon.jpg",
       "alt": "BAGNO DOPO_3_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "BAGNO-IN-CAMERA_4_11zon.jpg",
+      "fullPath": "2024/08/BAGNO-IN-CAMERA_4_11zon.jpg",
       "src": "BAGNO-IN-CAMERA_4_11zon.jpg",
+      "path": "2024/08/BAGNO-IN-CAMERA_4_11zon.jpg",
       "alt": "BAGNO IN CAMERA_4_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "CAM-DA-LETTO-CASA-GTALLO_5_11zon.jpg",
+      "fullPath": "2024/08/CAM-DA-LETTO-CASA-GTALLO_5_11zon.jpg",
       "src": "CAM-DA-LETTO-CASA-GTALLO_5_11zon.jpg",
+      "path": "2024/08/CAM-DA-LETTO-CASA-GTALLO_5_11zon.jpg",
       "alt": "CAM DA LETTO CASA GTALLO_5_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "CAM-DA-LETTO-REV-02_6_11zon.jpg",
+      "fullPath": "2024/08/CAM-DA-LETTO-REV-02_6_11zon.jpg",
       "src": "CAM-DA-LETTO-REV-02_6_11zon.jpg",
+      "path": "2024/08/CAM-DA-LETTO-REV-02_6_11zon.jpg",
       "alt": "CAM DA LETTO REV 02_6_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "CAM-DA-LETTO-REV-03_7_11zon.jpg",
+      "fullPath": "2024/08/CAM-DA-LETTO-REV-03_7_11zon.jpg",
       "src": "CAM-DA-LETTO-REV-03_7_11zon.jpg",
+      "path": "2024/08/CAM-DA-LETTO-REV-03_7_11zon.jpg",
       "alt": "CAM DA LETTO REV 03_7_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "CAM-DA-LETTO-REV-04_8_11zon.jpg",
+      "fullPath": "2024/08/CAM-DA-LETTO-REV-04_8_11zon.jpg",
       "src": "CAM-DA-LETTO-REV-04_8_11zon.jpg",
+      "path": "2024/08/CAM-DA-LETTO-REV-04_8_11zon.jpg",
       "alt": "CAM DA LETTO REV 04_8_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "CASA-GALLO-DOPO-BAGNO_9_11zon.jpg",
+      "fullPath": "2024/08/CASA-GALLO-DOPO-BAGNO_9_11zon.jpg",
       "src": "CASA-GALLO-DOPO-BAGNO_9_11zon.jpg",
+      "path": "2024/08/CASA-GALLO-DOPO-BAGNO_9_11zon.jpg",
       "alt": "CASA GALLO DOPO BAGNO_9_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "DOPO-BAGNO-IN-CAMERA-CASA-GALLO-GIULIO_10_11zon.jpg",
+      "fullPath": "2024/08/DOPO-BAGNO-IN-CAMERA-CASA-GALLO-GIULIO_10_11zon.jpg",
       "src": "DOPO-BAGNO-IN-CAMERA-CASA-GALLO-GIULIO_10_11zon.jpg",
+      "path": "2024/08/DOPO-BAGNO-IN-CAMERA-CASA-GALLO-GIULIO_10_11zon.jpg",
       "alt": "DOPO BAGNO IN CAMERA CASA GALLO GIULIO_10_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "DOPO-CASA-GALLO_11_11zon.jpg",
+      "fullPath": "2024/08/DOPO-CASA-GALLO_11_11zon.jpg",
       "src": "DOPO-CASA-GALLO_11_11zon.jpg",
+      "path": "2024/08/DOPO-CASA-GALLO_11_11zon.jpg",
       "alt": "DOPO CASA GALLO_11_11zon",
       "width": 1600,
       "height": 1200
     },
     {
       "full": "DOPO-CUCINA-GALLO_12_11zon.jpg",
+      "fullPath": "2024/08/DOPO-CUCINA-GALLO_12_11zon.jpg",
       "src": "DOPO-CUCINA-GALLO_12_11zon.jpg",
+      "path": "2024/08/DOPO-CUCINA-GALLO_12_11zon.jpg",
       "alt": "DOPO CUCINA GALLO_12_11zon",
       "width": 1600,
       "height": 1200
     },
     {
       "full": "INGRESSO-DOPO_13_11zon.jpg",
+      "fullPath": "2024/08/INGRESSO-DOPO_13_11zon.jpg",
       "src": "INGRESSO-DOPO_13_11zon.jpg",
+      "path": "2024/08/INGRESSO-DOPO_13_11zon.jpg",
       "alt": "INGRESSO DOPO_13_11zon",
       "width": 1200,
       "height": 1600
     },
     {
       "full": "INGRESSO-REV01_14_11zon.jpg",
+      "fullPath": "2024/08/INGRESSO-REV01_14_11zon.jpg",
       "src": "INGRESSO-REV01_14_11zon.jpg",
+      "path": "2024/08/INGRESSO-REV01_14_11zon.jpg",
       "alt": "INGRESSO REV01_14_11zon",
       "width": 1200,
       "height": 1600
@@ -208,8 +251,14 @@
     "prima-dopo",
     "progetti"
   ],
+  "postId": "4078",
   "avvisi": [
     "2 immagini su 21 senza un alt vero, da scrivere",
     "meta description assente nell originale, da scrivere"
-  ]
+  ],
+  "cardImage": {
+    "src": "BAGNO-DOP-REV-03_2_11zon.jpg",
+    "path": "2024/08/BAGNO-DOP-REV-03_2_11zon.jpg",
+    "alt": ""
+  }
 }

@@ -3,9 +3,11 @@
   "urlOriginale": "/grande-novita-una-nuova-area-formativa-nel-nostro-store-di-via-argine/",
   "title": "Grande novità: una nuova area formativa nel nostro store di via Argine!",
   "seoTitle": "Grande novità: una nuova area formativa nel nostro store di via Argine!",
+  "seoTitleCompleto": "Grande novità: una nuova area formativa nel nostro store di via Argine! - Costruisci e Arreda S.r.l.",
   "metaDescription": null,
   "hero": {
     "image": "Raggruppa-1648-3.jpg",
+    "imagePath": "2024/06/Raggruppa-1648-3.jpg",
     "titleTag": "h2",
     "title": "Ultime news",
     "kicker": "NEWS AND EVENT"
@@ -38,6 +40,7 @@
   "immagini": [],
   "featuredImage": {
     "src": "AreaFormativa.jpg",
+    "path": "2024/08/AreaFormativa.jpg",
     "alt": ""
   },
   "gallery": [],
@@ -52,6 +55,7 @@
   "tassonomie": [
     "ultime-news-e-articoli"
   ],
+  "postId": "4065",
   "avvisi": [
     "1 immagini su 1 senza un alt vero, da scrivere",
     "meta description assente nell originale, da scrivere"

@@ -3,9 +3,11 @@
   "urlOriginale": "/come-scegliere-le-finiture-perfette-per-la-tua-casa/",
   "title": "Come scegliere le finiture perfette per la tua casa",
   "seoTitle": "Come scegliere le finiture perfette per la tua casa.",
+  "seoTitleCompleto": "Come scegliere le finiture perfette per la tua casa.",
   "metaDescription": "Le finiture perfette per la tua casa: materiali, colori e design per ambienti unici. Leggi l'articolo e scopri come sceglierle.",
   "hero": {
     "image": "Raggruppa-1648-3.jpg",
+    "imagePath": "2024/06/Raggruppa-1648-3.jpg",
     "titleTag": "h2",
     "title": "Ultime news",
     "kicker": "NEWS AND EVENT"
@@ -38,6 +40,7 @@
   "immagini": [],
   "featuredImage": {
     "src": "COPERTINA-ARTICOLI-2.png",
+    "path": "2024/12/COPERTINA-ARTICOLI-2.png",
     "alt": "finiture"
   },
   "gallery": [],
@@ -52,5 +55,6 @@
   "tassonomie": [
     "ultime-news-e-articoli"
   ],
+  "postId": "4605",
   "avvisi": []
 }

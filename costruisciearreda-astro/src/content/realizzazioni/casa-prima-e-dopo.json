@@ -3,9 +3,11 @@
   "urlOriginale": "/realizzazioni/casa-prima-e-dopo/",
   "title": "Casa prima e dopo",
   "seoTitle": "Casa prima e dopo",
+  "seoTitleCompleto": "Casa prima e dopo - Costruisci e Arreda S.r.l.",
   "metaDescription": null,
   "hero": {
     "image": "Raggruppa-1647-2.jpg",
+    "imagePath": "2024/06/Raggruppa-1647-2.jpg",
     "titleTag": "h2",
     "title": "I NOSTRI PROGETTI",
     "kicker": "REALIZZAZIONI"
@@ -23,84 +25,108 @@
   "gallery": [
     {
       "full": "PRIMA-E-DOPO-BAGNO-2_1_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-BAGNO-2_1_11zon.jpg",
       "src": "PRIMA-E-DOPO-BAGNO-2_1_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-BAGNO-2_1_11zon.jpg",
       "alt": "PRIMA E DOPO BAGNO 2_1_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-E-DOPO-BAGNO_2_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-BAGNO_2_11zon.jpg",
       "src": "PRIMA-E-DOPO-BAGNO_2_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-BAGNO_2_11zon.jpg",
       "alt": "PRIMA E DOPO BAGNO_2_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-E-DOPO-CAMERA-DA-LETTO-REV-01_3_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-CAMERA-DA-LETTO-REV-01_3_11zon.jpg",
       "src": "PRIMA-E-DOPO-CAMERA-DA-LETTO-REV-01_3_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-CAMERA-DA-LETTO-REV-01_3_11zon.jpg",
       "alt": "PRIMA E DOPO CAMERA DA LETTO REV 01_3_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-E-DOPO-CAMERA-DA-LETTO_4_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-CAMERA-DA-LETTO_4_11zon.jpg",
       "src": "PRIMA-E-DOPO-CAMERA-DA-LETTO_4_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-CAMERA-DA-LETTO_4_11zon.jpg",
       "alt": "PRIMA E DOPO CAMERA DA LETTO_4_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-E-DOPO-CAMERA-REV-02_5_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-CAMERA-REV-02_5_11zon.jpg",
       "src": "PRIMA-E-DOPO-CAMERA-REV-02_5_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-CAMERA-REV-02_5_11zon.jpg",
       "alt": "PRIMA E DOPO CAMERA REV 02_5_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-E-DOPO-CAMERETTA-1_6_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-CAMERETTA-1_6_11zon.jpg",
       "src": "PRIMA-E-DOPO-CAMERETTA-1_6_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-CAMERETTA-1_6_11zon.jpg",
       "alt": "PRIMA E DOPO CAMERETTA 1_6_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-E-DOPO-CAMERETTA-2_7_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-CAMERETTA-2_7_11zon.jpg",
       "src": "PRIMA-E-DOPO-CAMERETTA-2_7_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-CAMERETTA-2_7_11zon.jpg",
       "alt": "PRIMA E DOPO CAMERETTA 2_7_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-E-DOPO-CAMERETTA-REV-01_8_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-CAMERETTA-REV-01_8_11zon.jpg",
       "src": "PRIMA-E-DOPO-CAMERETTA-REV-01_8_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-CAMERETTA-REV-01_8_11zon.jpg",
       "alt": "PRIMA E DOPO CAMERETTA REV 01_8_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-E-DOPO-CUCINA_9_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-CUCINA_9_11zon.jpg",
       "src": "PRIMA-E-DOPO-CUCINA_9_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-CUCINA_9_11zon.jpg",
       "alt": "PRIMA E DOPO CUCINA_9_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-E-DOPO-SALONE_10_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-SALONE_10_11zon.jpg",
       "src": "PRIMA-E-DOPO-SALONE_10_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-SALONE_10_11zon.jpg",
       "alt": "PRIMA E DOPO SALONE_10_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-E-DOPO-ZONA-GIORNO_11_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-E-DOPO-ZONA-GIORNO_11_11zon.jpg",
       "src": "PRIMA-E-DOPO-ZONA-GIORNO_11_11zon.jpg",
+      "path": "2024/08/PRIMA-E-DOPO-ZONA-GIORNO_11_11zon.jpg",
       "alt": "PRIMA E DOPO ZONA GIORNO_11_11zon",
       "width": 1600,
       "height": 1600
     },
     {
       "full": "PRIMA-RENDER_12_11zon.jpg",
+      "fullPath": "2024/08/PRIMA-RENDER_12_11zon.jpg",
       "src": "PRIMA-RENDER_12_11zon.jpg",
+      "path": "2024/08/PRIMA-RENDER_12_11zon.jpg",
       "alt": "PRIMA-RENDER_12_11zon",
       "width": 1600,
       "height": 1600
@@ -113,9 +139,15 @@
   "tassonomie": [
     "prima-dopo"
   ],
+  "postId": "4137",
   "avvisi": [
     "1 immagini su 12 senza un alt vero, da scrivere",
     "meta description assente nell originale, da scrivere",
     "nessun testo descrittivo nell'originale: la pagina ha solo titolo, galleria e form"
-  ]
+  ],
+  "cardImage": {
+    "src": "PrimaDopoAnteprima.jpg",
+    "path": "2024/08/PrimaDopoAnteprima.jpg",
+    "alt": ""
+  }
 }

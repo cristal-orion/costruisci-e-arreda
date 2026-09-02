@@ -1,0 +1,149 @@
+---
+/**
+ * Card per le griglie degli archivi — articoli e realizzazioni.
+ *
+ * Nell'originale queste card sono un `loop-grid` di Elementor con un template
+ * di loop dedicato, 3 colonne su desktop, 2 su tablet, 1 su mobile (dai
+ * `data-settings`). Il titolo della card lì è un **`<h1>`**: è per questo che
+ * `/category/ultime-news-e-articoli/` ha 7 `<h1>` e la pagina hub dei servizi 9.
+ * Qui il titolo è un `<h3>` dentro la sezione, e l'`<h1>` resta uno solo.
+ *
+ * Il motivo grafico `0 30px 0 0` sull'immagine è quello misurato sull'originale.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  titolo: string;
+  href: string;
+  immagine?: ImageMetadata;
+  /** Testo alternativo dell'immagine. Vuoto = decorativa (il titolo la descrive). */
+  immagineAlt?: string;
+  /** Data in ISO, per il `<time>`. */
+  data?: string | null;
+  /** Etichetta sopra il titolo: la categoria, il tipo. */
+  kicker?: string;
+  /** Testo del link. */
+  azione?: string;
+  headingLevel?: 'h2' | 'h3' | 'h4';
+}
+
+const {
+  titolo,
+  href,
+  immagine,
+  immagineAlt = '',
+  data = null,
+  kicker,
+  azione = 'Scopri di più',
+  headingLevel = 'h3',
+}: Props = Astro.props;
+
+const Heading = headingLevel;
+const dataTesto = data
+  ? new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }).format(
+      new Date(data),
+    )
+  : null;
+---
+
+<article class="card">
+  <a class="card__media" href={href} tabindex="-1" aria-hidden="true">
+    {
+      immagine && (
+        <Image
+          src={immagine}
+          alt={immagineAlt}
+          widths={[320, 480, 720]}
+          sizes="(min-width: 1025px) 30vw, (min-width: 769px) 46vw, 92vw"
+          format="webp"
+          quality={76}
+          loading="lazy"
+          decoding="async"
+        />
+      )
+    }
+  </a>
+
+  <div class="card__corpo">
+    {
+      (kicker || dataTesto) && (
+        <p class="card__meta">
+          {kicker && <span>{kicker}</span>}
+          {dataTesto && <time datetime={data!}>{dataTesto}</time>}
+        </p>
+      )
+    }
+    <Heading class="card__titolo"><a href={href}>{titolo}</a></Heading>
+    <p class="card__azione" aria-hidden="true">{azione}</p>
+  </div>
+</article>
+
+<style>
+  .card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: var(--s-5);
+  }
+
+  .card__media {
+    display: block;
+    overflow: hidden;
+    /* motivo distintivo misurato sull'originale */
+    border-radius: var(--radius-notch);
+    background: var(--c-surface-alt);
+  }
+  .card__media img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease);
+  }
+  .card:hover .card__media img {
+    transform: scale(1.04);
+  }
+
+  .card__corpo {
+    display: grid;
+    align-content: start;
+    gap: var(--s-3);
+  }
+
+  .card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin: 0;
+    color: var(--c-brand);
+    font-size: var(--t-xs);
+    font-weight: var(--w-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .card__titolo {
+    margin: 0;
+    font-size: var(--t-xl);
+    font-weight: var(--w-bold);
+    line-height: var(--t-xl-lh);
+    text-transform: none;
+    text-wrap: balance;
+  }
+  .card__titolo a {
+    color: var(--c-ink);
+    text-decoration: none;
+  }
+  .card:hover .card__titolo a,
+  .card__titolo a:focus-visible {
+    color: var(--c-brand);
+  }
+
+  .card__azione {
+    margin: var(--s-2) 0 0;
+    color: var(--c-ink-soft);
+    font-size: var(--t-sm);
+  }
+  .card:hover .card__azione {
+    color: var(--c-brand);
+  }
+</style>

@@ -430,3 +430,160 @@ Differenze volute:
 ### Da fare nel passo successivo
 Estrazione dei contenuti in content collections (`services`, `realizzazioni`, `posts`)
 con uno script sull'HTML del mirror. Poi header e footer, che servono a ogni template.
+
+---
+
+## A03 — Contenuti, header, footer, i 4 template di contenuto e 2 archivi
+**2026-09-02 · fase A**
+
+34 rotte costruite su 66. Contenuti estratti in content collections, header e
+footer, i template di servizi, realizzazioni, store e articoli, gli archivi del
+blog e della tassonomia delle realizzazioni.
+
+### Estrazione dei contenuti
+
+`_migrazione/extract-content.js` legge il **DOM renderizzato** e riconosce i
+widget Elementor per **ruolo**, non per posizione, così non si rompe se una
+pagina ha un widget in più. Due passate:
+
+1. le 28 voci delle quattro collezioni (`services` 8, `realizzazioni` 7,
+   `stores` 5, `posts` 8) → un JSON per voce in `src/content/`;
+2. i tre archivi `cat_realizzazioni`, per l'immagine delle **card**, che sulle
+   pagine singole non compare: sta solo nel template del loop di Elementor.
+   Senza questa passata le card userebbero la prima foto della galleria, che è
+   un altro file — il fingerprint lo segnalava come immagine assente.
+
+L'estrazione genera anche `src/lib/immagini-generate.ts` (298 import statici) e
+un report con, per ogni voce, **cosa resta da sistemare**: alt mancanti, meta
+description da scrivere, immagini hero assenti, testi assenti.
+
+### Difetti dell'originale trovati misurando
+
+| Cosa | Dove |
+|---|---|
+| Il corpo del testo si vede **due volte** a 900px | tutte le 8 pagine dei servizi |
+| Le gallerie **non si vedono affatto** a 900px | le 3 pagine store con galleria |
+| `background-image: url('')`: hero bianco vuoto di 750px, titolo bianco su bianco | `/realizzazioni/appartamento-moderno-prima-e-dopo/` |
+| **Nessun testo descrittivo**, solo titolo, "DETTAGLI" e galleria | 5 realizzazioni su 7 |
+| **Lorem ipsum italiano nell'`og:description`**, pubblicato | `/store/via-argine-625-80147-napoli-na/` |
+| I **tre archivi di tassonomia mostrano lo stesso elenco**, che non corrisponde alle categorie assegnate | `/cat_realizzazioni/{progetti,render,prima-dopo}/` |
+| `<title>` senza il nome del sito, a differenza di tutte le altre pagine | gli 8 articoli del blog |
+| Gli `alt` delle gallerie sono il **nome del file** (`DSC03145`), non un alt | 124 immagini su 3 store + realizzazioni |
+| Link morto verso `#` | "Company profile" nel footer |
+
+I primi due difetti hanno la **stessa causa**: l'originale duplica il contenuto
+per desktop e per mobile e nasconde una copia con le classi `elementor-hidden-*`,
+ma la fascia tablet non è coperta. Nel rebuild i duplicati sono uniti e la resa
+è responsive: entrambi i difetti non possono ripresentarsi.
+
+### Header e footer
+
+Il menu sta nel DOM **una volta** invece di tre (l'originale ha tre `<nav>` con
+lo stesso `id="menuContainer"`: HTML non valido, più ~250 parole duplicate prima
+del contenuto di ogni pagina). Gli href, che nell'originale puntano alla forma
+rotta `index.html%3Fp=976.html`, sono risolti in slug puliti con una mappa
+page-id → URL costruita dalle classi del `<body>` (45 id, nessun conflitto,
+tutti i 15 id del menu risolti).
+
+| | 1440px | 992–1280px | 390px |
+|---|---|---|---|
+| header, originale | 101px | **145px, menu su 3 righe** | 69px |
+| header, rebuild | **101px** | 101–105px, 1–2 righe | **69px** |
+
+Sotto i 992px — il punto di rottura del tema originale — il menu diventa un
+pannello laterale con velo, chiusura con Esc, click fuori e blocco dello
+scorrimento. Le tre voci con sottomenu erano link a `pagina#`: sono diventate
+bottoni veri con `aria-expanded`.
+
+Correzioni ad annotazioni precedenti: **telefono ed email non sono nel footer**
+ma nel blocco "Realizza con noi il tuo progetto" sopra di esso; il form
+newsletter del footer è il **CF7 467**, non il 95 (il 95 è quello del blocco
+contatti).
+
+### Immagini: perché serve una potatura del build
+
+Le immagini dei contenuti si risolvono per percorso a runtime, quindi il modulo
+generato le importa **tutte** in modo statico. Vite emette ogni asset importato
+staticamente, anche quando la pagina usa solo le versioni ottimizzate prodotte da
+`astro:assets`: misurato, **289 originali non referenziati in `dist`, 124,6 MB**
+di peso morto. Un `import.meta.glob` eager sulla cartella è peggio: tira dentro
+tutte le 668 immagini del mirror.
+
+`scripts/prune-assets.mjs` (dentro `npm run build`) raccoglie i nomi citati da
+qualunque file di testo del build e rimuove il resto. Il criterio è verificabile
+e c'è `--dry-run`. Risultato: `dist` da **126 MB a 692 KB** con i soli servizi,
+e le immagini restano un solo file nel repo, dentro il mirror, raggiunte da
+`src/assets/uploads` che è un **collegamento simbolico**.
+
+### Peso reale misurato nel browser
+
+Byte effettivamente trasferiti a 1440px, con lo scorrimento completo della pagina
+per innescare il lazy-load, tracker bloccati su entrambi i lati:
+
+| rotta | mirror | rebuild | |
+|---|---|---|---|
+| `/store/via-san-massimo-na/` | **28,94 MB** · 141 richieste | **0,60 MB** · 28 richieste | −98% |
+| `/gres-costruisciearreda-consigli/` | 3,91 MB · 43 | 0,18 MB · 6 | −95% |
+| `/realizzazioni/home-albe/` | 2,65 MB · 53 | 0,61 MB · 21 | −77% |
+| `/services/progetto/` | 2,35 MB · 42 | 0,15 MB · 6 | −94% |
+
+Una copertina da 2.889 KB diventa 132 KB in WebP: −95% senza differenza visibile.
+
+### Fedeltà dei contenuti: `fingerprint.py diff`
+
+Aggiunto il modo `astro` (legge `costruisciearreda-astro/dist`) e corrette due
+distorsioni della misura che facevano risultare differenze inesistenti:
+
+1. le immagini si confrontano per **stem**, non per nome completo: `astro:assets`
+   rinomina `DSC06147-scaled.jpg` in `DSC06147-scaled.HASH_var.webp`, e il
+   confronto per nome dava ogni immagine come "assente";
+2. il corpo della pagina del mirror parte **dopo l'ultimo `</header>`**, come il
+   `<main>` del build: prima includeva la cornice solo da un lato.
+
+Sulle **33 rotte confrontabili**, il diff residuo è:
+
+| differenza | pagine | perché |
+|---|---|---|
+| `h1` diverso | 25 | **voluto**: un solo `h1` per pagina, ed è il titolo della voce e non il banner generico dell'hero (identico su tutte le 8 pagine dei servizi). Gli articoli non avevano `h1`, l'archivio del blog ne aveva **7** |
+| heading assenti | 33 | il titoletto dell'hero non è più un `<h2>` (non è un heading), il titolo dell'articolo è passato da `h2` a `h1`, e l'heading "tags" dell'originale — vuoto — è omesso |
+| immagini assenti | 31 | quasi sempre **una sola**: `Raggruppa-1703`, grafica decorativa tolta di proposito |
+| parole oltre il 5% | 15 | vedi sotto |
+| `title` diverso | 4 | gli archivi: "Progetti **Archivi**" di Yoast sostituito da un titolo vero |
+
+Le differenze di conteggio parole, verificate una per una:
+
+- **servizi (−26%)**: è il **duplicato rimosso**. Confrontando gli insiemi di
+  parole, le uniche assenti sono le 6 dell'etichetta privacy del form; il resto
+  è la seconda copia dello stesso testo, che l'originale contava due volte.
+- **store e realizzazioni**: `146 → 146` e `304 → 304`, conteggio **identico**.
+- **archivi di tassonomia (−25%)**: l'originale elenca 6 voci in tutti e tre gli
+  archivi, il rebuild filtra davvero per categoria (2 progetti, 4 render, 3
+  prima/dopo).
+- **`/` homepage**: è ancora il segnaposto, non è fra le pagine ricostruite.
+- **`/store/via-argine.../`**: da 46 a 63 parole. L'originale non ha contenuto:
+  le 46 parole erano il lorem ipsum dell'`og:description` letto dal `<head>`.
+
+Le uniche parole che mancano davvero su tutte le pagine sono **"Ho letto e
+accetto l'informativa sulla privacy"**: l'etichetta della privacy del form
+newsletter, che arriva al passo "Form".
+
+### Scelte tecniche
+
+- **Collezioni in JSON** invece di Markdown: i corpi di testo restano HTML
+  verbatim, senza passare dal pipeline Markdown che potrebbe alterarli. Siamo in
+  fase A, ricostruzione 1:1; normalizzare i contenuti è lavoro di fase B.
+- **`description` obbligatoria** nel layout: dove l'originale non l'ha (49 pagine
+  su 56) si ricava dal primo paragrafo, e resta segnata come "da scrivere" nel
+  report. Nessuna pagina può uscire senza.
+- **`<title>` verbatim** dove l'originale non seguiva "titolo - nome sito":
+  gli 8 articoli del blog. Il campo `seoTitleCompleto` lo conserva.
+- **Componente `Card`** per le griglie degli archivi. Nell'originale il titolo
+  della card è un `<h1>`: è per questo che l'archivio del blog ne ha 7 e la
+  pagina hub dei servizi 9.
+- **Blocco contatti** (`BloccoContatti.astro`) nel layout: sta su ogni pagina
+  dell'originale e contiene i recapiti veri.
+- Astro 7 deprecata `z` da `astro:content`: zod si importa diretto.
+
+### Da fare nel passo successivo
+Le **11 pagine one-off** (homepage per prima), gli archivi `type_stores`, i 6
+form, i redirect 301, poi il deploy.

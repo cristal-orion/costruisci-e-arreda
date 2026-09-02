@@ -1,0 +1,200 @@
+---
+/**
+ * Template delle realizzazioni — 7 pagine, 95% di similarità nell'originale.
+ *
+ * Struttura misurata: titolo, testo introduttivo, quattro campi (LOCALITÀ,
+ * TIPOLOGIA, CATEGORIA, TEMPI REALIZZAZIONE) resi come heading, immagine di
+ * copertina, heading DETTAGLI, testo dei dettagli, galleria.
+ *
+ * I quattro campi nell'originale sono `<h2>` con dentro "ETICHETTA: valore":
+ * qui diventano una lista di definizioni, che è la struttura che sono.
+ *
+ * Difetti dell'originale che questo template rende visibili invece di nascondere:
+ *  - **5 realizzazioni su 7 non hanno alcun testo** né i quattro campi: solo
+ *    titolo, "DETTAGLI" e galleria;
+ *  - `/realizzazioni/appartamento-moderno-prima-e-dopo/` ha
+ *    `background-image: url('')`, quindi nell'originale l'hero è un riquadro
+ *    bianco vuoto col titolo bianco sopra. Qui, senza immagine, l'hero non
+ *    viene reso affatto e il titolo resta leggibile.
+ */
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Titoletto from '../../components/Titoletto.astro';
+import Gallery from '../../components/Gallery.astro';
+import { immagine } from '../../lib/immagini';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const voci = await getCollection('realizzazioni');
+  return voci.map((v) => ({ params: { slug: v.data.slug }, props: { dati: v.data } }));
+}
+
+const { dati } = Astro.props;
+
+const heroImg = immagine(dati.hero?.imagePath);
+const copertina = immagine(dati.immagini[0]?.path);
+
+/** I quattro campi, nell'ordine dell'originale. Assenti su 5 pagine su 7. */
+const ordineCampi = ['LOCALITÀ', 'TIPOLOGIA', 'CATEGORIA', 'TEMPI REALIZZAZIONE'];
+const campi = ordineCampi
+  .filter((k) => dati.campi[k])
+  .map((k) => ({ etichetta: k, valore: dati.campi[k] }));
+
+const galleria = dati.gallery
+  .map((g) => ({ img: immagine(g.path), full: g.fullPath, alt: g.alt }))
+  .filter((g): g is { img: NonNullable<typeof g.img>; full: string | null; alt: string } => !!g.img)
+  .map((g) => ({ src: g.img, alt: g.alt }));
+
+const primoTesto = dati.corpo[0]?.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
+const descrizione =
+  dati.metaDescription ??
+  (primoTesto
+    ? primoTesto.slice(0, 155).trim() + '…'
+    : `${dati.title}: una realizzazione di ${site.shortName}. ${site.description}`);
+---
+
+<SiteLayout
+  title={dati.title}
+  titleFull={dati.seoTitleCompleto ?? undefined}
+  description={descrizione}
+>
+  {
+    heroImg && dati.hero && (
+      <Hero
+        as="p"
+        title={dati.hero.title ?? ''}
+        kicker={dati.hero.kicker ?? undefined}
+        image={heroImg}
+        imageAlt=""
+      />
+    )
+  }
+
+  <div class="container realizzazione">
+    <Titoletto as="h1" size="lg" tone="muted" class="realizzazione__titolo">{dati.title}</Titoletto>
+
+    <div class="realizzazione__testa">
+      <div>
+        {dati.corpo[0] && <div class="realizzazione__intro" set:html={dati.corpo[0].html} />}
+
+        {
+          campi.length > 0 && (
+            <dl class="scheda">
+              {campi.map((c) => (
+                <div class="scheda__voce">
+                  <dt class="scheda__etichetta">{c.etichetta}</dt>
+                  <dd class="scheda__valore">{c.valore}</dd>
+                </div>
+              ))}
+            </dl>
+          )
+        }
+      </div>
+
+      {
+        copertina && (
+          <Image
+            class="realizzazione__copertina"
+            src={copertina}
+            alt={dati.immagini[0]?.alt || `${dati.title}: veduta d'insieme`}
+            widths={[480, 720, 1080]}
+            sizes="(min-width: 992px) 40vw, 92vw"
+            format="webp"
+            quality={78}
+            loading="lazy"
+            decoding="async"
+          />
+        )
+      }
+    </div>
+
+    {
+      dati.corpo[1] && (
+        <section class="realizzazione__dettagli">
+          <Titoletto as="h2" size="sm" tone="dark">Dettagli</Titoletto>
+          <div class="realizzazione__testo" set:html={dati.corpo[1].html} />
+        </section>
+      )
+    }
+  </div>
+
+  {
+    galleria.length > 0 && (
+      <section class="section realizzazione__galleria">
+        <div class="container">
+          <Titoletto as="h2" size="sm" tone="dark" class="realizzazione__galleriaTitolo">
+            Galleria
+          </Titoletto>
+          <Gallery
+            items={galleria}
+            label={`Galleria fotografica di ${dati.title}`}
+            columns={{ base: 2, tablet: 2, desktop: 3 }}
+          />
+        </div>
+      </section>
+    )
+  }
+</SiteLayout>
+
+<style>
+  .realizzazione {
+    padding-block: var(--section-y-lg) 0;
+  }
+  .realizzazione__titolo {
+    margin-bottom: var(--s-12);
+  }
+
+  .realizzazione__testa {
+    display: grid;
+    gap: var(--s-12);
+    align-items: start;
+  }
+  @media (min-width: 992px) {
+    .realizzazione__testa {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+      gap: var(--s-20);
+    }
+  }
+
+  .realizzazione__intro {
+    font-size: var(--t-lg);
+    line-height: var(--t-lg-lh);
+  }
+
+  .scheda {
+    display: grid;
+    gap: var(--s-4);
+    margin: var(--s-10) 0 0;
+  }
+  .scheda__voce {
+    display: grid;
+    gap: var(--s-1);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--c-border);
+  }
+  .scheda__etichetta {
+    color: var(--c-brand);
+    font-size: var(--t-xs);
+    font-weight: var(--w-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .scheda__valore {
+    margin: 0;
+    font-size: var(--t-base);
+  }
+
+  .realizzazione__dettagli {
+    padding-block: var(--section-y) 0;
+  }
+  .realizzazione__testo {
+    max-width: var(--container-text);
+    margin-top: var(--s-10);
+  }
+
+  .realizzazione__galleriaTitolo {
+    margin-bottom: var(--s-12);
+  }
+</style>

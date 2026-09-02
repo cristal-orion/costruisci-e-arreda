@@ -7,21 +7,39 @@
 import BaseLayout from './BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import BloccoContatti from '../components/BloccoContatti.astro';
 
 interface Props {
   title: string;
+  /** `<title>` verbatim, dove l'originale non seguiva "titolo - nome sito". */
+  titleFull?: string;
   description: string;
   image?: string;
   noindex?: boolean;
   bodyClass?: string;
+  /**
+   * Il blocco "Realizza con noi il tuo progetto" sta su **ogni** pagina
+   * dell'originale, sopra il footer. Si toglie solo dove sarebbe fuori posto
+   * (la pagina di controllo interna, le thank-you page).
+   */
+  bloccoContatti?: boolean;
 }
 
-const { title, description, image, noindex, bodyClass }: Props = Astro.props;
+const {
+  title,
+  titleFull,
+  description,
+  image,
+  noindex,
+  bodyClass,
+  bloccoContatti = true,
+}: Props = Astro.props;
 ---
 
-<BaseLayout {title} {description} {image} {noindex} {bodyClass}>
+<BaseLayout {title} {titleFull} {description} {image} {noindex} {bodyClass}>
   <slot name="head" slot="head" />
   <Header slot="header" pathname={Astro.url.pathname} />
   <slot />
+  {bloccoContatti && <BloccoContatti />}
   <Footer slot="footer" />
 </BaseLayout>

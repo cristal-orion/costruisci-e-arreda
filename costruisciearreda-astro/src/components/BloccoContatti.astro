@@ -1,0 +1,124 @@
+---
+/**
+ * Blocco "Realizza con noi il tuo progetto" — sta **su ogni pagina** del sito,
+ * subito sopra il footer, e contiene i recapiti veri: indirizzo degli uffici,
+ * telefono ed email. Non è nel footer, come era stato annotato: è qui.
+ *
+ * Testo trascritto dal mirror. Nell'originale il blocco ospita anche il form
+ * CF7 **95** (non il 467: quello è la newsletter del footer); il form arriva al
+ * passo "Form" del piano, con gli altri cinque.
+ */
+import Titoletto from './Titoletto.astro';
+import Button from './Button.astro';
+import { company } from '../data/site';
+
+interface Props {
+  class?: string;
+}
+const { class: extraClass }: Props = Astro.props;
+
+/** Gli uffici: è l'indirizzo che il blocco mostra nell'originale. */
+const uffici = 'Via Gennaro Paparo, 74, 80040 – Massa di Somma (NA)';
+---
+
+<section class:list={['contatti', extraClass]} aria-labelledby="blocco-contatti">
+  <div class="container contatti__inner">
+    <div class="contatti__testo">
+      <Titoletto as="h2" size="sm" tone="dark" class="contatti__titolo">
+        <span id="blocco-contatti">Realizza con noi il tuo progetto</span>
+      </Titoletto>
+      <p>
+        Hai un progetto edile in mente? Siamo qui per aiutarti a realizzarlo! Compila il
+        form per maggiori informazioni sui nostri prodotti e servizi, o per ricevere una
+        consulenza personalizzata.
+      </p>
+    </div>
+
+    <ul class="contatti__recapiti">
+      <li>
+        <span class="contatti__etichetta">Uffici</span>
+        <span>{uffici}</span>
+      </li>
+      <li>
+        <span class="contatti__etichetta">Telefono</span>
+        <a href={`tel:${company.phone}`}>{company.phoneLabel}</a>
+      </li>
+      <li>
+        <span class="contatti__etichetta">Email</span>
+        <a href={`mailto:${company.email}`}>{company.email}</a>
+      </li>
+    </ul>
+
+    {/* Il form CF7 95 dell'originale va qui: arriva al passo "Form" del piano.
+        Nel frattempo il rimando ai contatti è un percorso vero, non un finto form. */}
+    <p class="contatti__azione">
+      <Button href="/richiedi-preventivo/" variant="solid">Richiedi un preventivo</Button>
+    </p>
+  </div>
+</section>
+
+<style>
+  .contatti {
+    padding-block: var(--section-y);
+    background: var(--c-surface-alt);
+  }
+
+  .contatti__inner {
+    display: grid;
+    gap: var(--s-12);
+  }
+  @media (min-width: 992px) {
+    .contatti__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+      column-gap: var(--s-20);
+      align-items: start;
+    }
+    .contatti__azione {
+      grid-column: 2;
+    }
+  }
+
+  .contatti__titolo {
+    margin-bottom: var(--s-8);
+  }
+  .contatti__testo p {
+    max-width: 48ch;
+    margin: 0;
+    font-size: var(--t-lg);
+    line-height: var(--t-lg-lh);
+  }
+
+  .contatti__recapiti {
+    display: grid;
+    gap: var(--s-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .contatti__recapiti li {
+    display: grid;
+    gap: var(--s-1);
+    margin: 0;
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--c-border);
+    font-size: var(--t-base);
+  }
+  .contatti__etichetta {
+    color: var(--c-brand);
+    font-size: var(--t-xs);
+    font-weight: var(--w-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .contatti__recapiti a {
+    color: var(--c-ink);
+    text-decoration: none;
+  }
+  .contatti__recapiti a:hover {
+    color: var(--c-brand);
+  }
+
+  .contatti__azione {
+    margin: 0;
+  }
+</style>

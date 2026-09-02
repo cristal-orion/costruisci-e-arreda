@@ -16,11 +16,19 @@
  * Masonry senza JavaScript: `columns` del multi-colonna CSS. L'ordine di lettura
  * scende per colonna invece di andare per righe — accettabile per una galleria
  * di foto, e in cambio non serve nessuna libreria di posizionamento.
+ *
+ * `src` accetta un `ImageMetadata` (immagine importata: viene ridimensionata e
+ * convertita in WebP con `srcset`) oppure una stringa, per i segnaposto.
+ * Con un `ImageMetadata` il lightbox riceve una versione grande generata da
+ * `astro:assets`, non l'originale da più megabyte.
  */
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Item {
   /** Immagine visibile nella griglia. */
-  src: string;
-  /** Immagine a piena risoluzione aperta dal lightbox. Se manca si usa `src`. */
+  src: ImageMetadata | string;
+  /** Immagine grande aperta dal lightbox. Con un `ImageMetadata` è generata da sé. */
   full?: string;
   alt: string;
   width?: number;
@@ -44,6 +52,23 @@ const {
   class: extraClass,
 } = Astro.props;
 
+/* Per il lightbox serve una versione grande ma ragionevole: gli originali del
+   mirror arrivano a 5,2 MB, e aprirne uno a schermo intero non è accettabile. */
+const voci = await Promise.all(
+  items.map(async (it) => {
+    if (typeof it.src === 'string') return { ...it, grande: it.full ?? it.src };
+    const grande =
+      it.full ??
+      (await getImage({
+        src: it.src,
+        width: Math.min(1920, it.src.width),
+        format: 'webp',
+        quality: 78,
+      })).src;
+    return { ...it, grande };
+  }),
+);
+
 /* Ogni istanza ha il proprio lightbox, legato per id: se una pagina ha due
    gallerie (negli store dell'originale succede) ognuna apre il suo. */
 const id = `gal-${Math.random().toString(36).slice(2, 8)}`;
@@ -56,22 +81,35 @@ const id = `gal-${Math.random().toString(36).slice(2, 8)}`;
   style={`--gal-gap:${gap};--gal-cols-base:${columns.base ?? 2};--gal-cols-tablet:${columns.tablet ?? 2};--gal-cols-desktop:${columns.desktop ?? 3}`}
 >
   {
-    items.map((it, i) => (
+    voci.map((it, i) => (
       <a
         class="gallery__item"
-        href={it.full ?? it.src}
+        href={it.grande}
         data-gallery-item
         data-index={i}
         aria-label={`Apri l'immagine: ${it.alt}`}
       >
-        <img
-          src={it.src}
-          alt={it.alt}
-          width={it.width}
-          height={it.height}
-          loading="lazy"
-          decoding="async"
-        />
+        {typeof it.src === 'string' ? (
+          <img
+            src={it.src}
+            alt={it.alt}
+            width={it.width}
+            height={it.height}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <Image
+            src={it.src}
+            alt={it.alt}
+            widths={[320, 480, 720, 960]}
+            sizes={`(min-width: 1025px) ${Math.round(100 / (columns.desktop ?? 3))}vw, (min-width: 769px) ${Math.round(100 / (columns.tablet ?? 2))}vw, ${Math.round(100 / (columns.base ?? 2))}vw`}
+            format="webp"
+            quality={76}
+            loading="lazy"
+            decoding="async"
+          />
+        )}
         <span class="gallery__overlay" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="11" cy="11" r="7" />

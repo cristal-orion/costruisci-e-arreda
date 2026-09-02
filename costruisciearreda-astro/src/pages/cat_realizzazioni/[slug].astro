@@ -1,0 +1,117 @@
+---
+/**
+ * Archivi della tassonomia delle realizzazioni: progetti, render, prima/dopo.
+ *
+ * Nell'originale sono un `loop-grid` a 3/2/1 colonne più un `loop-carousel`
+ * nascosto su desktop: due componenti per lo stesso elenco, uno per fascia.
+ * Qui una griglia sola, responsive.
+ *
+ * **Il "prima/dopo" non è uno slider interattivo**: è solo questa tassonomia,
+ * cioè gallerie di foto affiancate. Verificato sul mirror.
+ *
+ * Nota su un errore di catalogazione dell'originale, riprodotto come sta perché
+ * è contenuto e non codice: `appartamento-moderno-prima-e-dopo` è etichettato
+ * `render`, non `prima-dopo`, malgrado il nome. Da chiedere al proprietario.
+ *
+ * **Differenza voluta.** Nell'originale i tre archivi mostrano lo **stesso**
+ * elenco — sei delle sette realizzazioni compaiono in tutti e tre — che non
+ * corrisponde alle categorie assegnate alle pagine (le classi
+ * `cat_realizzazioni-*` del Theme Builder). Verificato risolvendo i link
+ * `index.html%3Fp=ID` delle card. Qui l'elenco è filtrato davvero per categoria:
+ * quindi `progetti` mostra 2 voci, `render` 4 e `prima/dopo` 3, non 6 ovunque.
+ */
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Titoletto from '../../components/Titoletto.astro';
+import Card from '../../components/Card.astro';
+import { immagine } from '../../lib/immagini';
+
+/** Etichette esattamente come le stampa l'originale nell'`<h1>` dell'archivio. */
+const ETICHETTE: Record<string, string> = {
+  progetti: 'Progetti',
+  render: 'Render',
+  'prima-dopo': 'Prima / Dopo',
+};
+
+const DESCRIZIONI: Record<string, string> = {
+  progetti:
+    'I progetti di ristrutturazione e arredo realizzati da Costruisci e Arreda: appartamenti, case e spazi commerciali.',
+  render:
+    'I rendering 3D realizzati da Costruisci e Arreda: come sarà lo spazio prima di iniziare i lavori.',
+  'prima-dopo':
+    'Prima e dopo: le trasformazioni degli spazi ristrutturati da Costruisci e Arreda, a confronto.',
+};
+
+export async function getStaticPaths() {
+  const voci = await getCollection('realizzazioni');
+  const slug = [...new Set(voci.flatMap((v) => v.data.tassonomie))];
+  return slug.map((s) => ({
+    params: { slug: s },
+    props: { tassonomia: s, voci: voci.filter((v) => v.data.tassonomie.includes(s)).map((v) => v.data) },
+  }));
+}
+
+const { tassonomia, voci } = Astro.props;
+
+const etichetta = ETICHETTE[tassonomia] ?? tassonomia;
+/* L'immagine della card è quella del template del loop (`cardImage`), non la
+   prima foto della galleria: sono file diversi, e usare la seconda cambierebbe
+   la resa dell'archivio. */
+const schede = voci.map((d) => ({
+  titolo: d.title,
+  href: `/realizzazioni/${d.slug}/`,
+  immagine: immagine(d.cardImage?.path) ?? immagine(d.immagini[0]?.path) ?? immagine(d.gallery[0]?.path),
+  immagineAlt: d.cardImage?.alt ?? '',
+}));
+
+/* L'hero: l'immagine è quella delle pagine realizzazione, il titoletto è
+   "REALIZZAZIONI" come nell'originale. */
+const heroImg = immagine(voci.find((v) => v.hero?.imagePath)?.hero?.imagePath);
+---
+
+<SiteLayout
+  title={`Realizzazioni: ${etichetta}`}
+  description={DESCRIZIONI[tassonomia] ?? `Le realizzazioni di Costruisci e Arreda: ${etichetta}.`}
+>
+  {
+    heroImg && (
+      <Hero as="p" title="I nostri progetti" kicker="REALIZZAZIONI" image={heroImg} imageAlt="" />
+    )
+  }
+
+  <div class="container archivio">
+    <Titoletto as="h1" size="lg" tone="muted" class="archivio__titolo">{etichetta}</Titoletto>
+
+    <Titoletto as="h2" size="sm" tone="dark" class="archivio__intro">
+      I progetti che abbiamo realizzato
+    </Titoletto>
+
+    {
+      schede.length > 0 ? (
+        <div class="grid grid--3 archivio__griglia">
+          {schede.map((s) => (
+            <Card {...s} kicker={etichetta} headingLevel="h2" />
+          ))}
+        </div>
+      ) : (
+        <p>Nessuna realizzazione in questa categoria.</p>
+      )
+    }
+  </div>
+</SiteLayout>
+
+<style>
+  .archivio {
+    padding-block: var(--section-y-lg) var(--section-y);
+  }
+  .archivio__titolo {
+    margin-bottom: var(--s-10);
+  }
+  .archivio__intro {
+    margin-bottom: var(--s-15);
+  }
+  .archivio__griglia {
+    gap: var(--s-12) var(--s-8);
+  }
+</style>

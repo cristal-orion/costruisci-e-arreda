@@ -3,9 +3,11 @@
   "urlOriginale": "/gres-costruisciearreda-consigli/",
   "title": "Gres?Quando sceglierlo? La guida definitiva per pavimenti e rivestimenti",
   "seoTitle": "Gres?Quando sceglierlo?",
+  "seoTitleCompleto": "Gres?Quando sceglierlo?",
   "metaDescription": "Quando scegliere il gres porcellanato per pavimenti e rivestimenti: resistente, versatile e ideale per interni ed esterni.",
   "hero": {
     "image": "Raggruppa-1648-3.jpg",
+    "imagePath": "2024/06/Raggruppa-1648-3.jpg",
     "titleTag": "h2",
     "title": "Ultime news",
     "kicker": "NEWS AND EVENT"
@@ -38,6 +40,7 @@
   "immagini": [],
   "featuredImage": {
     "src": "COPERTINA-ARTICOLI-1.png",
+    "path": "2024/12/COPERTINA-ARTICOLI-1.png",
     "alt": "gres"
   },
   "gallery": [],
@@ -52,5 +55,6 @@
   "tassonomie": [
     "ultime-news-e-articoli"
   ],
+  "postId": "4603",
   "avvisi": []
 }

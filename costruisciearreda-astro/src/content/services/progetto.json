@@ -3,9 +3,11 @@
   "urlOriginale": "/services/progetto/",
   "title": "Progetto",
   "seoTitle": "Progetto",
+  "seoTitleCompleto": "Progetto - Costruisci e Arreda S.r.l.",
   "metaDescription": null,
   "hero": {
     "image": "Raggruppa-1648.jpg",
+    "imagePath": "2024/06/Raggruppa-1648.jpg",
     "titleTag": "h1",
     "title": "Dalla progettazione \n alla realizzazione",
     "kicker": "SERVIZI"
@@ -30,6 +32,7 @@
   ],
   "postInfo": {},
   "tassonomie": [],
+  "postId": "976",
   "avvisi": [
     "1 blocco/i di testo era/no duplicato/i nell'originale (copia desktop + mobile): unito/i in uno",
     "meta description assente nell originale, da scrivere"

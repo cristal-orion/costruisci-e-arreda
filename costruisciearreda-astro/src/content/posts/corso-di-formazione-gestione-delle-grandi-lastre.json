@@ -3,9 +3,11 @@
   "urlOriginale": "/corso-di-formazione-gestione-delle-grandi-lastre/",
   "title": "Corso di Formazione – Gestione delle Grandi Lastre",
   "seoTitle": "Corso di Formazione - Gestione delle Grandi Lastre",
+  "seoTitleCompleto": "Corso di Formazione - Gestione delle Grandi Lastre - Costruisci e Arreda S.r.l.",
   "metaDescription": "Entusiasti di annunciare un evento formativo imperdibile: il nostro corso di formazione dedicato alla gestione delle grandi lastre",
   "hero": {
     "image": "Raggruppa-1648-3.jpg",
+    "imagePath": "2024/06/Raggruppa-1648-3.jpg",
     "titleTag": "h2",
     "title": "Ultime news",
     "kicker": "NEWS AND EVENT"
@@ -38,6 +40,7 @@
   "immagini": [],
   "featuredImage": {
     "src": "Formazione222.jpg",
+    "path": "2023/09/Formazione222.jpg",
     "alt": ""
   },
   "gallery": [],
@@ -52,6 +55,7 @@
   "tassonomie": [
     "ultime-news-e-articoli"
   ],
+  "postId": "4073",
   "avvisi": [
     "1 immagini su 1 senza un alt vero, da scrivere"
   ]

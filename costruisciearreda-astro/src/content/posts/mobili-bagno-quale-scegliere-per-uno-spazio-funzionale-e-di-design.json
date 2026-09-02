@@ -3,9 +3,11 @@
   "urlOriginale": "/mobili-bagno-quale-scegliere-per-uno-spazio-funzionale-e-di-design/",
   "title": "Mobili bagno: quale scegliere per uno spazio funzionale e di design",
   "seoTitle": "Mobili bagno: quale scegliere per uno spazio funzionale e di design",
+  "seoTitleCompleto": "Mobili bagno: quale scegliere per uno spazio funzionale e di design - Costruisci e Arreda S.r.l.",
   "metaDescription": "Come scegliere i mobili bagno perfetti per uno spazio funzionale e di design. Consigli su materiali e stili.",
   "hero": {
     "image": "Raggruppa-1648-3.jpg",
+    "imagePath": "2024/06/Raggruppa-1648-3.jpg",
     "titleTag": "h2",
     "title": "Ultime news",
     "kicker": "NEWS AND EVENT"
@@ -38,6 +40,7 @@
   "immagini": [],
   "featuredImage": {
     "src": "BlogCA.jpg",
+    "path": "2024/12/BlogCA.jpg",
     "alt": ""
   },
   "gallery": [],
@@ -52,6 +55,7 @@
   "tassonomie": [
     "ultime-news-e-articoli"
   ],
+  "postId": "4599",
   "avvisi": [
     "1 immagini su 1 senza un alt vero, da scrivere"
   ]

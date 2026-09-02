@@ -3,9 +3,11 @@
   "urlOriginale": "/5-errori-da-evitare-nella-scelta-dei-materiali-per-ledilizia/",
   "title": "5 errori da evitare nella scelta dei materiali per l’edilizia",
   "seoTitle": "Errori da Evitare nella Scelta dei Materiali per l’Edilizia",
+  "seoTitleCompleto": "Errori da Evitare nella Scelta dei Materiali per l’Edilizia",
   "metaDescription": "Evita errori nella scelta dei materiali edilizi! Scopri consigli pratici per progetti duraturi e una pianificazione senza intoppi",
   "hero": {
     "image": "Raggruppa-1648-3.jpg",
+    "imagePath": "2024/06/Raggruppa-1648-3.jpg",
     "titleTag": "h2",
     "title": "Ultime news",
     "kicker": "NEWS AND EVENT"
@@ -38,6 +40,7 @@
   "immagini": [],
   "featuredImage": {
     "src": "Blog5errori.jpg",
+    "path": "2024/12/Blog5errori.jpg",
     "alt": "errori"
   },
   "gallery": [],
@@ -52,5 +55,6 @@
   "tassonomie": [
     "ultime-news-e-articoli"
   ],
+  "postId": "4618",
   "avvisi": []
 }
