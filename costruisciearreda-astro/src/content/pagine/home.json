@@ -40,7 +40,7 @@
         "black"
       ],
       "livello": 2,
-      "testo": "Realizziamo il Progetto dei tuoi sogni",
+      "testo": "Realizziamo\nil Progetto\ndei tuoi sogni",
       "href": null,
       "soloMobile": false
     },
@@ -124,7 +124,7 @@
         "w-130"
       ],
       "livello": 2,
-      "testo": "Dal progetto alla realizzazione",
+      "testo": "Dal progetto\nalla realizzazione",
       "href": null,
       "soloMobile": false
     },
@@ -259,7 +259,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "Le nostre realizzazioni",
+      "testo": "Le nostre\nrealizzazioni",
       "href": null,
       "soloMobile": false
     },
@@ -283,30 +283,10 @@
       "soloMobile": false
     },
     {
-      "tipo": "titolo",
+      "tipo": "ultimeNews",
       "visibile": true,
       "varianti": [],
-      "livello": 2,
-      "testo": "progetti",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "render",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "prima/dopo",
-      "href": null,
+      "titolo": "News and Event",
       "soloMobile": false
     },
     {

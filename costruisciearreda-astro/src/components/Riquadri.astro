@@ -34,7 +34,12 @@ const { voci, headingLevel = 'h2', class: extraClass }: Props = Astro.props;
 const Heading = headingLevel;
 
 const risolte = voci
-  .map((v) => ({ ...v, url: rotta(v.href), img: immagine(v.path) }))
+  .map((v) => ({
+    ...v,
+    url: rotta(v.href),
+    // gli SVG non si rasterizzano: come fondo di un riquadro non hanno senso
+    img: v.path?.toLowerCase().endsWith('.svg') ? undefined : immagine(v.path),
+  }))
   .filter((v) => !!v.url);
 ---
 

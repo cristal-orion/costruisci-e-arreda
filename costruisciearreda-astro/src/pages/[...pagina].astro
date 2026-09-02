@@ -1,0 +1,167 @@
+---
+/**
+ * Le pagine one-off, rese dai blocchi estratti.
+ *
+ * Una rotta dinamica invece di dieci file: la struttura di queste pagine è un
+ * elenco di blocchi, quindi il codice sarebbe stato lo stesso dieci volte. Le
+ * decisioni che l'estrazione non può prendere — meta description, testo
+ * dell'`<h1>`, impaginazione — stanno in `src/data/pagine.ts`.
+ *
+ * Attenzione all'ordine delle rotte: questa è `[...pagina]`, quindi cede il
+ * passo alle rotte statiche (`/contatti/` esiste solo qui, ma
+ * `/category/ultime-news-e-articoli/` è un file statico e vince).
+ * `/[post].astro` gestisce gli articoli del blog, che stanno anch'essi in radice:
+ * per non sovrapporsi, questa rotta genera **solo** gli slug elencati in
+ * `pagineOneOff`.
+ */
+import { getEntry } from 'astro:content';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Hero from '../components/Hero.astro';
+import Titoletto from '../components/Titoletto.astro';
+import Blocchi from '../components/Blocchi.astro';
+import { pagineOneOff } from '../data/pagine';
+import { immagine } from '../lib/immagini';
+
+export async function getStaticPaths() {
+  return pagineOneOff.map((p) => ({
+    params: { pagina: p.rotta.replace(/^\/|\/$/g, '') },
+    props: { meta: p },
+  }));
+}
+
+const { meta } = Astro.props;
+
+const pagina = await getEntry('pagine', meta.slug);
+if (!pagina) {
+  throw new Error(`Contenuto assente per "${meta.slug}": eseguire _migrazione/extract-pages.js`);
+}
+
+const { blocchi, hero } = pagina.data;
+const slide = hero?.slides?.[0];
+const heroImg = immagine(slide?.imagePath);
+
+/* Il primo titolo dei blocchi ripete spesso l'`<h1>` della pagina: in quel caso
+   va tolto, altrimenti il titolo compare due volte di fila. */
+const primoTitolo = blocchi.find((b) => b.tipo === 'titolo');
+const ripete =
+  primoTitolo?.tipo === 'titolo' &&
+  primoTitolo.testo.trim().toLowerCase() === meta.h1.trim().toLowerCase();
+const daRendere = ripete ? blocchi.filter((b) => b !== primoTitolo) : blocchi;
+
+/**
+ * Il documento di Iubenda inietta un proprio `<h1>`, che duplicherebbe quello
+ * della pagina. Appena arriva lo si declassa a `<p>`, tenendone il testo.
+ * Serve un `MutationObserver` perché l'iniezione è asincrona e il momento non è
+ * prevedibile: misurando, a volte arriva dopo il primo controllo.
+ *
+ * Va iniettato con `set:html`: dentro un `<script is:inline>` Astro tratterebbe
+ * `{`...`}` come un'espressione e finirebbe **letteralmente** nell'HTML —
+ * verificato leggendo il build.
+ */
+const scriptDeclassa = `
+(function () {
+  var declassa = function () {
+    var h = document.querySelector('main .iub_header h1, main .iub_content h1');
+    if (!h) return false;
+    var p = document.createElement('p');
+    p.className = 'oneoff__titoloEmbed';
+    p.textContent = h.textContent;
+    h.replaceWith(p);
+    return true;
+  };
+  if (declassa()) return;
+  var radice = document.querySelector('main') || document.body;
+  var mo = new MutationObserver(function () { if (declassa()) mo.disconnect(); });
+  mo.observe(radice, { childList: true, subtree: true });
+  setTimeout(function () { mo.disconnect(); }, 20000);
+})();
+`;
+
+/* L'impaginazione la decide ora `Blocchi` sezione per sezione, dal contenuto:
+   il campo `impaginazione` resta solo per limitare la larghezza delle pagine di
+   solo testo (le legal, il preventivo). */
+const classeContenuto =
+  meta.impaginazione === 'testo' ? 'oneoff__contenuto--testo' : undefined;
+---
+
+<SiteLayout
+  title={meta.h1}
+  titleFull={pagina.data.titleCompleto ?? undefined}
+  description={pagina.data.metaDescription ?? meta.descrizione}
+>
+  {
+    heroImg && slide && (
+      <Hero
+        as="p"
+        title={slide.titolo ?? meta.h1}
+        kicker={slide.kicker ?? undefined}
+        image={heroImg}
+        imageAlt=""
+      />
+    )
+  }
+
+  <div class="container oneoff">
+    <Titoletto as="h1" size="lg" tone="muted" class="oneoff__titolo">{meta.h1}</Titoletto>
+    <Blocchi blocchi={daRendere} class={classeContenuto} />
+    {
+      meta.conEmbedLegale && (
+        <noscript>
+          <p class="oneoff__noscript">
+            Il testo di questa informativa è ospitato da Iubenda e richiede JavaScript.
+            Il collegamento qui sopra porta al documento completo.
+          </p>
+        </noscript>
+      )
+    }
+  </div>
+
+  {meta.conEmbedLegale && <script is:inline set:html={scriptDeclassa} />}
+</SiteLayout>
+
+<style>
+  .oneoff {
+    padding-block: var(--section-y-lg) var(--section-y);
+  }
+  .oneoff__titolo {
+    margin-bottom: var(--s-15);
+  }
+
+  .oneoff__contenuto--testo {
+    max-width: var(--container-text);
+  }
+
+  .oneoff__noscript {
+    max-width: var(--container-text);
+    margin-top: var(--s-6);
+    color: var(--c-ink-soft);
+  }
+
+  /* Il documento incorporato di Iubenda porta i propri heading: qui si allineano
+     alla tipografia del sito, senza toccarne la struttura. */
+  .oneoff :global(.oneoff__titoloEmbed) {
+    margin: 0 0 var(--s-5);
+    font-size: var(--t-xl);
+    font-weight: var(--w-bold);
+  }
+  .oneoff :global(.iub_content h2) {
+    margin-top: var(--s-10);
+    font-size: var(--t-xl);
+    text-transform: none;
+  }
+
+  /* Le schede (il team, 15 persone) vanno in griglia, non in colonna. */
+  .oneoff__contenuto--schede {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: var(--s-12) var(--s-8);
+    align-items: start;
+  }
+
+  @media (min-width: 992px) {
+    .oneoff__contenuto--due {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-12) var(--s-20);
+      align-items: start;
+    }
+  }
+</style>

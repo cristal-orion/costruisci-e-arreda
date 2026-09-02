@@ -26,7 +26,7 @@
         "black"
       ],
       "livello": 2,
-      "testo": "offriamo un servizio in cui siamo un punto di riferimento per tutte le fasi del tuo progetto.",
+      "testo": "offriamo un servizio in cui siamo\nun punto di riferimento per tutte\nle fasi del tuo progetto.",
       "href": null,
       "soloMobile": false
     },
@@ -530,7 +530,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "Le nostre realizzazioni",
+      "testo": "Le nostre\nrealizzazioni",
       "href": null,
       "soloMobile": false
     },
@@ -554,30 +554,10 @@
       "soloMobile": false
     },
     {
-      "tipo": "titolo",
+      "tipo": "ultimeNews",
       "visibile": true,
       "varianti": [],
-      "livello": 2,
-      "testo": "progetti",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "render",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "prima/dopo",
-      "href": null,
+      "titolo": "News and Event",
       "soloMobile": false
     },
     {
@@ -589,31 +569,65 @@
           "titolo": "progetti",
           "titoloLivello": 2,
           "href": "../cat_realizzazioni/progetti/index.html",
-          "path": null,
-          "fondoRotto": true
+          "elementorId": "d189c85",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
         },
         {
           "titolo": "render",
           "titoloLivello": 2,
           "href": "../cat_realizzazioni/render/index.html",
-          "path": null,
-          "fondoRotto": true
+          "elementorId": "ba7ccca",
+          "path": "2024/06/Raggruppa-1695.jpg",
+          "fondoApplicato": false
         },
         {
           "titolo": "prima/dopo",
           "titoloLivello": 2,
           "href": "../cat_realizzazioni/prima-dopo/index.html",
-          "path": null,
-          "fondoRotto": true
+          "elementorId": "7fdeb4f",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
         }
       ],
       "soloMobile": false
+    }
+  ],
+  "fondiSezione": [
+    {
+      "elementorId": "07e97bf",
+      "fondoApplicato": true,
+      "testo": "le fasi di realizzazione sopralluogo Il nostro team effettua un sopral",
+      "altezza": 600,
+      "path": "2024/06/Servizi111-scaled.jpg"
+    },
+    {
+      "elementorId": "d189c85",
+      "fondoApplicato": false,
+      "testo": "progetti",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    },
+    {
+      "elementorId": "ba7ccca",
+      "fondoApplicato": false,
+      "testo": "render",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1695.jpg"
+    },
+    {
+      "elementorId": "7fdeb4f",
+      "fondoApplicato": false,
+      "testo": "prima/dopo",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
     }
   ],
   "avvisi": [
     "meta description assente nell originale, da scrivere",
     "9 blocchi duplicati nell'originale, uniti in uno",
     "1 blocchi nascosti a tutti i viewport (markup morto, scartato)",
+    "3 riquadri con immagine di fondo NON applicata nell'originale (buco bianco con titolo bianco su bianco): nel rebuild il fondo si vede",
     "era indicizzabile nell originale"
   ]
 }

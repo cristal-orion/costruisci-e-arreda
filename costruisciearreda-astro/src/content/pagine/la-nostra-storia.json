@@ -26,7 +26,7 @@
         "black"
       ],
       "livello": 2,
-      "testo": "IL NOSTRO IMPEGNO, LA NOSTRA CRESCITA.",
+      "testo": "IL NOSTRO\nIMPEGNO,\nLA NOSTRA CRESCITA.",
       "href": null,
       "soloMobile": false
     },
@@ -293,7 +293,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "Le nostre realizzazioni",
+      "testo": "Le nostre\nrealizzazioni",
       "href": null,
       "soloMobile": false
     },
@@ -314,33 +314,6 @@
       ],
       "testo": "Scopri di più",
       "href": "../index.html%3Fp=1398.html",
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "progetti",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "render",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "prima/dopo",
-      "href": null,
       "soloMobile": false
     },
     {

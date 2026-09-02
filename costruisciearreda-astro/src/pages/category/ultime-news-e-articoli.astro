@@ -14,7 +14,7 @@ import SiteLayout from '../../layouts/SiteLayout.astro';
 import Hero from '../../components/Hero.astro';
 import Titoletto from '../../components/Titoletto.astro';
 import Card from '../../components/Card.astro';
-import { immagine } from '../../lib/immagini';
+import { estratto, immagine } from '../../lib/immagini';
 
 const voci = await getCollection('posts');
 
@@ -26,6 +26,7 @@ const articoli = voci
     data: d.postInfo.DATA_iso ?? null,
     immagine: immagine(d.featuredImage?.path),
     immagineAlt: d.featuredImage?.alt ?? '',
+    estratto: estratto(d.corpo[0]?.html),
   }))
   .sort((a, b) => (b.data ?? '').localeCompare(a.data ?? ''));
 

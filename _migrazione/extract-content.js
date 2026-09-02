@@ -27,6 +27,47 @@ const REPORT = path.resolve(__dirname, 'baseline', 'estrazione-report.json');
 const MODULO_IMMAGINI = path.resolve(
   __dirname, '..', 'costruisciearreda-astro', 'src', 'lib', 'immagini-generate.ts',
 );
+const MODULO_ROTTE = path.resolve(
+  __dirname, '..', 'costruisciearreda-astro', 'src', 'data', 'rotte-legacy.ts',
+);
+const MIRROR_DIR = path.resolve(
+  __dirname, '..', 'costruisciearreda-static', 'costruisciearreda.it',
+);
+
+/**
+ * Mappa **completa** page-id WordPress → rotta, letta dal mirror.
+ *
+ * L'originale usa link nella forma `index.html%3Fp=3317.html` in decine di
+ * punti: menu, footer, card degli archivi, elenchi degli store. Scrivere la
+ * mappa a mano lascia buchi — è già capitato: l'elenco degli showroom non
+ * rendeva perché tre id non c'erano. Qui si legge la classe del `<body>` di
+ * ogni pagina del mirror, che contiene `postid-N` o `page-id-N`.
+ *
+ * Serve anche ai **redirect 301**: i vecchi URL `?p=ID` erano indicizzabili.
+ */
+const mappaRotte = () => {
+  const mappa = {};
+  const cammina = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) {
+        cammina(p);
+      } else if (e.name === 'index.html' && !p.includes('?')) {
+        const rel = path.relative(MIRROR_DIR, path.dirname(p)).split(path.sep).join('/');
+        if (rel.startsWith('wp-') || rel.includes('/feed')) continue;
+        const html = fs.readFileSync(p, 'utf8');
+        const m = html.match(/<body class="([^"]*)"/);
+        if (!m) continue;
+        const url = rel ? `/${rel}/` : '/';
+        for (const id of [...m[1].matchAll(/\b(?:postid|page-id)-(\d+)\b/g)].map((x) => x[1])) {
+          if (!mappa[id]) mappa[id] = url;
+        }
+      }
+    }
+  };
+  try { cammina(MIRROR_DIR); } catch (e) { process.stderr.write(`  !! mappa rotte: ${e.message}\n`); }
+  return mappa;
+};
 
 const BLOCK = [
   'googletagmanager', 'google-analytics', 'connect.facebook', 'facebook.com',
@@ -573,6 +614,30 @@ const dedupGallery = (items, warnings) => {
   ];
   fs.mkdirSync(path.dirname(MODULO_IMMAGINI), { recursive: true });
   fs.writeFileSync(MODULO_IMMAGINI, righe.join('\n'));
+
+  /* Mappa page-id → rotta, generata dal mirror. */
+  const rotte = mappaRotte();
+  const righeRotte = [
+    '/* GENERATO da _migrazione/extract-content.js — non modificare a mano.',
+    ' *',
+    " * Mappa page-id WordPress → rotta del sito, letta dalla classe del <body>",
+    ' * di ogni pagina del mirror. Serve a due cose:',
+    ' *   1. risolvere i link `index.html%3Fp=ID.html` che l\'originale usa in',
+    ' *      menu, footer, card degli archivi ed elenchi degli store;',
+    ' *   2. costruire i redirect 301 dai vecchi URL `?p=ID`, che erano',
+    ' *      indicizzabili.',
+    ` * Voci: ${Object.keys(rotte).length}.`,
+    ' */',
+    'export const rottePerId: Record<string, string> = {',
+    ...Object.entries(rotte)
+      .sort((a, b) => Number(a[0]) - Number(b[0]))
+      .map(([id, url]) => `  '${id}': ${JSON.stringify(url)},`),
+    '};',
+    '',
+  ];
+  fs.mkdirSync(path.dirname(MODULO_ROTTE), { recursive: true });
+  fs.writeFileSync(MODULO_ROTTE, righeRotte.join('\n'));
+  process.stderr.write(`Scritto ${MODULO_ROTTE} (${Object.keys(rotte).length} id)\n`);
 
   fs.mkdirSync(path.dirname(REPORT), { recursive: true });
   report.immagini = { usate: esistenti.length, nonTrovate: perse };

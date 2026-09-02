@@ -9,7 +9,16 @@
   "hero": {
     "slides": []
   },
-  "blocchi": [],
+  "blocchi": [
+    {
+      "tipo": "ultimeNews",
+      "visibile": true,
+      "varianti": [],
+      "titolo": "News and Event",
+      "soloMobile": false
+    }
+  ],
+  "fondiSezione": [],
   "avvisi": [
     "meta description assente nell originale, da scrivere",
     "era indicizzabile nell originale"

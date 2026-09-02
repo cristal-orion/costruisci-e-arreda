@@ -26,7 +26,7 @@
         "black"
       ],
       "livello": 2,
-      "testo": "Ricerchiamo nuove figure da inserire nel nostro team.",
+      "testo": "Ricerchiamo nuove figure\nda inserire nel nostro team.",
       "href": null,
       "soloMobile": false
     },
@@ -72,7 +72,7 @@
         "black"
       ],
       "livello": 2,
-      "testo": "INVIA LA TUA CANDIDATURA",
+      "testo": "INVIA LA TUA\nCANDIDATURA",
       "href": null,
       "soloMobile": false
     },
@@ -84,6 +84,29 @@
         "775"
       ],
       "soloMobile": false
+    },
+    {
+      "tipo": "ultimeNews",
+      "visibile": true,
+      "varianti": [],
+      "titolo": "News and Event",
+      "soloMobile": false
+    }
+  ],
+  "fondiSezione": [
+    {
+      "elementorId": "203df88",
+      "fondoApplicato": true,
+      "testo": "Ricerchiamo nuove figure da inserire nel nostro team.",
+      "altezza": 554,
+      "path": "2024/06/Raggruppa-1703.png"
+    },
+    {
+      "elementorId": "bf74796",
+      "fondoApplicato": false,
+      "testo": "COSA CERCHIAMO In Costruisci e Arreda, crediamo che il cuore del nostr",
+      "altezza": 500,
+      "path": "2024/05/Raggruppa-1665.jpg"
     }
   ],
   "avvisi": [

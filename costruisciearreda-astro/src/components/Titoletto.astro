@@ -18,7 +18,7 @@
  */
 interface Props {
   /** Livello dell'heading. Va scelto in base all'outline della pagina, non all'aspetto. */
-  as?: 'h1' | 'h2' | 'h3' | 'p';
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'p';
   /** Dimensione. `label` è l'etichetta piccola, le altre sono i titoli di sezione. */
   size?: 'label' | 'sm' | 'md' | 'lg';
   /** Colore della riga e del testo. `light` è per sopra le immagini. */
@@ -58,6 +58,11 @@ const {
     /* la riga si ferma dove finisce il testo, non dove finisce il blocco */
     position: relative;
     display: inline-block;
+    /* Senza questi due, un titolo lungo su schermo piccolo sfonda a destra:
+       misurato su `/type_stores/progettazione-e-ristrutturazione-edile/`,
+       46px di scorrimento orizzontale a 390px. */
+    max-width: 100%;
+    overflow-wrap: break-word;
   }
 
   /* --- dimensioni, dalla scala misurata ----------------------------------- */

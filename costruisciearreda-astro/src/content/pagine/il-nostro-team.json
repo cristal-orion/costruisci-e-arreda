@@ -26,7 +26,7 @@
         "black"
       ],
       "livello": 2,
-      "testo": "un team composto da i migliori professionisti.",
+      "testo": "un team composto da i\nmigliori professionisti.",
       "href": null,
       "soloMobile": false
     },
@@ -302,7 +302,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "Le nostre realizzazioni",
+      "testo": "Le nostre\nrealizzazioni",
       "href": null,
       "soloMobile": false
     },
@@ -326,30 +326,10 @@
       "soloMobile": false
     },
     {
-      "tipo": "titolo",
+      "tipo": "ultimeNews",
       "visibile": true,
       "varianti": [],
-      "livello": 2,
-      "testo": "progetti",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "render",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "prima/dopo",
-      "href": null,
+      "titolo": "News and Event",
       "soloMobile": false
     },
     {

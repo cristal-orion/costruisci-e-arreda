@@ -93,6 +93,26 @@ const estrai = () => {
      le costanti del processo Node non esistono. */
   const DECORATIVE = ['Raggruppa-1703.png', 'linea.png', 'over-tooltip.png'];
   const clean = (s) => (s || '').replace(/\s+/g, ' ').trim();
+
+  /**
+   * Testo di un elemento **rispettando i `<br>`**.
+   *
+   * `textContent` li ignora e il risultato è testo incollato: il titolo
+   * "ENTRA IN CONTATTO<br>CON NOI" diventava "ENTRA IN CONTATTOCON NOI" e
+   * l'indirizzo "Via Martiri della Libertà, 11<br>80147, Napoli" diventava
+   * "…, 1180147, Napoli". Qui il `<br>` diventa un ritorno a capo, che chi
+   * rende trasforma in `<br>`.
+   */
+  const testoDi = (el) => {
+    if (!el) return '';
+    const c = el.cloneNode(true);
+    c.querySelectorAll('br').forEach((b) => b.replaceWith('\n'));
+    return c.textContent
+      .split('\n')
+      .map((r) => r.replace(/\s+/g, ' ').trim())
+      .filter(Boolean)
+      .join('\n');
+  };
   const vis = (el) => {
     const r = el.getBoundingClientRect();
     const cs = getComputedStyle(el);
@@ -164,8 +184,13 @@ const estrai = () => {
     const base = { visibile, varianti };
 
     if (tipo === 'heading' || tipo === 'theme-post-title') {
+      /* I titoli dentro i riquadri delle tassonomie appartengono al riquadro,
+         non alla pagina: emetterli anche come titoli autonomi produceva tre
+         sezioni vuote "PROGETTI", "RENDER", "PRIMA/DOPO" seguite dai riquadri
+         che ripetevano gli stessi titoli. */
+      if (el.closest('a[href*="cat_realizzazioni"]')) continue;
       const h = cont.querySelector('h1,h2,h3,h4,h5,h6,p,div,span') || cont;
-      const testo = clean(h.textContent);
+      const testo = testoDi(h);
       if (!testo) continue;
       const link = cont.querySelector('a[href]');
       out.blocchi.push({
@@ -297,7 +322,7 @@ const estrai = () => {
 
     if (tipo === 'icon-list') {
       const voci = [...el.querySelectorAll('.elementor-icon-list-item')].map((li) => ({
-        testo: clean(li.textContent),
+        testo: testoDi(li),
         href: li.querySelector('a[href]')?.getAttribute('href') || null,
       }));
       if (voci.length) out.blocchi.push({ tipo: 'elencoVoci', ...base, voci });
@@ -312,7 +337,7 @@ const estrai = () => {
         ...base,
         path: perc(img ? img.getAttribute('src') : null),
         alt: img ? img.alt || '' : '',
-        titolo: clean(el.querySelector('.elementor-image-box-title')?.textContent) || null,
+        titolo: testoDi(el.querySelector('.elementor-image-box-title')) || null,
         html: (el.querySelector('.elementor-image-box-description') || { innerHTML: '' }).innerHTML.trim(),
         href: a ? a.getAttribute('href') : null,
       });
@@ -360,6 +385,49 @@ const estrai = () => {
       altezza: Math.round(c.getBoundingClientRect().height),
     }));
 
+  /* --- Elenco degli store: su `/type_stores/showroom-cat/` uno shortcode
+     WordPress stampa i punti vendita di quel tipo, ognuno con la **galleria
+     completa**. Sono 281 immagini in una pagina, 56 MB: nel rebuild diventa un
+     elenco di card che rimandano alle pagine store, dove le gallerie già ci
+     sono. Qui si estraggono titolo, testo e link di ciascuno. */
+  const titoliStore = [...document.querySelectorAll('.titleStore')];
+  if (titoliStore.length) {
+    const voci = titoliStore
+      .map((t) => {
+        let wrap = t;
+        for (let i = 0; i < 5 && wrap; i++) {
+          wrap = wrap.parentElement;
+          if (wrap && wrap.querySelector('.contentStore, .btn, a[href*="p="]')) break;
+        }
+        const a = wrap ? wrap.querySelector('a[href*="p="], a[href*="/store/"]') : null;
+        const cont = wrap ? wrap.querySelector('.contentStore') : null;
+        const img = wrap ? wrap.querySelector('img') : null;
+        return {
+          titolo: testoDi(t),
+          testo: cont ? testoDi(cont) : null,
+          href: a ? a.getAttribute('href') : null,
+          path: img ? perc(img.getAttribute('src')) : null,
+        };
+      })
+      .filter((v) => v.titolo && v.href);
+    if (voci.length) out.blocchi.push({ tipo: 'elencoStore', visibile: true, varianti: [], voci });
+  }
+
+  /* --- Carosello delle ultime news: è il `.lastPosts` del tema, presente in
+     fondo a diverse pagine. Non è un widget Elementor, quindi il ciclo sopra
+     non lo vede: senza questo blocco tre pagine perdevano ~300 parole a testa,
+     ed è il fingerprint che l'ha rilevato. */
+  const lastPosts = document.querySelector('.lastPosts');
+  if (lastPosts) {
+    const titolo = lastPosts.querySelector('h1,h2,h3');
+    out.blocchi.push({
+      tipo: 'ultimeNews',
+      visibile: vis(lastPosts),
+      varianti: [],
+      titolo: titolo ? testoDi(titolo) : 'News and Event',
+    });
+  }
+
   const cardServizi = document.querySelector('.listProducts');
   if (cardServizi) {
     const voci = [...cardServizi.children]
@@ -391,7 +459,7 @@ const estrai = () => {
          Qui si registra l'id Elementor: l'url dichiarato lo risolve il processo
          Node leggendo i bundle CSS, perché dal browser non è misurabile. */
       return {
-        titolo: h ? clean(h.textContent) : clean(a.textContent),
+        titolo: h ? testoDi(h) : testoDi(a),
         titoloLivello: h && /^h[1-6]$/.test(h.tagName.toLowerCase()) ? Number(h.tagName[1]) : null,
         href: a.getAttribute('href'),
         elementorId: a.dataset.id || null,
@@ -420,6 +488,8 @@ const firma = (b) => {
     case 'elencoVoci': return `elencoVoci|${b.voci.map((v) => v.testo).join(',')}`;
     case 'scheda': return `scheda|${b.titolo}|${b.path}`;
     case 'servizinumerati': return `servizinumerati|${b.voci.map((v) => v.titolo).join(',')}`;
+    case 'elencoStore': return `elencoStore|${b.voci.map((v) => v.titolo).join(',')}`;
+    case 'ultimeNews': return `ultimeNews|${b.titolo}`;
     case 'riquadri': return `riquadri|${b.voci.map((v) => v.titolo).join(',')}`;
     case 'form': return `form|${b.id.join(',')}`;
     default: return `${b.tipo}|${b.sottotipo || ''}|${(b.testo || '').slice(0, 60)}`;

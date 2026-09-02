@@ -1,0 +1,473 @@
+---
+/**
+ * Rende **un** blocco estratto da una pagina one-off.
+ *
+ * Il tipo del blocco decide cosa costruire. Regole comuni:
+ *  - i link passano da `rotta()`, che risolve gli href rotti dell'originale
+ *    (`index.html%3Fp=976.html`); un href non risolvibile non produce link;
+ *  - le immagini passano da `astro:assets`, tranne gli SVG che si servono tali
+ *    e quali (non ha senso rasterizzare un vettoriale, e `astro:assets` si
+ *    rifiuta di farlo);
+ *  - i titoli **non** si rendono qui: li gestisce `Blocchi.astro`, che li usa
+ *    per delimitare le sezioni.
+ */
+import { Image } from 'astro:assets';
+import Button from './Button.astro';
+import Counter from './Counter.astro';
+import Accordion from './Accordion.astro';
+import Gallery from './Gallery.astro';
+import Carousel from './Carousel.astro';
+import Riquadri from './Riquadri.astro';
+import ServiziNumerati from './ServiziNumerati.astro';
+import Card from './Card.astro';
+import { estratto, immagine, rotta } from '../lib/immagini';
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+type Dato = CollectionEntry<'pagine'>['data']['blocchi'][number];
+
+interface Props {
+  blocco: Dato;
+  /** Livello di partenza degli heading interni (accordion, riquadri). */
+  livelloBase?: 2 | 3;
+  /** `sizes` dell'immagine: dipende dall'impaginazione della sezione. */
+  sizes?: string;
+}
+
+const { blocco: b, livelloBase = 2, sizes = '(min-width: 992px) 46vw, 92vw' }: Props = Astro.props;
+
+const isSvg = (path: string | null | undefined) => !!path && path.toLowerCase().endsWith('.svg');
+
+/* Gli store servono al blocco "elenco store": il testo di presentazione di
+   ciascuno sta nella collezione, non nello shortcode dell'originale (là era
+   dentro le card, insieme alle gallerie complete). */
+const store =
+  b.tipo === 'elencoStore'
+    ? (await getCollection('stores')).map((v) => v.data)
+    : [];
+
+/* Gli articoli servono al blocco "ultime news": si prendono qui una volta,
+   Astro mette in cache la collezione fra le pagine. */
+const ultimiArticoli =
+  b.tipo === 'ultimeNews'
+    ? (await getCollection('posts'))
+        .map((v) => v.data)
+        .map((d) => ({
+          titolo: d.title,
+          href: `/${d.slug}/`,
+          data: d.postInfo.DATA_iso ?? null,
+          immagine: immagine(d.featuredImage?.path),
+          immagineAlt: d.featuredImage?.alt ?? '',
+          estratto: estratto(d.corpo[0]?.html),
+        }))
+        .sort((x, y) => (y.data ?? '').localeCompare(x.data ?? ''))
+        .slice(0, 3)
+    : [];
+
+/**
+ * Testo con ritorni a capo → HTML con `<br>`.
+ *
+ * I ritorni a capo del testo estratto sono i `<br>` dell'originale, voluti nel
+ * contenuto (titoli su due righe, indirizzi su due righe). Va prodotto HTML e
+ * non JSX: nel frontmatter di Astro il JSX non è ammesso — `<br />` lì dà
+ * "Expected `>` but found `/`".
+ * Il testo viene messo al sicuro con `escapeHtml`: arriva da contenuto estratto,
+ * non da input di un utente, ma il principio resta.
+ */
+const escapeHtml = (t: string) =>
+  t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+const conBr = (testo: string) => escapeHtml(testo).split('\n').join('<br /> ');
+---
+
+{
+  b.tipo === 'testo' && <div class="blocco__testo" set:html={b.html} />
+}
+
+{
+  b.tipo === 'immagine' &&
+    (() => {
+      const img = immagine(b.path);
+      if (!img) return null;
+      const url = rotta(b.href);
+      const media = isSvg(b.path) ? (
+        <img src={img.src} width={img.width} height={img.height} alt={b.alt} loading="lazy" decoding="async" />
+      ) : (
+        <Image
+          src={img}
+          alt={b.alt}
+          widths={[400, 640, 960]}
+          sizes={sizes}
+          format="webp"
+          quality={78}
+          loading="lazy"
+          decoding="async"
+        />
+      );
+      return (
+        <figure class="blocco__figura">
+          {url ? <a href={url}>{media}</a> : media}
+          {b.didascalia && <figcaption>{b.didascalia}</figcaption>}
+        </figure>
+      );
+    })()
+}
+
+{
+  b.tipo === 'bottone' &&
+    (() => {
+      const url = rotta(b.href);
+      if (!url) return null;
+      return (
+        <p class="blocco__azione">
+          <Button href={url} variant="outline-dark">{b.testo}</Button>
+        </p>
+      );
+    })()
+}
+
+{
+  b.tipo === 'contatore' && (
+    <Counter
+      value={b.valore ?? 0}
+      prefix={b.prefisso}
+      suffix={b.suffisso}
+      label={b.etichetta}
+      duration={b.durata}
+    />
+  )
+}
+
+{
+  b.tipo === 'accordion' && (
+    <Accordion items={b.voci.map((v) => ({ title: v.titolo, html: v.html }))} headingLevel={livelloBase} />
+  )
+}
+
+{
+  b.tipo === 'galleria' &&
+    (() => {
+      const voci = b.voci
+        .map((v) => ({ img: immagine(v.path), alt: v.alt }))
+        .filter((v) => !!v.img)
+        .map((v) => ({ src: v.img!, alt: v.alt }));
+      return voci.length ? <Gallery items={voci} label="Galleria fotografica" /> : null;
+    })()
+}
+
+{
+  b.tipo === 'carousel' &&
+    (() => {
+      const voci = b.voci
+        .map((v) => ({ img: immagine(v.path), alt: v.alt, path: v.path }))
+        .filter((v) => !!v.img && !isSvg(v.path));
+      if (!voci.length) return null;
+      return (
+        <Carousel label="Immagini" perView={{ base: 1, tablet: 2, desktop: 3 }} gap="10px">
+          {voci.map((v) => (
+            <figure style="margin:0">
+              <Image
+                src={v.img!}
+                alt={v.alt}
+                widths={[320, 480, 720]}
+                sizes="(min-width: 1025px) 32vw, (min-width: 769px) 48vw, 92vw"
+                format="webp"
+                quality={76}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          ))}
+        </Carousel>
+      );
+    })()
+}
+
+{
+  b.tipo === 'elencoVoci' && (
+    <ul class="blocco__voci">
+      {b.voci.map((v) => {
+        const url = rotta(v.href);
+        return (
+          <li>
+            {url ? (
+              <a href={url} set:html={conBr(v.testo)} />
+            ) : (
+              <Fragment set:html={conBr(v.testo)} />
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  )
+}
+
+{
+  b.tipo === 'scheda' &&
+    (() => {
+      const img = immagine(b.path);
+      return (
+        <article class="scheda">
+          {img &&
+            (isSvg(b.path) ? (
+              <img class="scheda__img" src={img.src} width={img.width} height={img.height} alt={b.alt || b.titolo || ''} loading="lazy" decoding="async" />
+            ) : (
+              <Image
+                class="scheda__img"
+                src={img}
+                alt={b.alt || b.titolo || ''}
+                widths={[240, 360, 480]}
+                sizes="(min-width: 992px) 22vw, (min-width: 769px) 45vw, 92vw"
+                format="webp"
+                quality={78}
+                loading="lazy"
+                decoding="async"
+              />
+            ))}
+          {b.titolo && <h3 class="scheda__titolo" set:html={conBr(b.titolo)} />}
+          {b.html && <div class="scheda__testo" set:html={b.html} />}
+        </article>
+      );
+    })()
+}
+
+{
+  b.tipo === 'riquadri' && <Riquadri voci={b.voci} headingLevel={livelloBase === 2 ? 'h2' : 'h3'} />
+}
+
+{
+  b.tipo === 'servizinumerati' && <ServiziNumerati voci={b.voci} />
+}
+
+{
+  b.tipo === 'separatore' && <hr class="blocco__separatore" />
+}
+
+{
+  b.tipo === 'elencoStore' &&
+    (() => {
+      const voci = b.voci
+        .map((v) => {
+          const url = rotta(v.href);
+          /* Il testo di presentazione viene dalla voce della collezione con la
+             stessa rotta: nell'originale stava nella card dello shortcode. */
+          const dati = url ? store.find((s) => s.urlOriginale === url) : undefined;
+          return {
+            ...v,
+            url,
+            testo: v.testo || estratto(dati?.corpo[0]?.html, 45) || null,
+          };
+        })
+        .filter((v) => !!v.url);
+      if (!voci.length) return null;
+      return (
+        <ul class="elencoStore">
+          {voci.map((v) => (
+            <li class="elencoStore__voce">
+              <a class="elencoStore__link" href={v.url!}>
+                <span class="elencoStore__titolo">{v.titolo}</span>
+                {v.testo && <span class="elencoStore__testo">{v.testo}</span>}
+                <span class="elencoStore__azione" aria-hidden="true">Scopri lo store</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      );
+    })()
+}
+
+{
+  b.tipo === 'ultimeNews' && ultimiArticoli.length > 0 && (
+    <div class="ultimeNews">
+      {ultimiArticoli.map((a) => <Card {...a} kicker="News" headingLevel="h3" />)}
+    </div>
+  )
+}
+
+{
+  b.tipo === 'elenco' &&
+    (() => {
+      const voci = b.voci.map((v) => ({ ...v, url: rotta(v.href), img: immagine(v.path) }));
+      return (
+        <ul class="blocco__elenco">
+          {voci.map((v) => (
+            <li>
+              {v.img &&
+                (isSvg(v.path) ? (
+                  <img src={v.img.src} width={v.img.width} height={v.img.height} alt={v.alt || v.titolo || ''} loading="lazy" decoding="async" />
+                ) : (
+                  <Image
+                    src={v.img}
+                    alt={v.alt || v.titolo || ''}
+                    widths={[280, 420]}
+                    sizes="(min-width: 769px) 30vw, 92vw"
+                    format="webp"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ))}
+              {v.titolo && (v.url ? <a href={v.url}>{v.titolo}</a> : <span>{v.titolo}</span>)}
+              {v.testo && <p>{v.testo}</p>}
+            </li>
+          ))}
+        </ul>
+      );
+    })()
+}
+
+<style>
+  .blocco__testo {
+    max-width: 65ch;
+  }
+  .blocco__testo :global(h2),
+  .blocco__testo :global(h3) {
+    margin-top: var(--s-8);
+    margin-bottom: var(--s-3);
+    font-size: var(--t-xl);
+    text-transform: none;
+  }
+
+  .blocco__figura {
+    margin: 0;
+  }
+  .blocco__figura img {
+    width: 100%;
+  }
+  /* Gli SVG di questo sito sono **icone**, non fotografie: a piena larghezza
+     diventavano alte 300px e sfondavano l'impaginazione della pagina contatti. */
+  .blocco__figura img[src$='.svg'] {
+    width: auto;
+    max-width: min(100%, 9rem);
+  }
+  .blocco__figura figcaption {
+    margin-top: var(--s-2);
+    color: var(--c-ink-soft);
+    font-size: var(--t-sm);
+  }
+
+  .blocco__azione {
+    margin: 0;
+  }
+
+  .blocco__voci,
+  .blocco__elenco {
+    display: grid;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .blocco__voci li,
+  .blocco__elenco li {
+    margin: 0;
+  }
+  .blocco__voci a {
+    color: var(--c-ink);
+    text-decoration: none;
+  }
+  .blocco__voci a:hover {
+    color: var(--c-brand);
+  }
+
+  .blocco__separatore {
+    margin: 0;
+  }
+
+  .scheda {
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+  }
+  .scheda__img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-notch);
+  }
+  .scheda__titolo {
+    margin: 0;
+    font-size: var(--t-lg);
+    font-weight: var(--w-bold);
+    line-height: var(--t-lg-lh);
+    text-transform: none;
+  }
+  .scheda__testo {
+    color: var(--c-ink-soft);
+    font-size: var(--t-sm);
+    line-height: var(--t-sm-lh);
+  }
+
+  .elencoStore {
+    display: grid;
+    gap: var(--s-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 769px) {
+    .elencoStore {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    }
+  }
+  .elencoStore__voce {
+    margin: 0;
+  }
+  .elencoStore__link {
+    display: grid;
+    gap: var(--s-3);
+    height: 100%;
+    padding: var(--s-6);
+    text-decoration: none;
+    background: var(--c-surface-alt);
+    border-radius: var(--radius-notch);
+    transition: background-color var(--dur) var(--ease);
+  }
+  .elencoStore__link:hover {
+    background: var(--c-surface-dark);
+  }
+  .elencoStore__titolo {
+    color: var(--c-ink);
+    font-size: var(--t-lg);
+    font-weight: var(--w-bold);
+    line-height: var(--t-lg-lh);
+  }
+  .elencoStore__testo {
+    color: var(--c-ink-soft);
+    font-size: var(--t-sm);
+  }
+  .elencoStore__azione {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    color: var(--c-brand);
+    font-size: var(--t-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .elencoStore__azione::before {
+    content: '';
+    width: 14px;
+    height: 1px;
+    background: currentcolor;
+  }
+  .elencoStore__link:hover .elencoStore__titolo,
+  .elencoStore__link:hover .elencoStore__testo,
+  .elencoStore__link:hover .elencoStore__azione {
+    color: var(--c-white);
+  }
+
+  .ultimeNews {
+    display: grid;
+    gap: var(--s-12) var(--s-8);
+  }
+  @media (min-width: 769px) {
+    .ultimeNews {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1025px) {
+    .ultimeNews {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

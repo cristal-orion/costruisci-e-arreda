@@ -85,33 +85,6 @@
       "soloMobile": false
     },
     {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "progetti",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "render",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "prima/dopo",
-      "href": null,
-      "soloMobile": false
-    },
-    {
       "tipo": "form",
       "visibile": true,
       "varianti": [],
@@ -129,30 +102,64 @@
           "titolo": "progetti",
           "titoloLivello": 2,
           "href": "../../cat_realizzazioni/progetti/index.html",
-          "path": null,
-          "fondoRotto": true
+          "elementorId": "39e27ef",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
         },
         {
           "titolo": "render",
           "titoloLivello": 2,
           "href": "../../cat_realizzazioni/render/index.html",
-          "path": null,
-          "fondoRotto": true
+          "elementorId": "e4eaa59",
+          "path": "2024/06/Raggruppa-1695.jpg",
+          "fondoApplicato": false
         },
         {
           "titolo": "prima/dopo",
           "titoloLivello": 2,
           "href": "../../cat_realizzazioni/prima-dopo/index.html",
-          "path": null,
-          "fondoRotto": true
+          "elementorId": "61bde27",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
         }
       ],
       "soloMobile": false
     }
   ],
+  "fondiSezione": [
+    {
+      "elementorId": "0c11861",
+      "fondoApplicato": false,
+      "testo": "Modernizzare e innovare nel rispetto della struttura esistente Le rist",
+      "altezza": 572,
+      "path": "2024/05/Raggruppa-1665.jpg"
+    },
+    {
+      "elementorId": "39e27ef",
+      "fondoApplicato": false,
+      "testo": "progetti",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    },
+    {
+      "elementorId": "e4eaa59",
+      "fondoApplicato": false,
+      "testo": "render",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1695.jpg"
+    },
+    {
+      "elementorId": "61bde27",
+      "fondoApplicato": false,
+      "testo": "prima/dopo",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    }
+  ],
   "avvisi": [
     "meta description assente nell originale, da scrivere",
     "4 blocchi duplicati nell'originale, uniti in uno",
+    "3 riquadri con immagine di fondo NON applicata nell'originale (buco bianco con titolo bianco su bianco): nel rebuild il fondo si vede",
     "era indicizzabile nell originale"
   ]
 }

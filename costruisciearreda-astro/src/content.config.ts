@@ -144,6 +144,25 @@ const blocco = z.discriminatedUnion('tipo', [
       }),
     ),
   }),
+  /**
+   * Elenco dei punti vendita di un tipo. Nell'originale è uno shortcode che
+   * stampa ogni store con la **galleria completa**: 281 immagini in una pagina,
+   * 56 MB. Qui sono card che rimandano alle pagine store.
+   */
+  z.object({
+    tipo: z.literal('elencoStore'),
+    ...comuniBlocco,
+    voci: z.array(
+      z.object({
+        titolo: z.string(),
+        testo: z.string().nullable().default(null),
+        href: z.string().nullable(),
+        path: z.string().nullable().default(null),
+      }),
+    ),
+  }),
+  /** Il carosello delle ultime news del tema, in fondo a diverse pagine. */
+  z.object({ tipo: z.literal('ultimeNews'), ...comuniBlocco, titolo: z.string().default('News and Event') }),
   z.object({ tipo: z.literal('sconosciuto'), ...comuniBlocco, sottotipo: z.string(), testo: z.string().default('') }),
 ]);
 

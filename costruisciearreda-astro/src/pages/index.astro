@@ -30,7 +30,7 @@ import Titoletto from '../components/Titoletto.astro';
 import Counter from '../components/Counter.astro';
 import Button from '../components/Button.astro';
 import Card from '../components/Card.astro';
-import { immagine, rotta } from '../lib/immagini';
+import { estratto, immagine, rotta } from '../lib/immagini';
 
 const pagina = await getEntry('pagine', 'home');
 if (!pagina) throw new Error('Contenuto della homepage assente: eseguire _migrazione/extract-pages.js');
@@ -98,6 +98,7 @@ const posts = (await getCollection('posts'))
     data: d.postInfo.DATA_iso ?? null,
     immagine: immagine(d.featuredImage?.path),
     immagineAlt: d.featuredImage?.alt ?? '',
+    estratto: estratto(d.corpo[0]?.html),
   }))
   .sort((a, b) => (b.data ?? '').localeCompare(a.data ?? ''))
   .slice(0, 3);

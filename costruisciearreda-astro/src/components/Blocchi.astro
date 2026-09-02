@@ -1,0 +1,233 @@
+---
+/**
+ * Rende una sequenza di blocchi estratta da una pagina one-off, raggruppandoli
+ * in **sezioni**: una nuova sezione comincia a ogni titolo.
+ *
+ * Il raggruppamento non è un vezzo. Reso come elenco piatto in colonna, il
+ * contenuto di queste pagine produce risultati assurdi: la pagina del team, con
+ * 15 schede e 20 immagini, arrivava a **27.000px** di altezza — e su una pagina
+ * così il lazy-load non riesce a stare al passo, quindi metà delle immagini
+ * restava vuota. Raggruppando, ogni sezione scegli la sua impaginazione.
+ *
+ * L'`<h1>` non si stampa qui: lo mette la pagina, una volta sola.
+ */
+import Titoletto from './Titoletto.astro';
+import Blocco from './Blocco.astro';
+import { rotta } from '../lib/immagini';
+import type { CollectionEntry } from 'astro:content';
+
+type Dato = CollectionEntry<'pagine'>['data']['blocchi'][number];
+
+interface Props {
+  blocchi: Dato[];
+  /** Livello di partenza dei titoli. La pagina tiene per sé l'`h1`. */
+  livelloBase?: 2 | 3;
+  /** Tipi di blocco da non rendere: la pagina li gestisce da sé. */
+  escludi?: Dato['tipo'][];
+  class?: string;
+}
+
+const { blocchi, livelloBase = 2, escludi = [], class: extraClass }: Props = Astro.props;
+
+/* I form arrivano al passo "Form" del piano; `cornice` e `sconosciuto` sono
+   elementi di contorno del tema (ricerca, icone social, info del post) che nel
+   rebuild vivono nel layout, non nel contenuto. */
+const SEMPRE_ESCLUSI: Dato['tipo'][] = ['form', 'cornice', 'sconosciuto'];
+const daRendere = blocchi.filter(
+  (b) => !escludi.includes(b.tipo) && !SEMPRE_ESCLUSI.includes(b.tipo),
+);
+
+type Sezione = { titolo?: Extract<Dato, { tipo: 'titolo' }>; corpo: Dato[] };
+
+const sezioni: Sezione[] = [];
+for (const b of daRendere) {
+  if (b.tipo === 'titolo') {
+    sezioni.push({ titolo: b, corpo: [] });
+    continue;
+  }
+  if (!sezioni.length) sezioni.push({ corpo: [] });
+  sezioni[sezioni.length - 1].corpo.push(b);
+}
+
+/**
+ * L'impaginazione di una sezione, decisa dal suo contenuto:
+ *   `schede`    più di due schede o contatori → griglia;
+ *   `galleria`  più di due immagini → griglia di immagini;
+ *   `due`       almeno un'immagine e almeno un testo → due colonne;
+ *   `piena`     un solo blocco che occupa la larghezza (riquadri, carousel);
+ *   `testo`     solo testo.
+ * È un'euristica, ma deterministica e uguale per tutte le pagine.
+ */
+type Modo = 'schede' | 'galleria' | 'due' | 'piena' | 'testo';
+
+const disposizione = (s: Sezione): Modo => {
+  const conta = (t: Dato['tipo']) => s.corpo.filter((b) => b.tipo === t).length;
+  if (
+    conta('riquadri') ||
+    conta('galleria') ||
+    conta('carousel') ||
+    conta('servizinumerati') ||
+    conta('elencoStore') ||
+    conta('ultimeNews')
+  ) {
+    return 'piena';
+  }
+  /* Un accordion non è una scheda: in una cella di griglia il suo titolo (60px
+     nell'originale) sfonda a destra — misurato, 16px di scorrimento
+     orizzontale su `/la-nostra-storia/`. Va sempre a piena colonna. */
+  if (conta('accordion')) return 'testo';
+  if (conta('scheda') > 2 || conta('contatore') > 2) return 'schede';
+  const img = conta('immagine');
+  if (img > 2) return 'galleria';
+  if (img >= 1 && conta('testo') >= 1) return 'due';
+  return 'testo';
+};
+
+/** `sizes` giusto per l'impaginazione: evita di scaricare immagini troppo grandi. */
+const sizesPer: Record<Modo, string> = {
+  schede: '(min-width: 992px) 22vw, (min-width: 769px) 45vw, 92vw',
+  galleria: '(min-width: 992px) 30vw, (min-width: 769px) 45vw, 92vw',
+  due: '(min-width: 992px) 46vw, 92vw',
+  piena: '100vw',
+  testo: '(min-width: 992px) 60vw, 92vw',
+};
+
+const livello = (dichiarato: number | null | undefined) => {
+  const n = dichiarato ?? livelloBase;
+  return `h${Math.min(4, Math.max(livelloBase, n))}` as 'h2' | 'h3' | 'h4';
+};
+const dimensione = (tag: string): 'sm' | 'md' => (tag === 'h2' ? 'sm' : 'md');
+
+/**
+ * Testo con ritorni a capo → HTML con `<br>`.
+ *
+ * I ritorni a capo del testo estratto sono i `<br>` dell'originale, voluti nel
+ * contenuto (titoli su due righe, indirizzi su due righe). Va prodotto HTML e
+ * non JSX: nel frontmatter di Astro il JSX non è ammesso — `<br />` lì dà
+ * "Expected `>` but found `/`".
+ * Il testo viene messo al sicuro con `escapeHtml`: arriva da contenuto estratto,
+ * non da input di un utente, ma il principio resta.
+ */
+const escapeHtml = (t: string) =>
+  t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+const conBr = (testo: string) => escapeHtml(testo).split('\n').join('<br /> ');
+---
+
+<div class:list={['blocchi', extraClass]}>
+  {
+    sezioni.map((s) => {
+      const modo = disposizione(s);
+      const tag = livello(s.titolo?.livello);
+      const urlTitolo = rotta(s.titolo?.href);
+      const immaginiSezione = modo === 'due' ? s.corpo.filter((b) => b.tipo === 'immagine') : [];
+      const resto = modo === 'due' ? s.corpo.filter((b) => b.tipo !== 'immagine') : s.corpo;
+
+      return (
+        <section class:list={['sez', `sez--${modo}`]}>
+          {
+            s.titolo && (
+              <Titoletto as={tag} size={dimensione(tag)} tone="muted" class="sez__titolo">
+                {/* Il testo può contenere ritorni a capo: nell'originale sono
+                    `<br>` voluti nel titolo, e vanno riprodotti. */}
+                {urlTitolo ? (
+                  <a class="sez__titoloLink" href={urlTitolo} set:html={conBr(s.titolo.testo)} />
+                ) : (
+                  <Fragment set:html={conBr(s.titolo.testo)} />
+                )}
+              </Titoletto>
+            )
+          }
+
+          {
+            modo === 'due' ? (
+              <div class="sez__due">
+                <div class="sez__colonna">
+                  {immaginiSezione.map((b) => <Blocco blocco={b} livelloBase={livelloBase} sizes={sizesPer.due} />)}
+                </div>
+                <div class="sez__colonna">
+                  {resto.map((b) => <Blocco blocco={b} livelloBase={livelloBase} sizes={sizesPer.due} />)}
+                </div>
+              </div>
+            ) : (
+              <div class="sez__corpo">
+                {resto.map((b) => <Blocco blocco={b} livelloBase={livelloBase} sizes={sizesPer[modo]} />)}
+              </div>
+            )
+          }
+        </section>
+      );
+    })
+  }
+</div>
+
+<style>
+  .blocchi {
+    display: grid;
+    gap: var(--section-y);
+  }
+
+  .sez__titolo {
+    margin-bottom: var(--s-10);
+  }
+
+  .sez__corpo {
+    display: grid;
+    gap: var(--s-8);
+    align-items: start;
+  }
+  /* Difesa contro il contenuto più larga della sua cella: senza `min-width: 0`
+     un elemento in griglia può sfondare il contenitore. */
+  .sez__corpo > *,
+  .sez__colonna > * {
+    min-width: 0;
+  }
+
+  /* --- due colonne: immagini da un lato, testo dall'altro ------------------- */
+  .sez__due {
+    display: grid;
+    gap: var(--s-10);
+    align-items: start;
+  }
+  @media (min-width: 992px) {
+    .sez__due {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-20);
+      align-items: center;
+    }
+  }
+  .sez__colonna {
+    display: grid;
+    gap: var(--s-6);
+    align-content: start;
+  }
+
+  /* --- schede e contatori: griglia ----------------------------------------- */
+  .sez--schede .sez__corpo {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+    gap: var(--s-10) var(--s-8);
+  }
+
+  /* --- più immagini: griglia, non colonna ---------------------------------- */
+  .sez--galleria .sez__corpo {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--s-6);
+  }
+
+  /* --- solo testo: colonna leggibile ---------------------------------------
+     L'accordion fa eccezione: nell'originale occupa tutta la larghezza. */
+  .sez--testo .sez__corpo {
+    max-width: var(--container-text);
+  }
+  .sez--testo .sez__corpo:has(.accordion) {
+    max-width: none;
+  }
+
+  .sez__titoloLink {
+    color: inherit;
+    text-decoration: none;
+  }
+  .sez__titoloLink:hover {
+    color: var(--c-brand);
+  }
+</style>

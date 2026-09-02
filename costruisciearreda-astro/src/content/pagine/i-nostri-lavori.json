@@ -39,33 +39,6 @@
       "soloMobile": false
     },
     {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "progetti",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "render",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "prima/dopo",
-      "href": null,
-      "soloMobile": false
-    },
-    {
       "tipo": "riquadri",
       "visibile": true,
       "varianti": [],
@@ -74,25 +47,51 @@
           "titolo": "progetti",
           "titoloLivello": 2,
           "href": "../cat_realizzazioni/progetti/index.html",
+          "elementorId": "23292e6",
           "path": "2024/06/Raggruppa-1701.jpg",
-          "fondoRotto": false
+          "fondoApplicato": true
         },
         {
           "titolo": "render",
           "titoloLivello": 2,
           "href": "../cat_realizzazioni/render/index.html",
+          "elementorId": "8f45555",
           "path": "2024/06/Raggruppa-1695.jpg",
-          "fondoRotto": false
+          "fondoApplicato": true
         },
         {
           "titolo": "prima/dopo",
           "titoloLivello": 2,
           "href": "../cat_realizzazioni/prima-dopo/index.html",
+          "elementorId": "8d4184e",
           "path": "2024/06/Raggruppa-1701.jpg",
-          "fondoRotto": false
+          "fondoApplicato": true
         }
       ],
       "soloMobile": false
+    }
+  ],
+  "fondiSezione": [
+    {
+      "elementorId": "23292e6",
+      "fondoApplicato": true,
+      "testo": "progetti",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    },
+    {
+      "elementorId": "8f45555",
+      "fondoApplicato": true,
+      "testo": "render",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1695.jpg"
+    },
+    {
+      "elementorId": "8d4184e",
+      "fondoApplicato": true,
+      "testo": "prima/dopo",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
     }
   ],
   "avvisi": [

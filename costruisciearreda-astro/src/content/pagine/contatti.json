@@ -27,7 +27,7 @@
         "w-130"
       ],
       "livello": 2,
-      "testo": "entra in contattocon noi",
+      "testo": "entra in contatto\ncon noi",
       "href": null,
       "soloMobile": false
     },
@@ -113,15 +113,15 @@
       "varianti": [],
       "voci": [
         {
-          "testo": "Via Martiri della Libertà, 1180147, Napoli (NA)",
+          "testo": "Via Martiri della Libertà, 11\n80147, Napoli (NA)",
           "href": null
         },
         {
-          "testo": "Via Martiri della Libertà (Home)11, 80147, Napoli (NA)",
+          "testo": "Via Martiri della Libertà (Home)\n11, 80147, Napoli (NA)",
           "href": null
         },
         {
-          "testo": "Via San Massimo, SNC Mercury Center80035, Nola (NA)",
+          "testo": "Via San Massimo, SNC Mercury Center\n80035, Nola (NA)",
           "href": null
         }
       ],
@@ -159,7 +159,7 @@
           "href": null
         },
         {
-          "testo": "Via Gennaro Paparo, 7480040, Massa di Somma (NA)",
+          "testo": "Via Gennaro Paparo, 74\n80040, Massa di Somma (NA)",
           "href": null
         }
       ],
@@ -204,6 +204,7 @@
       "soloMobile": false
     }
   ],
+  "fondiSezione": [],
   "avvisi": [
     "meta description assente nell originale, da scrivere",
     "10 blocchi duplicati nell'originale, uniti in uno",

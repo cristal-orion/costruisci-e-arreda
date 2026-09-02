@@ -23,6 +23,12 @@ interface Props {
   data?: string | null;
   /** Etichetta sopra il titolo: la categoria, il tipo. */
   kicker?: string;
+  /**
+   * Estratto. L'originale lo mostra nelle card del carosello news (le prime
+   * ~30 parole dell'articolo): senza, la pagina perde contenuto reale — è il
+   * fingerprint che l'ha rilevato.
+   */
+  estratto?: string;
   /** Testo del link. */
   azione?: string;
   headingLevel?: 'h2' | 'h3' | 'h4';
@@ -35,6 +41,7 @@ const {
   immagineAlt = '',
   data = null,
   kicker,
+  estratto,
   azione = 'Scopri di più',
   headingLevel = 'h3',
 }: Props = Astro.props;
@@ -75,6 +82,7 @@ const dataTesto = data
       )
     }
     <Heading class="card__titolo"><a href={href}>{titolo}</a></Heading>
+    {estratto && <p class="card__estratto">{estratto}</p>}
     <p class="card__azione" aria-hidden="true">{azione}</p>
   </div>
 </article>

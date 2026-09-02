@@ -1,5 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import { immaginiGenerate } from './immagini-generate';
+import { rottePerId } from '../data/rotte-legacy';
 
 /**
  * Risoluzione delle immagini del mirror.
@@ -49,44 +50,9 @@ export const totaleImmagini = Object.keys(immaginiGenerate).length;
  * Un href che non si riesce a risolvere torna `null`: meglio nessun link che un
  * link rotto, e il cancello di qualità lo segnala.
  */
-const PER_ID: Record<string, string> = {
-  '2': '/',
-  '100': '/la-nostra-storia/',
-  '102': '/il-nostro-team/',
-  '106': '/lavora-con-noi/',
-  '107': '/contatti/',
-  '110': '/richiedi-preventivo-2/',
-  '905': '/dalla-progettazione-alla-realizzazione/',
-  '975': '/services/sopralluogo-e-rilievo/',
-  '976': '/services/progetto/',
-  '977': '/services/rendering/',
-  '978': '/services/consulenza-finiture/',
-  '979': '/services/disbrigo-pratiche/',
-  '980': '/services/direzione-lavori/',
-  '981': '/services/impianti/',
-  '982': '/services/certificazioni/',
-  '1398': '/i-nostri-lavori/',
-  '1407': '/realizzazioni/home-albe/',
-  '1524': '/richiedi-preventivo/',
-  '1562': '/preventivo-thankyou/',
-  '4078': '/realizzazioni/green-house/',
-  '4137': '/realizzazioni/casa-prima-e-dopo/',
-  '4155': '/realizzazioni/wood-e-white/',
-  '4188': '/realizzazioni/bar-tabacchi/',
-  '4208': '/realizzazioni/appartamento-moderno-prima-e-dopo/',
-  '4230': '/realizzazioni/soluzioni-per-la-famiglia/',
-  '4333': '/privacy-policy/',
-  '4335': '/cookie-policy/',
-  '4392': '/soluzione-ceramiche/',
-  '4474': '/promo-casa/',
-  '4488': '/thankyou-progetta-gli-spazi/',
-  '4540': '/thankyou-promo-6500/',
-  '4599': '/mobili-bagno-quale-scegliere-per-uno-spazio-funzionale-e-di-design/',
-  '4603': '/gres-costruisciearreda-consigli/',
-  '4615': '/perche-il-rendering-3d-e-essenziale-per-la-ristrutturazione-dei-tuoi-spazi/',
-  '4618': '/5-errori-da-evitare-nella-scelta-dei-materiali-per-ledilizia/',
-  '4631': '/newsletter-thankyou/',
-};
+/* La mappa page-id → rotta è generata dal mirror: vedi src/data/rotte-legacy.ts.
+   Scritta a mano lasciava buchi — l'elenco degli showroom non rendeva perché
+   tre id non c'erano. */
 
 export const rotta = (href: string | null | undefined): string | null => {
   if (!href) return null;
@@ -95,10 +61,32 @@ export const rotta = (href: string | null | undefined): string | null => {
   if (/^(https?:|mailto:|tel:)/.test(h)) return h;
 
   const perId = h.match(/[?%]3?F?p=(\d+)/i) || h.match(/p=(\d+)/);
-  if (perId) return PER_ID[perId[1]] ?? null;
+  if (perId) return rottePerId[perId[1]] ?? null;
 
   // link relativo al file: `../../type_stores/showroom-cat/index.html`
   const pulito = h.replace(/^(\.\.\/)+/, '').replace(/index\.html$/, '').replace(/^\/+/, '');
   if (!pulito) return '/';
   return `/${pulito.replace(/\/+$/, '')}/`;
+};
+
+/**
+ * Estratto di un testo HTML: le prime `parole` parole, senza tag.
+ *
+ * L'originale mostra nelle card del carosello news l'estratto generato da
+ * WordPress, che è di **55 parole** (il default di `the_excerpt`). Riprodurlo
+ * non è un vezzo: senza, quelle pagine perdono contenuto reale, e il
+ * `fingerprint diff` lo segnala. Il default qui è lo stesso.
+ */
+export const estratto = (html: string | undefined, parole = 55): string | undefined => {
+  if (!html) return undefined;
+  const testo = html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&#8217;|&rsquo;/g, '’')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!testo) return undefined;
+  const parti = testo.split(' ');
+  return parti.length <= parole ? testo : parti.slice(0, parole).join(' ') + '…';
 };

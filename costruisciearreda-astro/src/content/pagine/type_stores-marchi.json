@@ -26,7 +26,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "La qualità parte dalla scelta del marchio.",
+      "testo": "La qualità parte dalla\nscelta del marchio.",
       "href": null,
       "soloMobile": false
     },
@@ -1548,6 +1548,7 @@
       "soloMobile": false
     }
   ],
+  "fondiSezione": [],
   "avvisi": [
     "meta description assente nell originale, da scrivere",
     "12 blocchi duplicati nell'originale, uniti in uno",

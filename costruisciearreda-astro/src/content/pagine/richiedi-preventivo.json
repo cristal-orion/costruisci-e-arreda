@@ -26,7 +26,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "valutazione dei costi",
+      "testo": "valutazione\ndei costi",
       "href": null,
       "soloMobile": false
     },
@@ -46,7 +46,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "richiedi il tuo preventivo",
+      "testo": "richiedi il tuo\npreventivo",
       "href": null,
       "soloMobile": false
     },
@@ -66,6 +66,22 @@
         "1548"
       ],
       "soloMobile": false
+    },
+    {
+      "tipo": "ultimeNews",
+      "visibile": true,
+      "varianti": [],
+      "titolo": "News and Event",
+      "soloMobile": false
+    }
+  ],
+  "fondiSezione": [
+    {
+      "elementorId": "eaf389c",
+      "fondoApplicato": true,
+      "testo": "",
+      "altezza": 648,
+      "path": "2024/06/Schermata-2024-03-20-alle-10.54.07.png"
     }
   ],
   "avvisi": [

@@ -26,7 +26,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "Il punto di riferimento per privati, imbianchini, impiantisti, installatori e idraulici.",
+      "testo": "Il punto di riferimento per privati,\nimbianchini, impiantisti, installatori e idraulici.",
       "href": null,
       "soloMobile": false
     },
@@ -378,6 +378,15 @@
         "95"
       ],
       "soloMobile": false
+    }
+  ],
+  "fondiSezione": [
+    {
+      "elementorId": "6eb1934",
+      "fondoApplicato": false,
+      "testo": "La nostra sede Abbiamo anche ricambi per aspirapolvere Folletto, una v",
+      "altezza": 500,
+      "path": "2024/05/Raggruppa-1665.jpg"
     }
   ],
   "avvisi": [

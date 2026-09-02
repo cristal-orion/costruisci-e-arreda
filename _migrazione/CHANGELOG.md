@@ -717,3 +717,105 @@ Gli `alt` sono stati scritti di conseguenza: erano tutti vuoti nell'originale.
 Le altre 10 pagine one-off (storia, team, contatti, lavora-con-noi, hub servizi,
 hub lavori, preventivo, 2 legal, archivio blog già fatto), i 5 archivi
 `type_stores`, i 6 form, i redirect 301.
+
+---
+
+## A05 — Le pagine one-off e gli archivi: 48 rotte su 66
+**2026-09-02 · fase A**
+
+Aggiunte le 9 one-off restanti (storia, team, lavora-con-noi, contatti, hub
+servizi, hub lavori, preventivo, 2 legal) e i 5 archivi `type_stores`.
+
+### Un renderer di blocchi, non dieci pagine
+
+`Blocco.astro` rende **un** blocco (16 tipi); `Blocchi.astro` li raggruppa in
+**sezioni** — una nuova sezione a ogni titolo — e sceglie l'impaginazione dal
+contenuto della sezione: griglia per schede e contatori, griglia per più di due
+immagini, due colonne quando c'è un'immagine e un testo, colonna leggibile per
+il solo testo, larghezza piena per riquadri, gallerie ed elenchi.
+
+Il raggruppamento non è estetica. Reso come elenco piatto, il contenuto di
+queste pagine dava risultati assurdi, misurati:
+
+| pagina | prima | dopo |
+|---|---|---|
+| `/il-nostro-team/` | **27.005px** di altezza, 4 immagini caricate su 20 | 6.282px, 20 su 20 |
+| `/la-nostra-storia/` | 17.500px | 7.874px |
+| `/dalla-progettazione-alla-realizzazione/` | 26.682px | 17.302px |
+
+Su una pagina da 27.000px il lazy-load non riesce a stare al passo: metà delle
+immagini restava vuota. Con `[...pagina].astro` le dieci pagine costano un file
+solo, e le decisioni che l'estrazione non può prendere — meta description, testo
+dell'`<h1>`, impaginazione — stanno in `src/data/pagine.ts`.
+
+### Altri due blocchi del tema, trovati dal fingerprint
+
+Non sono widget Elementor, quindi il ciclo sui `data-widget_type` non li vedeva.
+È stato il `fingerprint diff` a rivelarli, contando le parole:
+
+1. **il carosello delle ultime news** (`.lastPosts`): in fondo a 6 pagine, ~300
+   parole a testa. Ricostruito con le card degli articoli, estratto compreso —
+   l'originale mostra l'estratto di WordPress, che è di 55 parole;
+2. **l'elenco degli store** su `/type_stores/showroom-cat/`: nell'originale è uno
+   shortcode che stampa ogni punto vendita **con la galleria completa**, cioè
+   **281 immagini in una pagina** (56 MB, la pagina più pesante del sito). Qui
+   sono card che rimandano alle pagine store, dove le gallerie già ci sono.
+
+### La mappa delle rotte, generata invece che scritta
+
+`rotta()` risolve gli href dell'originale (`index.html%3Fp=3317.html`) in rotte
+pulite. La mappa page-id → rotta era scritta a mano e lasciava buchi: l'elenco
+degli showroom non rendeva perché tre id non c'erano. Ora è **generata** dal
+mirror leggendo la classe del `<body>` di ogni pagina — 45 voci, in
+`src/data/rotte-legacy.ts`. Serve anche ai redirect 301: i vecchi URL `?p=ID`
+erano indicizzabili.
+
+### Difetti dell'originale corretti in queste pagine
+
+- **Due `<h1>` sulle legal**: il testo è un embed Iubenda che inietta il proprio
+  `<h1>` (più 13 `<h2>` e 2.716 parole). La pagina stampa il suo `<h1>` e uno
+  script declassa quello iniettato appena arriva. Prima prova — non stampare il
+  nostro — è stata scartata misurando: se l'embed tarda, la pagina resta senza
+  titolo, e su mobile succedeva.
+- **Titoli e indirizzi con le parole incollate**: "ENTRA IN CONTATTO<br>CON NOI"
+  diventava "ENTRA IN CONTATTOCON NOI", e "Via Martiri della Libertà, 11<br>80147"
+  diventava "…, 1180147". `textContent` ignora i `<br>`: l'estrattore ora li
+  converte in ritorni a capo e chi rende li riporta come `<br>`.
+- **Titoli dei riquadri stampati due volte**: comparivano come titoli di sezione
+  vuoti ("PROGETTI", "RENDER", "PRIMA/DOPO") *e* dentro i riquadri.
+- **Scorrimento orizzontale**: 16px su `/la-nostra-storia/` (un accordion finito
+  in una cella di griglia, col titolo da 60px che sfondava) e 46px a 390px su
+  `/type_stores/progettazione-e-ristrutturazione-edile/` (il titoletto non
+  andava a capo). Entrambi trovati dal cancello di qualità.
+- **SVG serviti come fotografie**: le icone dei tipi di punto vendita, rese a
+  piena larghezza, diventavano alte 300px. Ora hanno una larghezza da icona.
+- Titoli Yoast "Showroom **Archivi**" sostituiti da titoli veri.
+
+### Fedeltà dei contenuti
+
+`fingerprint.py diff` su **47 rotte confrontabili**. Le pagine con scostamento
+oltre il 5% sono 27, e le cause sono tutte identificate:
+
+| causa | pagine | |
+|---|---|---|
+| **etichetta privacy e campi dei form** | 10 pagine con parole mancanti **solo** queste | il form arriva al passo successivo |
+| duplicato desktop/mobile rimosso | gli 8 servizi, `/contatti/`, `/type_stores/*` | zero parole mancanti oltre alle precedenti: era testo contato due volte |
+| archivi filtrati davvero per categoria | 3 `cat_realizzazioni` | voluto: l'originale elencava 6 voci in tutti e tre |
+| più contenuto del mirror (↑) | archivio blog, legal, hub servizi, showroom-cat | 8 articoli con estratto invece di 6 paginati; il carosello news; i testi degli store |
+| lorem ipsum non riprodotto | le 2 pagine di Via Argine | l'`og:description` dell'originale contiene testo di riempimento |
+| hero assente nell'originale | `appartamento-moderno-prima-e-dopo` | `background-image: url('')`: era un riquadro bianco |
+
+Restano fuori solo le differenze cosmetiche: l'originale scrive "23 Dic" e i
+puntini come `...`, il rebuild "23 dicembre 2024" e `…`.
+
+**Segnalazione per il proprietario:** nel form del preventivo c'è un campo
+etichettato "Risrtutturazione" — un errore di battitura presente sul sito live.
+
+### Verifica
+`check-build.js`: **48 rotte × 3 viewport, nessun problema.** Zero link interni
+rotti: le rotte non ancora costruite sono solo le 8 date di archivio, i 2 feed,
+`/author/admin/`, le 4 thank-you, le 2 landing, `/richiedi-preventivo-2/` e le 3
+root di archivio CPT — nessuna linkata dalle pagine del sito.
+
+### Da fare nel passo successivo
+Le 4 thank-you page e le 2 landing, i 6 form, i redirect 301, il deploy.

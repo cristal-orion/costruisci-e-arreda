@@ -46,7 +46,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "Le nostre realizzazioni",
+      "testo": "Le nostre\nrealizzazioni",
       "href": null,
       "soloMobile": false
     },
@@ -70,38 +70,37 @@
       "soloMobile": false
     },
     {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "progetti",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "render",
-      "href": null,
-      "soloMobile": false
-    },
-    {
-      "tipo": "titolo",
-      "visibile": true,
-      "varianti": [],
-      "livello": 2,
-      "testo": "prima/dopo",
-      "href": null,
-      "soloMobile": false
-    },
-    {
       "tipo": "form",
       "visibile": true,
       "varianti": [],
       "id": [
         "95"
+      ],
+      "soloMobile": false
+    },
+    {
+      "tipo": "elencoStore",
+      "visibile": true,
+      "varianti": [],
+      "voci": [
+        {
+          "titolo": "Via Martiri della Libertà (Home), Napoli (NA)",
+          "testo": "",
+          "href": "../../index.html%3Fp=3317.html",
+          "path": "2024/06/Raggruppa-1661.svg"
+        },
+        {
+          "titolo": "Via San Massimo Mercury Center, Nola (NA)",
+          "testo": "",
+          "href": "../../index.html%3Fp=1214.html",
+          "path": "2024/07/iconeshow1.svg"
+        },
+        {
+          "titolo": "Via Martiri della Libertà, Napoli (NA)",
+          "testo": "",
+          "href": "../../index.html%3Fp=1213.html",
+          "path": "2024/07/iconeshow1.svg"
+        }
       ],
       "soloMobile": false
     },
@@ -114,29 +113,56 @@
           "titolo": "progetti",
           "titoloLivello": 2,
           "href": "../../cat_realizzazioni/progetti/index.html",
-          "path": null,
-          "fondoRotto": true
+          "elementorId": "cfdd83c",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
         },
         {
           "titolo": "render",
           "titoloLivello": 2,
           "href": "../../cat_realizzazioni/render/index.html",
-          "path": null,
-          "fondoRotto": true
+          "elementorId": "7435bb3",
+          "path": "2024/06/Raggruppa-1695.jpg",
+          "fondoApplicato": false
         },
         {
           "titolo": "prima/dopo",
           "titoloLivello": 2,
           "href": "../../cat_realizzazioni/prima-dopo/index.html",
-          "path": null,
-          "fondoRotto": true
+          "elementorId": "f67e7b9",
+          "path": "2024/06/Raggruppa-1701.jpg",
+          "fondoApplicato": false
         }
       ],
       "soloMobile": false
     }
   ],
+  "fondiSezione": [
+    {
+      "elementorId": "cfdd83c",
+      "fondoApplicato": false,
+      "testo": "progetti",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    },
+    {
+      "elementorId": "7435bb3",
+      "fondoApplicato": false,
+      "testo": "render",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1695.jpg"
+    },
+    {
+      "elementorId": "f67e7b9",
+      "fondoApplicato": false,
+      "testo": "prima/dopo",
+      "altezza": 700,
+      "path": "2024/06/Raggruppa-1701.jpg"
+    }
+  ],
   "avvisi": [
     "meta description assente nell originale, da scrivere",
+    "3 riquadri con immagine di fondo NON applicata nell'originale (buco bianco con titolo bianco su bianco): nel rebuild il fondo si vede",
     "era indicizzabile nell originale"
   ]
 }

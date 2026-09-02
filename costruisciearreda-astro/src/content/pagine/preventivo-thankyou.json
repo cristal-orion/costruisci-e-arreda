@@ -26,7 +26,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "Grazie per averci contattati",
+      "testo": "Grazie per\naverci contattati",
       "href": null,
       "soloMobile": false
     },
@@ -58,8 +58,16 @@
       "href": null,
       "didascalia": null,
       "soloMobile": false
+    },
+    {
+      "tipo": "ultimeNews",
+      "visibile": true,
+      "varianti": [],
+      "titolo": "News and Event",
+      "soloMobile": false
     }
   ],
+  "fondiSezione": [],
   "avvisi": [
     "meta description assente nell originale, da scrivere",
     "era indicizzabile nell originale"

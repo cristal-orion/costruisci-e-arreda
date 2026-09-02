@@ -26,7 +26,7 @@
         "grey"
       ],
       "livello": 2,
-      "testo": "Soluzioni complete per l'edilizia: Prodotti e servizi per professionisti e imprese",
+      "testo": "Soluzioni complete\nper l'edilizia:\nProdotti e servizi per professionisti e imprese",
       "href": null,
       "soloMobile": false
     },
@@ -339,6 +339,15 @@
         "95"
       ],
       "soloMobile": false
+    }
+  ],
+  "fondiSezione": [
+    {
+      "elementorId": "0c11861",
+      "fondoApplicato": false,
+      "testo": "COSA TROVI NEL NOSTRO STORE Nell’edilizia pesante, forniamo ferro, cal",
+      "altezza": 552,
+      "path": "2024/05/Raggruppa-1665.jpg"
     }
   ],
   "avvisi": [

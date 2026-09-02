@@ -108,8 +108,10 @@
       "soloMobile": false
     }
   ],
+  "fondiSezione": [],
   "avvisi": [
     "meta description assente nell originale, da scrivere",
+    "1 blocchi nascosti a tutti i viewport (markup morto, scartato)",
     "era indicizzabile nell originale"
   ]
 }
