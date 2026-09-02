@@ -1,0 +1,123 @@
+---
+/**
+ * Titoletto — il segno grafico ricorrente del sito: un titolo con una riga da 1px
+ * che gli passa sotto e **sfonda fino al bordo sinistro della finestra**, fermandosi
+ * dove finisce il titolo.
+ *
+ * Nell'originale la classe si chiama `.titolettoBorder` ma non ha nessun bordo:
+ * misurando, la riga è uno `::after` di `width: 400%; left: -300%`, cioè lo stesso
+ * trucco dell'offset negativo in percentuale che ha causato il bug dell'hero
+ * (patch 001/002). Qui la riga è calcolata dal riquadro verso il bordo della
+ * finestra, senza percentuali negative e senza `overflow:hidden` che la tagli.
+ *
+ * Varianti di colore misurate: rosso `#C20E1A`, scuro `#333`, tenue `#A6A6A6`,
+ * bianca sopra le immagini.
+ *
+ * Dimensioni misurate: l'etichetta piccola è 23px peso 500; i titoli grandi
+ * usano la scala display (50px peso 300 · 60px peso 200 · 70px peso 400).
+ */
+interface Props {
+  /** Livello dell'heading. Va scelto in base all'outline della pagina, non all'aspetto. */
+  as?: 'h1' | 'h2' | 'h3' | 'p';
+  /** Dimensione. `label` è l'etichetta piccola, le altre sono i titoli di sezione. */
+  size?: 'label' | 'sm' | 'md' | 'lg';
+  /** Colore della riga e del testo. `light` è per sopra le immagini. */
+  tone?: 'brand' | 'dark' | 'muted' | 'light';
+  /** Mostra la riga. Nell'originale c'è sempre, ma non su ogni titolo del sito. */
+  rule?: boolean;
+  class?: string;
+}
+
+const {
+  as: Tag = 'h2',
+  size = 'md',
+  tone = 'dark',
+  rule = true,
+  class: extraClass,
+}: Props = Astro.props;
+---
+
+<Tag class:list={['titoletto', `titoletto--${size}`, `titoletto--${tone}`, { 'titoletto--rule': rule }, extraClass]}>
+  <span class="titoletto__text"><slot /></span>
+</Tag>
+
+<style>
+  .titoletto {
+    position: relative;
+    margin: 0;
+  }
+
+  /* La riga è posizionata in assoluto, quindi non occupa spazio: senza questo
+     padding si sovrapporrebbe a quello che viene dopo. Il componente si riserva
+     lo spazio da sé, così chi lo usa non deve ricordarsene. */
+  .titoletto--rule {
+    padding-bottom: 0.6em;
+  }
+
+  .titoletto__text {
+    /* la riga si ferma dove finisce il testo, non dove finisce il blocco */
+    position: relative;
+    display: inline-block;
+  }
+
+  /* --- dimensioni, dalla scala misurata ----------------------------------- */
+  .titoletto--label {
+    font-size: 1.4375rem; /* 23px, misurato */
+    font-weight: var(--w-medium);
+    line-height: 1.2;
+  }
+  .titoletto--sm {
+    font-size: var(--t-display-sm); /* 50px */
+    font-weight: var(--w-light);
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .titoletto--md {
+    font-size: var(--t-display); /* 60px */
+    font-weight: var(--w-extralight);
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .titoletto--lg {
+    font-size: var(--t-display-lg); /* 70px */
+    font-weight: var(--w-regular);
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  /* --- colore -------------------------------------------------------------- */
+  .titoletto--brand {
+    color: var(--c-brand);
+    --titoletto-rule: var(--c-brand);
+  }
+  .titoletto--dark {
+    color: var(--c-ink);
+    --titoletto-rule: var(--c-ink);
+  }
+  .titoletto--muted {
+    color: var(--c-ink);
+    --titoletto-rule: var(--c-border);
+  }
+  .titoletto--light {
+    color: var(--c-white);
+    --titoletto-rule: var(--c-white);
+  }
+
+  /* --- la riga -------------------------------------------------------------
+     Parte dal bordo sinistro della finestra e finisce dove finisce il testo.
+     `width: calc(100% + (100vw - 100%) / 2)` con `right: 0` estende il blocco
+     verso sinistra esattamente della metà dello spazio fra finestra e riquadro:
+     se il riquadro è centrato — e lo è, sta in `.container` — la riga arriva al
+     bordo. Sborda a sinistra dell'area visibile, che in LTR **non** produce
+     scorrimento orizzontale: verificato nel browser.                          */
+  .titoletto--rule .titoletto__text::after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 0.35em);
+    right: 0;
+    width: calc(100% + (100vw - 100%) / 2);
+    height: 1px;
+    background: var(--titoletto-rule, var(--c-ink));
+    pointer-events: none;
+  }
+</style>

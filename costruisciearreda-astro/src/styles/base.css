@@ -148,17 +148,18 @@ table {
 /* --- Primitive di layout ---------------------------------------------------
    Un solo sistema: `.container` centra e limita, `.section` dà il ritmo
    verticale. Niente margini negativi, niente `left` in percentuale.           */
+/* Il margine laterale è proporzionale (`--gutter`), la larghezza è limitata dal
+   tetto della variante. Nessun `padding-inline`: così la larghezza dichiarata è
+   davvero quella del contenuto, e il rientro dell'hero si somma a un solo valore. */
 .container {
-  width: 100%;
-  max-width: var(--container);
+  width: min(100% - 2 * var(--gutter), var(--container-cap, var(--container)));
   margin-inline: auto;
-  padding-inline: var(--container-pad);
 }
 .container--narrow {
-  max-width: var(--container-narrow);
+  --container-cap: var(--container-narrow);
 }
 .container--text {
-  max-width: var(--container-text);
+  --container-cap: var(--container-text);
 }
 
 .section {

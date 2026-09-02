@@ -1,0 +1,179 @@
+---
+/**
+ * Hero delle pagine interne — il riquadro con l'immagine a tutta larghezza, il
+ * titolo grande in basso a sinistra e il titoletto sotto.
+ *
+ * Geometrie misurate sull'originale (`_migrazione/baseline/layout-mirror.json`):
+ *   riquadro 750px su desktop **e tablet**, 400px su mobile · titolo
+ *   `clamp(30px, 5.4vw, 80px)` peso 300 maiuscolo bianco · blocco di testo a
+ *   **100px dal fondo** del riquadro a tutti i viewport · rientro dal bordo
+ *   114px da 769px in su e 32px sotto.
+ *
+ * **Un solo sistema di spaziatura**, come deciso dopo le patch 001/002: il testo
+ * sta nello stesso `.container` di tutto il resto del sito più `--hero-inset`,
+ * applicato come `padding-inline`. Niente `left` negativo in percentuale, niente
+ * container Bootstrap dentro un `overflow:hidden` — era quella la causa del titolo
+ * tranciato fra 769px e 1450px.
+ *
+ * L'immagine è un `<img>`, non una `background-image`: nell'originale i 119 fondi
+ * inline non erano né responsive né rinviabili. Così invece prende `srcset` da
+ * `astro:assets` e `fetchpriority="high"` perché è l'elemento LCP.
+ */
+interface Props {
+  /** Titolo. Un `\n` diventa un'interruzione di riga, come i `<br>` dell'originale. */
+  title: string;
+  /** Titoletto sotto il titolo: "SERVIZI", "REALIZZAZIONI", … */
+  kicker?: string;
+  image: string;
+  /**
+   * Testo alternativo. L'hero è decorativo: se il titolo dice già tutto,
+   * passare la stringa vuota è la scelta giusta, non una dimenticanza.
+   */
+  imageAlt: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  /** Livello del titolo. Default `h1`: nell'originale 17 pagine non ne avevano nessuno. */
+  as?: 'h1' | 'h2';
+  /**
+   * Velatura in basso per staccare il testo bianco dalla foto.
+   * Non c'è nell'originale: aggiunta perché il bianco su foto qualsiasi non
+   * garantisce contrasto. Deviazione dichiarata, disattivabile.
+   */
+  scrim?: boolean;
+  class?: string;
+}
+
+const {
+  title,
+  kicker,
+  image,
+  imageAlt,
+  imageWidth,
+  imageHeight,
+  as: Tag = 'h1',
+  scrim = true,
+  class: extraClass,
+} = Astro.props;
+
+const righe = title.split('\n');
+---
+
+<section class:list={['hero', { 'hero--scrim': scrim }, extraClass]}>
+  <img
+    class="hero__img"
+    src={image}
+    alt={imageAlt}
+    width={imageWidth}
+    height={imageHeight}
+    fetchpriority="high"
+    decoding="async"
+  />
+
+  <div class="hero__body">
+    <div class="container hero__container">
+      <div class="hero__content">
+        <Tag class="hero__title">
+          {righe.map((riga, i) => (i === 0 ? riga : [<br />, riga]))}
+        </Tag>
+        {
+          kicker && (
+            <p class="hero__kicker">
+              <span class="hero__kickerText">{kicker}</span>
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    height: var(--hero-h-mobile);
+    overflow: clip;
+  }
+  @media (min-width: 769px) {
+    .hero {
+      height: var(--hero-h);
+    }
+  }
+
+  .hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* velatura: nera in basso, trasparente a metà altezza */
+  .hero--scrim::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(0 0 0 / 45%) 0%, rgb(0 0 0 / 0%) 55%);
+    pointer-events: none;
+  }
+
+  .hero__body {
+    position: absolute;
+    /* 100px dal fondo del riquadro: misurato a tutti e tre i viewport */
+    right: 0;
+    bottom: 100px;
+    left: 0;
+    z-index: 1;
+  }
+
+  .hero__content {
+    /* unico rientro, sommato al gutter del contenitore: 114px a 1440, 32px a 390 */
+    padding-inline: var(--hero-inset);
+  }
+
+  .hero__title {
+    margin: 0;
+    max-width: 60rem;
+    color: var(--c-white);
+    font-size: var(--hero-title-size);
+    font-weight: var(--w-light);
+    line-height: 1.05;
+    text-transform: uppercase;
+    /* Niente `text-wrap: balance`: le interruzioni di riga dell'hero sono
+       decise nel contenuto (i `<br>` dell'originale) e il bilanciamento
+       automatico le ridistribuirebbe, cambiando il numero di righe. */
+  }
+
+  .hero__kicker {
+    position: relative;
+    margin: var(--s-8) 0 0;
+    /* spazio per la riga, che essendo in assoluto non ne occupa */
+    padding-bottom: 0.6em;
+    color: var(--c-white);
+    font-size: 1.4375rem; /* 23px, misurato */
+    font-weight: var(--w-medium);
+    line-height: 1.2;
+  }
+
+  /* la riga del titoletto, come in Titoletto.astro ma in variante chiara */
+  .hero__kickerText {
+    position: relative;
+    display: inline-block;
+  }
+  .hero__kickerText::after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 0.35em);
+    right: 0;
+    width: calc(100% + (100vw - 100%) / 2);
+    height: 1px;
+    background: var(--c-brand);
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    /* i 100px dal fondo valgono anche qui: misurati identici a tutti i viewport */
+    .hero__kicker {
+      margin-top: var(--s-5);
+    }
+  }
+</style>

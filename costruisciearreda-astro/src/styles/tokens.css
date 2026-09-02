@@ -97,12 +97,21 @@
   --section-y-lg: clamp(5rem, 10.4vw, 9.375rem);  /* 80 → 150px */
 
   /* --- Contenitori ---------------------------------------------------------
-     1320px è il contenitore del tema (Bootstrap xxl), 1140px quello di Elementor.
-     Il secondo resta come variante "narrow" per i blocchi di testo lungo.       */
-  --container: 1320px;
-  --container-narrow: 1140px;
+     I valori sono le larghezze di **contenuto** misurate a 1440px: il tema usava
+     un contenitore Bootstrap di 1320px con 12px di padding (= 1296 di contenuto),
+     Elementor uno di 1140px (= 1116).
+
+     Bootstrap dava larghezze **a gradini** (1320 sopra i 1400px, 1140 sopra i
+     1200, 960 sopra i 992, 720 sopra i 768): il margine laterale saltava fra
+     32px e 102px a seconda della larghezza, a denti di sega. Qui il margine è
+     proporzionale e monotono: combacia **esatto** con l'originale a 1440px
+     (72px) e a 390px (20px), e nella fascia intermedia sta più larga di
+     36–90px invece di saltare. È una deviazione dichiarata — se si volesse la
+     resa a gradini, si cambia **solo** la regola `.container` in base.css.      */
+  --container: 1296px;
+  --container-narrow: 1116px;
   --container-text: 780px; /* misura di leggibilità per gli articoli */
-  --container-pad: var(--s-3);
+  --gutter: clamp(1.25rem, 5vw, 4.5rem); /* 20px → 72px */
 
   /* --- Geometrie misurate --------------------------------------------------- */
   --header-h: 101px;
@@ -116,10 +125,10 @@
      UN SOLO sistema di spaziatura: il blocco hero sta nello stesso `.container`
      di tutto il resto e aggiunge questo padding-inline. Mai `left` negativo in
      percentuale dentro un `overflow:hidden` — è la causa del bug delle patch 001/002.
-     I due valori sono quelli misurati sull'originale (`left:42px` desktop,
-     `left:20px` mobile): sommati a container (60px @1440) + gutter (12px) danno
-     esattamente i 114px e i 32px misurati ai due estremi.                        */
-  --hero-inset: 20px;
+     Sommato al margine del contenitore dà la distanza dal bordo della finestra:
+     72 + 42 = **114px** a 1440px e 20 + 12 = **32px** a 390px, cioè esattamente
+     i valori misurati sull'originale ai due estremi.                             */
+  --hero-inset: 12px;
 
   /* --- Bordi e ombre -------------------------------------------------------- */
   --radius-sm: 3px;

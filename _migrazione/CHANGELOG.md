@@ -342,3 +342,91 @@ gli inline "incollati" leggendo i nodi di testo nel DOM, riutilizzabile su ogni 
 
 ### Da fare nel passo successivo
 L'hero, poi l'estrazione dei contenuti in content collections.
+
+---
+
+## A02 — Hero, titoletto e contenitore proporzionale
+**2026-09-02 · fase A**
+
+`Hero.astro` · `Titoletto.astro` · nuova regola `.container`.
+
+### Il titoletto: il segno grafico del sito
+
+Nell'originale la classe si chiama `.titolettoBorder`, ma **non ha nessun bordo**:
+misurando gli pseudo-elementi si scopre che è uno `::after` di
+`width: 400%; left: -300%; height: 1px` — una riga da 1px che passa sotto il titolo,
+sfonda tre larghezze verso sinistra (quindi fuori schermo) e si ferma esattamente
+dove finisce il titolo. È lo **stesso trucco dell'offset negativo in percentuale**
+che ha causato il bug dell'hero corretto dalle patch 001/002.
+
+Varianti misurate: rossa `#C20E1A`, scura `#333`, tenue `#A6A6A6`, bianca sopra le
+immagini. Dimensioni: etichetta 23px peso 500; titoli 50px/300, 60px/200, 70px/400.
+La variante `.w-130` fa uscire la riga a destra invece che a sinistra.
+
+Qui la riga è `width: calc(100% + (100vw - 100%) / 2)` con `right: 0`: parte dal bordo
+sinistro della finestra e finisce dove finisce il testo, senza percentuali negative e
+senza `overflow:hidden` che la possa tagliare. Sborda a sinistra dell'area visibile,
+che in LTR non produce scorrimento orizzontale — verificato a 12 larghezze.
+
+Il componente si riserva da sé lo spazio della riga (`padding-bottom: 0.6em`): la riga
+è posizionata in assoluto, quindi senza quel padding si sovrapporrebbe al contenuto
+successivo. Trovato guardando lo screenshot dei campioni.
+
+### Il contenitore, rifatto proporzionale
+
+Bootstrap dava larghezze **a gradini** (1320px sopra i 1400, 1140 sopra i 1200,
+960 sopra i 992, 720 sopra i 768): il margine laterale saltava fra 32px e 102px
+a denti di sega. La prima versione di `.container` (A00) usava invece un gutter fisso
+di 12px, e a 900px il rientro dell'hero risultava 54px contro i 114px misurati.
+
+Nuova regola, una sola riga:
+`width: min(100% - 2 * var(--gutter), var(--container-cap, var(--container)))`
+con `--gutter: clamp(20px, 5vw, 72px)` e `--container: 1296px` (la larghezza di
+**contenuto** misurata a 1440px).
+
+| larghezza | margine mio | margine originale | rientro hero mio | originale |
+|---|---|---|---|---|
+| 1920 | 312px | **312px** | 354px | — |
+| 1440 | 72px | **72px** | **114px** | **114px** |
+| 1300 | 65px | 92px | 107px | — |
+| 1200 | 60px | 42px | 102px | — |
+| 1100 | 55px | 82px | 97px | — |
+| 1000 | 50px | 32px | 92px | — |
+| 900 | 45px | 102px | 87px | 114px |
+| 390 | 20px | 12px | **32px** | **32px** |
+
+Combacia **esatto** dove l'originale è al suo tetto (1440 e 1920) e sul rientro
+dell'hero ai due estremi; nella fascia intermedia sta nel mezzo del dente di sega
+invece di saltare. **Deviazione dichiarata**: se si volesse la resa a gradini si
+cambia solo quella regola in `base.css`.
+
+### L'hero
+
+| | misurato sull'originale | ricostruito |
+|---|---|---|
+| altezza riquadro | 750px desktop e tablet · 400px mobile | ✓ identico |
+| titolo | `clamp(30px, 5.4vw, 80px)` peso 300 maiuscolo bianco | ✓ 77,76 / 48,6 / 30px |
+| blocco di testo | 100px dal fondo a tutti i viewport | ✓ 100px a 12 larghezze |
+| rientro dal bordo | 114px a 1440 · 32px a 390 | ✓ identico |
+| titolo tagliato | 0 dopo le patch 001/002 | ✓ 0 a 12 larghezze |
+
+**Un solo sistema di spaziatura**, come deciso dopo le patch: il testo sta nello stesso
+`.container` di tutto il resto più `--hero-inset` come `padding-inline`. Niente `left`
+negativo, niente container Bootstrap dentro un `overflow:hidden`.
+
+Differenze volute:
+1. **L'immagine è un `<img>`**, non una `background-image` inline. Nell'originale i 119
+   fondi inline non erano né responsive né rinviabili; così invece prende `srcset` da
+   `astro:assets` e `fetchpriority="high"`, essendo l'elemento LCP.
+2. **Velatura in basso** (`scrim`, attiva per default): il testo bianco su una foto
+   qualsiasi non garantisce contrasto. Si disattiva con `scrim={false}`.
+3. **Il titolo è `h1` per default.** Nell'originale i servizi usano `h1.title` e le
+   realizzazioni `h2.title` — ed è per questo che le 7 pagine `/realizzazioni/*` non
+   hanno nessun `h1`. Il livello resta configurabile, ma il default giusto è `h1`.
+4. **Niente `text-wrap: balance`** sul titolo: le interruzioni di riga sono decise nel
+   contenuto (i `<br>` dell'originale) e il bilanciamento automatico le ridistribuiva,
+   cambiando il numero di righe. Visto nello screenshot: 3 righe invece di 2.
+
+### Da fare nel passo successivo
+Estrazione dei contenuti in content collections (`services`, `realizzazioni`, `posts`)
+con uno script sull'HTML del mirror. Poi header e footer, che servono a ogni template.

@@ -2,8 +2,9 @@
 
 > ## ⏯ PUNTO DI RIPRESA — leggere per primo
 >
-> **Ultima sessione: 2026-09-02.** Fatti lo **scaffold + design system** (passo 1) e i
-> **4 componenti** (passo 2). Il prossimo passo è l'**hero**.
+> **Ultima sessione: 2026-09-02.** Fatti lo **scaffold + design system** (passo 1), i
+> **4 componenti** (passo 2) e l'**hero + titoletto** (passo 3). Il prossimo passo è
+> l'**estrazione dei contenuti** in content collections, poi header e footer.
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
 >
 > ### Stato del rebuild: `costruisciearreda-astro/`
@@ -19,10 +20,11 @@
 > gestibile con `astro dev stop|status|logs`) · `npm run build` · `npm run preview`.
 >
 > ### Prossimo passo, in ordine
-> 1. L'**hero**: `--hero-h` 750px desktop e tablet / 400px mobile, titolo
->    `--hero-title-size`, testo nello stesso `.container` del resto più `--hero-inset`.
->    Mai `left` negativo in % dentro un `overflow:hidden` (bug delle patch 001/002).
-> 2. Estrazione contenuti in content collections con uno script sull'HTML del mirror.
+> 1. Estrazione contenuti in content collections (`services`, `realizzazioni`, `posts`)
+>    con uno script sull'HTML del mirror.
+> 2. **Header e footer**: servono a ogni template. Header 101px/69px, `position: static`,
+>    fondo trasparente; footer 1057px su fondo `#F5F5F5`. Nell'originale il menu è nel
+>    DOM **3 volte** (canvas mobile + header mobile + header desktop): qui una sola.
 > 3. I **5 template**, poi le **11 pagine one-off**, validando con `fingerprint.py diff`
 >    e confronto visivo contro `shots-000-live-originale`.
 > 4. Pipeline immagini `astro:assets` sulle 476 immagini usate.
@@ -56,11 +58,17 @@
 > mappa rotte e redirect 301 · scelte sulle landing e sulle offerte scadute · baseline e
 > fingerprint · decisioni di comportamento (es. "hero a 60px dal bordo, font fluido").
 >
-> ### Passi 1 e 2 — fatti
-> Scaffold + design system dai token misurati, e i 4 componenti
-> (`Carousel`, `Gallery` con lightbox, `Counter`, `Accordion`) — 2,9 KB di JS in tutto,
-> zero librerie, nessuna icon font (SVG in linea). Restano le content collections
-> (`services`, `realizzazioni`, `posts`). Dettagli e verifiche: CHANGELOG voci A00 e A01.
+> ### Passi 1, 2 e 3 — fatti
+> Scaffold + design system dai token misurati · i 4 componenti (`Carousel`, `Gallery`
+> con lightbox, `Counter`, `Accordion`) — 2,9 KB di JS in tutto, zero librerie, nessuna
+> icon font (SVG in linea) · `Hero` e `Titoletto`, con il contenitore rifatto
+> proporzionale invece che a gradini Bootstrap.
+> Dettagli e verifiche: CHANGELOG voci **A00**, **A01**, **A02**.
+>
+> **Due deviazioni da far confermare a Michele** (implementate, documentate, reversibili
+> in un punto solo): (1) Roboto → Montserrat, che cambia il corpo del testo su 34 pagine;
+> (2) contenitore proporzionale invece che a gradini, che cambia la larghezza del
+> contenuto fra 769px e 1400px.
 >
 > ### Due fasi, da tenere separate
 > **Fase A** ricostruzione 1:1, gate = fingerprint pulito. **Fase B** modifiche volute

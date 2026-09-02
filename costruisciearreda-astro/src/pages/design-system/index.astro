@@ -10,6 +10,8 @@ import Carousel from '../../components/Carousel.astro';
 import Gallery from '../../components/Gallery.astro';
 import Counter from '../../components/Counter.astro';
 import Accordion from '../../components/Accordion.astro';
+import Hero from '../../components/Hero.astro';
+import Titoletto from '../../components/Titoletto.astro';
 
 const colori = [
   ['--c-brand', '#C20E1A', 'Primario del brand. Usato sul testo di accento e su fondi pieni, mai sui bottoni.'],
@@ -66,6 +68,17 @@ const ph = (w: number, h: number, n: number) =>
       ` text-anchor="middle" dominant-baseline="middle">${w}×${h}</text></svg>`,
   );
 
+/** Finta foto per l'hero: sfumatura, così si vede se la velatura funziona. */
+const heroImg =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900">' +
+      '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#8a8f96"/><stop offset="0.55" stop-color="#d6d8db"/>' +
+      '<stop offset="1" stop-color="#5c6169"/></linearGradient></defs>' +
+      '<rect width="100%" height="100%" fill="url(#g)"/></svg>',
+  );
+
 const galleryItems = [
   [800, 1200], [800, 600], [800, 800], [800, 1000], [800, 500], [800, 1100],
   [800, 700], [800, 900],
@@ -105,6 +118,16 @@ const vociAccordion = [
   description="Token di design misurati sul sito originale: colore, tipografia, spaziatura, bottoni e geometrie. Pagina di controllo interna."
   noindex
 >
+  <Hero
+    as="h2"
+    title={'Dalla progettazione\nalla realizzazione'}
+    kicker="SERVIZI"
+    image={heroImg}
+    imageAlt=""
+    imageWidth={1600}
+    imageHeight={900}
+  />
+
   <div class="container ds">
     <header class="ds__head">
       <p class="ds__kicker">Ricostruzione in Astro · fase A</p>
@@ -275,6 +298,43 @@ const vociAccordion = [
       <Accordion items={vociAccordion} />
     </section>
 
+    <!-- ---------------------------------------------------- hero e titoletto -->
+    <section class="ds__block">
+      <h2 class="ds__h2">Hero</h2>
+      <p class="ds__note">
+        È il riquadro in testa a questa pagina. Riquadro di 750px su desktop e tablet,
+        400px su mobile; titolo <code>clamp(30px, 5.4vw, 80px)</code> peso 300 maiuscolo;
+        blocco di testo a 100px dal fondo. Il rientro dal bordo è
+        <strong>un solo valore</strong>, <code>--hero-inset</code>, sommato al gutter del
+        contenitore: 114px a 1440px e 32px a 390px, gli stessi numeri misurati
+        sull'originale. Nessun <code>left</code> negativo in percentuale — era la causa
+        del titolo tranciato fra 769px e 1450px (patch 001/002).
+      </p>
+      <p class="ds__note">
+        Due differenze volute: l'immagine è un <code>&lt;img&gt;</code> e non una
+        <code>background-image</code> inline (così prende <code>srcset</code> e
+        <code>fetchpriority</code>, essendo l'elemento LCP), e c'è una velatura in basso
+        perché il testo bianco su una foto qualsiasi non garantisce contrasto.
+        La velatura si disattiva con <code>scrim={false}</code>.
+      </p>
+
+      <h3 class="ds__h3">Titoletto</h3>
+      <p class="ds__note">
+        Il segno grafico ricorrente: una riga da 1px sotto il titolo, che sfonda fino al
+        bordo sinistro della finestra e si ferma dove finisce il testo. Nell'originale la
+        classe si chiama <code>.titolettoBorder</code> ma non ha alcun bordo: misurando,
+        la riga è uno <code>::after</code> con <code>width: 400%; left: -300%</code> —
+        lo stesso trucco che ha causato il bug dell'hero. Qui è calcolata dal riquadro
+        verso il bordo, senza percentuali negative.
+      </p>
+      <div class="ds__titoletti">
+        <Titoletto as="p" size="label" tone="brand">SERVIZI</Titoletto>
+        <Titoletto as="p" size="sm" tone="dark">Le nostre realizzazioni</Titoletto>
+        <Titoletto as="p" size="md" tone="muted">I nostri servizi</Titoletto>
+        <Titoletto as="p" size="lg" tone="dark">News and Events</Titoletto>
+      </div>
+    </section>
+
     <!-- ---------------------------------------------------------- geometrie -->
     <section class="ds__block">
       <h2 class="ds__h2">Geometrie misurate</h2>
@@ -283,9 +343,10 @@ const vociAccordion = [
         <tbody>
           <tr><td><code>--header-h</code></td><td>101px desktop · 69px mobile</td><td>Costante su tutte le 67 pagine</td></tr>
           <tr><td><code>--hero-h</code></td><td>750px desktop e tablet · 400px mobile</td><td>Riquadro immagine dell'hero</td></tr>
-          <tr><td><code>--hero-inset</code></td><td>42px da 769px in su · 20px sotto</td><td>Rientro dentro il contenitore: sommato a container e gutter dà i 114px e i 32px misurati</td></tr>
-          <tr><td><code>--container</code></td><td>1320px + 12px di gutter</td><td>Contenitore del tema</td></tr>
-          <tr><td><code>--container-narrow</code></td><td>1140px</td><td>Contenitore di Elementor</td></tr>
+          <tr><td><code>--hero-inset</code></td><td>42px da 769px in su · 12px sotto</td><td>Rientro dentro il contenitore: sommato al margine dà 114px a 1440px e 32px a 390px, gli stessi dell'originale</td></tr>
+          <tr><td><code>--container</code></td><td>1296px</td><td>Larghezza di contenuto misurata a 1440px (contenitore del tema 1320 meno 12px di padding per lato)</td></tr>
+          <tr><td><code>--container-narrow</code></td><td>1116px</td><td>L'equivalente per il contenitore di Elementor (1140)</td></tr>
+          <tr><td><code>--gutter</code></td><td><code>clamp(20px, 5vw, 72px)</code></td><td>Margine laterale, proporzionale: Bootstrap lo faceva saltare fra 32px e 102px a denti di sega</td></tr>
           <tr><td><code>--radius-sm</code></td><td>3px</td><td>Unico raggio ricorrente</td></tr>
           <tr><td><code>--radius-notch</code></td><td>0 30px 0 0</td><td>Motivo distintivo su card e immagini</td></tr>
         </tbody>
@@ -372,6 +433,12 @@ const vociAccordion = [
   .ds__spaces li { display: flex; gap: var(--s-4); align-items: center; margin: 0 0 var(--s-2); }
   .ds__spaces span:last-child { color: var(--c-ink-soft); }
   .ds__bar { height: 1rem; background: var(--c-brand); flex: none; }
+
+  .ds__titoletti {
+    display: grid;
+    gap: var(--s-15);
+    margin-top: var(--s-12);
+  }
 
   /* notch */
   .ds__notchRow { display: flex; flex-wrap: wrap; gap: var(--s-6); margin-top: var(--s-8); }
