@@ -9,7 +9,7 @@
  * passo "Form" del piano, con gli altri cinque.
  */
 import Titoletto from './Titoletto.astro';
-import Button from './Button.astro';
+import Form from './Form.astro';
 import { company } from '../data/site';
 
 interface Props {
@@ -49,11 +49,11 @@ const uffici = 'Via Gennaro Paparo, 74, 80040 – Massa di Somma (NA)';
       </li>
     </ul>
 
-    {/* Il form CF7 95 dell'originale va qui: arriva al passo "Form" del piano.
-        Nel frattempo il rimando ai contatti è un percorso vero, non un finto form. */}
-    <p class="contatti__azione">
-      <Button href="/richiedi-preventivo/" variant="solid">Richiedi un preventivo</Button>
-    </p>
+    {/* Il form 95 dell'originale. Senza endpoint configurato mostra i recapiti,
+        che è quanto serve per essere contattati davvero. */}
+    <div class="contatti__form">
+      <Form form="contatti" titolo="Richiesta di informazioni" />
+    </div>
   </div>
 </section>
 
@@ -69,12 +69,9 @@ const uffici = 'Via Gennaro Paparo, 74, 80040 – Massa di Somma (NA)';
   }
   @media (min-width: 992px) {
     .contatti__inner {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       column-gap: var(--s-20);
       align-items: start;
-    }
-    .contatti__azione {
-      grid-column: 2;
     }
   }
 
@@ -118,7 +115,13 @@ const uffici = 'Via Gennaro Paparo, 74, 80040 – Massa di Somma (NA)';
     color: var(--c-brand);
   }
 
-  .contatti__azione {
-    margin: 0;
+  .contatti__form {
+    grid-column: 1 / -1;
+  }
+  @media (min-width: 992px) {
+    .contatti__form {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+    }
   }
 </style>

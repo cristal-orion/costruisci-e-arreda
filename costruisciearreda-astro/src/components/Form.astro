@@ -1,0 +1,352 @@
+---
+/**
+ * Form del sito, resi da `src/data/form.ts` (campi estratti dai Contact Form 7).
+ *
+ * **Niente form finti.** Se `PUBLIC_FORM_ENDPOINT` non è configurato, il form
+ * non viene reso e al suo posto compaiono i recapiti diretti: telefono, email e
+ * indirizzo. Un form che non invia è peggio di un numero di telefono.
+ *
+ * Con l'endpoint configurato l'invio va via `fetch`, e la pagina resta dov'è
+ * mostrando l'esito. Senza JavaScript il form fa una POST normale all'endpoint,
+ * quindi funziona comunque: `action` e `method` sono sul markup.
+ *
+ * Miglioramenti rispetto all'originale, oltre a quelli in `form.ts`:
+ *  - stato di invio annunciato in una regione `aria-live`;
+ *  - il bottone si disabilita durante l'invio, così non si invia due volte;
+ *  - errori mostrati accanto al form, non in un alert;
+ *  - nessun reCAPTCHA: era caricato su tutte le 56 pagine, anche dove non c'è
+ *    un form. Al suo posto un campo trappola invisibile ai lettori di schermo.
+ */
+import { forms } from '../data/form';
+import { company } from '../data/site';
+
+interface Props {
+  /** Chiave del form in `src/data/form.ts`. */
+  form: keyof typeof forms;
+  /** Titolo mostrato sopra il form. */
+  titolo?: string;
+  class?: string;
+}
+
+const { form: chiave, titolo, class: extraClass }: Props = Astro.props;
+const dati = forms[chiave];
+if (!dati) throw new Error(`Form non definito: "${chiave}"`);
+
+/** Endpoint di invio. Vuoto = il form non si rende. */
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+const id = `form-${chiave}`;
+---
+
+{
+  endpoint ? (
+    <form
+      class:list={['form', extraClass]}
+      id={id}
+      action={endpoint}
+      method="post"
+      enctype={dati.campi.some((c) => c.tipo === 'file') ? 'multipart/form-data' : undefined}
+      data-form
+      data-successo={dati.successo}
+      data-thankyou={dati.thankyou}
+      aria-labelledby={`${id}-titolo`}
+    >
+      <p class="visually-hidden" id={`${id}-titolo`}>{titolo ?? dati.nome}</p>
+      <input type="hidden" name="_form" value={chiave} />
+      {/* Campo trappola: i programmi automatici lo compilano, le persone no.
+          Sta fuori dal flusso e fuori dall'albero di accessibilità. */}
+      <div class="form__trappola" aria-hidden="true">
+        <label for={`${id}-url`}>Non compilare questo campo</label>
+        <input id={`${id}-url`} type="text" name="_url" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="form__griglia">
+        {dati.campi.map((c) => {
+          const campoId = `${id}-${c.name}`;
+
+          if (c.name === 'privacy') {
+            return (
+              <div class="form__campo form__campo--intero form__campo--consenso">
+                <input id={campoId} type="checkbox" name="privacy" value="si" required />
+                <label for={campoId}>
+                  Ho letto e accetto l’<a href="/privacy-policy/">informativa sulla privacy</a>
+                  <span aria-hidden="true"> *</span>
+                </label>
+              </div>
+            );
+          }
+
+          if (c.tipo === 'radio') {
+            return (
+              <fieldset class="form__campo form__campo--intero form__gruppo">
+                <legend class="form__etichetta">
+                  {c.label}
+                  {c.obbligatorio && <span aria-hidden="true"> *</span>}
+                </legend>
+                {(c.opzioni ?? []).map((o, i) => (
+                  <div class="form__opzione">
+                    <input
+                      id={`${campoId}-${i}`}
+                      type="radio"
+                      name={c.name}
+                      value={o}
+                      required={c.obbligatorio}
+                    />
+                    <label for={`${campoId}-${i}`}>{o}</label>
+                  </div>
+                ))}
+              </fieldset>
+            );
+          }
+
+          return (
+            <div class:list={['form__campo', { 'form__campo--intero': c.intero }]}>
+              <label class="form__etichetta" for={campoId}>
+                {c.label}
+                {c.obbligatorio && <span aria-hidden="true"> *</span>}
+              </label>
+              {c.tipo === 'textarea' ? (
+                <textarea
+                  id={campoId}
+                  name={c.name}
+                  rows="5"
+                  required={c.obbligatorio}
+                  aria-describedby={c.aiuto ? `${campoId}-aiuto` : undefined}
+                />
+              ) : (
+                <input
+                  id={campoId}
+                  type={c.tipo}
+                  name={c.name}
+                  required={c.obbligatorio}
+                  autocomplete={c.autocomplete}
+                  accept={c.accept}
+                  aria-describedby={c.aiuto ? `${campoId}-aiuto` : undefined}
+                />
+              )}
+              {c.aiuto && <p class="form__aiuto" id={`${campoId}-aiuto`}>{c.aiuto}</p>}
+            </div>
+          );
+        })}
+      </div>
+
+      <p class="form__nota">I campi con <span aria-hidden="true">*</span> sono obbligatori.</p>
+
+      <div class="form__invio">
+        <button class="btn btn--solid btn--md" type="submit" data-form-invio>{dati.invio}</button>
+        <p class="form__stato" role="status" aria-live="polite" data-form-stato></p>
+      </div>
+    </form>
+  ) : (
+    /* Endpoint non configurato: i recapiti veri al posto di un form che non
+       invia. Va rimosso appena il proprietario collega il servizio di invio. */
+    <div class:list={['form', 'form--recapiti', extraClass]}>
+      <p class="form__recapitiIntro">
+        {titolo ?? dati.nome}: scrivici o chiamaci, ti rispondiamo noi.
+      </p>
+      <ul class="form__recapiti">
+        <li>
+          <span class="form__recapitoEtichetta">Telefono</span>
+          <a href={`tel:${company.phone}`}>{company.phoneLabel}</a>
+        </li>
+        <li>
+          <span class="form__recapitoEtichetta">E-mail</span>
+          <a href={`mailto:${company.email}`}>{company.email}</a>
+        </li>
+      </ul>
+    </div>
+  )
+}
+
+<style>
+  .form {
+    max-width: 44rem;
+  }
+
+  .form__griglia {
+    display: grid;
+    gap: var(--s-5);
+  }
+  @media (min-width: 640px) {
+    .form__griglia {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .form__campo {
+    display: grid;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+  .form__campo--intero {
+    grid-column: 1 / -1;
+  }
+
+  .form__etichetta {
+    color: var(--c-ink);
+    font-size: var(--t-sm);
+    font-weight: var(--w-semibold);
+  }
+
+  .form input[type='text'],
+  .form input[type='email'],
+  .form input[type='tel'],
+  .form input[type='date'],
+  .form input[type='file'],
+  .form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    color: var(--c-ink);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: 0;
+  }
+  .form input:focus-visible,
+  .form textarea:focus-visible {
+    border-color: var(--c-brand);
+    outline: 2px solid var(--c-brand);
+    outline-offset: 1px;
+  }
+  /* Il campo non valido si segnala **dopo** un tentativo di invio, non mentre
+     si scrive: `:invalid` da solo colora di rosso un campo ancora vuoto. */
+  .form:has([data-form-invio]) input:user-invalid,
+  .form textarea:user-invalid {
+    border-color: var(--c-brand);
+  }
+
+  .form__gruppo {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .form__opzione,
+  .form__campo--consenso {
+    display: flex;
+    gap: var(--s-2);
+    align-items: baseline;
+  }
+  .form__opzione label,
+  .form__campo--consenso label {
+    font-size: var(--t-sm);
+    line-height: var(--t-sm-lh);
+  }
+  .form__campo--consenso {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+
+  .form__aiuto {
+    margin: 0;
+    color: var(--c-ink-soft);
+    font-size: var(--t-xs);
+  }
+
+  .form__nota {
+    margin: var(--s-4) 0 0;
+    color: var(--c-ink-soft);
+    font-size: var(--t-xs);
+  }
+
+  .form__invio {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    align-items: center;
+    margin-top: var(--s-6);
+  }
+  .form__stato {
+    margin: 0;
+    font-size: var(--t-sm);
+  }
+  .form__stato[data-esito='errore'] {
+    color: var(--c-brand);
+  }
+
+  /* fuori dal flusso e fuori dall'albero di accessibilità */
+  .form__trappola {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  /* --- variante senza endpoint: i recapiti ---------------------------------- */
+  .form--recapiti {
+    padding: var(--s-6);
+    background: var(--c-surface-alt);
+  }
+  .form__recapitiIntro {
+    margin: 0 0 var(--s-5);
+  }
+  .form__recapiti {
+    display: grid;
+    gap: var(--s-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .form__recapiti li {
+    display: grid;
+    gap: var(--s-1);
+    margin: 0;
+  }
+  .form__recapitoEtichetta {
+    color: var(--c-brand);
+    font-size: var(--t-xs);
+    font-weight: var(--w-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .form__recapiti a {
+    color: var(--c-ink);
+    text-decoration: none;
+  }
+  .form__recapiti a:hover {
+    color: var(--c-brand);
+  }
+</style>
+
+<script>
+  /**
+   * Invio via `fetch`, così la pagina resta dov'è e l'esito è annunciato.
+   * Senza questo script il form fa una POST normale: `action` e `method` sono
+   * nel markup, quindi funziona comunque.
+   */
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-form]')) {
+    const bottone = form.querySelector<HTMLButtonElement>('[data-form-invio]');
+    const stato = form.querySelector<HTMLElement>('[data-form-stato]');
+    if (!bottone || !stato) continue;
+
+    form.addEventListener('submit', async (e) => {
+      if (!form.checkValidity()) return; // ci pensa il browser
+      e.preventDefault();
+
+      bottone.disabled = true;
+      stato.removeAttribute('data-esito');
+      stato.textContent = 'Invio in corso…';
+
+      try {
+        const risposta = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!risposta.ok) throw new Error(String(risposta.status));
+
+        const thankyou = form.dataset.thankyou;
+        if (thankyou) {
+          location.assign(thankyou);
+          return;
+        }
+        stato.textContent = form.dataset.successo ?? 'Richiesta inviata.';
+        form.reset();
+      } catch {
+        stato.setAttribute('data-esito', 'errore');
+        stato.textContent =
+          'Non è stato possibile inviare la richiesta. Riprova, oppure scrivici a shop@costruisciearreda.com.';
+      } finally {
+        bottone.disabled = false;
+      }
+    });
+  }
+</script>

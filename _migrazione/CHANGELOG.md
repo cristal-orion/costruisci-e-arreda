@@ -871,3 +871,65 @@ linkati dall'esterno.
 
 ### Da fare nel passo successivo
 I 6 form, poi il deploy su Coolify e il cutover DNS.
+
+---
+
+## A07 — I sei form
+**2026-09-02 · fase A**
+
+Campi estratti dal markup dei Contact Form 7 dell'originale, uno per uno.
+Definizioni in `src/data/form.ts`, rendering in `src/components/Form.astro`.
+
+| form | id CF7 | dove | campi |
+|---|---|---|---|
+| contatti | `95` | blocco contatti, su ogni pagina | 7 |
+| newsletter | `467` | footer | 2 |
+| preventivo | `1548` | `/richiedi-preventivo/` | 10 |
+| candidatura | `775` | `/lavora-con-noi/` | 9, **con allegato** |
+| landing promo | `4473` | `/promo-casa/` | 7 |
+| landing ceramiche | `4395` | `/soluzione-ceramiche/` | 7 |
+
+### Niente form finti
+
+Senza `PUBLIC_FORM_ENDPOINT` configurato il form **non viene reso**: al suo
+posto compaiono telefono ed email. Un form che non invia è peggio di un numero
+di telefono, e in un sito statico senza backend è esattamente quello che
+sarebbe. Con l'endpoint, l'invio va via `fetch` e la pagina resta dov'è
+mostrando l'esito; senza JavaScript il form fa una POST normale, perché `action`
+e `method` sono nel markup.
+
+### Difetti dell'originale corretti
+
+- **Il campo curriculum accettava `audio/*,video/*,image/*`**: audio e video sì,
+  un PDF no. Su un form di candidatura. Corretto in `.pdf,.doc,.docx`.
+- **Nessuna `<label>`, solo `placeholder`**: il testo scompare appena si scrive e
+  gli screen reader non lo annunciano in modo affidabile. Ogni campo ha ora la
+  sua label visibile.
+- **Il link all'informativa privacy puntava a `pagina#`**, cioè a niente. Ora
+  porta a `/privacy-policy/`.
+- **`autocomplete` assente**: il browser non poteva compilare nome, cognome,
+  email, telefono, città, anno di nascita. Aggiunto su tutti i campi che lo hanno.
+- **reCAPTCHA v3 su tutte le 56 pagine**, anche dove non c'è un form: 2 script di
+  terze parti per pagina. Sostituito da un campo trappola, fuori dal flusso e
+  fuori dall'albero di accessibilità.
+- **Errore di battitura corretto**: l'opzione del preventivo era
+  "Risrtutturazione". Sul sito live è ancora così.
+- Lo stato dell'invio è annunciato in una regione `aria-live`, il bottone si
+  disabilita durante l'invio (niente doppio invio), e i campi non validi si
+  segnalano con `:user-invalid` — cioè **dopo** un tentativo, non mentre si
+  scrive: `:invalid` da solo colora di rosso un campo ancora vuoto.
+
+### Verifica
+
+Provato nel browser con endpoint finto e richiesta intercettata: form compilato,
+allegato PDF accettato, invio riuscito, messaggio "Grazie, abbiamo ricevuto la
+tua candidatura", bottone riabilitato, zero errori in console. Senza endpoint,
+le tre pagine con form mostrano i recapiti.
+
+`check-build.js`: **54 rotte × 3 viewport, nessun problema.**
+
+### Cosa resta al proprietario
+Collegare il servizio di invio impostando `PUBLIC_FORM_ENDPOINT`. Il form
+`candidatura` porta un allegato: EmailJS non basta, serve un endpoint che accetti
+file. I campi arrivano come `multipart/form-data` con in più `_form` (quale form)
+e `_url` (campo trappola: se compilato, è un bot).

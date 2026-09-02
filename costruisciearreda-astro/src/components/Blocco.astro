@@ -20,7 +20,9 @@ import Carousel from './Carousel.astro';
 import Riquadri from './Riquadri.astro';
 import ServiziNumerati from './ServiziNumerati.astro';
 import Card from './Card.astro';
+import Form from './Form.astro';
 import { estratto, immagine, rotta } from '../lib/immagini';
+import { formPerIdCf7, forms } from '../data/form';
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
@@ -241,6 +243,20 @@ const conBr = (testo: string) => escapeHtml(testo).split('\n').join('<br /> ');
 
 {
   b.tipo === 'separatore' && <hr class="blocco__separatore" />
+}
+
+{
+  b.tipo === 'form' &&
+    (() => {
+      /* I blocchi form portano gli id CF7 dell'originale: il primo che
+         corrisponde a un form definito viene reso. Sulle pagine dove
+         l'originale ne aveva due (quello della pagina più la newsletter del
+         footer), la newsletter è già nel footer e va saltata. */
+      const chiavi = b.id.map((x) => formPerIdCf7[x]).filter((k): k is string => !!k && k !== 'newsletter');
+      const chiave = chiavi[0];
+      if (!chiave) return null;
+      return <Form form={chiave as keyof typeof forms} />;
+    })()
 }
 
 {

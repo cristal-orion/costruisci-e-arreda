@@ -48,6 +48,18 @@ src/
 └── styles/         fonts · tokens · base · global (unico punto di ingresso)
 ```
 
+## Form
+
+I sei form del sito sono definiti in `src/data/form.ts` (campi estratti dai
+Contact Form 7 dell'originale) e resi da `src/components/Form.astro`.
+
+**Senza `PUBLIC_FORM_ENDPOINT` configurato i form non vengono resi**: al loro
+posto compaiono i recapiti diretti. È voluto — un form che non invia è peggio di
+un numero di telefono. Vedi `.env.example`.
+
+Il form `candidatura` (`/lavora-con-noi/`) porta un **allegato**: serve un
+endpoint che accetti file, EmailJS non basta.
+
 ## Regole non negoziabili
 
 - `description` è **obbligatoria** nel `BaseLayout`: nell'originale mancava su 49 pagine.

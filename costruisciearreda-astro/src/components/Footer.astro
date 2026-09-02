@@ -15,6 +15,7 @@
  *    "Form" del piano, insieme agli altri cinque.
  */
 import logo from '../assets/logo.svg';
+import Form from './Form.astro';
 import { colonneFooter, legalFooter } from '../data/menu';
 import { company, sediPerTipo, site, social } from '../data/site';
 
@@ -101,8 +102,7 @@ const iconeSocial: Record<string, string> = {
           Registrati alla nostra Newsletter per restare sempre aggiornato su tutte le
           novità di Costruisci e Arreda.
         </p>
-        {/* Il form vero (CF7 467 nell'originale) arriva al passo "Form" del piano,
-            insieme agli altri cinque: meglio niente form che un form che finge. */}
+        <Form form="newsletter" titolo="Iscrizione alla newsletter" class="footer__form" />
       </div>
     </div>
   </div>

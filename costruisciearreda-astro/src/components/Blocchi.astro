@@ -29,10 +29,9 @@ interface Props {
 
 const { blocchi, livelloBase = 2, escludi = [], class: extraClass }: Props = Astro.props;
 
-/* I form arrivano al passo "Form" del piano; `cornice` e `sconosciuto` sono
-   elementi di contorno del tema (ricerca, icone social, info del post) che nel
-   rebuild vivono nel layout, non nel contenuto. */
-const SEMPRE_ESCLUSI: Dato['tipo'][] = ['form', 'cornice', 'sconosciuto'];
+/* `cornice` e `sconosciuto` sono elementi di contorno del tema (ricerca, icone
+   social, info del post) che nel rebuild vivono nel layout, non nel contenuto. */
+const SEMPRE_ESCLUSI: Dato['tipo'][] = ['cornice', 'sconosciuto'];
 const daRendere = blocchi.filter(
   (b) => !escludi.includes(b.tipo) && !SEMPRE_ESCLUSI.includes(b.tipo),
 );
@@ -68,7 +67,8 @@ const disposizione = (s: Sezione): Modo => {
     conta('carousel') ||
     conta('servizinumerati') ||
     conta('elencoStore') ||
-    conta('ultimeNews')
+    conta('ultimeNews') ||
+    conta('form')
   ) {
     return 'piena';
   }
