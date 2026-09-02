@@ -89,7 +89,7 @@ const heroImg = immagine(voci.find((v) => v.hero?.imagePath)?.hero?.imagePath);
 
     {
       schede.length > 0 ? (
-        <div class="grid grid--3 archivio__griglia">
+        <div class="grid grid--3-fisse archivio__griglia">
           {schede.map((s) => (
             <Card {...s} kicker={etichetta} headingLevel="h2" />
           ))}

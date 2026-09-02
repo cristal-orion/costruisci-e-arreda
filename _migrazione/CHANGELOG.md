@@ -584,6 +584,27 @@ newsletter, che arriva al passo "Form".
   dell'originale e contiene i recapiti veri.
 - Astro 7 deprecata `z` da `astro:content`: zod si importa diretto.
 
+### Cancello di qualità: `check-build.js`
+
+Nuovo script che passa tutte le rotte del build a tre viewport e verifica, nel
+browser, le cose che non devono mai succedere: errori JavaScript, scorrimento
+orizzontale della pagina, immagini che non si caricano, `<h1>` diverso da uno,
+`<title>`/meta description mancanti, canonical assente o relativo, `alt` non
+dichiarato, link interni verso rotte inesistenti. Esce con codice 1 se trova
+qualcosa, quindi si può mettere in CI.
+
+Esito: **34 rotte × 3 viewport, nessun problema.** L'unica segnalazione sono i
+14 link interni verso le rotte non ancora costruite (le one-off e gli archivi
+`type_stores`), che è esattamente il segnale utile in questa fase.
+
+Un falso positivo trovato e corretto nello script stesso: l'`<img>` dentro il
+`<dialog>` chiuso del lightbox non ha `src` finché non si clicca una miniatura,
+e veniva contata come immagine non caricata.
+
+Griglie degli archivi: 3 colonne da 1025px, 2 da 769px, 1 sotto — i valori
+`columns`/`columns_tablet`/`columns_mobile` misurati sui `loop-grid`
+dell'originale. Con `auto-fit` a 1440px ne comparivano quattro.
+
 ### Da fare nel passo successivo
 Le **11 pagine one-off** (homepage per prima), gli archivi `type_stores`, i 6
 form, i redirect 301, poi il deploy.

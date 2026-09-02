@@ -97,8 +97,10 @@
 >   (gli script di misura si aspettano la porta **8099**)
 > - Playwright installato in `_migrazione/` (chromium-headless-shell 1234 in cache).
 >   **Gli script di misura vanno eseguiti da `_migrazione/`**: `playwright` sta lì.
-> - Script pronti: `fingerprint.py`, `screenshot.js`, `verify-hero.js`, `audit-hero-edges.js`,
->   `harvest-tokens.js`, `harvest-layout.js`
+> - Script pronti: `fingerprint.py` (ora anche in modo `astro`), `screenshot.js`,
+>   `verify-hero.js`, `audit-hero-edges.js`, `harvest-tokens.js`, `harvest-layout.js`,
+>   `extract-content.js` (rigenera i contenuti e il modulo immagini),
+>   `check-build.js` (cancello di qualità su tutte le rotte del build)
 > - Git inizializzato, branch `main`.
 
 

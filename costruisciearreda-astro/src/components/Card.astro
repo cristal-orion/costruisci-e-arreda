@@ -105,6 +105,7 @@ const dataTesto = data
 
   .card__corpo {
     display: grid;
+    grid-template-rows: auto auto 1fr;
     align-content: start;
     gap: var(--s-3);
   }
@@ -139,6 +140,9 @@ const dataTesto = data
   }
 
   .card__azione {
+    /* in fondo alla card: i titoli hanno lunghezze diverse e senza questo
+       l'azione si muove riga per riga */
+    align-self: end;
     margin: var(--s-2) 0 0;
     color: var(--c-ink-soft);
     font-size: var(--t-sm);

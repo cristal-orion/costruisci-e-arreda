@@ -201,6 +201,22 @@ table {
 .grid--3 {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
 }
+/* Tre colonne esatte da 1025px, due da 769px, una sotto: sono i valori
+   `columns`/`columns_tablet`/`columns_mobile` misurati sui `loop-grid`
+   dell'originale. `auto-fit` a 1440px ne metterebbe quattro. */
+.grid--3-fisse {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 769px) {
+  .grid--3-fisse {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1025px) {
+  .grid--3-fisse {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
 .grid--4 {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
 }
