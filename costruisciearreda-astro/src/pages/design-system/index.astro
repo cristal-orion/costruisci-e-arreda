@@ -1,0 +1,283 @@
+---
+/**
+ * Pagina di controllo del design system. Non è una pagina del sito: serve a vedere
+ * in un colpo d'occhio i token misurati e a confrontarli con il mirror.
+ * `noindex` perché non deve finire in sitemap né nei motori.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+
+const colori = [
+  ['--c-brand', '#C20E1A', 'Primario del brand. Usato sul testo di accento e su fondi pieni, mai sui bottoni.'],
+  ['--c-brand-hover', '#9E0B15', 'Derivato: il mirror non espone uno stato hover misurabile.'],
+  ['--c-ink', '#333333', 'Testo dominante: 32.213 caratteri sul campione, contro 3.301 di #7A7A7A.'],
+  ['--c-ink-soft', '#7A7A7A', 'Testo secondario: didascalie, testi di servizio.'],
+  ['--c-surface', '#FFFFFF', 'Fondo principale.'],
+  ['--c-surface-alt', '#F5F5F5', 'Sezioni alternate e footer.'],
+  ['--c-surface-dark', '#333333', 'Fondo scuro e submit dei form.'],
+  ['--c-border', '#A6A6A6', 'Bordo tenue (.btn.greyBorder).'],
+  ['--c-border-strong', '#333333', 'Bordo marcato.'],
+];
+
+const scala = [
+  ['--t-xs', '12px', 'var(--t-xs)', 'var(--t-xs-lh)', 'Didascalie, footer minore'],
+  ['--t-sm', '14px', 'var(--t-sm)', 'var(--t-sm-lh)', 'Testo di servizio, footer, form — la misura piu usata'],
+  ['--t-md', '15px', 'var(--t-md)', 'var(--t-md-lh)', 'Estratti delle card news'],
+  ['--t-base', '16px', 'var(--t-base)', 'var(--t-base-lh)', 'Paragrafi di contenuto'],
+  ['--t-lg', '18px', 'var(--t-lg)', 'var(--t-lg-lh)', 'Paragrafi in evidenza'],
+  ['--t-xl', '22px', 'var(--t-xl)', 'var(--t-xl-lh)', 'Titoli di card'],
+  ['--t-2xl', '25px', 'var(--t-2xl)', 'var(--t-2xl-lh)', 'Titoli di blocco'],
+  ['--t-3xl', '30px', 'var(--t-3xl)', 'var(--t-3xl-lh)', 'Titoli di sezione'],
+];
+
+const display = [
+  ['--t-display-sm', '30 → 50px', 'var(--w-light)', 'H2 di sezione, maiuscolo'],
+  ['--t-display', '30 → 60px', 'var(--w-extralight)', 'Titolo ampio, maiuscolo'],
+  ['--t-display-lg', '40 → 70px', 'var(--w-regular)', 'Titolo maggiore, maiuscolo'],
+  ['--hero-title-size', '30 → 80px', 'var(--w-light)', 'Titolo dentro il riquadro hero'],
+];
+
+const spazi = [
+  ['--s-1', '4px'], ['--s-2', '8px'], ['--s-3', '12px'], ['--s-4', '16px'],
+  ['--s-5', '20px'], ['--s-6', '24px'], ['--s-8', '32px'], ['--s-10', '40px'],
+  ['--s-12', '48px'], ['--s-15', '60px'], ['--s-18', '72px'], ['--s-20', '80px'],
+];
+
+const pesi = [
+  ['--w-extralight', 200], ['--w-light', 300], ['--w-regular', 400],
+  ['--w-medium', 500], ['--w-semibold', 600], ['--w-bold', 700],
+];
+---
+
+<BaseLayout
+  title="Design system"
+  description="Token di design misurati sul sito originale: colore, tipografia, spaziatura, bottoni e geometrie. Pagina di controllo interna."
+  noindex
+>
+  <div class="container ds">
+    <header class="ds__head">
+      <p class="ds__kicker">Ricostruzione in Astro · fase A</p>
+      <h1 class="ds__title">Design system</h1>
+      <p class="ds__lede">
+        Ogni valore di questa pagina è <strong>misurato</strong> sul sito originale
+        con <code>getComputedStyle</code> su 16 pagine e 3 viewport, non dedotto
+        leggendo il CSS di Elementor. Le fonti sono
+        <code>_migrazione/baseline/tokens-mirror.json</code> e
+        <code>_migrazione/baseline/layout-mirror.json</code>, rigenerabili
+        con <code>harvest-tokens.js</code> e <code>harvest-layout.js</code>.
+      </p>
+    </header>
+
+    <!-- ---------------------------------------------------------------- colore -->
+    <section class="ds__block">
+      <h2 class="ds__h2">Colore</h2>
+      <ul class="ds__swatches">
+        {colori.map(([token, hex, nota]) => (
+          <li class="sw">
+            <span class="sw__chip" style={`background:${hex}`}></span>
+            <code class="sw__token">{token}</code>
+            <span class="sw__hex">{hex}</span>
+            <span class="sw__note">{nota}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- ----------------------------------------------------------- tipografia -->
+    <section class="ds__block">
+      <h2 class="ds__h2">Tipografia</h2>
+      <p class="ds__note">
+        Un solo font: <strong>Montserrat variable</strong> (asse 100–900, latino, 40 KB).
+        Il sito originale caricava 90 <code>@font-face</code> statici di Montserrat più Roboto
+        e Roboto Slab. Roboto Slab non veniva mai reso; Roboto sì, ma solo perché
+        <code>.elementor-widget-text-editor</code> lo forza su 34 pagine — un default di
+        Elementor che trapela. Qui è unificato su Montserrat.
+      </p>
+
+      <div class="scroll-x">
+      <table class="ds__table">
+        <thead><tr><th>Token</th><th>Misura</th><th>Interlinea</th><th>Uso</th><th>Resa</th></tr></thead>
+        <tbody>
+          {scala.map(([token, px, size, lh, uso]) => (
+            <tr>
+              <td><code>{token}</code></td>
+              <td>{px}</td>
+              <td>{lh}</td>
+              <td>{uso}</td>
+              <td style={`font-size:${size};line-height:${lh}`}>Edilizia, design e ferramenta</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      </div>
+
+      <h3 class="ds__h3">Display (fluidi)</h3>
+      {display.map(([token, range, peso, uso]) => (
+        <div class="ds__display">
+          <p class="ds__displayMeta"><code>{token}</code> · {range} · peso {peso.replace('var(--w-', '').replace(')', '')} · {uso}</p>
+          <p class="ds__displaySample" style={`font-size:var(${token});font-weight:${peso}`}>
+            Costruisci e Arreda
+          </p>
+        </div>
+      ))}
+
+      <h3 class="ds__h3">Pesi</h3>
+      <ul class="ds__weights">
+        {pesi.map(([token, n]) => (
+          <li style={`font-weight:${n}`}>{n} · <code>{token}</code> · Edilizia, design e ferramenta</li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- --------------------------------------------------------------- bottoni -->
+    <section class="ds__block">
+      <h2 class="ds__h2">Bottoni</h2>
+      <p class="ds__note">
+        Sei varianti nel sito originale, ridotte a cinque. Nessuna usava il rosso del brand:
+        l'azione primaria è il grigio scuro pieno dei submit dei form. Raggio zero.
+      </p>
+      <div class="ds__btnRow">
+        <Button variant="solid">Invia richiesta</Button>
+        <Button variant="outline-dark">Scopri di più</Button>
+        <Button variant="outline-muted">Scopri di più</Button>
+        <Button variant="text">Scopri di più</Button>
+      </div>
+      <div class="ds__btnRow ds__btnRow--dark">
+        <Button variant="outline-light">Scopri di più</Button>
+      </div>
+      <div class="ds__btnRow">
+        <Button variant="outline-dark" size="sm">Scopri il servizio</Button>
+        <Button variant="solid" size="sm">Invia</Button>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- spaziatura -->
+    <section class="ds__block">
+      <h2 class="ds__h2">Spaziatura</h2>
+      <p class="ds__note">
+        Un solo sistema, base 4px. Il sito originale mescolava 10/12/20/42/50/72/80/100/150px
+        su quattro contesti annidati: è la causa del bug dell'hero corretto dalle patch 001/002.
+      </p>
+      <ul class="ds__spaces">
+        {spazi.map(([token, px]) => (
+          <li><span class="ds__bar" style={`width:var(${token})`}></span><code>{token}</code> <span>{px}</span></li>
+        ))}
+      </ul>
+      <p class="ds__note">
+        Ritmo verticale delle sezioni: <code>--section-y</code> 60 → 100px,
+        e <code>--section-y-lg</code> 80 → 150px (misurati 100px e 150px a 1440px).
+      </p>
+    </section>
+
+    <!-- ---------------------------------------------------------- geometrie -->
+    <section class="ds__block">
+      <h2 class="ds__h2">Geometrie misurate</h2>
+      <div class="scroll-x">
+      <table class="ds__table">
+        <tbody>
+          <tr><td><code>--header-h</code></td><td>101px desktop · 69px mobile</td><td>Costante su tutte le 67 pagine</td></tr>
+          <tr><td><code>--hero-h</code></td><td>750px desktop e tablet · 400px mobile</td><td>Riquadro immagine dell'hero</td></tr>
+          <tr><td><code>--hero-inset</code></td><td>42px da 769px in su · 20px sotto</td><td>Rientro dentro il contenitore: sommato a container e gutter dà i 114px e i 32px misurati</td></tr>
+          <tr><td><code>--container</code></td><td>1320px + 12px di gutter</td><td>Contenitore del tema</td></tr>
+          <tr><td><code>--container-narrow</code></td><td>1140px</td><td>Contenitore di Elementor</td></tr>
+          <tr><td><code>--radius-sm</code></td><td>3px</td><td>Unico raggio ricorrente</td></tr>
+          <tr><td><code>--radius-notch</code></td><td>0 30px 0 0</td><td>Motivo distintivo su card e immagini</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="ds__notchRow">
+        <div class="ds__notch">radius-notch</div>
+        <div class="ds__notch ds__notch--alt">su fondo alternato</div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .ds { padding-block: var(--s-12) var(--s-20); }
+  .ds__head { max-width: 68ch; margin-bottom: var(--s-20); }
+  .ds__kicker {
+    margin-bottom: var(--s-2);
+    color: var(--c-brand);
+    font-size: var(--t-sm);
+    font-weight: var(--w-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .ds__title { margin-bottom: var(--s-5); font-size: var(--t-display-sm); }
+  .ds__lede { font-size: var(--t-lg); line-height: var(--t-lg-lh); color: var(--c-ink-soft); }
+
+  .ds__block { padding-top: var(--s-12); border-top: 1px solid var(--c-border); }
+  .ds__block + .ds__block { margin-top: var(--s-20); }
+  .ds__h2 {
+    margin-bottom: var(--s-6);
+    font-size: var(--t-3xl);
+    font-weight: var(--w-bold);
+    text-transform: none;
+  }
+  .ds__h3 { margin: var(--s-12) 0 var(--s-5); font-size: var(--t-xl); }
+  .ds__note { max-width: 78ch; margin-bottom: var(--s-8); color: var(--c-ink-soft); }
+
+  code { font-size: 0.9em; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* swatch */
+  .ds__swatches { display: grid; gap: var(--s-4); margin: 0; padding: 0; list-style: none; }
+  .sw {
+    display: grid;
+    grid-template-columns: 3.5rem 12rem 5rem 1fr;
+    gap: var(--s-4);
+    align-items: center;
+    margin: 0;
+    font-size: var(--t-sm);
+  }
+  .sw__chip { height: 2.5rem; border: 1px solid var(--c-border); }
+  .sw__hex { color: var(--c-ink-soft); }
+  .sw__note { color: var(--c-ink-soft); }
+  @media (max-width: 768px) {
+    .sw { grid-template-columns: 2.5rem 1fr; }
+    .sw__note { grid-column: 1 / -1; }
+  }
+
+  /* tabelle */
+  .ds__table { font-size: var(--t-sm); }
+  .ds__table th,
+  .ds__table td {
+    padding: var(--s-3) var(--s-4) var(--s-3) 0;
+    text-align: left;
+    vertical-align: baseline;
+    border-bottom: 1px solid var(--c-border);
+  }
+  .ds__table th { font-weight: var(--w-semibold); text-transform: uppercase; font-size: var(--t-xs); letter-spacing: 0.06em; }
+
+  /* display */
+  .ds__display { margin-bottom: var(--s-8); }
+  .ds__displayMeta { margin-bottom: var(--s-2); font-size: var(--t-xs); color: var(--c-ink-soft); }
+  .ds__displaySample { margin: 0; text-transform: uppercase; line-height: 1; }
+
+  .ds__weights { margin: 0; padding: 0; list-style: none; }
+  .ds__weights li { margin: 0 0 var(--s-3); font-size: var(--t-lg); }
+
+  /* bottoni */
+  .ds__btnRow { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: center; margin-bottom: var(--s-5); }
+  .ds__btnRow--dark { padding: var(--s-6); background: var(--c-surface-dark); }
+
+  /* spazi */
+  .ds__spaces { margin: 0 0 var(--s-8); padding: 0; list-style: none; font-size: var(--t-sm); }
+  .ds__spaces li { display: flex; gap: var(--s-4); align-items: center; margin: 0 0 var(--s-2); }
+  .ds__spaces span:last-child { color: var(--c-ink-soft); }
+  .ds__bar { height: 1rem; background: var(--c-brand); flex: none; }
+
+  /* notch */
+  .ds__notchRow { display: flex; flex-wrap: wrap; gap: var(--s-6); margin-top: var(--s-8); }
+  .ds__notch {
+    display: grid;
+    place-items: center;
+    width: 14rem;
+    height: 8rem;
+    color: var(--c-white);
+    font-size: var(--t-sm);
+    background: var(--c-surface-dark);
+    border-radius: var(--radius-notch);
+  }
+  .ds__notch--alt { color: var(--c-ink); background: var(--c-surface-alt); }
+</style>

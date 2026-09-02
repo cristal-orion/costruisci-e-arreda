@@ -1,0 +1,71 @@
+---
+/**
+ * Guscio HTML di ogni pagina.
+ *
+ * Risolve alla radice quattro problemi del sito originale:
+ *  - `description` è obbligatoria: nel mirror mancava su 49 pagine su 56;
+ *  - `<h1>` unico: il layout non ne stampa nessuno, lo mette la pagina (una volta);
+ *  - canonical e og:url assoluti sul dominio nuovo, non i relativi rotti del mirror;
+ *  - viewport senza `user-scalable=no` / `maximum-scale` (WCAG 1.4.4).
+ */
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props {
+  /** Titolo della pagina, senza il suffisso del nome sito. */
+  title: string;
+  /** Obbligatoria: nessuna pagina può uscire senza meta description. */
+  description: string;
+  /** Immagine per Open Graph, percorso assoluto dalla root del sito. */
+  image?: string;
+  /** Da mettere a true sulle thank-you page e sugli archivi thin. */
+  noindex?: boolean;
+  /** Classe extra sul body, per le pagine che ne hanno bisogno. */
+  bodyClass?: string;
+}
+
+const { title, description, image, noindex = false, bodyClass } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const fullTitle = `${title} - ${site.name}`;
+const ogImage = image ? new URL(image, Astro.site).href : undefined;
+---
+
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <slot name="head" />
+  </head>
+
+  <body class={bodyClass}>
+    <a class="skip-link" href="#contenuto">Salta al contenuto</a>
+
+    <slot name="header" />
+
+    <main id="contenuto">
+      <slot />
+    </main>
+
+    <slot name="footer" />
+  </body>
+</html>

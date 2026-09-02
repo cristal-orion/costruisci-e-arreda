@@ -1,0 +1,234 @@
+/* =============================================================================
+   Base — reset minimo + default degli elementi, costruiti sui token misurati.
+   Nessuna dipendenza da Bootstrap: del vecchio sito si usavano solo le utility
+   di griglia, riscritte qui con CSS grid/flex nativo.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  line-height: var(--t-base-lh);
+  font-weight: var(--w-regular);
+  color: var(--c-ink);
+  background: var(--c-surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- Titoli: nessun margine implicito, la spaziatura la decide il blocco ---- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: var(--w-bold);
+  line-height: 1.25;
+  color: var(--c-ink);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--t-display-lg);
+  font-weight: var(--w-light);
+  text-transform: uppercase;
+}
+h2 {
+  font-size: var(--t-display-sm);
+  font-weight: var(--w-light);
+  text-transform: uppercase;
+}
+h3 {
+  font-size: var(--t-3xl);
+  line-height: var(--t-3xl-lh);
+}
+h4 {
+  font-size: var(--t-xl);
+  line-height: var(--t-xl-lh);
+}
+h5 {
+  font-size: var(--t-lg);
+  line-height: var(--t-lg-lh);
+}
+h6 {
+  font-size: var(--t-base);
+  text-transform: uppercase;
+}
+
+p {
+  margin: 0 0 var(--s-5);
+  text-wrap: pretty;
+}
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul,
+ol {
+  margin: 0 0 var(--s-5);
+  padding-inline-start: var(--s-6);
+}
+li + li {
+  margin-top: var(--s-2);
+}
+
+a {
+  color: var(--c-brand);
+  text-decoration: none;
+  transition: color var(--dur) var(--ease);
+}
+a:hover {
+  color: var(--c-brand-hover);
+}
+
+strong,
+b {
+  font-weight: var(--w-bold);
+}
+
+small {
+  font-size: var(--t-xs);
+  line-height: var(--t-xs-lh);
+}
+
+img,
+picture,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+hr {
+  height: 1px;
+  margin: var(--s-8) 0;
+  border: 0;
+  background: var(--c-border);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* --- Focus visibile: il sito originale non ne aveva ------------------------- */
+:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+/* --- Primitive di layout ---------------------------------------------------
+   Un solo sistema: `.container` centra e limita, `.section` dà il ritmo
+   verticale. Niente margini negativi, niente `left` in percentuale.           */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+.container--text {
+  max-width: var(--container-text);
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+.section--lg {
+  padding-block: var(--section-y-lg);
+}
+.section--alt {
+  background: var(--c-surface-alt);
+}
+.section--dark {
+  color: var(--c-white);
+  background: var(--c-surface-dark);
+}
+.section--dark :where(h1, h2, h3, h4, h5, h6) {
+  color: inherit;
+}
+
+.stack > * + * {
+  margin-top: var(--s-5);
+}
+
+/* Contenuto piu largo del viewport (tabelle, blocchi preformattati): scorre
+   dentro il proprio contenitore, mai facendo scorrere la pagina in orizzontale. */
+.scroll-x {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.grid {
+  display: grid;
+  gap: var(--s-6);
+}
+.grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+.grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+.grid--4 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+
+/* --- Solo per screen reader ------------------------------------------------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: var(--s-3);
+  z-index: var(--z-modal);
+  padding: var(--s-2) var(--s-4);
+  color: var(--c-white);
+  background: var(--c-brand);
+  transform: translateY(-150%);
+  transition: transform var(--dur) var(--ease);
+}
+.skip-link:focus {
+  color: var(--c-white);
+  transform: translateY(0);
+}

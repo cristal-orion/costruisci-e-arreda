@@ -115,3 +115,128 @@ Audit su tutte le **49 pagine con hero**, a 390 / 900 / 1440px (`baseline/audit-
 script `audit-hero-edges.js`): **0 pagine con bordo < 16px o ritaglio**.
 Minimi osservati: sinistra 32px (mobile) / 60px (tablet e desktop), fondo 100px su tutti.
 Nessuna patch 003 necessaria.
+
+---
+
+# Ricostruzione in Astro
+
+Da qui in poi il changelog registra il **rebuild**, non più le patch al mirror.
+Il mirror resta congelato con le patch 001 e 002; nessuna patch nuova.
+
+## A00 — Scaffold + design system misurato
+**2026-09-02 · fase A · progetto `costruisciearreda-astro/`**
+
+Astro 7.2.10, Node 22.22. `trailingSlash: 'always'` e `build.format: 'directory'`
+perché tutti i 56 URL indicizzati dell'originale finiscono con `/`: riprodurli
+identici evita 301 inutili al cutover.
+
+### Nuovi strumenti di misura (rieseguibili sul build Astro)
+
+| Script | Cosa produce |
+|---|---|
+| `_migrazione/harvest-tokens.js` | `baseline/tokens-mirror.json` — tipografia, colori, raggi, ombre, padding di sezione, aggregati **per frequenza pesata** (caratteri di testo per la tipografia, px² di area per i fondi) su 16 pagine × 3 viewport |
+| `_migrazione/harvest-layout.js` | `baseline/layout-mirror.json` — geometrie per template: header, riquadro hero e posizione del titolo dentro di esso, contenitori, footer, ritmo verticale, griglie ripetute |
+
+Entrambi bloccano i tracker e leggono `getComputedStyle`/`getBoundingClientRect`:
+nessun valore del design system è dedotto leggendo il CSS di Elementor.
+
+### Token misurati che contano
+
+- **Contenitore:** 1320px + 12px di gutter (tema/Bootstrap), 1140px (Elementor).
+- **Header:** 101px desktop, 69px mobile, `position: static` (non sticky), fondo trasparente.
+- **Hero:** riquadro 750px desktop **e tablet**, 400px mobile. Titolo
+  `clamp(30px, 5.4vw, 80px)` peso 300 maiuscolo bianco. Rientro del testo
+  misurato: `left:42px` desktop, `left:20px` mobile → 114px e 32px dal bordo.
+- **Ritmo di sezione:** 100px sopra e sotto; 150px nelle sezioni ampie.
+- **Titoli display:** 50 / 60 / 70px. **Non scalano fra 1440px e 900px**: restano
+  fissi e crollano al valore mobile (30 / 30 / 40px) solo sotto i 768px. I `clamp`
+  sono tarati perché il massimo sia già raggiunto a 900px — la fascia desktop+tablet
+  coincide col mirror, sotto degrada morbido invece di saltare.
+- **Colore del testo:** `#333` è il dominante (32.213 caratteri sul campione),
+  non `#7A7A7A` (3.301). Il rosso `#C20E1A` è un accento tipografico.
+- **Raggi:** solo `3px` e il motivo `0 30px 0 0`, distintivo del sito.
+
+### Deviazioni dichiarate (differenze volute rispetto al mirror)
+
+1. **Un solo font.** L'originale caricava Montserrat **due volte** (90 `@font-face`
+   statici self-hosted + `fonts.googleapis.com`), più Roboto e Roboto Slab.
+   Qui: Montserrat variable, solo i sottoinsiemi latino e latino esteso, 2 file.
+   → **Correzione all'analisi precedente:** era annotato che Roboto fosse un default
+   Elementor "mai usato". È **falso**: `.elementor-widget-text-editor` imposta
+   `font-family: var(--e-global-typography-text-font-family)` = Roboto, e quel widget
+   è presente su **34 pagine**. Il corpo del testo di quelle pagine è reso in Roboto.
+   Unificare su Montserrat è quindi una modifica **visibile**, non un'ottimizzazione neutra.
+   Roboto Slab invece non è mai reso davvero.
+2. **Contenitore fluido invece che a scatti.** Bootstrap dava larghezze a gradini
+   (1320px a 1440, 720px a 900). Qui `max-width: 1320px` con gutter costante.
+   Conseguenza misurabile: a 900px il contenuto è largo 876px invece di 720px, e il
+   titolo hero sta a 54px dal bordo invece di 114px. Ai due estremi (1440 e 390)
+   il risultato è **identico al mirror**.
+3. **Bottoni consolidati** da 6 varianti a 5 (`solid`, `outline-dark`, `outline-light`,
+   `outline-muted`, `text`) × 2 dimensioni. Rilevato misurando: **il rosso del brand
+   non è mai usato su un bottone**; l'azione primaria è il grigio scuro pieno dei
+   submit dei form (`#333`, 16px/400, padding 10px 30px, raggio 0).
+4. **`#CA0411` normalizzato a `#C20E1A`.** Il secondo rosso compare solo su
+   `/dalla-progettazione-alla-realizzazione/` (colore inline di Elementor): un incidente.
+5. **`user-scalable=no` e `maximum-scale=1.0` rimossi** dal viewport (WCAG 1.4.4).
+6. **`description` obbligatoria** nel `BaseLayout`: nessuna pagina può uscire senza
+   meta description. Nell'originale mancava su 49 pagine su 56.
+7. **Focus visibile** su tutti gli elementi interattivi: l'originale non ne aveva.
+
+### Altri difetti dell'originale trovati misurando
+
+- **Due `<title>` identici su ogni pagina**: uno dal tema, uno da Yoast. HTML non valido.
+- **`<html class="" lang="it-IT" class="no-js">`**: attributo `class` duplicato.
+- Testo nero puro `#000` mescolato a `#333` senza ragione (8.507 caratteri).
+
+### Peso, per confronto
+
+| | Originale | Astro (scaffold) |
+|---|---|---|
+| CSS | 685 KB (22 bundle distinti) | **10,3 KB** (3,0 KB gzip), un solo file |
+| Font | 90 `@font-face` × 2 caricamenti + Roboto + Roboto Slab | 2 file woff2 (40 + 72 KB), `unicode-range` |
+| JS | 790 KB su 26 file | **0 KB** |
+
+### Bug trovati nel mio stesso lavoro, misurando
+
+Vale come promemoria del perché la verifica va fatta nel browser e non a occhio:
+1. I primi `clamp` dei titoli display davano 31,5px a 900px invece di 50px —
+   il mirror li tiene fissi fino a 768px. Coefficienti `vw` ricalcolati.
+2. La pagina `/design-system/` faceva scorrere il documento in orizzontale su
+   mobile (scrollWidth 520px su viewport 390px): le tabelle larghe ora stanno in
+   un contenitore `.scroll-x`.
+3. La variante `outline-light` su fondo scuro era testo bianco su grigio chiaro:
+   sul caso `<button>` vinceva il fondo nativo `buttonface` del browser. Aggiunti
+   `appearance: none` e `background: transparent` sulla base `.btn`.
+
+### Struttura creata
+
+```
+costruisciearreda-astro/
+├── astro.config.mjs          site + trailingSlash + sitemap filtrata sui noindex
+└── src/
+    ├── components/Button.astro
+    ├── data/site.ts          dati azienda e sedi, verificati sul footer di 66 pagine
+    ├── data/noindex.ts       rotte fuori indice: fonte unica, letta anche dalla sitemap
+    ├── layouts/BaseLayout.astro
+    ├── pages/index.astro     segnaposto
+    ├── pages/design-system/  pagina di controllo dei token (noindex)
+    └── styles/{fonts,tokens,base,global}.css
+```
+
+### Verifica
+
+Token calcolati nel browser, confrontati con la misura del mirror:
+
+| | 1440px | 900px | 390px |
+|---|---|---|---|
+| `--t-display-sm` | 50px ✓ | 50px ✓ | 30px ✓ |
+| `--t-display` | 60px ✓ | 60px ✓ | 30px ✓ |
+| `--t-display-lg` | 70px ✓ | 70px ✓ | 40px ✓ |
+| `--hero-title-size` | 77,76px (mirror 77,8) ✓ | 48,6px ✓ | 30px ✓ |
+| scorrimento orizzontale | no | no | no |
+
+### Da fare nel passo successivo
+I 4 componenti con logica reale (carousel, gallery/lightbox, counter, accordion),
+poi l'hero. Il "prima/dopo" non è un componente: è la tassonomia
+`cat_realizzazioni-prima-dopo`.

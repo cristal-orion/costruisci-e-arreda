@@ -1,0 +1,129 @@
+---
+/**
+ * Bottone — consolida le 6 varianti misurate sul sito originale.
+ *
+ * Rilevato misurando (non leggendo il CSS): l'azione primaria del sito NON è rossa.
+ * Il rosso #C20E1A resta un colore di accento tipografico; i bottoni sono grigio
+ * scuro pieno (submit dei form) oppure a filo con bordo 1px. Nessun raggio.
+ *
+ *   solid          bg #333, testo bianco       ← .wpcf7-submit (submit dei form)
+ *   outline-dark   bordo #333, testo #333      ← .elementor-button con bordo
+ *   outline-light  bordo bianco, testo bianco  ← .btn.whiteBorder (su immagine)
+ *   outline-muted  bordo #A6A6A6, testo #333   ← .btn.greyBorder
+ *   text           nessuna cornice             ← .btn.clean
+ *
+ * Dimensioni misurate: md = 16px/400 con padding 10px 30px · sm = 14px/500 con 8px 25px
+ */
+interface Props {
+  href?: string;
+  variant?: 'solid' | 'outline-dark' | 'outline-light' | 'outline-muted' | 'text';
+  size?: 'sm' | 'md';
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  /** Per i link esterni: aggiunge rel e target. */
+  external?: boolean;
+  'aria-label'?: string;
+}
+
+const {
+  href,
+  variant = 'outline-dark',
+  size = 'md',
+  type = 'button',
+  class: extraClass,
+  external = false,
+  ...rest
+} = Astro.props;
+
+const cls = ['btn', `btn--${variant}`, `btn--${size}`, extraClass].filter(Boolean).join(' ');
+const Tag = href ? 'a' : 'button';
+const tagProps = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) }
+  : { type };
+---
+
+<Tag class={cls} {...tagProps} {...rest}><slot /></Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    /* `appearance` e `background` servono per il caso <button>: senza, il
+       fondo nativo "buttonface" del browser vince e la variante su fondo
+       scuro diventa testo bianco su grigio chiaro. */
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 0;
+    font-family: inherit;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+
+  /* dimensioni misurate */
+  .btn--md {
+    padding: 10px 30px;
+    font-size: var(--t-base);
+    font-weight: var(--w-regular);
+    line-height: 1.5;
+  }
+  .btn--sm {
+    padding: 8px 25px;
+    font-size: var(--t-sm);
+    font-weight: var(--w-medium);
+    line-height: 1.5;
+  }
+
+  .btn--solid {
+    color: var(--c-white);
+    background: var(--c-surface-dark);
+    border-color: var(--c-surface-dark);
+  }
+  .btn--solid:hover {
+    color: var(--c-white);
+    background: var(--c-brand);
+    border-color: var(--c-brand);
+  }
+
+  .btn--outline-dark {
+    color: var(--c-ink);
+    border-color: var(--c-border-strong);
+  }
+  .btn--outline-dark:hover {
+    color: var(--c-white);
+    background: var(--c-surface-dark);
+  }
+
+  .btn--outline-light {
+    color: var(--c-white);
+    border-color: var(--c-white);
+  }
+  .btn--outline-light:hover {
+    color: var(--c-ink);
+    background: var(--c-white);
+  }
+
+  .btn--outline-muted {
+    color: var(--c-ink);
+    border-color: var(--c-border);
+  }
+  .btn--outline-muted:hover {
+    color: var(--c-ink);
+    border-color: var(--c-border-strong);
+  }
+
+  .btn--text {
+    padding-inline: 0;
+    color: var(--c-ink);
+  }
+  .btn--text:hover {
+    color: var(--c-brand);
+  }
+</style>

@@ -1,0 +1,22 @@
+---
+/**
+ * Segnaposto della homepage. Sarà sostituita nel passo 5 (le 11 pagine one-off).
+ * Esiste solo perché il build sia coerente e la rotta / risponda.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout title="Homepage" description={site.description} noindex>
+  <div class="container" style="padding-block: var(--s-20)">
+    <h1 style="font-size: var(--t-display-sm)">{site.shortName}</h1>
+    <p style="max-width: 60ch; color: var(--c-ink-soft); font-size: var(--t-lg)">
+      Ricostruzione in corso. Il design system misurato sul sito originale è visibile
+      nella pagina di controllo.
+    </p>
+    <p style="margin-top: var(--s-8)">
+      <Button href="/design-system/" variant="outline-dark">Design system</Button>
+    </p>
+  </div>
+</BaseLayout>

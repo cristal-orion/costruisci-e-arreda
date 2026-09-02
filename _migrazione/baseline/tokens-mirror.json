@@ -1,0 +1,1532 @@
+{
+  "base": "http://127.0.0.1:8099",
+  "generated": "2026-09-02T06:19:29.022Z",
+  "routes": 16,
+  "byViewport": {
+    "desktop": {
+      "width": 1440,
+      "typography": [
+        {
+          "value": "Montserrat | 14px | 400 | lh:21px | ls:0 | none",
+          "weight": 20158
+        },
+        {
+          "value": "Montserrat | 16px | 400 | lh:28px | ls:0 | none",
+          "weight": 9156
+        },
+        {
+          "value": "Montserrat | 18px | 400 | lh:27px | ls:0 | none",
+          "weight": 3314
+        },
+        {
+          "value": "Roboto | 16px | 400 | lh:28px | ls:0 | none",
+          "weight": 2079
+        },
+        {
+          "value": "Montserrat | 12px | 400 | lh:18px | ls:0 | none",
+          "weight": 1568
+        },
+        {
+          "value": "Montserrat | 16px | 700 | lh:normal | ls:0 | uppercase",
+          "weight": 1424
+        },
+        {
+          "value": "Montserrat | 15px | 400 | lh:23px | ls:0 | none",
+          "weight": 1226
+        },
+        {
+          "value": "Montserrat | 16px | 700 | lh:24px | ls:0 | none",
+          "weight": 1216
+        },
+        {
+          "value": "Montserrat | 22px | 700 | lh:33px | ls:0 | none",
+          "weight": 1212
+        },
+        {
+          "value": "Montserrat | 16px | 700 | lh:28px | ls:0 | none",
+          "weight": 957
+        },
+        {
+          "value": "Montserrat | 14px | 400 | lh:30px | ls:0 | none",
+          "weight": 686
+        },
+        {
+          "value": "Montserrat | 50px | 300 | lh:normal | ls:0 | uppercase",
+          "weight": 596
+        },
+        {
+          "value": "Montserrat | 18px | 700 | lh:27px | ls:0 | none",
+          "weight": 520
+        },
+        {
+          "value": "Montserrat | 70px | 400 | lh:70px | ls:0 | uppercase",
+          "weight": 501
+        },
+        {
+          "value": "Montserrat | 14px | 600 | lh:21px | ls:0 | none",
+          "weight": 438
+        },
+        {
+          "value": "Montserrat | 60px | 200 | lh:60px | ls:0 | uppercase",
+          "weight": 367
+        },
+        {
+          "value": "Montserrat | 30px | 700 | lh:38px | ls:0 | none",
+          "weight": 365
+        },
+        {
+          "value": "Montserrat | 18px | 400 | lh:28px | ls:0 | none",
+          "weight": 350
+        },
+        {
+          "value": "Montserrat | 18px | 700 | lh:20px | ls:0 | none",
+          "weight": 299
+        },
+        {
+          "value": "Montserrat | 78px | 300 | lh:normal | ls:0 | uppercase",
+          "weight": 271
+        },
+        {
+          "value": "Montserrat | 15px | 700 | lh:23px | ls:0 | none",
+          "weight": 263
+        },
+        {
+          "value": "Montserrat | 12px | 400 | lh:23px | ls:0 | none",
+          "weight": 234
+        },
+        {
+          "value": "Montserrat | 25px | 700 | lh:normal | ls:0 | none",
+          "weight": 197
+        },
+        {
+          "value": "Montserrat | 15px | 500 | lh:15px | ls:0 | none",
+          "weight": 170
+        },
+        {
+          "value": "Montserrat | 40px | 400 | lh:40px | ls:0 | uppercase",
+          "weight": 168
+        },
+        {
+          "value": "Montserrat | 16px | 400 | lh:23px | ls:0 | none",
+          "weight": 156
+        },
+        {
+          "value": "Montserrat | 23px | 500 | lh:normal | ls:0 | none",
+          "weight": 155
+        },
+        {
+          "value": "Montserrat | 30px | 700 | lh:normal | ls:0 | none",
+          "weight": 150
+        },
+        {
+          "value": "Montserrat | 15px | 400 | lh:38px | ls:0 | none",
+          "weight": 148
+        },
+        {
+          "value": "Montserrat | 40px | 200 | lh:normal | ls:0 | uppercase",
+          "weight": 124
+        },
+        {
+          "value": "Montserrat | 14px | 500 | lh:23px | ls:0 | none",
+          "weight": 117
+        },
+        {
+          "value": "Montserrat | 30px | 300 | lh:30px | ls:0 | none",
+          "weight": 112
+        },
+        {
+          "value": "Montserrat | 16px | 500 | lh:24px | ls:0 | none",
+          "weight": 91
+        },
+        {
+          "value": "Montserrat | 23px | 500 | lh:normal | ls:2px | none",
+          "weight": 87
+        },
+        {
+          "value": "Montserrat | 18px | 300 | lh:normal | ls:0 | none",
+          "weight": 87
+        },
+        {
+          "value": "Montserrat | 18px | 400 | lh:18px | ls:0 | none",
+          "weight": 80
+        },
+        {
+          "value": "Roboto | 15px | 500 | lh:15px | ls:0 | none",
+          "weight": 78
+        },
+        {
+          "value": "Montserrat | 70px | 200 | lh:70px | ls:0 | uppercase",
+          "weight": 73
+        },
+        {
+          "value": "Montserrat | 16px | 700 | lh:24px | ls:0 | uppercase",
+          "weight": 66
+        },
+        {
+          "value": "Montserrat | 18px | 700 | lh:18px | ls:0 | none",
+          "weight": 49
+        }
+      ],
+      "textColor": [
+        {
+          "value": "rgb(51, 51, 51)",
+          "weight": 32213
+        },
+        {
+          "value": "rgb(0, 0, 0)",
+          "weight": 8507
+        },
+        {
+          "value": "rgb(122, 122, 122)",
+          "weight": 3301
+        },
+        {
+          "value": "rgb(255, 255, 255)",
+          "weight": 3229
+        },
+        {
+          "value": "rgb(194, 14, 26)",
+          "weight": 2263
+        },
+        {
+          "value": "rgb(248, 249, 250)",
+          "weight": 155
+        },
+        {
+          "value": "rgb(202, 4, 17)",
+          "weight": 112
+        }
+      ],
+      "background": [
+        {
+          "value": "rgb(255, 255, 255)",
+          "weight": 159544955
+        },
+        {
+          "value": "rgb(245, 245, 245)",
+          "weight": 39517673
+        },
+        {
+          "value": "rgb(51, 51, 51)",
+          "weight": 2407918
+        },
+        {
+          "value": "rgba(255, 255, 255, 0)",
+          "weight": 152235
+        },
+        {
+          "value": "rgb(194, 14, 26)",
+          "weight": 143116
+        }
+      ],
+      "borderRadius": [
+        {
+          "value": "3px",
+          "weight": 17
+        },
+        {
+          "value": "0px 30px 0px 0px",
+          "weight": 16
+        },
+        {
+          "value": "50%",
+          "weight": 3
+        }
+      ],
+      "boxShadow": [],
+      "border": [
+        {
+          "value": "1px solid rgba(255, 255, 255, 0)",
+          "weight": 52
+        },
+        {
+          "value": "1px solid rgb(51, 51, 51)",
+          "weight": 28
+        },
+        {
+          "value": "1px solid rgb(166, 166, 166)",
+          "weight": 6
+        },
+        {
+          "value": "1px solid rgb(255, 255, 255)",
+          "weight": 5
+        },
+        {
+          "value": "1px solid rgb(194, 14, 26)",
+          "weight": 1
+        },
+        {
+          "value": "1px solid rgb(152, 152, 152)",
+          "weight": 1
+        },
+        {
+          "value": "0px solid rgb(0, 0, 0)",
+          "weight": 1
+        }
+      ],
+      "sectionPadding": [
+        {
+          "value": "0px / 0px",
+          "weight": 186
+        },
+        {
+          "value": "10px / 10px",
+          "weight": 54
+        },
+        {
+          "value": "0px / 72px",
+          "weight": 6
+        },
+        {
+          "value": "0% / 0%",
+          "weight": 5
+        },
+        {
+          "value": "150px / 80px",
+          "weight": 5
+        },
+        {
+          "value": "50px / 50px",
+          "weight": 5
+        },
+        {
+          "value": "80px / 0px",
+          "weight": 3
+        },
+        {
+          "value": "28.7969px / 72px",
+          "weight": 2
+        },
+        {
+          "value": "7% / 12%",
+          "weight": 2
+        },
+        {
+          "value": "100.797px / 172.797px",
+          "weight": 2
+        },
+        {
+          "value": "0px / 50px",
+          "weight": 2
+        },
+        {
+          "value": "150px / 0px",
+          "weight": 2
+        },
+        {
+          "value": "50px / 0px",
+          "weight": 2
+        },
+        {
+          "value": "100px / 100px",
+          "weight": 2
+        },
+        {
+          "value": "72px / 72px",
+          "weight": 1
+        }
+      ],
+      "roleTypography": [
+        {
+          "value": "footer > div | 14px | 400 | none",
+          "weight": 6992
+        },
+        {
+          "value": "body > p | 16px | 400 | none",
+          "weight": 6322
+        },
+        {
+          "value": "body > div | 14px | 400 | none",
+          "weight": 5178
+        },
+        {
+          "value": "footer > a | 14px | 400 | none",
+          "weight": 4912
+        },
+        {
+          "value": "body > div | 16px | 400 | none",
+          "weight": 4739
+        },
+        {
+          "value": "body > span | 18px | 400 | none",
+          "weight": 3070
+        },
+        {
+          "value": "footer > h3 | 16px | 700 | uppercase",
+          "weight": 1424
+        },
+        {
+          "value": "body > p | 14px | 400 | none",
+          "weight": 1273
+        },
+        {
+          "value": "body > p | 15px | 400 | none",
+          "weight": 1226
+        },
+        {
+          "value": "header > a | 16px | 700 | none",
+          "weight": 1216
+        },
+        {
+          "value": "body > a | 22px | 700 | none",
+          "weight": 1212
+        },
+        {
+          "value": "footer > span | 12px | 400 | none",
+          "weight": 832
+        },
+        {
+          "value": "form > span | 14px | 400 | none",
+          "weight": 714
+        },
+        {
+          "value": "body > p | 18px | 400 | none",
+          "weight": 674
+        },
+        {
+          "value": "body > a | 14px | 400 | none",
+          "weight": 655
+        },
+        {
+          "value": "footer > span | 14px | 400 | none",
+          "weight": 608
+        },
+        {
+          "value": "body > h2 | 50px | 300 | uppercase",
+          "weight": 596
+        },
+        {
+          "value": "footer > a | 12px | 400 | none",
+          "weight": 560
+        },
+        {
+          "value": "body > strong | 16px | 700 | none",
+          "weight": 517
+        },
+        {
+          "value": "body > b | 18px | 700 | none",
+          "weight": 503
+        },
+        {
+          "value": "body > b | 16px | 700 | none",
+          "weight": 440
+        },
+        {
+          "value": "body > a | 14px | 600 | none",
+          "weight": 438
+        },
+        {
+          "value": "body > h2 | 70px | 400 | uppercase",
+          "weight": 404
+        },
+        {
+          "value": "body > h2 | 60px | 200 | uppercase",
+          "weight": 367
+        },
+        {
+          "value": "body > a | 30px | 700 | none",
+          "weight": 365
+        },
+        {
+          "value": "body > span | 14px | 400 | none",
+          "weight": 329
+        },
+        {
+          "value": "body > p | 18px | 700 | none",
+          "weight": 299
+        },
+        {
+          "value": "body > strong | 15px | 700 | none",
+          "weight": 263
+        },
+        {
+          "value": "body > span | 15px | 500 | none",
+          "weight": 248
+        },
+        {
+          "value": "hero > h1 | 78px | 300 | uppercase",
+          "weight": 243
+        },
+        {
+          "value": "hero > h2 | 23px | 500 | none",
+          "weight": 242
+        },
+        {
+          "value": "body > a | 12px | 400 | none",
+          "weight": 234
+        },
+        {
+          "value": "body > b | 25px | 700 | none",
+          "weight": 197
+        },
+        {
+          "value": "footer > div | 12px | 400 | none",
+          "weight": 176
+        },
+        {
+          "value": "body > li | 16px | 400 | none",
+          "weight": 174
+        },
+        {
+          "value": "body > h2 | 40px | 400 | uppercase",
+          "weight": 168
+        },
+        {
+          "value": "body > b | 30px | 700 | none",
+          "weight": 150
+        },
+        {
+          "value": "body > div | 15px | 400 | none",
+          "weight": 148
+        },
+        {
+          "value": "form > a | 14px | 400 | none",
+          "weight": 126
+        },
+        {
+          "value": "body > h2 | 40px | 200 | uppercase",
+          "weight": 124
+        }
+      ],
+      "containers": {
+        ".e-con-inner": {
+          "width": 1140,
+          "maxWidth": "min(100%, 1140px)",
+          "paddingInline": "0px / 0px"
+        },
+        "main": {
+          "width": 1440,
+          "maxWidth": "none",
+          "paddingInline": "0px / 0px"
+        },
+        ".container": {
+          "width": 1320,
+          "maxWidth": "1320px",
+          "paddingInline": "12px / 12px"
+        }
+      }
+    },
+    "tablet": {
+      "width": 900,
+      "typography": [
+        {
+          "value": "Montserrat | 14px | 400 | lh:21px | ls:0 | none",
+          "weight": 21062
+        },
+        {
+          "value": "Montserrat | 16px | 400 | lh:28px | ls:0 | none",
+          "weight": 9706
+        },
+        {
+          "value": "Montserrat | 18px | 400 | lh:27px | ls:0 | none",
+          "weight": 3314
+        },
+        {
+          "value": "Roboto | 16px | 400 | lh:28px | ls:0 | none",
+          "weight": 2079
+        },
+        {
+          "value": "Montserrat | 12px | 400 | lh:18px | ls:0 | none",
+          "weight": 1568
+        },
+        {
+          "value": "Montserrat | 16px | 700 | lh:normal | ls:0 | uppercase",
+          "weight": 1424
+        },
+        {
+          "value": "Montserrat | 15px | 400 | lh:23px | ls:0 | none",
+          "weight": 1226
+        },
+        {
+          "value": "Montserrat | 22px | 700 | lh:33px | ls:0 | none",
+          "weight": 1212
+        },
+        {
+          "value": "Montserrat | 16px | 700 | lh:28px | ls:0 | none",
+          "weight": 1189
+        },
+        {
+          "value": "Montserrat | 14px | 400 | lh:30px | ls:0 | none",
+          "weight": 686
+        },
+        {
+          "value": "Montserrat | 50px | 300 | lh:normal | ls:0 | uppercase",
+          "weight": 596
+        },
+        {
+          "value": "Montserrat | 18px | 700 | lh:27px | ls:0 | none",
+          "weight": 520
+        },
+        {
+          "value": "Montserrat | 70px | 400 | lh:70px | ls:0 | uppercase",
+          "weight": 501
+        },
+        {
+          "value": "Montserrat | 60px | 200 | lh:60px | ls:0 | uppercase",
+          "weight": 476
+        },
+        {
+          "value": "Montserrat | 14px | 600 | lh:21px | ls:0 | none",
+          "weight": 438
+        },
+        {
+          "value": "Montserrat | 14px | 700 | lh:21px | ls:0 | none",
+          "weight": 414
+        },
+        {
+          "value": "Montserrat | 30px | 700 | lh:38px | ls:0 | none",
+          "weight": 365
+        },
+        {
+          "value": "Montserrat | 18px | 400 | lh:28px | ls:0 | none",
+          "weight": 350
+        },
+        {
+          "value": "Montserrat | 18px | 700 | lh:20px | ls:0 | none",
+          "weight": 299
+        },
+        {
+          "value": "Montserrat | 49px | 300 | lh:normal | ls:0 | uppercase",
+          "weight": 271
+        },
+        {
+          "value": "Montserrat | 15px | 700 | lh:23px | ls:0 | none",
+          "weight": 263
+        },
+        {
+          "value": "Montserrat | 12px | 400 | lh:23px | ls:0 | none",
+          "weight": 234
+        },
+        {
+          "value": "Montserrat | 20px | 600 | lh:20px | ls:0 | uppercase",
+          "weight": 216
+        },
+        {
+          "value": "Roboto | 15px | 500 | lh:15px | ls:0 | none",
+          "weight": 208
+        },
+        {
+          "value": "Montserrat | 25px | 700 | lh:normal | ls:0 | none",
+          "weight": 197
+        },
+        {
+          "value": "Montserrat | 15px | 500 | lh:15px | ls:0 | none",
+          "weight": 170
+        },
+        {
+          "value": "Montserrat | 40px | 400 | lh:40px | ls:0 | uppercase",
+          "weight": 168
+        },
+        {
+          "value": "Montserrat | 16px | 400 | lh:23px | ls:0 | none",
+          "weight": 156
+        },
+        {
+          "value": "Montserrat | 23px | 500 | lh:normal | ls:0 | none",
+          "weight": 155
+        },
+        {
+          "value": "Montserrat | 30px | 700 | lh:normal | ls:0 | none",
+          "weight": 150
+        },
+        {
+          "value": "Montserrat | 15px | 400 | lh:38px | ls:0 | none",
+          "weight": 148
+        },
+        {
+          "value": "Montserrat | 14px | 500 | lh:23px | ls:0 | none",
+          "weight": 143
+        },
+        {
+          "value": "Montserrat | 40px | 200 | lh:normal | ls:0 | uppercase",
+          "weight": 124
+        },
+        {
+          "value": "Montserrat | 30px | 300 | lh:30px | ls:0 | none",
+          "weight": 112
+        },
+        {
+          "value": "Montserrat | 16px | 500 | lh:24px | ls:0 | none",
+          "weight": 91
+        },
+        {
+          "value": "Montserrat | 23px | 500 | lh:normal | ls:2px | none",
+          "weight": 87
+        },
+        {
+          "value": "Montserrat | 18px | 300 | lh:normal | ls:0 | none",
+          "weight": 87
+        },
+        {
+          "value": "Montserrat | 18px | 400 | lh:18px | ls:0 | none",
+          "weight": 80
+        },
+        {
+          "value": "Montserrat | 70px | 200 | lh:70px | ls:0 | uppercase",
+          "weight": 73
+        },
+        {
+          "value": "Montserrat | 16px | 700 | lh:24px | ls:0 | uppercase",
+          "weight": 66
+        }
+      ],
+      "textColor": [
+        {
+          "value": "rgb(51, 51, 51)",
+          "weight": 33184
+        },
+        {
+          "value": "rgb(0, 0, 0)",
+          "weight": 8247
+        },
+        {
+          "value": "rgb(255, 255, 255)",
+          "weight": 3920
+        },
+        {
+          "value": "rgb(122, 122, 122)",
+          "weight": 3301
+        },
+        {
+          "value": "rgb(194, 14, 26)",
+          "weight": 2292
+        },
+        {
+          "value": "rgb(248, 249, 250)",
+          "weight": 155
+        },
+        {
+          "value": "rgb(202, 4, 17)",
+          "weight": 112
+        }
+      ],
+      "background": [
+        {
+          "value": "rgb(255, 255, 255)",
+          "weight": 128654531
+        },
+        {
+          "value": "rgb(245, 245, 245)",
+          "weight": 31625553
+        },
+        {
+          "value": "rgb(51, 51, 51)",
+          "weight": 2076058
+        },
+        {
+          "value": "rgba(255, 255, 255, 0)",
+          "weight": 166415
+        },
+        {
+          "value": "rgba(0, 0, 0, 0.45)",
+          "weight": 612
+        },
+        {
+          "value": "rgb(0, 0, 0)",
+          "weight": 216
+        },
+        {
+          "value": "rgb(194, 14, 26)",
+          "weight": 144
+        },
+        {
+          "value": "rgb(255, 0, 0)",
+          "weight": 72
+        }
+      ],
+      "borderRadius": [
+        {
+          "value": "50%",
+          "weight": 28
+        },
+        {
+          "value": "3px",
+          "weight": 27
+        }
+      ],
+      "boxShadow": [],
+      "border": [
+        {
+          "value": "1px solid rgba(255, 255, 255, 0)",
+          "weight": 52
+        },
+        {
+          "value": "1px solid rgb(51, 51, 51)",
+          "weight": 14
+        },
+        {
+          "value": "1px solid rgb(166, 166, 166)",
+          "weight": 6
+        },
+        {
+          "value": "1px solid rgb(255, 255, 255)",
+          "weight": 5
+        },
+        {
+          "value": "1px solid rgb(194, 14, 26)",
+          "weight": 1
+        },
+        {
+          "value": "1px solid rgb(152, 152, 152)",
+          "weight": 1
+        },
+        {
+          "value": "0px solid rgb(0, 0, 0)",
+          "weight": 1
+        }
+      ],
+      "sectionPadding": [
+        {
+          "value": "0px / 0px",
+          "weight": 189
+        },
+        {
+          "value": "10px / 10px",
+          "weight": 54
+        },
+        {
+          "value": "0px / 45px",
+          "weight": 6
+        },
+        {
+          "value": "150px / 80px",
+          "weight": 5
+        },
+        {
+          "value": "50px / 50px",
+          "weight": 5
+        },
+        {
+          "value": "80px / 0px",
+          "weight": 3
+        },
+        {
+          "value": "18px / 45px",
+          "weight": 2
+        },
+        {
+          "value": "7% / 12%",
+          "weight": 2
+        },
+        {
+          "value": "63px / 108px",
+          "weight": 2
+        },
+        {
+          "value": "0px / 50px",
+          "weight": 2
+        },
+        {
+          "value": "150px / 0px",
+          "weight": 2
+        },
+        {
+          "value": "50px / 0px",
+          "weight": 2
+        },
+        {
+          "value": "100px / 100px",
+          "weight": 2
+        },
+        {
+          "value": "45px / 45px",
+          "weight": 1
+        },
+        {
+          "value": "0px / 90px",
+          "weight": 1
+        }
+      ],
+      "roleTypography": [
+        {
+          "value": "footer > div | 14px | 400 | none",
+          "weight": 6992
+        },
+        {
+          "value": "body > p | 16px | 400 | none",
+          "weight": 6872
+        },
+        {
+          "value": "body > div | 14px | 400 | none",
+          "weight": 5178
+        },
+        {
+          "value": "footer > a | 14px | 400 | none",
+          "weight": 4912
+        },
+        {
+          "value": "body > div | 16px | 400 | none",
+          "weight": 4739
+        },
+        {
+          "value": "body > span | 18px | 400 | none",
+          "weight": 3070
+        },
+        {
+          "value": "body > p | 14px | 400 | none",
+          "weight": 1861
+        },
+        {
+          "value": "footer > h3 | 16px | 700 | uppercase",
+          "weight": 1424
+        },
+        {
+          "value": "body > p | 15px | 400 | none",
+          "weight": 1226
+        },
+        {
+          "value": "body > a | 22px | 700 | none",
+          "weight": 1212
+        },
+        {
+          "value": "footer > span | 12px | 400 | none",
+          "weight": 832
+        },
+        {
+          "value": "form > span | 14px | 400 | none",
+          "weight": 714
+        },
+        {
+          "value": "body > strong | 16px | 700 | none",
+          "weight": 699
+        },
+        {
+          "value": "body > p | 18px | 400 | none",
+          "weight": 674
+        },
+        {
+          "value": "body > a | 14px | 400 | none",
+          "weight": 655
+        },
+        {
+          "value": "body > span | 14px | 400 | none",
+          "weight": 645
+        },
+        {
+          "value": "footer > span | 14px | 400 | none",
+          "weight": 608
+        },
+        {
+          "value": "body > h2 | 50px | 300 | uppercase",
+          "weight": 596
+        },
+        {
+          "value": "footer > a | 12px | 400 | none",
+          "weight": 560
+        },
+        {
+          "value": "body > b | 18px | 700 | none",
+          "weight": 503
+        },
+        {
+          "value": "body > b | 16px | 700 | none",
+          "weight": 490
+        },
+        {
+          "value": "body > h2 | 60px | 200 | uppercase",
+          "weight": 476
+        },
+        {
+          "value": "body > a | 14px | 600 | none",
+          "weight": 438
+        },
+        {
+          "value": "body > figcaption | 14px | 700 | none",
+          "weight": 414
+        },
+        {
+          "value": "body > h2 | 70px | 400 | uppercase",
+          "weight": 404
+        },
+        {
+          "value": "body > span | 15px | 500 | none",
+          "weight": 378
+        },
+        {
+          "value": "body > a | 30px | 700 | none",
+          "weight": 365
+        },
+        {
+          "value": "body > p | 18px | 700 | none",
+          "weight": 299
+        },
+        {
+          "value": "body > strong | 15px | 700 | none",
+          "weight": 263
+        },
+        {
+          "value": "hero > h1 | 49px | 300 | uppercase",
+          "weight": 243
+        },
+        {
+          "value": "hero > h2 | 23px | 500 | none",
+          "weight": 242
+        },
+        {
+          "value": "body > a | 12px | 400 | none",
+          "weight": 234
+        },
+        {
+          "value": "body > a | 20px | 600 | uppercase",
+          "weight": 216
+        },
+        {
+          "value": "body > b | 25px | 700 | none",
+          "weight": 197
+        },
+        {
+          "value": "footer > div | 12px | 400 | none",
+          "weight": 176
+        },
+        {
+          "value": "body > li | 16px | 400 | none",
+          "weight": 174
+        },
+        {
+          "value": "body > h2 | 40px | 400 | uppercase",
+          "weight": 168
+        },
+        {
+          "value": "body > b | 30px | 700 | none",
+          "weight": 150
+        },
+        {
+          "value": "body > div | 15px | 400 | none",
+          "weight": 148
+        },
+        {
+          "value": "body > span | 14px | 500 | none",
+          "weight": 143
+        }
+      ],
+      "containers": {
+        ".e-con-inner": {
+          "width": 880,
+          "maxWidth": "min(100%, 1024px)",
+          "paddingInline": "0px / 0px"
+        },
+        "main": {
+          "width": 900,
+          "maxWidth": "none",
+          "paddingInline": "0px / 0px"
+        },
+        ".container": {
+          "width": 720,
+          "maxWidth": "720px",
+          "paddingInline": "12px / 12px"
+        }
+      }
+    },
+    "mobile": {
+      "width": 390,
+      "typography": [
+        {
+          "value": "Montserrat | 14px | 400 | lh:21px | ls:0 | none",
+          "weight": 20107
+        },
+        {
+          "value": "Montserrat | 16px | 400 | lh:28px | ls:0 | none",
+          "weight": 9156
+        },
+        {
+          "value": "Montserrat | 18px | 400 | lh:27px | ls:0 | none",
+          "weight": 3314
+        },
+        {
+          "value": "Roboto | 16px | 400 | lh:28px | ls:0 | none",
+          "weight": 2079
+        },
+        {
+          "value": "Montserrat | 12px | 400 | lh:18px | ls:0 | none",
+          "weight": 1568
+        },
+        {
+          "value": "Montserrat | 16px | 700 | lh:normal | ls:0 | uppercase",
+          "weight": 1424
+        },
+        {
+          "value": "Montserrat | 15px | 400 | lh:23px | ls:0 | none",
+          "weight": 1226
+        },
+        {
+          "value": "Montserrat | 22px | 700 | lh:33px | ls:0 | none",
+          "weight": 1212
+        },
+        {
+          "value": "Montserrat | 16px | 700 | lh:28px | ls:0 | none",
+          "weight": 957
+        },
+        {
+          "value": "Montserrat | 30px | 300 | lh:normal | ls:0 | uppercase",
+          "weight": 867
+        },
+        {
+          "value": "Montserrat | 14px | 400 | lh:30px | ls:0 | none",
+          "weight": 686
+        },
+        {
+          "value": "Montserrat | 18px | 700 | lh:27px | ls:0 | none",
+          "weight": 520
+        },
+        {
+          "value": "Montserrat | 40px | 400 | lh:40px | ls:0 | uppercase",
+          "weight": 446
+        },
+        {
+          "value": "Montserrat | 30px | 700 | lh:38px | ls:0 | none",
+          "weight": 365
+        },
+        {
+          "value": "Montserrat | 20px | 700 | lh:30px | ls:0 | none",
+          "weight": 356
+        },
+        {
+          "value": "Montserrat | 18px | 400 | lh:28px | ls:0 | none",
+          "weight": 350
+        },
+        {
+          "value": "Montserrat | 15px | 700 | lh:23px | ls:0 | none",
+          "weight": 263
+        },
+        {
+          "value": "Montserrat | 30px | 400 | lh:30px | ls:0 | uppercase",
+          "weight": 243
+        },
+        {
+          "value": "Montserrat | 30px | 200 | lh:30px | ls:0 | uppercase",
+          "weight": 234
+        },
+        {
+          "value": "Montserrat | 12px | 400 | lh:23px | ls:0 | none",
+          "weight": 234
+        },
+        {
+          "value": "Montserrat | 25px | 700 | lh:normal | ls:0 | none",
+          "weight": 197
+        },
+        {
+          "value": "Roboto | 15px | 500 | lh:15px | ls:0 | none",
+          "weight": 182
+        },
+        {
+          "value": "Montserrat | 16px | 400 | lh:23px | ls:0 | none",
+          "weight": 156
+        },
+        {
+          "value": "Montserrat | 23px | 500 | lh:normal | ls:0 | none",
+          "weight": 155
+        },
+        {
+          "value": "Montserrat | 35px | 200 | lh:35px | ls:0 | uppercase",
+          "weight": 152
+        },
+        {
+          "value": "Montserrat | 30px | 700 | lh:normal | ls:0 | none",
+          "weight": 150
+        },
+        {
+          "value": "Montserrat | 15px | 400 | lh:38px | ls:0 | none",
+          "weight": 148
+        },
+        {
+          "value": "Montserrat | 20px | 600 | lh:20px | ls:0 | uppercase",
+          "weight": 146
+        },
+        {
+          "value": "Montserrat | 15px | 500 | lh:15px | ls:0 | none",
+          "weight": 144
+        },
+        {
+          "value": "Montserrat | 30px | 200 | lh:normal | ls:0 | uppercase",
+          "weight": 124
+        },
+        {
+          "value": "Montserrat | 40px | 200 | lh:40px | ls:0 | uppercase",
+          "weight": 115
+        },
+        {
+          "value": "Montserrat | 30px | 300 | lh:30px | ls:0 | none",
+          "weight": 112
+        },
+        {
+          "value": "Montserrat | 16px | 500 | lh:24px | ls:0 | none",
+          "weight": 88
+        },
+        {
+          "value": "Montserrat | 23px | 500 | lh:normal | ls:2px | none",
+          "weight": 87
+        },
+        {
+          "value": "Montserrat | 18px | 300 | lh:normal | ls:0 | none",
+          "weight": 87
+        },
+        {
+          "value": "Montserrat | 18px | 400 | lh:18px | ls:0 | none",
+          "weight": 80
+        },
+        {
+          "value": "Montserrat | 14px | 500 | lh:23px | ls:0 | none",
+          "weight": 52
+        },
+        {
+          "value": "Montserrat | 11px | 500 | lh:23px | ls:0 | none",
+          "weight": 52
+        },
+        {
+          "value": "Montserrat | 18px | 700 | lh:18px | ls:0 | none",
+          "weight": 49
+        },
+        {
+          "value": "Montserrat | 14px | 700 | lh:30px | ls:0 | none",
+          "weight": 40
+        }
+      ],
+      "textColor": [
+        {
+          "value": "rgb(51, 51, 51)",
+          "weight": 31237
+        },
+        {
+          "value": "rgb(0, 0, 0)",
+          "weight": 8508
+        },
+        {
+          "value": "rgb(122, 122, 122)",
+          "weight": 3301
+        },
+        {
+          "value": "rgb(255, 255, 255)",
+          "weight": 3138
+        },
+        {
+          "value": "rgb(194, 14, 26)",
+          "weight": 1817
+        },
+        {
+          "value": "rgb(248, 249, 250)",
+          "weight": 155
+        },
+        {
+          "value": "rgb(202, 4, 17)",
+          "weight": 112
+        }
+      ],
+      "background": [
+        {
+          "value": "rgb(255, 255, 255)",
+          "weight": 55283306
+        },
+        {
+          "value": "rgb(245, 245, 245)",
+          "weight": 24290867
+        },
+        {
+          "value": "rgb(51, 51, 51)",
+          "weight": 1033262
+        },
+        {
+          "value": "rgba(255, 255, 255, 0)",
+          "weight": 515419
+        },
+        {
+          "value": "rgba(0, 0, 0, 0.45)",
+          "weight": 612
+        },
+        {
+          "value": "rgb(0, 0, 0)",
+          "weight": 216
+        },
+        {
+          "value": "rgb(194, 14, 26)",
+          "weight": 144
+        },
+        {
+          "value": "rgb(255, 0, 0)",
+          "weight": 72
+        }
+      ],
+      "borderRadius": [
+        {
+          "value": "50%",
+          "weight": 28
+        },
+        {
+          "value": "3px",
+          "weight": 23
+        }
+      ],
+      "boxShadow": [],
+      "border": [
+        {
+          "value": "1px solid rgba(255, 255, 255, 0)",
+          "weight": 52
+        },
+        {
+          "value": "1px solid rgb(51, 51, 51)",
+          "weight": 12
+        },
+        {
+          "value": "1px solid rgb(166, 166, 166)",
+          "weight": 6
+        },
+        {
+          "value": "1px solid rgb(255, 255, 255)",
+          "weight": 5
+        },
+        {
+          "value": "1px solid rgb(194, 14, 26)",
+          "weight": 1
+        },
+        {
+          "value": "1px solid rgb(152, 152, 152)",
+          "weight": 1
+        },
+        {
+          "value": "0px solid rgb(0, 0, 0)",
+          "weight": 1
+        }
+      ],
+      "sectionPadding": [
+        {
+          "value": "0px / 0px",
+          "weight": 182
+        },
+        {
+          "value": "10px / 10px",
+          "weight": 39
+        },
+        {
+          "value": "50px / 50px",
+          "weight": 14
+        },
+        {
+          "value": "30px / 30px",
+          "weight": 8
+        },
+        {
+          "value": "50px / 0px",
+          "weight": 8
+        },
+        {
+          "value": "0% / 0%",
+          "weight": 4
+        },
+        {
+          "value": "0px / 30px",
+          "weight": 4
+        },
+        {
+          "value": "0% / 5%",
+          "weight": 4
+        },
+        {
+          "value": "30px / 0px",
+          "weight": 3
+        },
+        {
+          "value": "50px / 30px",
+          "weight": 2
+        },
+        {
+          "value": "50px / 80px",
+          "weight": 2
+        },
+        {
+          "value": "80px / 0px",
+          "weight": 2
+        },
+        {
+          "value": "20px / 0px",
+          "weight": 1
+        },
+        {
+          "value": "39px / 0px",
+          "weight": 1
+        },
+        {
+          "value": "0px / 78px",
+          "weight": 1
+        }
+      ],
+      "roleTypography": [
+        {
+          "value": "footer > div | 14px | 400 | none",
+          "weight": 6992
+        },
+        {
+          "value": "body > p | 16px | 400 | none",
+          "weight": 6322
+        },
+        {
+          "value": "body > div | 14px | 400 | none",
+          "weight": 5178
+        },
+        {
+          "value": "footer > a | 14px | 400 | none",
+          "weight": 4912
+        },
+        {
+          "value": "body > div | 16px | 400 | none",
+          "weight": 4739
+        },
+        {
+          "value": "body > span | 18px | 400 | none",
+          "weight": 3070
+        },
+        {
+          "value": "footer > h3 | 16px | 700 | uppercase",
+          "weight": 1424
+        },
+        {
+          "value": "body > p | 14px | 400 | none",
+          "weight": 1274
+        },
+        {
+          "value": "body > p | 15px | 400 | none",
+          "weight": 1226
+        },
+        {
+          "value": "body > a | 22px | 700 | none",
+          "weight": 1212
+        },
+        {
+          "value": "footer > span | 12px | 400 | none",
+          "weight": 832
+        },
+        {
+          "value": "form > span | 14px | 400 | none",
+          "weight": 714
+        },
+        {
+          "value": "body > p | 18px | 400 | none",
+          "weight": 674
+        },
+        {
+          "value": "body > a | 14px | 400 | none",
+          "weight": 655
+        },
+        {
+          "value": "footer > span | 14px | 400 | none",
+          "weight": 608
+        },
+        {
+          "value": "body > h2 | 30px | 300 | uppercase",
+          "weight": 596
+        },
+        {
+          "value": "footer > a | 12px | 400 | none",
+          "weight": 560
+        },
+        {
+          "value": "body > strong | 16px | 700 | none",
+          "weight": 517
+        },
+        {
+          "value": "body > b | 18px | 700 | none",
+          "weight": 503
+        },
+        {
+          "value": "body > b | 16px | 700 | none",
+          "weight": 440
+        },
+        {
+          "value": "body > h2 | 40px | 400 | uppercase",
+          "weight": 380
+        },
+        {
+          "value": "body > a | 30px | 700 | none",
+          "weight": 365
+        },
+        {
+          "value": "body > h2 | 30px | 200 | uppercase",
+          "weight": 358
+        },
+        {
+          "value": "body > figcaption | 20px | 700 | none",
+          "weight": 356
+        },
+        {
+          "value": "body > span | 14px | 400 | none",
+          "weight": 329
+        },
+        {
+          "value": "body > span | 15px | 500 | none",
+          "weight": 326
+        },
+        {
+          "value": "body > strong | 15px | 700 | none",
+          "weight": 263
+        },
+        {
+          "value": "hero > h1 | 30px | 300 | uppercase",
+          "weight": 243
+        },
+        {
+          "value": "hero > h2 | 23px | 500 | none",
+          "weight": 242
+        },
+        {
+          "value": "body > a | 12px | 400 | none",
+          "weight": 234
+        },
+        {
+          "value": "body > h2 | 30px | 400 | uppercase",
+          "weight": 207
+        },
+        {
+          "value": "body > b | 25px | 700 | none",
+          "weight": 197
+        },
+        {
+          "value": "footer > div | 12px | 400 | none",
+          "weight": 176
+        },
+        {
+          "value": "body > li | 16px | 400 | none",
+          "weight": 174
+        },
+        {
+          "value": "body > h2 | 35px | 200 | uppercase",
+          "weight": 152
+        },
+        {
+          "value": "body > b | 30px | 700 | none",
+          "weight": 150
+        },
+        {
+          "value": "body > div | 15px | 400 | none",
+          "weight": 148
+        },
+        {
+          "value": "body > a | 20px | 600 | uppercase",
+          "weight": 146
+        },
+        {
+          "value": "form > a | 14px | 400 | none",
+          "weight": 126
+        },
+        {
+          "value": "body > a | 16px | 400 | none",
+          "weight": 117
+        }
+      ],
+      "containers": {
+        ".e-con-inner": {
+          "width": 370,
+          "maxWidth": "min(100%, 767px)",
+          "paddingInline": "0px / 0px"
+        },
+        "main": {
+          "width": 390,
+          "maxWidth": "none",
+          "paddingInline": "0px / 0px"
+        },
+        ".container": {
+          "width": 390,
+          "maxWidth": "none",
+          "paddingInline": "12px / 12px"
+        }
+      }
+    }
+  }
+}

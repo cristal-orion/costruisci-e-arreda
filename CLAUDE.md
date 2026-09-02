@@ -2,9 +2,33 @@
 
 > ## ⏯ PUNTO DI RIPRESA — leggere per primo
 >
-> **Ultima sessione: 2026-09-01.** Il prossimo passo è deciso e concordato con il proprietario:
-> **quando scrive "astro", partire con lo scaffold del rebuild in Astro.** Non serve
-> rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
+> **Ultima sessione: 2026-09-02.** Lo **scaffold Astro è fatto** (passo 1 completo).
+> Il prossimo passo sono i **4 componenti con logica reale**, poi l'**hero**.
+> Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
+>
+> ### Stato del rebuild: `costruisciearreda-astro/`
+> Astro 7.2.10 · Node 22.22 · `trailingSlash: 'always'` · sitemap filtrata sui noindex.
+> Design system **misurato** (non letto dal CSS) e verificato nel browser ai tre viewport:
+> `src/styles/{fonts,tokens,base,global}.css`, `src/components/Button.astro`,
+> `src/layouts/BaseLayout.astro`, `src/data/{site,noindex}.ts`.
+> Pagina di controllo dei token: `/design-system/` (noindex).
+> CSS a **10,3 KB** (3,0 KB gzip) contro i 685 KB dell'originale; zero JS.
+> Misure, deviazioni dichiarate e verifiche: `_migrazione/CHANGELOG.md`, voce **A00**.
+>
+> Comandi: `cd costruisciearreda-astro && npm run dev` (oppure `astro dev --background`,
+> gestibile con `astro dev stop|status|logs`) · `npm run build` · `npm run preview`.
+>
+> ### Prossimo passo, in ordine
+> 1. I **4 componenti**: carousel (Swiper su 11 pagine + slick su 2 → un solo componente),
+>    gallery/lightbox (10 pagine), counter animato (2), accordion (1).
+> 2. L'**hero**: `--hero-h` 750px desktop e tablet / 400px mobile, titolo
+>    `--hero-title-size`, testo nello stesso `.container` del resto più `--hero-inset`.
+>    Mai `left` negativo in % dentro un `overflow:hidden` (bug delle patch 001/002).
+> 3. Estrazione contenuti in content collections con uno script sull'HTML del mirror.
+> 4. I **5 template**, poi le **11 pagine one-off**, validando con `fingerprint.py diff`
+>    e confronto visivo contro `shots-000-live-originale`.
+> 5. Pipeline immagini `astro:assets` sulle 476 immagini usate.
+> 6. Form, SEO, redirect 301. Poi deploy Coolify e cutover DNS.
 >
 > ### Decisione strategica presa
 > Il sito **non** va messo online come mirror statico. Va **ricostruito in Astro** (perché
@@ -34,21 +58,10 @@
 > mappa rotte e redirect 301 · scelte sulle landing e sulle offerte scadute · baseline e
 > fingerprint · decisioni di comportamento (es. "hero a 60px dal bordo, font fluido").
 >
-> ### Primi passi dello scaffold Astro (ordine concordato)
-> 1. Scaffold Astro + design system dai token reali: primario **`#C20E1A`**, secondario `#333`,
->    testo `#7A7A7A`, sfondo `#F5F5F5`, font **Montserrat** (non Roboto: è un default Elementor
->    mai usato). **Una sola** icon font, non tre.
-> 2. I **4 componenti** con logica reale: carousel, gallery/lightbox, counter, accordion.
->    (Il "prima/dopo" NON è uno slider: è solo la tassonomia `cat_realizzazioni-prima-dopo`.)
-> 3. L'**hero** per primo, fatto bene: **un solo sistema di spaziatura**, `padding-inline` sul
->    riquadro. Mai `left` negativo in % contro un container Bootstrap dentro un `overflow:hidden`
->    — è la causa del bug delle patch 001/002.
-> 4. Estrazione contenuti in content collections (`services`, `realizzazioni`, `posts`)
->    con uno script sull'HTML del mirror.
-> 5. I **5 template**, poi le **11 pagine one-off**, validando ogni pagina con
->    `fingerprint.py diff` + confronto visivo contro `shots-000-live-originale`.
-> 6. Pipeline immagini con `astro:assets` sulle 476 immagini realmente usate.
-> 7. Form, SEO, redirect 301. Poi deploy Coolify e cutover DNS.
+> ### Passo 1 — fatto
+> Scaffold + design system dai token misurati. Restano da fare: **una sola icon font**
+> (l'originale ne ha tre sovrapposte) e le content collections
+> (`services`, `realizzazioni`, `posts`).
 >
 > ### Due fasi, da tenere separate
 > **Fase A** ricostruzione 1:1, gate = fingerprint pulito. **Fase B** modifiche volute
@@ -62,9 +75,12 @@
 >
 > ### Ambiente già pronto
 > - Server locale del mirror: `cd costruisciearreda-static/costruisciearreda.it && python3 -m http.server 8080`
-> - Playwright installato in `_migrazione/` (chromium-headless-shell 1234 in cache)
-> - Script pronti: `fingerprint.py`, `screenshot.js`, `verify-hero.js`, `audit-hero-edges.js`
-> - `.gitignore` già scritto. **Git non è ancora inizializzato**: farlo prima di iniziare.
+>   (gli script di misura si aspettano la porta **8099**)
+> - Playwright installato in `_migrazione/` (chromium-headless-shell 1234 in cache).
+>   **Gli script di misura vanno eseguiti da `_migrazione/`**: `playwright` sta lì.
+> - Script pronti: `fingerprint.py`, `screenshot.js`, `verify-hero.js`, `audit-hero-edges.js`,
+>   `harvest-tokens.js`, `harvest-layout.js`
+> - Git inizializzato, branch `main`.
 
 
 ## Cos'è questo progetto
@@ -155,9 +171,18 @@ punto edile, ferramenta, servizi di progettazione e ristrutturazione.
 
 - Colore primario brand: **`#C20E1A`** (rosso). Secondario `#333333`, testo `#7A7A7A`, sfondo `#F5F5F5`.
   `--e-global-color-accent: #61CE70` è un default Elementor mai usato.
-- Font reale: **Montserrat** (variable 100..900, italic + normal) — caricato **due volte**:
-  self-hosted dentro il bundle CSS *e* da `fonts.googleapis.com`.
-- I token tipografici Elementor puntano a Roboto / Roboto Slab: default inutilizzati.
+- Font reale: **Montserrat** — caricato **due volte** (90 `@font-face` statici self-hosted
+  dentro il bundle CSS *e* da `fonts.googleapis.com`).
+- **Correzione (2026-09-02, misurata):** era annotato qui che Roboto e Roboto Slab fossero
+  default Elementor inutilizzati. Per Roboto è **falso**: `.elementor-widget-text-editor`
+  imposta `font-family: var(--e-global-typography-text-font-family)` = Roboto, e quel widget
+  è su **34 pagine** — il corpo del testo di quelle pagine è reso in Roboto. Unificare su
+  Montserrat nel rebuild è quindi una modifica **visibile**, non neutra. Roboto Slab, invece,
+  non è mai reso davvero.
+- Secondo rosso `#CA0411` su `/dalla-progettazione-alla-realizzazione/` (colore inline
+  Elementor, un solo punto del sito): normalizzare a `#C20E1A`.
+- **I bottoni non usano il rosso del brand.** Misurate 6 varianti: l'azione primaria è il
+  grigio scuro pieno dei submit dei form (`#333`, 16px/400, padding 10px 30px, raggio 0).
 - Icon fonts: Font Awesome 4 (tema padre) + FA 5/6 light/regular/solid/brands (child) + fontello (WPSL).
   **Tre famiglie di icone sovrapposte.**
 
