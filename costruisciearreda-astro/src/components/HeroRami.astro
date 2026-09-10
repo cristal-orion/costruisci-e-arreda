@@ -263,19 +263,72 @@ const campate = voci.map((r) => ({
     object-position: var(--fuoco, 50% 50%);
   }
 
-  /* Velatura: densa in basso dove sta l'insegna, quasi trasparente in alto dove
-     serve vedere il materiale. Puntando la campata si alleggerisce, così la
-     foto si schiarisce: è la risposta al gesto, non un effetto a sé. */
+  /* Dove arriva l'insegna, contato dal fondo della campata: è lì che la
+     velatura deve essere densa. Sta in px e non in percentuale perché
+     l'insegna è alta più o meno uguale ovunque (140-196px misurati) mentre la
+     campata va da 240 a 464px: una percentuale insegue la campata, i px
+     inseguono l'insegna, che è quello che va coperto. Misurato: l'insegna sale
+     172-194px dal fondo su telefono, 180-202 su tablet, 283-311 su desktop —
+     dove ci sono in più i 75px che la fascia dei servizi scavalca. */
+  .parete__campata {
+    --velo-base: 200px;
+  }
+  @media (min-width: 769px) {
+    .parete__campata {
+      --velo-base: 210px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .parete__campata {
+      --velo-base: 320px;
+    }
+  }
+
+  /* Velatura: densa in basso dove sta l'insegna, trasparente in alto dove serve
+     vedere il materiale. Puntando la campata il cielo si schiarisce, mentre la
+     fascia dell'insegna resta densa: è la risposta al gesto, e non si porta via
+     la leggibilità di quello che c'è scritto.
+
+     Perché due strati e non un `opacity` solo. Il gradiente non si può animare:
+     il browser lo scambia di colpo (misurato: in transizione `background-image`
+     salta subito al valore finale). Scalare l'opacità di un solo strato invece
+     alleggerisce **tutto**, fondo compreso — era così, e portava il contrasto
+     delle sedi di Ferramenta sotto 4,5:1 sul 100% dell'area. Quindi: `::after` è
+     lo stato puntato e resta sempre; `::before` è la differenza fino allo stato
+     a riposo, ed è quello che si dissolve. Sovrapposti danno 84% / 58% / 10%. */
+  .parete__campata::before,
   .parete__campata::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 52%) 42%, rgb(0 0 0 / 14%) 100%);
+    /* Uno pseudo-elemento `::before` è il **primo** figlio, quindi senza
+       `z-index` finisce dietro la foto, che è un figlio vero più avanti nel
+       DOM: lo strato c'è, si dissolve, e non cambia un pixel — misurato, la
+       campata puntata aveva la stessa luminanza media di quella a riposo.
+       Da qui in su l'ordine è dichiarato invece che ereditato dal DOM:
+       1 le velature, 2 il testo. */
+    z-index: 1;
+  }
+  .parete__campata::after {
+    background: linear-gradient(
+      to top,
+      rgb(0 0 0 / 84%) 0,
+      rgb(0 0 0 / 48%) var(--velo-base),
+      rgb(0 0 0 / 0%) 100%
+    );
+  }
+  .parete__campata::before {
+    background: linear-gradient(
+      to top,
+      rgb(0 0 0 / 0%) 0,
+      rgb(0 0 0 / 19%) var(--velo-base),
+      rgb(0 0 0 / 10%) 100%
+    );
     transition: opacity var(--dur) var(--ease);
   }
-  .parete__campata:hover::after,
-  .parete__campata:focus-visible::after {
-    opacity: 0.7;
+  .parete__campata:hover::before,
+  .parete__campata:focus-visible::before {
+    opacity: 0;
   }
 
   /* Il fuoco globale è rosso su 2px: su una campata scura, e accanto a un'altra
@@ -296,7 +349,7 @@ const campate = voci.map((r) => ({
 
   .parete__daGenerare {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     /* tratteggio: si deve capire a occhio che è un segnaposto, non un fondo */
     border: 1px dashed rgb(255 255 255 / 32%);
     padding: var(--s-4);
@@ -319,7 +372,7 @@ const campate = voci.map((r) => ({
 
   .parete__insegna {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: grid;
     gap: var(--s-3);
     /* 352px: una misura di colonna. Senza, su una campata a colonna singola da

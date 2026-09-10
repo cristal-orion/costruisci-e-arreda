@@ -2,12 +2,21 @@
 
 > ## ⏯ PUNTO DI RIPRESA — leggere per primo
 >
-> **Ultima sessione: 2026-09-04.** **Fase A completa** (52 rotte, tutti i 56 URL
-> indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B iniziata**: la
-> homepage apre con i quattro rami del gruppo — voci **B01–B05** del CHANGELOG.
+> **Ultima sessione: 2026-09-11.** **Fase A completa** (52 rotte, tutti i 56 URL
+> indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B in corso**: la
+> homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la
+> velatura è stata rifatta — voci **B01–B06** del CHANGELOG.
 > **Due lavori aperti, indipendenti fra loro:** le altre modifiche volute dal
 > cliente (fase B) e il deploy su Coolify + cutover DNS.
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
+>
+> ### ⏭ Da fare per prima cosa domani
+> 1. **`cd _migrazione && node check-build.js http://localhost:4321`** — il cancello
+>    di qualità **non** è stato rieseguito dopo il cambio di velatura di B06.
+>    Il preview si lega a `localhost`, non a `127.0.0.1`: passare l'indirizzo.
+> 2. Rigenerare le **baseline**: `fingerprint-astro.json` e le catture. Il contenuto
+>    non è cambiato, ma nove immagini sì.
+> 3. Poi si riprende con le modifiche volute (sotto, "Altro aperto").
 >
 > ### Fase B — in corso
 > **B01–B05 (2026-09-04) — la homepage apre con i rami.** Il carosello a 3 slide
@@ -18,29 +27,33 @@
 > Ristrutturazione — che portano alle rotte `type_stores` esistenti. La fascia dei
 > servizi numerati torna a scavalcare l'hero come nell'originale.
 > Fonte unica dei rami: `src/data/rami.ts`; i comuni sono derivati da `sedi` in
-> `site.ts`, non riscritti. Homepage a **0,27 MB / 12 richieste** — ma senza le
-> foto della parete (vedi sotto): con le foto era 0,30 / 16, col carosello
-> 0,48 / 17, nell'originale 5,16 MB / 55.
+> `site.ts`, non riscritti. Homepage a **0,38 MB / 22 richieste** contro
+> **6,16 MB / 69** dell'originale, foto della parete comprese (misura di B06,
+> mirror e build con lo stesso strumento).
 >
-> ### ⚠ Le foto della parete NON CI SONO — stato di lavoro voluto (B04)
-> Le quattro provvisorie in bianco e nero sono state rimosse. Ogni campata mostra
-> in un riquadro tratteggiato **il prompt con cui va generata la propria foto**
-> (`promptFoto` in `src/data/rami.ts`; le regole di formato stanno una volta sola
-> in `FORMATO_FOTO`, e `promptCompleto()` le attacca al soggetto e le mette anche
-> nel `title` della campata). Il proprietario le sta generando con un'IA.
+> ### ✅ Le foto della parete ci sono (B06)
+> Le quattro sono generate, al loro posto, con l'`alt` scritto guardandole:
+> `foto` popolata e `promptFoto` tolta in `src/data/rami.ts`. Insieme a loro sono
+> entrate cinque immagini nuove che ne sostituiscono altrettante del vecchio sito
+> (foto della sezione storia, fondo della sezione store, le tre card di
+> tassonomia) più le copertine degli articoli. Le nove stanno in
+> `wp-content/uploads/2026/09/` — `src/assets/uploads` è un symlink lì dentro — e
+> sono registrate in **`src/lib/immagini-locali.ts`**, fuori da
+> `immagini-generate.ts` che l'estrattore riscrive.
+> Le quattro foto della parete pesano **56,7 KB in tutto**.
 >
-> **Quando arrivano le immagini**, per ogni ramo in `rami.ts`:
-> 1. percorso del file in `foto` (i file vanno in `wp-content/uploads/<anno>/<mese>/`);
-> 2. **scrivere `fotoAlt`** guardando la foto — i prompt NON sono l'`alt`, e il
->    campo è vuoto di proposito;
-> 3. **togliere `promptFoto`**: è quello che fa sparire il segnaposto;
-> 4. se il ritaglio va spostato, campo `fuoco` (`'50% 35%'`) — il CSS non si tocca;
-> 5. **rimisurare la velatura** (oggi 82% / 58% / 18%, tarata sul bianco e nero) e
->    il peso della homepage, poi `check-build.js`.
+> Lo stato di lavoro con il prompt nel riquadro tratteggiato **resta come
+> fallback**: un ramo nuovo senza `foto` e con `promptFoto` mostra il segnaposto.
+> Non è codice morto, è la strada per il prossimo ramo. Il formato richiesto è in
+> `FORMATO_FOTO` (misurato in B03: 4:3 orizzontale · soggetto nel 60%×70%
+> centrale · terzo inferiore semplice · minimo 2400px sul lato corto).
 >
-> Formato richiesto, misurato in **B03**: 4:3 orizzontale · soggetto nel 60%×70%
-> centrale · terzo inferiore semplice · a colori, luce media-alta · minimo 2400px
-> sul lato corto · gli originali, non file già compressi.
+> **La velatura è tarata su queste foto e su questi testi.** Se cambia una
+> descrizione, l'insegna cambia altezza e `--velo-base` (200/210/320px per
+> breakpoint) va rimisurata: `_migrazione/misure-b06/altezze-insegna.js` per le
+> altezze, `_migrazione/misura-contrasto-parete.js` per il verdetto — 216 misure,
+> esce con 1 se una non passa. Oggi passa con margine +2,20 a riposo e +1,21
+> puntata, 0,0% di area sotto soglia.
 >
 > **B05 — la riga del `Titoletto` ha una manopola.** Sfonda fino al bordo della
 > finestra (segno grafico del sito) e va bene solo se il titolo è al bordo
@@ -60,13 +73,16 @@
 >   Da decidere quale coppia resta, perché vale anche per menu e footer.
 >
 > ### Peso reale misurato nel browser (byte trasferiti, 1440px, scroll completo)
+> Rimisurato in **B06** su entrambi i lati con `_migrazione/misura-peso.js`, che
+> ora è nel repo: i numeri di prima venivano da uno script che non c'era più.
 > | rotta | mirror | rebuild | |
 > |---|---|---|---|
-> | `/type_stores/showroom-cat/` | **58,04 MB** · 179 richieste | **0,20 MB** · 7 | −100% |
-> | `/store/via-san-massimo-na/` | 28,94 MB · 141 | 0,63 MB · 29 | −98% |
-> | `/il-nostro-team/` | 7,29 MB · 63 | 0,35 MB · 26 | −95% |
-> | `/` homepage | 5,16 MB · 55 | 0,27 MB · 12 | −95% |  ← senza le foto della parete
-> | **10 rotte campione** | **121,74 MB** | **3,36 MB** | **−97%** |
+> | `/type_stores/showroom-cat/` | **58,48 MB** · 190 richieste | **0,16 MB** · 7 | −100% |
+> | `/store/via-san-massimo-na/` | 22,08 MB · 150 | 1,09 MB · 49 | −95% |
+> | `/il-nostro-team/` | 7,67 MB · 74 | 0,28 MB · 26 | −96% |
+> | `/` homepage | 6,16 MB · 69 | 0,38 MB · 22 | −94% |
+> | `/realizzazioni/home-albe/` | 2,63 MB · 97 | **1,70 MB** · 62 | **−35%** ← da guardare |
+> | **10 rotte campione** | **118,27 MB** · 874 | **4,36 MB** · 214 | **−96%** |
 >
 > CSS: 685 KB in 22 bundle → **un file**. JS: 790 KB in 26 file → poche righe in linea.
 >
@@ -196,7 +212,13 @@
 > - Script pronti: `fingerprint.py` (ora anche in modo `astro`), `screenshot.js`,
 >   `verify-hero.js`, `audit-hero-edges.js`, `harvest-tokens.js`, `harvest-layout.js`,
 >   `extract-content.js` (rigenera i contenuti e il modulo immagini),
->   `check-build.js` (cancello di qualità su tutte le rotte del build)
+>   `check-build.js` (cancello di qualità su tutte le rotte del build),
+>   `misura-peso.js` (byte trasferiti a 1440px con scroll completo, mirror o build),
+>   `misura-contrasto-parete.js` (contrasto delle insegne sulle foto, i due stati,
+>   esce con 1 se una misura non passa). Le prove one-shot di B06 stanno in
+>   `_migrazione/misure-b06/`, con un README che dice cosa ha misurato ognuna.
+> - **`npm run preview` si lega a `localhost`, non a `127.0.0.1`**: gli script che
+>   puntano all'IP non rispondono. Passare l'indirizzo: `node check-build.js http://localhost:4321`.
 > - Git inizializzato, branch `main`.
 
 

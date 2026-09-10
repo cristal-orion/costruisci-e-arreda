@@ -1724,3 +1724,188 @@ contenitore`) segnala **candidati, non difetti**: dopo il fix continua a
 segnalarli, perché quei due titoli *sono* ancora fuori dal bordo — è la riga che
 non sfonda più. Chi lo riesegue non si spaventi: la misura che conta è quella
 del rettangolo dello `::after`, in tabella qui sopra.
+
+---
+
+## B06 — Le foto della parete sono arrivate, e la velatura non teneva
+
+**2026-09-11**
+
+### Cosa è entrato
+
+Le quattro foto dell'hero non sono più segnaposto: sono generate, al loro posto,
+con l'`alt` scritto guardandole. In `src/data/rami.ts` ogni ramo ha `foto`
+popolata e `promptFoto` tolta — che è quello che fa sparire il riquadro
+tratteggiato. Lo stato di lavoro resta come **fallback** per un eventuale ramo
+futuro senza immagine, non è codice morto.
+
+Insieme alle quattro sono entrate cinque immagini nuove che ne sostituiscono
+altrettante del vecchio sito: la foto della sezione "La nostra storia", il fondo
+della sezione "store", e le tre card della tassonomia realizzazioni. Più le
+copertine degli articoli, riportate a `COPERTINA-ARTICOLI-*`.
+
+Le nove stanno in `wp-content/uploads/2026/09/` (`src/assets/uploads` è un
+symlink lì dentro) e sono registrate in `src/lib/immagini-locali.ts`, **fuori**
+da `immagini-generate.ts`: quel file lo riscrive l'estrattore, e le immagini
+fatte apposta per il rebuild sparirebbero al primo giro.
+
+### Il peso, rimisurato su entrambi i lati con lo stesso strumento
+
+I numeri di prima venivano da uno script ad hoc che non è nel repo. Confrontare
+due misure prese con strumenti diversi non dimostra niente, quindi la tabella è
+stata rifatta da capo — mirror **e** build — con `misura-peso.js`, che ora sta
+in `_migrazione/`: contesto nuovo per rotta (cache vuota), 1440px, scorrimento
+completo a passi di mezzo viewport, attesa della rete ferma, byte trasferiti
+letti dalla Resource Timing API, tracker bloccati da entrambe le parti.
+
+| rotta | mirror | rebuild | |
+|---|---|---|---|
+| `/type_stores/showroom-cat/` | **58,48 MB** · 190 richieste | **0,16 MB** · 7 | −100% |
+| `/store/via-san-massimo-na/` | 22,08 MB · 150 | 1,09 MB · 49 | −95% |
+| `/il-nostro-team/` | 7,67 MB · 74 | 0,28 MB · 26 | −96% |
+| `/category/ultime-news-e-articoli/` | 7,10 MB · 67 | 0,18 MB · 13 | −97% |
+| `/` homepage | 6,16 MB · 69 | 0,38 MB · 22 | −94% |
+| `/la-nostra-storia/` | 5,12 MB · 71 | 0,19 MB · 15 | −96% |
+| `/gres-costruisciearreda-consigli/` | 3,91 MB · 52 | 0,12 MB · 5 | −97% |
+| `/contatti/` | 2,75 MB · 53 | 0,16 MB · 9 | −94% |
+| `/realizzazioni/home-albe/` | 2,63 MB · 97 | 1,70 MB · 62 | **−35%** |
+| `/services/progetto/` | 2,36 MB · 51 | 0,11 MB · 6 | −95% |
+| **totale** | **118,27 MB** · 874 | **4,36 MB** · 214 | **−96%** |
+
+`/realizzazioni/home-albe/` è l'unica rotta dove il vantaggio è piccolo: 61 foto
+di galleria che nell'originale erano miniature e qui sono servite più grandi.
+**Da guardare**: è la sola voce della tabella fuori scala rispetto alle altre.
+
+**La homepage, risorsa per risorsa** (`misure-b06/risorse-homepage.js`): 0,384 MB
+in 22 richieste. Le quattro foto della parete pesano **56,7 KB in tutto** —
+18,6 + 14,6 + 13,7 + 9,8 — cioè meno del carattere Montserrat (37,4 KB) più il
+fondo della sezione store (73,2 KB, la risorsa più pesante della pagina). L'HTML
+è 9,8 KB, il CSS 9,2 KB.
+
+Il numero della tabella vecchia (0,27 MB · 12 richieste) era **senza le foto** e
+preso con l'altro script: non è il termine di paragone. Il paragone giusto è
+6,16 MB · 69 richieste dell'originale, sulla stessa pagina, con lo stesso
+strumento, oggi.
+
+Controllato anche che il peso in più non fosse un artefatto della misura
+(`misure-b06/scroll-a-confronto.js`): salto secco in fondo alla pagina e
+scorrimento a passi danno lo stesso identico risultato, 0,38 MB · 22.
+
+### Le insegne: dove arrivano davvero
+
+Misurato con `misure-b06/altezze-insegna.js`, perché tutto quello che viene dopo
+dipende da questi numeri:
+
+| larghezza | campata | insegna | sale dal fondo |
+|---|---|---|---|
+| 1440 | 359×461 | 168px (196 "Progettazione") | 283-311px = **61-68%** |
+| 900 | 450×300 | 140px (162) | 180-202px = **60-67%** |
+| 390 | 390×240 | 140px (162) | 172-194px = **72-81%** |
+
+L'insegna è alta più o meno uguale ovunque; la campata cambia da 240 a 464px.
+
+### Il difetto: la velatura era tarata su una percentuale, non sull'insegna
+
+Con le foto in bianco e nero la velatura era 82/58/18, poi abbassata a 80/52/14
+per far vedere le foto a colori. Rimisurata sulle foto vere — nascondendo
+l'insegna, fotografando il fondo come lo compone il browser e calcolando il
+contrasto pixel per pixel contro il colore reale del testo, `text-shadow` non
+contato perché WCAG non lo conta — **non passa**:
+
+| stato | misura peggiore | area sotto soglia |
+|---|---|---|
+| a riposo | mobile · Ferramenta · descrizione **4,16:1** (serve 4,5) | 5,2% del nome di "Progettazione" |
+| **puntata** | mobile · Ferramenta · descrizione **3,26:1** | **100%** delle sedi di Ferramenta su desktop |
+
+Lo stato puntato era di gran lunga il peggiore, e non è un dettaglio
+transitorio: con la tastiera `:focus-visible` lo tiene finché non ci si sposta.
+Alla velatura veniva scalata l'**opacità** al 70%, quindi si alleggeriva tutta,
+fondo compreso — proprio la fascia dove sta scritto qualcosa.
+
+La causa vera però non è la densità. Lo stop di mezzo del gradiente stava a un
+**42% fisso** dell'altezza, mentre l'insegna arriva al 61-68% su desktop e al
+72-81% su telefono: il testo cadeva nella metà chiara del gradiente proprio dove
+la campata è più bassa. È la stessa classe di difetto di **B03** — una misura
+espressa in percentuale di un riquadro che cambia proporzione fra i viewport.
+
+La prova che è lo stop e non la densità: alzare la velatura a percentuale fissa
+passa solo dall'84/58/18 in su e col fiato corto (margine +0,13 sulla soglia),
+mentre spostare lo stop dove arriva l'insegna porta lo stesso margine a **+2,88**
+*e* lascia la velatura in alto più leggera. Tre sweep, in
+`misure-b06/sweep-1…3`:
+
+| tentativo | esito |
+|---|---|
+| velature piatte, stop al 42% | 80/52/14 boccia (−0,34); passa solo da 84/58/18 (+0,13) |
+| opacità al 70/80/85% per lo stato puntato | boccia sempre: −1,24, −0,61, −0,23 |
+| schiarire solo lo stop in alto | boccia sul nome a 390px (2,56): lì l'insegna sta **sopra** il 42% |
+| stop al 70% / 85% dell'altezza | +2,88 |
+| **stop in px dal fondo (200/210/320)** | **+2,53 a riposo, +1,24 puntata, a nove larghezze** |
+
+I px vincono sulle percentuali perché inseguono l'insegna, che è la cosa da
+coprire, invece della campata, che cambia da 240 a 464px.
+
+### Il fix, e i due difetti trovati mentre lo si verificava
+
+Velatura a riposo **84% / 58% / 10%**, puntata **84% / 48% / 0%**, con lo stop di
+mezzo a `--velo-base` = 200px sotto i 769, 210px sopra, 320px da 1200 (sopra i
+1200 ci sono in più i 75px che la fascia dei servizi scavalca).
+
+**Perché due strati e non un `opacity`.** Un gradiente non si può animare:
+misurato in `misure-b06/transizione-gradiente.js`, a metà di una transizione su
+`background-image` il valore calcolato è già quello finale, cioè il browser lo
+scambia di colpo. E scalare l'opacità di un solo strato alleggerisce tutto,
+fondo compreso: è il difetto di partenza. Quindi `::after` è lo stato puntato e
+resta sempre, `::before` è la differenza fino allo stato a riposo ed è quello
+che si dissolve. Sovrapposti danno 84/58/10; il nero su nero si compone uguale
+in qualunque ordine, quindi la scelta di quale sta sopra non cambia il colore.
+
+**Difetto trovato subito dopo, misurando.** Con i due strati in piedi, la campata
+puntata dava esattamente gli stessi numeri di quella a riposo — a due decimali.
+Sospetto sbagliato numero uno: la cattura `fullPage` perde lo stato puntato.
+Verificato (`misure-b06/hover-e-fullpage.js`): no, la conserva. Sospetto numero
+due, quello giusto: `::before` è il **primo figlio**, e senza `z-index` finisce
+dietro la foto, che è un figlio vero più avanti nel DOM. Lo strato c'era, si
+dissolveva regolarmente (opacità 1 → 0, letta), e non si vedeva: la luminanza
+media del fondo sotto l'insegna era 66,1 in tutti e due gli stati. Ora l'ordine
+è dichiarato invece che ereditato dal DOM: 1 le velature, 2 il testo.
+
+Senza quel controllo il commit sarebbe passato: il numero *sembrava* buono
+perché la misura stava fotografando due volte lo stesso stato.
+
+### Verifica
+
+`misura-contrasto-parete.js`, ora in `_migrazione/` perché va rieseguito ogni
+volta che cambiano le foto, i testi delle insegne o la velatura: **9 larghezze
+× 4 campate × 3 blocchi di testo × 2 stati = 216 misure**, comprese le larghezze
+di confine dei breakpoint (1200, 1199, 992, 769, 768).
+
+| stato | margine peggiore | dove | area sotto soglia |
+|---|---|---|---|
+| a riposo | **+2,20** | 1440px · Ferramenta · sedi 6,70:1 (soglia 4,5) | **0,0%** |
+| puntata | **+1,21** | 1200px · Edilizia · nome 4,21:1 (soglia 3) | **0,0%** |
+
+Il verdetto è sul 1° percentile e non sul pixel peggiore: un pixel chiaro nel
+buco fra due lettere non è un problema di leggibilità, una zona sì. Lo script
+esce con 1 se una misura non passa, quindi si può usare come cancello.
+
+Per confronto, la velatura precedente rimessa in piedi sulle stesse nove
+larghezze (`misure-b06/contrasto-velatura-precedente.js`) boccia lo stato
+puntato in blocco: Ferramenta · nome 2,17:1 a 390px, 2,31 a 769, 2,38 a 900;
+Ceramiche · nome 2,42 a 390, 2,57 a 769; Progettazione · nome 2,22 a 390;
+Ferramenta · descrizione 2,69 a 390 e 769; Ferramenta · sedi 3,20 a 390.
+(L'elenco completo di quella riesecuzione non è stato letto fino in fondo: le
+righe qui sopra sono quelle riportate a video.)
+
+`astro check`: 0 errori. `npm run build`: 52 pagine.
+
+### Cosa resta aperto
+
+- **`check-build.js` non è stato rieseguito** dopo il cambio di velatura: è la
+  prima cosa da fare, prima di qualsiasi altra modifica.
+- **Baseline non aggiornate**: né `fingerprint-astro.json` né le catture. Il
+  contenuto non è cambiato con questa voce, ma le immagini sì.
+- `/realizzazioni/home-albe/` a 1,70 MB: l'unica rotta con un vantaggio piccolo.
+- La velatura è tarata su **queste** foto e su **questi** testi. Se cambia una
+  descrizione, l'insegna cambia altezza e `--velo-base` va rimisurata con
+  `misure-b06/altezze-insegna.js`.
