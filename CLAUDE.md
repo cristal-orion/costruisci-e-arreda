@@ -2,13 +2,62 @@
 
 > ## ⏯ PUNTO DI RIPRESA — leggere per primo
 >
-> **Ultima sessione: 2026-09-02.** **Fase A completa: 52 rotte costruite, tutti i 56
-> URL indicizzati coperti** (49 diretti + 7 redirect 301). Fatti: scaffold, design
-> system misurato, i 4 componenti, hero, contenuti, header/footer, i 4 template,
-> gli archivi, la homepage, le 11 one-off, le landing, le thank-you, i 6 form,
-> i redirect.
-> **Il prossimo passo è il deploy su Coolify e il cutover DNS.**
+> **Ultima sessione: 2026-09-04.** **Fase A completa** (52 rotte, tutti i 56 URL
+> indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B iniziata**: la
+> homepage apre con i quattro rami del gruppo — voci **B01–B05** del CHANGELOG.
+> **Due lavori aperti, indipendenti fra loro:** le altre modifiche volute dal
+> cliente (fase B) e il deploy su Coolify + cutover DNS.
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
+>
+> ### Fase B — in corso
+> **B01–B05 (2026-09-04) — la homepage apre con i rami.** Il carosello a 3 slide
+> è sostituito da `HeroRami`, che è **l'hero del sito diviso in quattro campate**:
+> a tutta finestra, 768px, claim del gruppo a 78px come unico `<h1>` con la riga
+> rossa che sfonda fino al bordo, e quattro campate verticali da 359×461 separate
+> da **fughe di 1px** — Ceramiche e Bagno, Edilizia, Ferramenta, Progettazione e
+> Ristrutturazione — che portano alle rotte `type_stores` esistenti. La fascia dei
+> servizi numerati torna a scavalcare l'hero come nell'originale.
+> Fonte unica dei rami: `src/data/rami.ts`; i comuni sono derivati da `sedi` in
+> `site.ts`, non riscritti. Homepage a **0,27 MB / 12 richieste** — ma senza le
+> foto della parete (vedi sotto): con le foto era 0,30 / 16, col carosello
+> 0,48 / 17, nell'originale 5,16 MB / 55.
+>
+> ### ⚠ Le foto della parete NON CI SONO — stato di lavoro voluto (B04)
+> Le quattro provvisorie in bianco e nero sono state rimosse. Ogni campata mostra
+> in un riquadro tratteggiato **il prompt con cui va generata la propria foto**
+> (`promptFoto` in `src/data/rami.ts`; le regole di formato stanno una volta sola
+> in `FORMATO_FOTO`, e `promptCompleto()` le attacca al soggetto e le mette anche
+> nel `title` della campata). Il proprietario le sta generando con un'IA.
+>
+> **Quando arrivano le immagini**, per ogni ramo in `rami.ts`:
+> 1. percorso del file in `foto` (i file vanno in `wp-content/uploads/<anno>/<mese>/`);
+> 2. **scrivere `fotoAlt`** guardando la foto — i prompt NON sono l'`alt`, e il
+>    campo è vuoto di proposito;
+> 3. **togliere `promptFoto`**: è quello che fa sparire il segnaposto;
+> 4. se il ritaglio va spostato, campo `fuoco` (`'50% 35%'`) — il CSS non si tocca;
+> 5. **rimisurare la velatura** (oggi 82% / 58% / 18%, tarata sul bianco e nero) e
+>    il peso della homepage, poi `check-build.js`.
+>
+> Formato richiesto, misurato in **B03**: 4:3 orizzontale · soggetto nel 60%×70%
+> centrale · terzo inferiore semplice · a colori, luce media-alta · minimo 2400px
+> sul lato corto · gli originali, non file già compressi.
+>
+> **B05 — la riga del `Titoletto` ha una manopola.** Sfonda fino al bordo della
+> finestra (segno grafico del sito) e va bene solo se il titolo è al bordo
+> sinistro del contenitore. Nella colonna destra di un layout a due colonne
+> attraversava la foto accanto. Ora `Titoletto` legge
+> `--titoletto-rule-width` (default = il comportamento di prima, quindi nulla è
+> cambiato sulle altre 50 rotte); chi mette un titolo fuori dal bordo imposta
+> `--titoletto-rule-width: 100%` sul contenitore. **Da ricordare quando si
+> compone un layout nuovo a due colonne.**
+>
+> **Altro aperto, da far decidere al proprietario:**
+> - la fascia **"store"** più in basso (i 3 loghi SVG) ora punta alle stesse
+>   rotte dell'hero: è un doppione. Proposta: riusarla per le **sedi fisiche**
+>   (`/store/*`), che la homepage oggi non linka;
+> - i nomi "**Ceramiche e Bagno**" e "**Edilizia**" sono quelli detti dal
+>   proprietario; sul sito le pagine si chiamano "Showroom" e "Rivendita edile".
+>   Da decidere quale coppia resta, perché vale anche per menu e footer.
 >
 > ### Peso reale misurato nel browser (byte trasferiti, 1440px, scroll completo)
 > | rotta | mirror | rebuild | |
@@ -16,7 +65,7 @@
 > | `/type_stores/showroom-cat/` | **58,04 MB** · 179 richieste | **0,20 MB** · 7 | −100% |
 > | `/store/via-san-massimo-na/` | 28,94 MB · 141 | 0,63 MB · 29 | −98% |
 > | `/il-nostro-team/` | 7,29 MB · 63 | 0,35 MB · 26 | −95% |
-> | `/` homepage | 5,16 MB · 55 | 0,48 MB · 17 | −91% |
+> | `/` homepage | 5,16 MB · 55 | 0,27 MB · 12 | −95% |  ← senza le foto della parete
 > | **10 rotte campione** | **121,74 MB** | **3,36 MB** | **−97%** |
 >
 > CSS: 685 KB in 22 bundle → **un file**. JS: 790 KB in 26 file → poche righe in linea.
@@ -25,14 +74,21 @@
 > Astro 7.2.10 · Node 22.22 · `trailingSlash: 'always'` · sitemap filtrata sui noindex.
 > Design system **misurato** (non letto dal CSS): `src/styles/{fonts,tokens,base,global}.css`.
 > Pagina di controllo dei token: `/design-system/` (noindex).
-> Misure, deviazioni dichiarate e verifiche: `_migrazione/CHANGELOG.md`, voci **A00–A07**.
+> Misure, deviazioni dichiarate e verifiche: `_migrazione/CHANGELOG.md`, voci **A00–A08**
+> per la fase A, **B01–B05** per le modifiche volute.
 >
 > Comandi: `cd costruisciearreda-astro && npm run dev` · `npm run build` · `npm run preview`.
 > Cancello di qualità: `cd _migrazione && node check-build.js` (52 rotte × 3 viewport).
 > **Attenzione:** non mandare gli script di `_migrazione/` in pipe a `head` — la pipe
 > chiusa li interrompe a metà e i file restano scritti solo in parte.
+> **Attenzione 2:** l'HMR del dev server **non prende i cambi dentro il blocco
+> `<style>`** di un componente `.astro` quando il componente è nuovo o rinominato:
+> la pagina serve il markup nuovo con il CSS vecchio, e sembra un bug del CSS.
+> Succede in silenzio. Dopo aver toccato uno `<style>`, se la misura non torna:
+> `npx astro dev stop && rm -rf node_modules/.vite && npm run dev`.
+> Verificato due volte in sessione, con `getComputedStyle` (il build era corretto).
 >
-> ### Prossimo passo: deploy
+> ### Il deploy, quando si vuole (indipendente dalla fase B)
 > 1. **Dockerfile** con nginx o Caddy che serve `dist/`, includendo
 >    `costruisciearreda-astro/redirect.conf` (generato: 5 redirect + mappa dei 44
 >    vecchi URL `?p=ID`).

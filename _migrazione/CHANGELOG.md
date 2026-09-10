@@ -1100,3 +1100,627 @@ Tutte con **un solo `<h1>`**, nessuno scorrimento orizzontale, nessuna sezione
 vuota, nessun errore JavaScript.
 
 `check-build.js`: **52 rotte × 3 viewport, nessun problema.**
+
+---
+
+# Fase B — le modifiche volute
+
+La fase A è chiusa: ricostruzione 1:1, fedeltà dimostrata. Da qui in poi le
+modifiche sono **volute**, non correzioni di difetti. Ognuna sposta la baseline,
+quindi ognuna deve dire qui **che cosa** ha spostato e **perché** — altrimenti
+il `fingerprint diff` smette di essere uno strumento e diventa rumore.
+
+---
+
+## B01 — La homepage apre con i quattro rami del gruppo
+**2026-09-04 · richiesta del proprietario**
+
+### La richiesta
+
+«Costruisci e Arreda è un gruppo che comprende diversi rami: abbiamo
+ferramenta, ceramiche e bagno ed edilizia. Quello che andremo a fare sarà nella
+home dare spazio e mostrare fin da subito i diversi rami, in modo che l'utente
+possa entrare fin da subito nelle diverse sezioni. Ogni sezione è uno showroom,
+non un e-commerce.»
+
+Tre scelte decise con il proprietario prima di scrivere il codice:
+- i rami vanno **al posto** del carosello, non sotto;
+- sono **quattro**, non tre: si aggiunge Progettazione e Ristrutturazione, che
+  sul sito è già un ramo a sé con pagina propria e 8 servizi collegati;
+- le rotte restano **quelle esistenti** (`/type_stores/...`): brutte da leggere
+  ma indicizzate, e rinominarle è una modifica a sé che richiede i 301.
+
+### Perché il carosello se ne va — misurato sul mirror
+
+Le tre slide dell'hero originale avevano:
+- lo **stesso** occhiello su tutte e tre — "Edilizia, design e ferramenta";
+- tre claim generici che non nominano nessun ramo — "professionisti del
+  settore", "materie prime di qualità", "estetica e funzionalità";
+- un `<h1>` **ciascuna**, quindi tre `<h1>` in homepage.
+
+Risultato: **750px di altezza** che non dicevano né quali sono i rami del
+gruppo né dove entrare. I rami erano raggiungibili solo dal sottomenu "Store"
+o da tre loghi SVG a metà pagina.
+
+I tre claim **non sono stati buttati**: stanno nella riga di apertura del nuovo
+hero ("Professionisti del settore, materie prime di qualità, estetica e
+funzionalità: quattro rami e un solo interlocutore, dal materiale al progetto
+finito"). Così la modifica è di sola struttura e il `fingerprint diff` non
+segnala parole perse.
+
+### Cosa è stato aggiunto
+
+| File | Cos'è |
+|---|---|
+| `src/data/rami.ts` | I quattro rami: nome, descrizione, rotta, foto, sedi. **Fonte unica.** |
+| `src/components/Rami.astro` | I riquadri: foto a pieno riquadro, velatura, nome, descrizione, comuni, azione. |
+| `src/components/HeroRami.astro` | L'apertura: claim (`<h1>`) + riga di apertura + la griglia. |
+
+`src/pages/index.astro`: `HeroSlider` → `HeroRami`. `HeroSlider.astro` **resta
+in repo**, non è più importato dalla homepage: serve ancora se si volesse un
+carosello altrove, e cancellarlo non fa guadagnare nulla.
+
+**`rami.ts` non duplica le sedi.** Ogni ramo dichiara il `tipoSede`
+(`Showroom` / `Punto edile` / `Ferramenta`) e i comuni mostrati nei riquadri
+sono derivati da `sedi` in `site.ts`. Con la deduplica: lo showroom di Via
+Martiri della Libertà è elencato due volte nel footer dell'originale, quindi
+senza dedurre "Napoli" comparirebbe due volte. Progettazione ha `tipoSede:
+null` — non è un punto vendita, mostrarne l'indirizzo degli uffici sarebbe
+fuorviante — e al suo posto mostra "8 servizi, dal rilievo alle certificazioni".
+
+### Misure nel browser
+
+| | desktop 1440 | tablet 900 | mobile 390 |
+|---|---|---|---|
+| altezza dell'hero | 921px | 899px | 1336px |
+| riquadro | 641×300 | 398×283 | 350×240 |
+| colonne | 2 | 2 | 1 |
+| `<h1>` | **1** (erano 3) | 1 | 1 |
+| scorrimento orizzontale | no | no | no |
+| rami visibili senza scorrere | **4 su 4** | 4 su 4 | 1 su 4 |
+
+**Peso della homepage, byte trasferiti a 1440px con scroll completo:**
+**0,37 MB in 16 richieste**, da 0,48 MB in 17 della homepage con il carosello,
+e da 5,16 MB in 55 dell'originale (**−93%**). È scesa perché quattro foto da
+640px pesano meno di tre slide a piena finestra, di cui una in `eager`.
+
+### Due difetti trovati misurando, non guardando
+
+**1. Fondi dei riquadri non allineati.** A 900px il titolo "Progettazione e
+Ristrutturazione" va a capo, quindi quel riquadro è alto 283px e quello accanto
+240: i due fondi della stessa riga non combaciavano. Causa: il `min-height`
+stava sul link, che è figlio del `<li>`, e il `<li>` si allungava da solo
+mentre il link no. Fix: `display: grid` sul `<li>`, così il link riempie la
+cella. Verificato: 283/283.
+
+**2. La fascia dei servizi numerati copriva i riquadri.** `ServiziNumerati` ha
+`margin-top: -75px` da 769px in su — riprodotto dall'originale, dove scavalcava
+la foto dell'hero. Con l'hero fatto di riquadri con il testo **in basso**, quei
+75px si mangiavano i comuni e il "Scopri" dei due riquadri inferiori.
+
+Fix alla radice: la sovrapposizione è diventata un token,
+`--overlap-servizi` (0 sotto i 769px, 75px sopra). La legge chi scavalca
+(`ServiziNumerati`, `margin-top: calc(-1 * ...)`) e chi deve lasciare lo spazio
+(`HeroRami`, `padding-bottom`). Scritta due volte a mano si sarebbe scollata al
+primo che cambia.
+
+Verificato ai tre viewport: fondo della griglia dei rami **=** cima della
+fascia dei servizi (947/947, 893/893, 1405/1405). Zero sovrapposizione, zero
+buco.
+
+### Contrasto: alzato dopo aver guardato le catture
+
+La velatura dei riquadri era la stessa di `Riquadri.astro` (78% in basso, 45% a
+metà). Non bastava: i titoli "EDILIZIA" e "FERRAMENTA" cadono su una zona
+chiara della foto — un mattone illuminato, un rullo su intonaco bianco — e
+diventavano illeggibili. Alzata a 82% / 58% / 18%, più un `text-shadow` sul
+corpo per il contrasto locale, che evita di dover scurire tutta la foto per
+salvare una riga di testo.
+
+**Da riverificare quando arrivano le foto definitive:** quelle attuali sono in
+bianco e nero, una foto a colori si comporta diversamente.
+
+### Verifica
+
+`check-build.js`: **52 rotte × 3 viewport, nessun problema.** `astro check`: 0
+errori. `npm run build`: 52 pagine.
+
+**Fedeltà: l'impronta della homepage, prima e dopo B01.** Confrontata con la
+versione di `baseline/fingerprint-astro.json` in git, così il delta è **solo**
+quello di questa modifica e non si mescola alle differenze della fase A:
+
+| | prima | dopo |
+|---|---|---|
+| `<h1>` | 3 (`professionisti del settore`, …) | **1** (`Edilizia, design e ferramenta`) |
+| heading | — | **+4 `<h2>`**, uno per ramo |
+| immagini | 3 slide (`Raggruppa-1650/1652/1655`) | 3 foto dei rami (`RivenditaEdile`, `Ferramenta2`, `Raggruppa-1647-1`) |
+| link interni | 19 | **20** |
+| parole | 472 | **566** |
+
+Nessuna parola persa: le 94 in più sono la riga di apertura e le quattro
+descrizioni. Il link in più è `/type_stores/progettazione-e-ristrutturazione-edile/`,
+che la homepage non raggiungeva da nessuna parte. La quarta foto
+(`Raggruppa-1679`) non risulta nuova perché era già in pagina come fondo della
+fascia "store".
+
+Le voci "immagini assenti" e "parole assenti" che il `diff` contro il mirror
+segnala sulla homepage sono le **stesse di prima** di B01 (etichette dei form,
+abbreviazioni delle date, il `0` dei contatori): non sono un effetto di questa
+modifica.
+
+### Cosa resta aperto
+
+1. **Le quattro foto sono provvisorie.** Sono le uniche immagini di quel ramo
+   già presenti nel mirror. In `rami.ts` sono marcate `fotoProvvisoria: true`:
+   cercare quel flag per sapere cosa resta da sostituire. Servono anche gli
+   `alt`, oggi vuoti perché la foto è decorativa; con scatti veri dei punti
+   vendita diventano contenuto e l'`alt` va scritto.
+
+   | ramo | foto provvisoria |
+   |---|---|
+   | Ceramiche e Bagno | `2024/06/Raggruppa-1679.jpg` (foto di showroom, oggi fondo della fascia "store") |
+   | Edilizia | `2024/07/RivenditaEdile.jpg` |
+   | Ferramenta | `2024/08/Ferramenta2.jpg` |
+   | Progettazione e Ristrutturazione | `2024/06/Raggruppa-1647-1.jpg` |
+
+2. **La fascia "store" più in basso ora è un doppione.** Sono i tre loghi SVG
+   che puntano alle **stesse** tre rotte del nuovo hero. Non toccata: è
+   contenuto dell'originale e rimuoverlo è una decisione del proprietario. La
+   proposta è riusarla per le **sedi fisiche** (`/store/via-martiri-della-liberta-na/`
+   e le altre quattro), che oggi la homepage non linka da nessuna parte.
+
+3. **I nomi dei rami sono decisi qui, non presi dal sito.** "Ceramiche e Bagno"
+   e "Edilizia" sono i nomi commerciali detti dal proprietario; sul sito le
+   pagine si chiamano "Showroom" e "Rivendita edile". Da confermare quale
+   coppia di nomi resta, perché vale anche per menu e footer.
+
+---
+
+## B02 — L'hero della homepage diventa una parete, non una griglia di card
+**2026-09-04 · richiesta del proprietario**
+
+### La richiesta
+
+«Possiamo provare a rendere le 4 card nella hero più wow? È comunque la prima
+cosa che uno vede quando entra. Ora va bene ma sembra più una selezione di una
+sezione piuttosto che una hero.»
+
+### La diagnosi, misurata
+
+Quello che faceva leggere B01 come un indice e non come un'apertura era
+misurabile, non un'impressione:
+
+| | B01 | perché era il problema |
+|---|---|---|
+| larghezza | rientrata nel `.container` | margini bianchi ai lati: card appoggiate su una pagina, non un'apertura |
+| separazione | `gap: 15px` | quattro oggetti distinti invece di uno |
+| altezza campata | 300px | a quell'altezza il testo in basso è l'etichetta di una card |
+| forma | 641×300, orizzontale | banner |
+| claim | 50px grigio, sul bianco sopra le card | galleggiava, non apparteneva all'hero |
+
+### La soluzione: l'hero che il sito ha già
+
+Il sito **ha** un hero, sulle pagine interne (`Hero.astro`), e ha una forma
+misurata: a tutta finestra, **750px**, foto a pieno riquadro, titolo bianco
+maiuscolo `clamp(30px, 5.4vw, 80px)` peso 300, e la riga rossa da 1px che
+sfonda fino al bordo della finestra. La homepage era **l'unica pagina senza
+quell'hero**.
+
+Quindi non è stato inventato un aspetto nuovo: è stato preso l'hero del sito e
+**diviso in quattro campate**, una per ramo.
+
+| | B01 | B02 |
+|---|---|---|
+| larghezza | dentro il contenitore | **a tutta finestra** |
+| separazione | gap 15px | **fughe da 1px** in `--c-border`, il grigio misurato |
+| altezza campata | 300px | **464px**, verticale |
+| claim | 50px sul bianco, sopra | **78px bianco dentro la parete**, prima campata a tutta larghezza |
+| altezza totale | 921px | **771px** — vicina ai 750 dell'hero misurato |
+
+Le fughe non sono un vezzo: fra due lastre di uno showroom c'è una fuga, non un
+margine bianco. Tecnicamente sono il fondo della griglia che si vede attraverso
+`gap: 1px`, quindi zero markup in più.
+
+**Il rosso in un punto solo.** `#C20E1A` sul sito è un accento tipografico, non
+un colore di bottoni. Qui compare sotto il claim e sotto il nome della campata
+su cui si sta puntando. Così il rosso vuol dire "questa qui" invece di
+decorare.
+
+**Lo stato attivo risponde al gesto, non si anima da solo.** Puntando o dando
+il fuoco a una campata: la velatura passa da 1 a 0.7 (la foto si schiarisce) e
+la riga sotto il nome passa da bianco al 40% al rosso del brand. Verificato
+anche da tastiera, dove il fuoco è un contorno bianco rientrato di 8px — quello
+globale è rosso su 2px e su una campata scura, accanto a un'altra campata
+scura, non si vede.
+
+**La fascia dei servizi numerati torna a scavalcare l'hero**, come
+nell'originale scavalcava la foto. Da 1200px lo spazio lo lascia la campata
+(`padding-bottom: calc(var(--s-10) + var(--overlap-servizi))`), non la sezione,
+perché lì le quattro campate sono una riga sola e la sovrapposizione è
+uniforme. Sotto i 1200px sono su due righe e lo spazio lo lascia la sezione,
+altrimenti i 75px mangerebbero solo la riga in basso.
+
+### Copia: tolti tre modi di scrivere da template
+
+- `Napoli · Nola` → **`Napoli e Nola`**. I punti centrali sono il modo in cui un
+  template unisce dei campi, non il modo in cui si dice a qualcuno dove andare.
+  Il congiuntore è in `elenco()` in `rami.ts`, che fa "A", "A e B", "A, B e C".
+- `SCOPRI →` **rimosso**. Era un'etichetta maiuscola spaziata più una freccia
+  appesa al testo, su un riquadro che è già interamente un link. L'affordance
+  ora è il nome sottolineato dalla riga da 1px, che è il segno grafico del sito.
+  `Riquadri.astro` non ha nessuna etichetta d'azione: coerente.
+- `8 servizi` → **`Otto servizi`**.
+
+### Difetti trovati misurando
+
+**1. Il claim era invisibile.** `base.css` assegna agli heading un colore
+esplicito, che batte quello ereditato dalla parete: l'`<h1>` era testo scuro su
+fondo scuro. Trovato con `getComputedStyle`, non guardando — nella cattura era
+solo una fascia scura vuota. Serve `color: inherit`, che avevo messo sul nome
+della campata e non sul claim. (`.section--dark :where(h1,…) { color: inherit }`
+in `base.css` esiste esattamente per questo.)
+
+**2. "RISTRUTTURAZIONE" sfondava la campata.** 16 caratteri a 32px di corpo
+sono ~350px in una campata da 359px con 32px di padding, cioè 295px
+disponibili: `overflow: clip` la troncava a metà. Il tetto del corpo è ora
+26px, deciso dalla parola più lunga e non a occhio, più `overflow-wrap:
+break-word` come rete di sicurezza per nomi futuri. Verificato con
+`scrollWidth > clientWidth` su tutti i testi di tutte le campate: **zero
+sfondamenti** ai tre viewport.
+
+**3. Le insegne erano scalinate.** Essendo allineate in basso, una descrizione
+da 3 righe alzava il proprio nome di 21px rispetto a una da 4. Misurate le
+righe reali: a 1200px+ (campate da 359px) le quattro descrizioni stanno su
+**4, 4, 3 e 3** righe; a 900px e a 390px stanno **tutte su tre**. Quindi la
+riserva di quattro righe serve **solo** da 1200px: sotto, lasciava un buco
+sopra la riga del dove. Se le descrizioni cambiano va rimisurato — c'è scritto
+nel CSS.
+
+**4. La fascia del claim aveva 384px di fondo scuro vuoto.** Il claim occupava
+il terzo sinistro. Da 1200px claim e riga di apertura stanno affiancati e
+allineati in basso: la fascia scende a 306px e la parete a 771.
+
+### Verifica
+
+`astro check`: 0 errori. `npm run build`: 52 pagine.
+
+| | desktop 1440 | tablet 900 | mobile 390 |
+|---|---|---|---|
+| altezza dell'hero | **771px** | 960px | 1272px |
+| campata | 359×464 | 450×300 | 390×240 |
+| colonne | 4 | 2 | 1 |
+| `<h1>` | 1 | 1 | 1 |
+| corpo del claim | 77,8px | 48,6px | 30px |
+| testi che sfondano | 0 | 0 | 0 |
+| scorrimento orizzontale | no | no | no |
+| rami visibili senza scorrere | **4 su 4** | 4 su 4 | 1 su 4 |
+
+**Peso della homepage: 0,30 MB in 16 richieste.** Era 0,37 con la griglia di
+card, 0,48 con il carosello, **5,16 MB in 55 richieste nell'originale (−94%)**.
+È scesa ancora perché le campate sono larghe 359px invece di 641, quindi
+`astro:assets` serve varianti più piccole.
+
+**Impronta della homepage: identica a B01.** Rispetto alla versione col
+carosello in git: `<h1>` da 3 a **1**, **+4 `<h2>`** (uno per ramo), parole da
+472 a **562**, link interni da 19 a **20**. Nessuna parola persa.
+
+### Componenti
+
+`Rami.astro` è stato **rimosso**: la parete è un oggetto solo — l'insegna del
+gruppo è una campata della stessa griglia delle altre quattro — e tenerlo
+spezzato in due componenti significava una griglia divisa fra due file. Tutto
+sta in `HeroRami.astro`. `src/data/rami.ts` resta la fonte unica dei rami.
+
+### Cosa resta aperto
+
+Le tre cose aperte di B01 valgono ancora (foto provvisorie, la fascia "store"
+che duplica le rotte, i nomi dei rami da confermare), e una vale ora più di
+prima:
+
+**Le quattro foto sono la leva più grossa che resta sull'impatto.** Sono tutte
+in **bianco e nero** e ritagliate da scatti orizzontali, quindi la parete è
+un'unica distesa di grigi e il ritaglio verticale taglia via metà
+dell'inquadratura. Quattro foto **a colori, scattate verticali**, cambiano
+questa apertura più di qualsiasi altra modifica al CSS. Con foto a colori va
+anche rimisurata la velatura: quella attuale (82% in basso, 58% a metà, 18% in
+alto) è tarata sul bianco e nero.
+
+---
+
+## B03 — Che ritaglio subiscono le foto, e cosa serve dallo shooting
+**2026-09-04 · lo shooting nuovo è già stato richiesto al cliente**
+
+Con quattro foto vere in arrivo, la domanda non è più "che aspetto hanno" ma
+**che formato devono avere**. Misurata, la risposta ha scoperto un difetto della
+parete di B02.
+
+### Il difetto: la campata cambiava proporzione di cinque volte
+
+`object-fit: cover` ritaglia per riempire, quindi il formato che serve dipende
+dalla proporzione della campata. Misurata a 15 larghezze di finestra:
+
+| finestra | campata | proporzione |
+|---|---|---|
+| 390 | 390×240 | 1,63 |
+| **768** | **768×240** | **3,20** ← una feritoia |
+| 900 | 450×300 | 1,50 |
+| 1199 | 599×300 | 2,00 |
+| **1200** | **299×464** | **0,64** ← verticale stretto |
+| 1440 | 359×464 | 0,77 |
+| 2560 | 639×464 | 1,38 |
+
+**Da 0,64 a 3,20: cinque volte.** Nessuna fotografia può essere sia una feritoia
+3,2:1 sia un verticale 0,64. Con `cover` centrato, la porzione **garantita
+visibile** a tutte le larghezze era il **20%** della foto — e restava il 20%
+qualunque formato si scegliesse, perché il limite non era il formato ma
+l'intervallo.
+
+Causa: le altezze erano **fisse** (240 / 300 / 464px) mentre la larghezza è
+sempre una frazione della finestra. Una colonna singola su una finestra da
+768px dava 768×240.
+
+### Il fix: altezze proporzionali, non fisse
+
+| colonne | prima | ora |
+|---|---|---|
+| 1 (<769px) | `240px` | `clamp(15rem, 60vw, 26rem)` |
+| 2 (769–1199) | `300px` | `clamp(18.75rem, 31vw, 24rem)` |
+| 4 (≥1200) | `464px` | `clamp(22rem, 32vw, 29rem)` |
+
+Il tetto della fascia a 4 colonne resta i **464px** su cui la parete è
+disegnata (insegna del gruppo + una campata = 768px, cioè i 750 dell'hero
+misurato), quindi **il desktop non cambia**: 359×461 invece di 359×464. Il
+fondo di ogni `clamp` serve a togliere l'estremo: senza, a 1200px esatti la
+campata era 299×464.
+
+**Risultato misurato: intervallo da 0,78 a 1,85** — 2,4 volte invece di 5 — e
+l'area garantita passa **dal 20% al 42%**.
+
+| formato di scatto | larghezza tenuta | altezza tenuta | area sicura |
+|---|---|---|---|
+| 2:3 verticale | 100% | 36% | 36% |
+| 4:5 verticale | 98% | 43% | 42% |
+| 1:1 quadrato | 78% | 54% | 42% |
+| **4:3 orizzontale** | **59%** | **72%** | **42%** |
+| 3:2 orizzontale | 52% | 81% | 42% |
+
+Da 4:5 a 3:2 l'area sicura è la stessa: cambia **dove** sta. Il 4:3 è il
+compromesso migliore perché tiene il 59% della larghezza **e** il 72%
+dell'altezza, quindi l'area sicura è un rettangolo utilizzabile invece di una
+striscia.
+
+### Le specifiche per il fotografo
+
+- **Formato 4:3 orizzontale** (o 1:1). Non 16:9, non verticale stretto.
+- **Soggetto nel 60% × 70% centrale.** Un quinto di margine per lato: quello che
+  sta ai bordi verrà tagliato su qualche schermo, sempre.
+- **Terzo inferiore semplice.** Lì va l'insegna — nome, descrizione, sedi — sotto
+  una velatura all'82%: un dettaglio importante messo in basso non si vedrà.
+- **Colore, luce media-alta.** La parete è già scura e velata: una foto scura
+  sopra diventa una macchia. Le provvisorie sono in bianco e nero, ed è il
+  motivo per cui l'apertura è una distesa di grigi.
+- **Minimo 2400px sul lato corto**, e servono gli **originali**: `astro:assets`
+  genera WebP e AVIF a cinque larghezze. Una foto già compressa perde qualità
+  due volte.
+- Un soggetto riconoscibile per ramo: lo showroom con le ceramiche accese, il
+  bancone della ferramenta, il piazzale dei materiali, un cantiere con le
+  persone al lavoro.
+
+### `fuoco`: il ritaglio si regola dai dati, non dal CSS
+
+Aggiunto il campo opzionale `fuoco` a `Ramo` (`src/data/rami.ts`), che finisce
+in `object-position` attraverso la variabile `--fuoco`. Quando arrivano le foto,
+se una va tenuta più in alto si scrive `fuoco: '50% 35%'` accanto alla foto —
+non si tocca il CSS del componente. Omesso vale `50% 50%`.
+
+### Un difetto in più, trovato nella cattura a 700px
+
+Con le campate più alte, a colonna singola su 700px la riga sotto il nome
+correva per 650px sotto un nome di 220: un divisore lunghissimo invece di un
+segno. L'insegna ha ora `max-width: 22rem` (352px), tetto deciso dalla parola
+più lunga a corpo pieno ("RISTRUTTURAZIONE", 283px a 26px) e non a occhio. Sulle
+campate da 359px non stringe nulla: il desktop non cambia.
+
+### Verifica
+
+`astro check`: 0 errori. `npm run build`: 52 pagine. Peso della homepage
+invariato: **0,30 MB in 16 richieste**.
+
+Nessun testo che sfonda a 390, 700, 900 e 1440 (`scrollWidth > clientWidth` su
+tutti gli heading e paragrafi di tutte le campate). Nessuno scorrimento
+orizzontale. Altezza dell'hero: **768px** desktop, 960 tablet, 1272 mobile.
+
+---
+
+## B04 — Le foto diventate prompt: stato di lavoro sulla parete
+**2026-09-04 · richiesta del proprietario**
+
+«Vado a generare le immagini a colori con l'AI, sostituisci le immagini con gli
+alt che sono i prompt per generare l'immagine, così uso un'IA generativa per
+crearle con il formato giusto.»
+
+### I prompt non stanno nell'`alt`
+
+L'`alt` è quello che leggono gli screen reader e che indicizzano i motori. Se un
+prompt finisce lì e ce lo dimentichiamo, il sito va online con "Fotografia
+realistica, formato 4:3 orizzontale…" come descrizione delle sue immagini.
+Quindi c'è un campo suo, `promptFoto`, e `fotoAlt` resta il testo alternativo —
+da scrivere guardando la foto vera, quando c'è.
+
+La parte utile della richiesta è però esattamente quella: **la parete mostra il
+prompt al posto della foto**, così si vede quale prompt appartiene a quale ramo
+senza incrociare un elenco con uno screenshot.
+
+### Come funziona lo stato di lavoro
+
+`foto: null` + `promptFoto` presente = immagine da fare. La campata prende la
+classe `--daGenerare` e mostra un riquadro tratteggiato con il prompt e, sotto,
+la riga delle regole di formato. `align-content: space-between` manda il prompt
+in alto e l'insegna in basso, e il `min-height` resta un pavimento: se il prompt
+è lungo la campata **cresce** invece di tagliarlo.
+
+Spariscono da sé: appena `foto` è popolata, la campata torna a mostrare
+l'immagine. Non c'è niente da smontare, solo da riempire.
+
+### Le regole di formato dichiarate una volta
+
+`FORMATO_FOTO` in `rami.ts` è la costante con le regole misurate in B03, e
+`promptCompleto(ramo)` la attacca al soggetto. Quindi i quattro prompt sono
+**soggetto + regole**, e le regole stanno scritte una volta sola invece di
+quattro. `promptCompleto()` finisce anche nel `title` della campata, così il
+prompt completo si copia dalla pagina.
+
+Le regole, per esteso:
+
+> Fotografia realistica, formato 4:3 orizzontale. Soggetto contenuto nel
+> 60% × 70% centrale dell'inquadratura, con circa un quinto di margine libero su
+> ogni lato. Terzo inferiore dell'immagine semplice e poco dettagliato. Luce
+> diffusa media-alta, colori naturali. Nessun testo, nessuna insegna, nessun
+> logo, nessun marchio, nessuna filigrana, nessun volto riconoscibile in primo
+> piano.
+
+Ognuna ha un motivo misurato, non è una preferenza:
+
+| regola | perché |
+|---|---|
+| 4:3 orizzontale | la campata va da 0,78 a 1,85 (B03): il 4:3 è l'unico formato che tiene il 59% della larghezza **e** il 72% dell'altezza |
+| soggetto nel 60%×70% | quello che sta ai bordi viene tagliato su qualche schermo, sempre |
+| terzo inferiore semplice | lì va l'insegna, sotto una velatura all'82% |
+| luce media-alta, colori | la parete è già scura e velata: una foto scura sopra diventa una macchia |
+| niente testo né marchi | un'insegna inventata sulla foto di un'azienda vera non si pubblica |
+
+### I quattro soggetti
+
+Presi dal testo delle pagine dei rami, non inventati:
+
+- **Ceramiche e Bagno** — showroom con lastre di gres su espositori a pettine,
+  composizione di mobile bagno, campionature su pannelli girevoli. (La pagina
+  dice: «toccare con mano materiali pregiati… pavimenti, rivestimenti e arredo
+  bagno».)
+- **Edilizia** — piazzale con bancali di laterizi e sacchi di malta, ferro e
+  reti in rastrelliera, muletto. (La pagina dice: «ferro, calcestruzzo, malte,
+  cartongesso, laterizi».)
+- **Ferramenta** — cassettiere per minuteria, utensili a pannello forato,
+  elettroutensili, duplicatrice per chiavi. (La pagina dice: «chiavi e
+  serrature… viti e sistemi di fissaggio… elettroutensili».)
+- **Progettazione e Ristrutturazione** — tavolo da studio con pianta quotata,
+  campioni di finiture, tablet con un rendering. Il tavolo con i campioni dice
+  "progettiamo" meglio di due persone con il casco, che è la foto provvisoria
+  di adesso e dice solo "cantiere".
+
+Nessun genere assegnato alle persone: nella foto della progettazione il prompt
+dice "due persone al lavoro", non chi sono.
+
+### Le quattro foto provvisorie sono via
+
+Erano quelle in bianco e nero recuperate dal mirror. `fotoProvvisoria` è stato
+**rimosso** dal tipo: con `foto: null` come segnale di "da fare" era un secondo
+modo di dire la stessa cosa. `Raggruppa-1679.jpg` resta nel build perché la
+fascia "store" più in basso la usa ancora come fondo.
+
+### Verifica
+
+`astro check`: 0 errori. `npm run build`: 52 pagine.
+**Homepage: 0,27 MB in 12 richieste** — quattro richieste e 36 KB in meno,
+perché le foto non ci sono. Tornerà a salire quando arrivano, ed è il momento
+di rimisurarla.
+
+Altezza dell'hero con i prompt: 931px desktop (le campate crescono a 624px per
+contenere il testo). Nessun testo che sfonda, nessuno scorrimento orizzontale.
+
+### Quando arrivano le immagini
+
+1. salvare i file in `wp-content/uploads/<anno>/<mese>/`;
+2. in `rami.ts`: mettere il percorso in `foto`, **scrivere `fotoAlt`** guardando
+   la foto, **togliere `promptFoto`**;
+3. se una foto va tenuta più in alto o più in basso nel ritaglio, usare `fuoco`
+   (`'50% 35%'`) — il CSS non si tocca;
+4. rimisurare la velatura: quella attuale (82% / 58% / 18%) è tarata sul bianco
+   e nero;
+5. rieseguire `check-build.js` e il peso della homepage.
+
+---
+
+## B05 — La riga del titoletto non attraversa più la foto
+**2026-09-04 · segnalato dal proprietario**
+
+«Togli questa linea sulla foto e lasciala solo sulla nostra storia.»
+
+### Cos'era
+
+La riga da 1px del `Titoletto` **sfonda fino al bordo sinistro della finestra**:
+è il segno grafico del sito, misurato sull'originale, e funziona quando il
+titolo sta al bordo sinistro del contenitore. In "La nostra storia" e in "Dal
+progetto alla realizzazione" il titolo sta nella colonna **destra**, con la foto
+a sinistra: la riga partiva **688px prima del titolo**, cioè in mezzo alla foto,
+e la tagliava in due.
+
+Non era un difetto dell'originale ereditato: è nato con la ricostruzione, perché
+il `Titoletto` è un componente e la riga non sa dove è stato messo.
+
+### Quante volte capitava: due, e solo in homepage
+
+Cercate misurando su **tutte le 52 rotte del build**, a 1440px: ogni
+`.titoletto--rule` il cui bordo sinistro non coincide con quello del
+`.container`. Due risultati, entrambi in `/`. Nelle altre 50 rotte i titoli con
+riga sono tutti al bordo del contenitore, quindi la riga che sfonda è quella
+giusta.
+
+### Il fix: una manopola sul componente, non un'eccezione dentro di lui
+
+`Titoletto.astro` legge ora la larghezza della riga da una variabile:
+
+```css
+width: var(--titoletto-rule-width, calc(100% + (100vw - 100%) / 2));
+```
+
+Il valore di default è quello di prima, quindi **nessuna delle 50 rotte cambia**.
+Chi mette un titolo fuori dal bordo sinistro imposta
+`--titoletto-rule-width: 100%` sul contenitore del titolo — è una variabile,
+quindi eredita fino allo `::after`.
+
+In `index.astro`, su `.home__testo`, **solo da 992px**:
+
+```css
+@media (min-width: 992px) {
+  .home__testo { --titoletto-rule-width: 100%; }
+}
+```
+
+Il breakpoint non è decorativo: 992px è dove `.home__duePer` diventa a due
+colonne. **Sotto**, la griglia è a una colonna, il titolo torna al bordo del
+contenitore e la riga che sfonda è di nuovo quella corretta — contenerla anche
+lì avrebbe reso quei due titoli diversi da tutti gli altri su telefono.
+
+`.home__testo` è usato anche in "Le nostre realizzazioni", ma là non contiene
+titoli (il `Titoletto` è figlio diretto della griglia, in colonna sinistra):
+impostare la variabile lì non tocca nulla.
+
+### Verifica: misurata la riga, non lo stile dichiarato
+
+Letto il rettangolo dello `::after` con `getComputedStyle(span, '::after')` e
+confrontato con il bordo del titolo, a cinque larghezze, sul build:
+
+| larghezza | "La nostra storia" | "Dal progetto…" | righe che attraversano contenuto |
+|---|---|---|---|
+| 1440 | titolo a 760, riga **da 760** larga 488 | titolo a 760, riga **da 760** larga 608 | **0** |
+| 1024 | titolo a 552, riga **da 552** larga 421 | titolo a 552, riga **da 552** larga 421 | **0** |
+| 991 | titolo a 50, riga da −202 (sfonda) | titolo a 50, riga da 0 (sfonda) | **0** |
+| 768 | titolo a 38, riga da −136 (sfonda) | titolo a 38, riga da 0 (sfonda) | **0** |
+| 390 | titolo a 20, riga da −28 (sfonda) | titolo a 20, riga da 0 (sfonda) | **0** |
+
+Sopra i 992px la riga parte esattamente dal titolo; sotto, torna a sfondare.
+Gli altri sei titoli con riga della homepage sono invariati a tutte e cinque le
+larghezze ("Realizziamo il progetto…" e "Le nostre realizzazioni" continuano a
+sfondare, come devono).
+
+`astro check`: 0 errori. `npm run build`: 52 pagine.
+`check-build.js`: **52 rotte × 3 viewport, nessun problema.**
+
+### Nota sullo strumento
+
+Lo script che ha trovato i due casi (`titoli con riga non allineati al bordo del
+contenitore`) segnala **candidati, non difetti**: dopo il fix continua a
+segnalarli, perché quei due titoli *sono* ancora fuori dal bordo — è la riga che
+non sfonda più. Chi lo riesegue non si spaventi: la misura che conta è quella
+del rettangolo dello `::after`, in tabella qui sopra.

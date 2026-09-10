@@ -52,6 +52,9 @@ const risolte = voci
   .sn {
     position: relative;
     z-index: 2;
+    /* sovrapposta al bordo inferiore della sezione precedente, come
+       nell'originale; il token è 0 sotto i 769px */
+    margin-top: calc(-1 * var(--overlap-servizi));
   }
 
   .sn__lista {
@@ -63,10 +66,6 @@ const risolte = voci
     background: var(--c-surface);
   }
   @media (min-width: 769px) {
-    .sn {
-      /* sovrapposta al bordo inferiore dell'hero, come nell'originale */
-      margin-top: -75px;
-    }
     .sn__lista {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       /* la riga di separazione fra le voci è il fondo che traspare dal gap */

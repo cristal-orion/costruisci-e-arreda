@@ -130,6 +130,12 @@
      i valori misurati sull'originale ai due estremi.                             */
   --hero-inset: 12px;
 
+  /* Di quanto la fascia dei servizi numerati scavalca la sezione che la precede.
+     Misurato sull'originale: 75px, e solo da 769px in su. Sta qui perché la
+     leggono in due — chi scavalca (`ServiziNumerati`) e chi deve lasciare lo
+     spazio per non farsi coprire (`HeroRami`): scritta due volte, si scollava. */
+  --overlap-servizi: 0px;
+
   /* --- Bordi e ombre -------------------------------------------------------- */
   --radius-sm: 3px;
   --radius-notch: 0 30px 0 0; /* motivo distintivo del sito, su card e immagini */
@@ -150,6 +156,7 @@
 @media (min-width: 769px) {
   :root {
     --hero-inset: 42px;
+    --overlap-servizi: 75px;
   }
 }
 

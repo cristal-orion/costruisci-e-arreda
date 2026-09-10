@@ -31,6 +31,9 @@ const { dati } = Astro.props;
 
 const heroImg = immagine(dati.hero?.imagePath);
 const copertina = immagine(dati.featuredImage?.path);
+/* Quando la copertina specifica dell'articolo diventa anche la hero, non va
+   ripetuta identica poche righe più sotto. */
+const copertinaGiaInHero = dati.hero?.imagePath === dati.featuredImage?.path;
 
 const autore = dati.postInfo.AUTORE ?? null;
 const dataIso = dati.postInfo.DATA_iso ?? null;
@@ -83,7 +86,7 @@ const condividi = [
     </header>
 
     {
-      copertina && (
+      copertina && !copertinaGiaInHero && (
         <Image
           class="articolo__copertina"
           src={copertina}

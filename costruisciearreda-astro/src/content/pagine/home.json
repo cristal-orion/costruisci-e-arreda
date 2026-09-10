@@ -48,11 +48,11 @@
       "tipo": "immagine",
       "visibile": true,
       "varianti": [],
-      "path": "2024/05/Raggruppa-1649.jpg",
-      "src": "Raggruppa-1649.jpg",
-      "alt": "",
-      "width": 860,
-      "height": 656,
+      "path": "2026/09/storia-team-editoriale.png",
+      "src": "storia-team-editoriale.png",
+      "alt": "Due professionisti di Costruisci e Arreda esaminano una tavola di progetto",
+      "width": 1436,
+      "height": 1096,
       "href": null,
       "didascalia": null,
       "soloMobile": false
@@ -327,7 +327,7 @@
           "titoloLivello": 2,
           "href": "cat_realizzazioni/progetti/index.html",
           "elementorId": "ce58642",
-          "path": "2024/06/Raggruppa-1701.jpg",
+      "path": "2026/09/card-progetti.png",
           "fondoApplicato": false
         },
         {
@@ -335,7 +335,7 @@
           "titoloLivello": 2,
           "href": "cat_realizzazioni/render/index.html",
           "elementorId": "f044c05",
-          "path": "2024/06/Raggruppa-1695.jpg",
+      "path": "2026/09/card-render.png",
           "fondoApplicato": false
         },
         {
@@ -343,7 +343,7 @@
           "titoloLivello": 2,
           "href": "cat_realizzazioni/prima-dopo/index.html",
           "elementorId": "2c9b66d",
-          "path": "2024/06/Raggruppa-1701.jpg",
+      "path": "2026/09/card-prima-dopo.png",
           "fondoApplicato": false
         }
       ],

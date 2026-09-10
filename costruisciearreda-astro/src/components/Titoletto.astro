@@ -114,13 +114,20 @@ const {
      verso sinistra esattamente della metà dello spazio fra finestra e riquadro:
      se il riquadro è centrato — e lo è, sta in `.container` — la riga arriva al
      bordo. Sborda a sinistra dell'area visibile, che in LTR **non** produce
-     scorrimento orizzontale: verificato nel browser.                          */
+     scorrimento orizzontale: verificato nel browser.
+
+     **`--titoletto-rule-width` è la manopola per i titoli che NON sono al bordo
+     sinistro del contenitore** — per esempio nella colonna destra di un layout
+     a due colonne. Là la riga che sfonda attraversa quello che sta a sinistra
+     (misurato in homepage: partiva 688px prima del titolo, in mezzo alla foto).
+     Si imposta `--titoletto-rule-width: 100%` sul contenitore del titolo — è una
+     variabile, quindi eredita — e la riga resta larga quanto il testo.         */
   .titoletto--rule .titoletto__text::after {
     content: '';
     position: absolute;
     top: calc(100% + 0.35em);
     right: 0;
-    width: calc(100% + (100vw - 100%) / 2);
+    width: var(--titoletto-rule-width, calc(100% + (100vw - 100%) / 2));
     height: 1px;
     background: var(--titoletto-rule, var(--c-ink));
     pointer-events: none;

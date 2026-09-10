@@ -1,0 +1,387 @@
+---
+/**
+ * Apertura della homepage: **la parete**.
+ *
+ * Il sito ha già un hero, sulle pagine interne (`Hero.astro`), e ha una forma
+ * precisa e misurata: a tutta finestra, 750px, foto a pieno riquadro, titolo
+ * bianco maiuscolo `clamp(30px, 5.4vw, 80px)` peso 300, e la riga rossa da 1px
+ * che sfonda fino al bordo della finestra. La homepage era l'unica pagina senza
+ * quell'hero: aveva un carosello prima, e poi una griglia di quattro riquadri
+ * rientrata nel contenitore.
+ *
+ * Qui l'hero del sito **c'è, diviso in quattro campate**, una per ramo. Non è
+ * una griglia di card: è un oggetto solo, a tutta finestra, e le campate sono
+ * separate da **fughe di 1px** nel grigio misurato del sito (`--c-border`), non
+ * da gap di 15px. Fra due lastre di uno showroom c'è una fuga, non un margine.
+ *
+ * Cosa cambia rispetto alla griglia di card, in concreto:
+ *  - a tutta finestra invece che rientrata nel contenitore;
+ *  - il claim è **dentro** la parete, come prima campata a tutta larghezza,
+ *    non un titolo che galleggia sul bianco sopra le card;
+ *  - campate **verticali e alte** (464px su desktop) invece di banner da 300:
+ *    a quell'altezza il testo in basso è un'insegna alla base di un'immagine,
+ *    non l'etichetta di una card;
+ *  - fughe da 1px invece di gap, quindi una parete e non quattro oggetti.
+ *
+ * Il rosso del brand compare in **un punto solo**: la riga sotto il claim, e la
+ * riga sotto il nome della campata su cui si sta puntando. Così il rosso vuol
+ * dire "questa qui", non è decorazione.
+ *
+ * **Un solo `<h1>`.** Nell'originale la homepage ne aveva tre, uno per slide.
+ */
+import { Image } from 'astro:assets';
+import { immagine } from '../lib/immagini';
+import { rami as tuttiIRami, dettaglioDelRamo, promptCompleto, type Ramo } from '../data/rami';
+
+interface Props {
+  /** Il claim del gruppo. È l'`<h1>` della homepage. */
+  claim?: string;
+  /** Riga di apertura sotto il claim. */
+  lead?: string;
+  /** Rami da mostrare; per default tutti quelli dichiarati in `data/rami.ts`. */
+  voci?: Ramo[];
+}
+
+const {
+  claim = 'Edilizia, design e ferramenta',
+  lead =
+    'Professionisti del settore, materie prime di qualità, estetica e funzionalità: ' +
+    'quattro rami e un solo interlocutore, dal materiale al progetto finito.',
+  voci = tuttiIRami,
+}: Props = Astro.props;
+
+const campate = voci.map((r) => ({
+  ...r,
+  img: immagine(r.foto),
+  dettaglio: dettaglioDelRamo(r),
+  /* Prompt completo (soggetto + regole di formato): finisce nel `title`, così
+     si copia con un clic destro invece di ribatterlo. */
+  promptIntero: promptCompleto(r),
+}));
+---
+
+<section class="parete" aria-label="I rami del gruppo">
+  <div class="parete__griglia">
+    <div class="parete__insegnaGruppo">
+      <div class="container">
+        <h1 class="parete__claim"><span class="parete__claimTesto">{claim}</span></h1>
+        <p class="parete__lead">{lead}</p>
+      </div>
+    </div>
+
+    {
+      campate.map((r) => (
+        <a
+          class:list={['parete__campata', { 'parete__campata--daGenerare': !r.img && !!r.promptFoto }]}
+          href={r.href}
+          style={r.fuoco ? `--fuoco: ${r.fuoco}` : undefined}
+        >
+          {r.img ? (
+            <Image
+              class="parete__foto"
+              src={r.img}
+              alt={r.fotoAlt}
+              widths={[400, 600, 800, 1200]}
+              sizes="(min-width: 1200px) 25vw, (min-width: 769px) 50vw, 100vw"
+              format="webp"
+              quality={74}
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            r.promptFoto && (
+              /* Stato di lavoro: la foto non c'è ancora e la campata mostra il
+                 prompt con cui va generata, così si vede quale prompt appartiene
+                 a quale ramo. Il `title` porta il prompt completo, regole di
+                 formato incluse. Spariscono da sé quando `foto` è popolata. */
+              <div class="parete__daGenerare" title={r.promptIntero ?? undefined}>
+                <p class="parete__daGenerareTesto">{r.promptFoto}</p>
+                <p class="parete__daGenerareNota">
+                  4:3 orizzontale · soggetto nel 60%×70% centrale · terzo inferiore semplice
+                </p>
+              </div>
+            )
+          )}
+          <div class="parete__insegna">
+            <h2 class="parete__nome">{r.nome}</h2>
+            <p class="parete__cosa">{r.descrizione}</p>
+            {r.dettaglio && <p class="parete__dove">{r.dettaglio}</p>}
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .parete {
+    color: var(--c-white);
+    background: var(--c-ink);
+    /* Sotto i 1200px la fascia dei servizi numerati non può scavalcare la
+       parete: le campate sono su due righe e i 75px si mangerebbero solo il
+       testo di quelle in basso, lasciando le due righe disallineate. Qui lo
+       spazio glielo lascia la sezione, e la fascia arriva a filo. */
+    padding-bottom: var(--overlap-servizi);
+  }
+
+  .parete__griglia {
+    display: grid;
+    /* Le fughe: il grigio da 1px passa fra le campate perché è il fondo della
+       griglia e il `gap` lo lascia vedere. */
+    gap: 1px;
+    background: var(--c-border);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 769px) {
+    .parete__griglia {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1200px) {
+    .parete__griglia {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* --- L'insegna del gruppo: la prima campata, a tutta larghezza ----------- */
+  .parete__insegnaGruppo {
+    grid-column: 1 / -1;
+    padding-block: clamp(var(--s-10), 5vw, var(--s-15)) clamp(var(--s-8), 4vw, var(--s-12));
+    background: var(--c-ink);
+  }
+
+  .parete__claim {
+    position: relative;
+    margin: 0;
+    /* `base.css` assegna agli heading un colore esplicito, che batte quello
+       ereditato: senza questa riga il claim è testo scuro su fondo scuro. */
+    color: inherit;
+    /* lo stesso token dell'hero delle pagine interne: 30 → 80px, peso 300 */
+    font-size: var(--hero-title-size);
+    font-weight: var(--w-light);
+    line-height: 1.05;
+    text-transform: uppercase;
+    /* spazio per la riga, che stando in assoluto non ne occupa */
+    padding-bottom: 0.45em;
+  }
+  .parete__claimTesto {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+  /* La riga rossa che sfonda fino al bordo sinistro della finestra: è il segno
+     grafico del sito, qui alla scala dell'hero. Stessa tecnica di
+     `Titoletto.astro` e `Hero.astro` — nessuna percentuale negativa. */
+  .parete__claimTesto::after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 0.28em);
+    right: 0;
+    width: calc(100% + (100vw - 100%) / 2);
+    height: 1px;
+    background: var(--c-brand);
+    pointer-events: none;
+  }
+
+  .parete__lead {
+    /* 56ch: sotto gli 80 caratteri per riga */
+    max-width: 56ch;
+    margin: var(--s-6) 0 0;
+    color: rgb(255 255 255 / 88%);
+    font-size: var(--t-lg);
+    line-height: var(--t-lg-lh);
+  }
+
+  /* Da 1200px claim e riga di apertura stanno affiancati, allineati in basso.
+     Impilati, il claim riempiva il terzo sinistro e restavano 384px di fondo
+     scuro vuoto sulla destra; affiancati la fascia scende a ~300px e la parete
+     torna vicina ai 750px dell'hero misurato. */
+  @media (min-width: 1200px) {
+    .parete__insegnaGruppo > .container {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: var(--s-12);
+      align-items: end;
+    }
+    .parete__lead {
+      margin-top: 0;
+    }
+  }
+
+  /* --- Le campate ---------------------------------------------------------- */
+  .parete__campata {
+    position: relative;
+    display: grid;
+    align-content: end;
+    /* L'altezza cresce con la larghezza invece di stare fissa. Fissa a 240px,
+       una campata a colonna singola diventava 768×240 su una finestra da 768px:
+       una feritoia 3,2:1. Misurato: la proporzione della campata andava da 0,64
+       a 3,2 fra i viewport, cinque volte, e con `object-fit: cover` questo
+       lascia garantito **solo il 20%** di qualsiasi foto. Vedi B03. */
+    min-height: clamp(15rem, 60vw, 26rem);
+    padding: var(--s-8) var(--s-6);
+    overflow: clip;
+    background: var(--c-ink);
+    color: inherit;
+    text-decoration: none;
+  }
+  @media (min-width: 769px) {
+    .parete__campata {
+      min-height: clamp(18.75rem, 31vw, 24rem); /* 300 → 384px */
+      padding: var(--s-10) var(--s-8);
+    }
+  }
+  /* 464px + l'insegna del gruppo ≈ i 750px dell'hero misurato. A quest'altezza
+     la campata è verticale, e il testo in basso legge come un'insegna alla base
+     di un'immagine invece che come l'etichetta di una card. */
+  @media (min-width: 1200px) {
+    /* 352 → 464px. Il tetto è i 464px su cui è disegnata la parete (l'insegna
+       del gruppo più una campata fa 767px, cioè i 750 dell'hero misurato); il
+       fondo evita che a 1200px esatti la campata sia 299×464, cioè 0,64. */
+    .parete__campata {
+      min-height: clamp(22rem, 32vw, 29rem);
+    }
+    /* Qui le campate sono una sola riga, quindi la fascia dei servizi numerati
+       può scavalcare la parete come nell'originale scavalcava la foto
+       dell'hero: lo spazio lo lascia la campata, non la sezione. */
+    .parete {
+      padding-bottom: 0;
+    }
+    .parete__campata {
+      padding-bottom: calc(var(--s-10) + var(--overlap-servizi));
+    }
+  }
+
+  .parete__foto {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* il punto da tenere nel ritaglio, dichiarato per ramo in `data/rami.ts` */
+    object-position: var(--fuoco, 50% 50%);
+  }
+
+  /* Velatura: densa in basso dove sta l'insegna, quasi trasparente in alto dove
+     serve vedere il materiale. Puntando la campata si alleggerisce, così la
+     foto si schiarisce: è la risposta al gesto, non un effetto a sé. */
+  .parete__campata::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 52%) 42%, rgb(0 0 0 / 14%) 100%);
+    transition: opacity var(--dur) var(--ease);
+  }
+  .parete__campata:hover::after,
+  .parete__campata:focus-visible::after {
+    opacity: 0.7;
+  }
+
+  /* Il fuoco globale è rosso su 2px: su una campata scura, e accanto a un'altra
+     campata scura, non si vede. Qui è bianco e rientrato. */
+  .parete__campata:focus-visible {
+    outline: 2px solid var(--c-white);
+    outline-offset: -8px;
+  }
+
+  /* Con il prompt al posto della foto la campata ha due blocchi: il prompt in
+     alto e l'insegna in basso. `space-between` li manda ai due estremi, e il
+     `min-height` resta un pavimento — se il prompt è lungo la campata cresce
+     invece di tagliarlo. */
+  .parete__campata--daGenerare {
+    align-content: space-between;
+    gap: var(--s-6);
+  }
+
+  .parete__daGenerare {
+    position: relative;
+    z-index: 1;
+    /* tratteggio: si deve capire a occhio che è un segnaposto, non un fondo */
+    border: 1px dashed rgb(255 255 255 / 32%);
+    padding: var(--s-4);
+    max-width: 30rem;
+  }
+  .parete__daGenerareTesto {
+    margin: 0;
+    color: rgb(255 255 255 / 82%);
+    font-size: var(--t-xs);
+    line-height: 1.6;
+  }
+  .parete__daGenerareNota {
+    margin: var(--s-3) 0 0;
+    padding-top: var(--s-3);
+    border-top: 1px dashed rgb(255 255 255 / 32%);
+    color: rgb(255 255 255 / 60%);
+    font-size: var(--t-xs);
+    line-height: var(--t-xs-lh);
+  }
+
+  .parete__insegna {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--s-3);
+    /* 352px: una misura di colonna. Senza, su una campata a colonna singola da
+       700px la riga sotto il nome correva per 650px sotto un nome di 220 — un
+       divisore lunghissimo invece di un segno. Il tetto è deciso dalla parola
+       più lunga a corpo pieno ("RISTRUTTURAZIONE", 283px a 26px), non a occhio:
+       più stretto e il nome sfonderebbe. Sulle campate da 359px non stringe
+       nulla, quindi il desktop non cambia. */
+    max-width: 22rem;
+    /* contrasto locale: evita di scurire tutta la foto per salvare una riga */
+    text-shadow: 0 1px 3px rgb(0 0 0 / 55%);
+  }
+
+  .parete__nome {
+    margin: 0;
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid rgb(255 255 255 / 40%);
+    color: inherit;
+    /* 20 → 26px. Il tetto è deciso dalla parola più lunga: "RISTRUTTURAZIONE"
+       è 16 caratteri e in una campata da 359px con 32px di padding ha 295px.
+       A 32px di corpo sfondava, e `overflow: clip` la troncava a metà. */
+    font-size: clamp(1.25rem, 1.9vw, 1.625rem);
+    font-weight: var(--w-light);
+    line-height: 1.1;
+    text-transform: uppercase;
+    text-wrap: balance;
+    /* rete di sicurezza: se un nome nuovo fosse ancora più lungo, va a capo
+       dentro la parola invece di uscire dalla campata */
+    overflow-wrap: break-word;
+    transition: border-color var(--dur) var(--ease);
+  }
+  /* Il rosso del brand vuol dire "questa qui": compare solo sotto il nome della
+     campata puntata, e sotto il claim. In nessun altro punto della parete. */
+  .parete__campata:hover .parete__nome,
+  .parete__campata:focus-visible .parete__nome {
+    border-bottom-color: var(--c-brand);
+  }
+
+  .parete__cosa {
+    max-width: 34ch;
+    margin: 0;
+    color: rgb(255 255 255 / 88%);
+    font-size: var(--t-sm);
+    line-height: var(--t-sm-lh);
+  }
+
+  /* Le insegne sono allineate in basso, quindi una descrizione più corta alza
+     il proprio nome e la fila risulta scalinata. Misurato con le righe reali:
+     a 1200px+ (campate da 359px) le quattro descrizioni stanno su 4, 4, 3 e 3
+     righe, quindi qui vanno riservate quattro righe; a 900px e a 390px stanno
+     tutte su tre e la riserva lascerebbe solo un buco sopra la riga del dove.
+     Se le descrizioni cambiano, va rimisurato. */
+  @media (min-width: 1200px) {
+    .parete__cosa {
+      min-height: calc(4 * var(--t-sm-lh) * var(--t-sm));
+    }
+  }
+
+  .parete__dove {
+    margin: 0;
+    color: rgb(255 255 255 / 72%);
+    font-size: var(--t-xs);
+    line-height: var(--t-xs-lh);
+  }
+</style>

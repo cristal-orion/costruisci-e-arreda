@@ -2,13 +2,17 @@
 /**
  * Homepage.
  *
- * Struttura ricostruita dai blocchi estratti (`src/content/pagine/home.json`),
- * nell'ordine dell'originale:
- *   hero a 3 slide · card dei 4 servizi numerati · titolo "Realizziamo il
- *   progetto dei tuoi sogni" con il disegno tecnico · "La nostra storia" ·
- *   "Dal progetto alla realizzazione" · highlights con i 4 contatori ·
- *   i 3 store · "Le nostre realizzazioni" · i 3 riquadri di tassonomia ·
- *   News and Event · blocco contatti (dal layout).
+ * Struttura, dai blocchi estratti (`src/content/pagine/home.json`):
+ *   **hero con i 4 rami del gruppo** · card dei 4 servizi numerati · titolo
+ *   "Realizziamo il progetto dei tuoi sogni" con il disegno tecnico ·
+ *   "La nostra storia" · "Dal progetto alla realizzazione" · highlights con i
+ *   4 contatori · i 3 store · "Le nostre realizzazioni" · i 3 riquadri di
+ *   tassonomia · News and Event · blocco contatti (dal layout).
+ *
+ * **Modifica voluta (fase B): l'hero è il selettore dei rami.** Il carosello a
+ * 3 slide dell'originale è stato sostituito da `HeroRami` — vedi il perché nel
+ * docblock di quel componente e la voce **B01** del CHANGELOG. I tre claim
+ * delle slide sono conservati nella riga di apertura dell'hero.
  *
  * Difetti dell'originale corretti qui:
  *  - **3 `<h1>`** (uno per slide dell'hero, con sopra tre `<h2>` identici):
@@ -23,7 +27,7 @@
 import { getCollection, getEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import SiteLayout from '../layouts/SiteLayout.astro';
-import HeroSlider from '../components/HeroSlider.astro';
+import HeroRami from '../components/HeroRami.astro';
 import ServiziNumerati from '../components/ServiziNumerati.astro';
 import Riquadri from '../components/Riquadri.astro';
 import Titoletto from '../components/Titoletto.astro';
@@ -34,7 +38,7 @@ import { estratto, immagine, rotta } from '../lib/immagini';
 
 const pagina = await getEntry('pagine', 'home');
 if (!pagina) throw new Error('Contenuto della homepage assente: eseguire _migrazione/extract-pages.js');
-const { blocchi, hero } = pagina.data;
+const { blocchi } = pagina.data;
 
 /** Un blocco per tipo, nell'ordine in cui l'estrattore li ha trovati. */
 const primo = <T extends (typeof blocchi)[number]['tipo']>(tipo: T) =>
@@ -51,11 +55,6 @@ const contatori = tutti('contatore');
 /** Il titolo con quel testo, cercato per contenuto e non per posizione. */
 const titolo = (frammento: string) =>
   titoli.find((t) => t.testo.toLowerCase().includes(frammento.toLowerCase()));
-
-const slides = (hero?.slides ?? [])
-  .map((s) => ({ img: immagine(s.imagePath), titolo: s.titolo, kicker: s.kicker }))
-  .filter((s) => !!s.img && !!s.titolo)
-  .map((s) => ({ image: s.img!, titolo: s.titolo!, kicker: s.kicker }));
 
 /* Le tre immagini-link degli store: sono SVG con il nome del tipo di punto
    vendita, quindi l'`alt` va scritto — nell'originale era vuoto. */
@@ -74,20 +73,20 @@ const store = immagini
  * Le immagini delle sezioni, assegnate per file dopo averle guardate una per
  * una: l'ordine nel DOM non basta a capire quale va dove.
  *   Raggruppa-1648  disegno tecnico di una casa (fondo della sezione "claim")
- *   Raggruppa-1649  foto: due professionisti su una tavola di progetto
+ *   storia-team-editoriale  foto a colori: due professionisti su una tavola di progetto
  *   Raggruppa-1668  render di una villa moderna
  *   Raggruppa-1674  vista dall'alto di un appartamento arredato
- *   Raggruppa-1679  foto di uno showroom (fondo della sezione "store")
+ *   home-store-panoramica  showroom luminoso (fondo della sezione "store")
  */
 const imgPer = (nome: string) => immagine(immagini.find((i) => i.path?.includes(nome))?.path);
 const fondo = (nome: string) =>
   immagine(pagina.data.fondiSezione.find((f) => f.path.includes(nome))?.path);
 
 const disegnoTecnico = fondo('Raggruppa-1648');
-const fotoStoria = imgPer('Raggruppa-1649');
+const fotoStoria = immagine('2026/09/storia-team-editoriale.png');
 const renderVilla = imgPer('Raggruppa-1668');
 const vistaAppartamento = imgPer('Raggruppa-1674');
-const fondoStore = fondo('Raggruppa-1679');
+const fondoStore = immagine('2026/09/home-store-panoramica.png');
 
 /** Gli ultimi 3 articoli, per la sezione News and Event. */
 const posts = (await getCollection('posts'))
@@ -110,7 +109,7 @@ const descrizione =
 ---
 
 <SiteLayout title="Homepage" titleFull={pagina.data.titleCompleto ?? undefined} description={descrizione}>
-  {slides.length > 0 && <HeroSlider slides={slides} />}
+  <HeroRami />
 
   {primo('servizinumerati') && <ServiziNumerati voci={primo('servizinumerati')!.voci} />}
 
@@ -374,6 +373,19 @@ const descrizione =
     display: grid;
     gap: var(--s-6);
     align-content: start;
+  }
+  /* In "La nostra storia" e "Dal progetto alla realizzazione" il titolo sta
+     nella colonna **destra**, con la foto a sinistra: la riga del titoletto,
+     che di norma sfonda fino al bordo della finestra, attraversava la foto
+     (misurato: partiva 688px a sinistra del titolo). Contenuta solo da 992px,
+     dove le due colonne esistono davvero — sotto, la griglia è a una colonna,
+     il titolo è al bordo del contenitore e la riga che sfonda è quella giusta.
+     `.home__testo` di "Le nostre realizzazioni" non contiene titoli, quindi
+     impostare qui la variabile non tocca nient'altro. */
+  @media (min-width: 992px) {
+    .home__testo {
+      --titoletto-rule-width: 100%;
+    }
   }
   .home__paragrafo {
     font-size: var(--t-base);

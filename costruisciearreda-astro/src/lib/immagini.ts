@@ -1,5 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import { immaginiGenerate } from './immagini-generate';
+import { immaginiLocali } from './immagini-locali';
 import { rottePerId } from '../data/rotte-legacy';
 
 /**
@@ -23,7 +24,7 @@ import { rottePerId } from '../data/rotte-legacy';
 
 /** L'immagine, o `undefined` se il percorso non è fra quelle usate dai contenuti. */
 export const immagine = (path: string | null | undefined): ImageMetadata | undefined =>
-  path ? immaginiGenerate[path] : undefined;
+  path ? (immaginiLocali[path] ?? immaginiGenerate[path]) : undefined;
 
 /**
  * Come `immagine`, ma solleva un errore se manca.
@@ -39,7 +40,10 @@ export const immagineObbligatoria = (
   return img;
 };
 
-export const totaleImmagini = Object.keys(immaginiGenerate).length;
+export const totaleImmagini = new Set([
+  ...Object.keys(immaginiGenerate),
+  ...Object.keys(immaginiLocali),
+]).size;
 
 /**
  * Riscrive un href dell'originale in una rotta pulita.
