@@ -138,6 +138,18 @@ export const rami: Ramo[] = [
   },
 ];
 
+/**
+ * Il nome del ramo che sta su una rotta, se quella rotta è di un ramo.
+ *
+ * Serve perché il nome del ramo lo dicono in quattro posti — l'hero, il menu,
+ * il footer e l'`<h1>` della pagina del ramo — e se lo scrivono a mano si
+ * scollano: nel footer c'era già "Progettazione Ristrutturazione edile" contro
+ * "Progettazione e ristrutturazione edile" del menu. Qui il nome sta scritto
+ * una volta, in `rami`, e gli altri lo leggono da questa funzione.
+ */
+export const nomeDelRamoPerRotta = (rotta: string): string | null =>
+  rami.find((r) => r.href === rotta)?.nome ?? null;
+
 /** Il prompt da dare al generatore: soggetto più le regole di formato. */
 export const promptCompleto = (ramo: Ramo): string | null =>
   ramo.promptFoto ? `${ramo.promptFoto} ${FORMATO_FOTO}` : null;

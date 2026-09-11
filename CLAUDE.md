@@ -5,19 +5,25 @@
 > **Ultima sessione: 2026-09-11.** **Fase A completa** (52 rotte, tutti i 56 URL
 > indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B in corso**: la
 > homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la
-> velatura è stata rifatta — voci **B01–B06** del CHANGELOG.
-> **Due lavori aperti, indipendenti fra loro:** le altre modifiche volute dal
-> cliente (fase B) e il deploy su Coolify + cutover DNS.
+> velatura è stata rifatta, la fascia "store" doppione è via e i rami si chiamano
+> come li chiama il proprietario — voci **B01–B07** del CHANGELOG.
+> **Il lavoro aperto è uno: il deploy** su Coolify + cutover DNS. Le modifiche
+> volute dal cliente sono state fatte tutte (B01–B07).
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
 >
-> ### ⏭ Il prossimo passo: due decisioni del proprietario
-> B06 è **chiusa e verificata** (cancello di qualità 52 rotte × 3 viewport, baseline
-> rigenerate, impronta confrontata: nessuna parola persa). Il lavoro tecnico aperto
-> sulla parete non c'è più. Quello che resta della fase B sono **due scelte che
-> non sono tecniche**, elencate qui sotto in "Altro aperto": la fascia "store" che
-> ora è un doppione dell'hero, e i nomi dei rami ("Ceramiche e Bagno" / "Edilizia"
-> contro "Showroom" / "Rivendita edile"). Vanno chieste, non decise.
-> L'altro lavoro indipendente è il **deploy** (sezione più sotto).
+> ### ⏭ Dove si è arrivati, e cosa c'è adesso
+> **La fase B non ha più lavoro aperto.** B06 verificata (cancello di qualità,
+> baseline rigenerate, nessuna parola persa) e B07 chiusa: le due decisioni del
+> proprietario sono state prese ed eseguite — la fascia "store" doppione è
+> rimossa, e i nomi dei rami sono quelli suoi su tutto il sito (hero, menu,
+> footer, `<h1>`), scritti una volta sola in `rami.ts`.
+> **Il lavoro in corso è il deploy** (sezione "Il deploy", più sotto).
+>
+> Due cose restano da far decidere, e non bloccano il deploy:
+> - le pagine **`/store/*`** (le sedi fisiche) sono quasi orfane: tre hanno un
+>   solo link in entrata, le due di Via Argine nessuno. La proposta era riusare
+>   per loro la fascia rimossa; per ora nessuno le linka dalla homepage.
+> - gli **alt delle gallerie** e le altre voci in "Da far decidere al proprietario".
 >
 > ### Fase B — in corso
 > **B01–B05 (2026-09-04) — la homepage apre con i rami.** Il carosello a 3 slide
@@ -71,13 +77,19 @@
 > `--titoletto-rule-width: 100%` sul contenitore. **Da ricordare quando si
 > compone un layout nuovo a due colonne.**
 >
-> **Altro aperto, da far decidere al proprietario:**
-> - la fascia **"store"** più in basso (i 3 loghi SVG) ora punta alle stesse
->   rotte dell'hero: è un doppione. Proposta: riusarla per le **sedi fisiche**
->   (`/store/*`), che la homepage oggi non linka;
-> - i nomi "**Ceramiche e Bagno**" e "**Edilizia**" sono quelli detti dal
->   proprietario; sul sito le pagine si chiamano "Showroom" e "Rivendita edile".
->   Da decidere quale coppia resta, perché vale anche per menu e footer.
+> **B07 (2026-09-11) — le due decisioni, prese.**
+> - la fascia **"store"** (3 loghi SVG) portava alle stesse rotte dell'hero:
+>   **rimossa**. Il fondo `home-store-panoramica.png` resta registrato, non
+>   referenziato, per il caso in cui quella fascia torni per le sedi fisiche;
+> - i nomi sono quelli del proprietario **su tutto il sito**: "Ceramiche e Bagno"
+>   e "Edilizia" al posto di "Showroom" e "Rivendita edile", in hero, menu,
+>   footer e `<h1>`. Rotte invariate, nessun 301. Il nome sta in `rami.ts` e gli
+>   altri lo leggono da `nomeDelRamoPerRotta()`: scritto a mano in quattro posti
+>   si era già scollato.
+> - **Il `<title>` non segue l'`<h1>`, di proposito:** tiene la parola che si
+>   cerca ("rivendita edile", "showroom"). Campo `titleSeo` in `pagine.ts`.
+>   Ha anche chiuso un difetto: le 5 pagine `type_stores` avevano ancora il
+>   `<title>` di Yoast per gli archivi, con dentro la parola "Archivi".
 >
 > ### Peso reale misurato nel browser (byte trasferiti, 1440px, scroll completo)
 > Rimisurato in **B06** su entrambi i lati con `_migrazione/misura-peso.js`, che
@@ -98,7 +110,7 @@
 > Design system **misurato** (non letto dal CSS): `src/styles/{fonts,tokens,base,global}.css`.
 > Pagina di controllo dei token: `/design-system/` (noindex).
 > Misure, deviazioni dichiarate e verifiche: `_migrazione/CHANGELOG.md`, voci **A00–A08**
-> per la fase A, **B01–B06** per le modifiche volute.
+> per la fase A, **B01–B07** per le modifiche volute.
 >
 > Comandi: `cd costruisciearreda-astro && npm run dev` · `npm run build` · `npm run preview`.
 > Cancello di qualità: `cd _migrazione && node check-build.js http://localhost:4321`

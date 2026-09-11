@@ -6,13 +6,19 @@
  *   **hero con i 4 rami del gruppo** · card dei 4 servizi numerati · titolo
  *   "Realizziamo il progetto dei tuoi sogni" con il disegno tecnico ·
  *   "La nostra storia" · "Dal progetto alla realizzazione" · highlights con i
- *   4 contatori · i 3 store · "Le nostre realizzazioni" · i 3 riquadri di
- *   tassonomia · News and Event · blocco contatti (dal layout).
+ *   4 contatori · "Le nostre realizzazioni" · i 3 riquadri di tassonomia ·
+ *   News and Event · blocco contatti (dal layout).
  *
  * **Modifica voluta (fase B): l'hero è il selettore dei rami.** Il carosello a
  * 3 slide dell'originale è stato sostituito da `HeroRami` — vedi il perché nel
  * docblock di quel componente e la voce **B01** del CHANGELOG. I tre claim
  * delle slide sono conservati nella riga di apertura dell'hero.
+ *
+ * **Modifica voluta (fase B): via la fascia "store".** Erano tre loghi SVG che
+ * portavano alle stesse tre rotte `type_stores` dell'hero: due strade per la
+ * stessa destinazione, a mezza pagina di distanza. L'hero le presenta tutte e
+ * quattro con foto, nome, descrizione e sedi, quindi la fascia non aggiungeva
+ * niente. Decisione del proprietario, voce **B07** del CHANGELOG.
  *
  * Difetti dell'originale corretti qui:
  *  - **3 `<h1>`** (uno per slide dell'hero, con sopra tre `<h2>` identici):
@@ -56,19 +62,6 @@ const contatori = tutti('contatore');
 const titolo = (frammento: string) =>
   titoli.find((t) => t.testo.toLowerCase().includes(frammento.toLowerCase()));
 
-/* Le tre immagini-link degli store: sono SVG con il nome del tipo di punto
-   vendita, quindi l'`alt` va scritto — nell'originale era vuoto. */
-const ETICHETTE_STORE: Record<string, string> = {
-  '/type_stores/showroom-cat/': 'Showroom',
-  '/type_stores/rivendita-edile/': 'Rivendita edile',
-  '/type_stores/ferramenta/': 'Ferramenta',
-};
-const store = immagini
-  .filter((i) => i.href && /type_stores/.test(i.href))
-  .map((i) => ({ img: immagine(i.path), url: rotta(i.href), path: i.path }))
-  .filter((s) => !!s.img && !!s.url)
-  .map((s) => ({ img: s.img!, url: s.url!, etichetta: ETICHETTE_STORE[s.url!] ?? 'Punto vendita' }));
-
 /**
  * Le immagini delle sezioni, assegnate per file dopo averle guardate una per
  * una: l'ordine nel DOM non basta a capire quale va dove.
@@ -76,7 +69,6 @@ const store = immagini
  *   storia-team-editoriale  foto a colori: due professionisti su una tavola di progetto
  *   Raggruppa-1668  render di una villa moderna
  *   Raggruppa-1674  vista dall'alto di un appartamento arredato
- *   home-store-panoramica  showroom luminoso (fondo della sezione "store")
  */
 const imgPer = (nome: string) => immagine(immagini.find((i) => i.path?.includes(nome))?.path);
 const fondo = (nome: string) =>
@@ -86,7 +78,6 @@ const disegnoTecnico = fondo('Raggruppa-1648');
 const fotoStoria = immagine('2026/09/storia-team-editoriale.png');
 const renderVilla = imgPer('Raggruppa-1668');
 const vistaAppartamento = imgPer('Raggruppa-1674');
-const fondoStore = immagine('2026/09/home-store-panoramica.png');
 
 /** Gli ultimi 3 articoli, per la sezione News and Event. */
 const posts = (await getCollection('posts'))
@@ -246,51 +237,6 @@ const descrizione =
     )
   }
 
-  <!-- Store -->
-  {
-    store.length > 0 && (
-      <section class="section home__store">
-        {
-          fondoStore && (
-            <Image
-              class="home__storeFondo"
-              src={fondoStore}
-              alt=""
-              widths={[960, 1440, 1920]}
-              sizes="100vw"
-              format="webp"
-              quality={70}
-              loading="lazy"
-              decoding="async"
-            />
-          )
-        }
-        <div class="container home__storeInner">
-          <Titoletto as="h2" size="sm" tone={fondoStore ? 'light' : 'muted'} class="home__titoloSezione">
-            {titolo('store')?.testo ?? 'Store'}
-          </Titoletto>
-          <ul class="home__storeLista">
-            {store.map((s) => (
-              <li>
-                <a class="home__storeLink" href={s.url}>
-                  {/* SVG: si serve tale e quale, non ha senso rasterizzarlo in WebP */}
-                  <img
-                    src={s.img.src}
-                    width={s.img.width}
-                    height={s.img.height}
-                    alt={s.etichetta}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    )
-  }
-
   <!-- Le nostre realizzazioni -->
   <section class="section home__realizzazioni">
     <div class="container home__duePer">
@@ -412,61 +358,6 @@ const descrizione =
   .home__coppiaFoto {
     display: grid;
     gap: var(--s-6);
-  }
-
-  /* La sezione store nell'originale ha un'immagine di fondo dichiarata nel CSS
-     che non viene applicata: risultato, un buco bianco di 700px con il titolo
-     bianco su bianco e i tre loghi invisibili. Qui il fondo si vede. */
-  .home__store {
-    position: relative;
-    overflow: clip;
-  }
-  .home__storeFondo {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  /* Velo abbastanza scuro per il contrasto del testo bianco, abbastanza chiaro
-     perché la foto dello showroom resti riconoscibile: al 55% diventava una
-     campitura grigia piatta. */
-  .home__store::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgb(0 0 0 / 55%) 0%, rgb(0 0 0 / 30%) 45%, rgb(0 0 0 / 50%) 100%);
-  }
-  .home__storeInner {
-    position: relative;
-    z-index: 1;
-  }
-
-  .home__storeLista {
-    display: grid;
-    gap: var(--s-8);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  @media (min-width: 769px) {
-    .home__storeLista {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-  .home__storeLista li {
-    margin: 0;
-  }
-  .home__storeLink {
-    display: block;
-    transition: opacity var(--dur) var(--ease);
-  }
-  /* i tre loghi sono SVG scuri: sopra un fondo scuro vanno schiariti */
-  .home__store .home__storeLink img {
-    filter: brightness(0) invert(1);
-  }
-  .home__storeLink:hover {
-    opacity: 0.75;
   }
 
   .home__riquadri {

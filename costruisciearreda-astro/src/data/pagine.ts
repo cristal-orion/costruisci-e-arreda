@@ -12,6 +12,18 @@
  *  - **l'impaginazione**: una colonna, due colonne o griglia di schede.
  */
 
+import { nomeDelRamoPerRotta } from './rami';
+
+/**
+ * L'`h1` di una pagina di ramo. Il nome sta in `rami.ts` — qui si legge, non si
+ * riscrive: è la stessa parola che compare nell'hero, nel menu e nel footer.
+ */
+const nomeRamo = (rotta: string): string => {
+  const nome = nomeDelRamoPerRotta(rotta);
+  if (!nome) throw new Error(`Nessun ramo per la rotta ${rotta}: allineare data/rami.ts`);
+  return nome;
+};
+
 export type Impaginazione = 'colonna' | 'testo' | 'schede' | 'due-colonne';
 
 export type PaginaOneOff = {
@@ -23,6 +35,16 @@ export type PaginaOneOff = {
   h1: string;
   /** Meta description. Obbligatoria: nell'originale mancava. */
   descrizione: string;
+  /**
+   * Testo del `<title>`, quando deve dire più dell'`<h1>` — il nome del sito lo
+   * aggiunge il layout. Se c'è, il `<title>` estratto dal mirror viene ignorato.
+   *
+   * Serve alle cinque pagine `type_stores`, che nell'originale avevano il
+   * `<title>` generato da Yoast per gli archivi di tassonomia: "Showroom
+   * **Archivi** - Costruisci e Arreda S.r.l.". Cinque pagine indicizzate con la
+   * parola "Archivi" nel titolo dei risultati di ricerca.
+   */
+  titleSeo?: string;
   impaginazione: Impaginazione;
   /** Titolo dell'hero, se la pagina ne ha uno. */
   heroKicker?: string;
@@ -130,11 +152,17 @@ export const pagineOneOff: PaginaOneOff[] = [
      Nell'originale hanno l'URL di un archivio di tassonomia ma **contenuto
      proprio**: presentazione del tipo di punto vendita, foto, marchi trattati.
      Non sono elenchi generati, quindi si trattano come pagine one-off.
-     I titoli Yoast erano "Showroom **Archivi**": qui sono titoli veri.        */
+     I titoli Yoast erano "Showroom **Archivi**": qui sono titoli veri.
+
+     **Modifica voluta (fase B, voce B07):** l'`h1` è il nome con cui il
+     proprietario chiama il ramo, letto da `rami.ts`. Il `<title>` tiene invece
+     anche la parola che si cerca — "showroom", "rivendita edile" — perché è
+     quella che porta traffico: il nome nuovo non deve costare posizioni.      */
   {
     slug: 'type_stores-showroom-cat',
     rotta: '/type_stores/showroom-cat/',
-    h1: 'Showroom',
+    h1: nomeRamo('/type_stores/showroom-cat/'),
+    titleSeo: 'Ceramiche e Bagno: showroom a Napoli e Nola',
     descrizione:
       'I quattro showroom di Costruisci e Arreda a Napoli e Nola: ceramiche, pavimenti, ' +
       'rivestimenti e arredo bagno da toccare con mano.',
@@ -143,7 +171,8 @@ export const pagineOneOff: PaginaOneOff[] = [
   {
     slug: 'type_stores-rivendita-edile',
     rotta: '/type_stores/rivendita-edile/',
-    h1: 'Rivendita edile',
+    h1: nomeRamo('/type_stores/rivendita-edile/'),
+    titleSeo: 'Edilizia: rivendita edile a Napoli',
     descrizione:
       'La rivendita edile di Costruisci e Arreda: materiali da costruzione, malte, ' +
       'isolanti e forniture per il cantiere.',
@@ -152,7 +181,8 @@ export const pagineOneOff: PaginaOneOff[] = [
   {
     slug: 'type_stores-ferramenta',
     rotta: '/type_stores/ferramenta/',
-    h1: 'Ferramenta',
+    h1: nomeRamo('/type_stores/ferramenta/'),
+    titleSeo: 'Ferramenta a Napoli e Portici',
     descrizione:
       'Le ferramenta di Costruisci e Arreda a Napoli e Portici: utensili, elettroutensili, ' +
       'minuteria e attrezzatura professionale.',
@@ -161,7 +191,8 @@ export const pagineOneOff: PaginaOneOff[] = [
   {
     slug: 'type_stores-progettazione-e-ristrutturazione-edile',
     rotta: '/type_stores/progettazione-e-ristrutturazione-edile/',
-    h1: 'Progettazione e ristrutturazione edile',
+    h1: nomeRamo('/type_stores/progettazione-e-ristrutturazione-edile/'),
+    titleSeo: 'Progettazione e ristrutturazione edile',
     descrizione:
       'Progettazione e ristrutturazione edile con Costruisci e Arreda: dal sopralluogo ' +
       'alla consegna, con un unico interlocutore.',
@@ -171,6 +202,8 @@ export const pagineOneOff: PaginaOneOff[] = [
     slug: 'type_stores-marchi',
     rotta: '/type_stores/marchi/',
     h1: 'I marchi che trattiamo',
+    /* Non è un ramo: qui il `title` serve solo a togliere "Archivi". */
+    titleSeo: 'I marchi che trattiamo',
     descrizione:
       'I marchi trattati da Costruisci e Arreda: ceramiche, sanitari, rubinetteria, ' +
       'utensileria e materiali per l\'edilizia.',

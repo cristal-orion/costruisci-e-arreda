@@ -22,6 +22,9 @@ export const immaginiLocali: Record<string, ImageMetadata> = {
   '2026/09/hero-ferramenta.png': heroFerramenta,
   '2026/09/hero-progettazione.png': heroProgettazione,
   '2026/09/storia-team-editoriale.png': storiaTeamEditoriale,
+  /* Non usata da nessuna pagina da quando la fascia "store" è stata rimossa
+     (voce B07): il build la pota. Resta registrata perché è il fondo pronto se
+     quella fascia tornerà, riusata per le sedi fisiche. */
   '2026/09/home-store-panoramica.png': homeStorePanoramica,
   '2026/09/card-progetti.png': cardProgetti,
   '2026/09/card-render.png': cardRender,

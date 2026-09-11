@@ -16,6 +16,8 @@
  * Qui hanno `href: null` e diventano bottoni veri.
  */
 
+import { rami } from './rami';
+
 export type VoceMenu = {
   label: string;
   /** `null` = non è un link, apre solo il sottomenu. */
@@ -23,6 +25,17 @@ export type VoceMenu = {
   external?: boolean;
   figli?: VoceMenu[];
 };
+
+/**
+ * Le voci dei quattro rami, lette da `rami.ts` invece di riscritte.
+ *
+ * **Modifica voluta (fase B, voce B07):** i nomi sono quelli con cui il
+ * proprietario descrive il gruppo — "Ceramiche e Bagno" ed "Edilizia" al posto
+ * di "Showroom" e "Rivendita edile", che erano i titoli delle pagine generati
+ * da WordPress. Le rotte non cambiano, quindi non serve nessun 301.
+ * "Marchi" non è un ramo: è l'elenco delle marche trattate, e resta a sé.
+ */
+const vociDeiRami = (): VoceMenu[] => rami.map((r) => ({ label: r.nome, href: r.href }));
 
 export const menuPrincipale: VoceMenu[] = [
   {
@@ -54,10 +67,7 @@ export const menuPrincipale: VoceMenu[] = [
     label: 'Store',
     href: null,
     figli: [
-      { label: 'Showroom', href: '/type_stores/showroom-cat/' },
-      { label: 'Rivendita edile', href: '/type_stores/rivendita-edile/' },
-      { label: 'Ferramenta', href: '/type_stores/ferramenta/' },
-      { label: 'Progettazione e ristrutturazione edile', href: '/type_stores/progettazione-e-ristrutturazione-edile/' },
+      ...vociDeiRami(),
       { label: 'Marchi', href: '/type_stores/marchi/' },
     ],
   },
@@ -93,10 +103,7 @@ export const colonneFooter: { titolo: string; voci: VoceMenu[] }[] = [
   {
     titolo: 'Store',
     voci: [
-      { label: 'Showroom', href: '/type_stores/showroom-cat/' },
-      { label: 'Rivendita edile', href: '/type_stores/rivendita-edile/' },
-      { label: 'Ferramenta', href: '/type_stores/ferramenta/' },
-      { label: 'Progettazione Ristrutturazione edile', href: '/type_stores/progettazione-e-ristrutturazione-edile/' },
+      ...vociDeiRami(),
       { label: 'Marchi', href: '/type_stores/marchi/' },
     ],
   },

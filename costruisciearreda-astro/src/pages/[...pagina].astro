@@ -96,11 +96,17 @@ const scriptDeclassa = `
    solo testo (le legal, il preventivo). */
 const classeContenuto =
   meta.impaginazione === 'testo' ? 'oneoff__contenuto--testo' : undefined;
+
+/* Il `<title>`: quello scritto a mano in `pagine.ts` batte quello estratto dal
+   mirror. Serve alle cinque pagine `type_stores`, che dall'originale si
+   portavano dietro il titolo generato da Yoast per gli archivi di tassonomia,
+   con la parola "Archivi" dentro. */
+const titleFull = meta.titleSeo ? undefined : (pagina.data.titleCompleto ?? undefined);
 ---
 
 <SiteLayout
-  title={meta.h1}
-  titleFull={pagina.data.titleCompleto ?? undefined}
+  title={meta.titleSeo ?? meta.h1}
+  {titleFull}
   description={pagina.data.metaDescription ?? meta.descrizione}
   noindex={meta.noindex || isNoindex(meta.rotta)}
   bloccoContatti={!meta.senzaBloccoContatti}

@@ -1950,3 +1950,85 @@ rebuild era rimasta senza immagine. Ora è `007-VISTA-SALONE-CUCINA-scaled`.
 luminanza media del cielo (dalla cima della campata all'insegna): +17,1% su
 Ceramiche, +16,0% su Edilizia, +16,4% su Ferramenta, +17,5% su Progettazione.
 La risposta al gesto si vede, e il contrasto del testo regge (voce sopra).
+
+---
+
+## B07 — Via il doppione, e i rami si chiamano come li chiama il proprietario
+
+**2026-09-11**
+
+Due decisioni del proprietario, prese insieme perché toccano le stesse parole e
+le stesse rotte.
+
+### 1. La fascia "store" non c'è più
+
+A metà homepage c'erano tre loghi SVG che portavano a
+`/type_stores/showroom-cat/`, `/rivendita-edile/` e `/ferramenta/`: **le stesse
+rotte dell'hero**, mezza pagina più sotto. Da quando l'hero è la parete dei
+rami (B01–B02) quella fascia non aggiungeva niente — l'hero le presenta tutte e
+quattro con foto, nome, descrizione e sedi, mentre la fascia dava tre loghi e
+nessun testo.
+
+Rimossa: la sezione, il titoletto "store", le tre immagini-link e il CSS
+(`.home__store*`, 50 righe). La homepage perde una sezione e quattro immagini.
+
+`home-store-panoramica.png`, generata ieri come fondo di quella fascia, resta
+registrata in `immagini-locali.ts` con una nota: il build la pota perché non è
+referenziata, e se la fascia tornerà — riusata per le **sedi fisiche**, che è la
+proposta rimasta sul tavolo — il fondo è già pronto.
+
+**Nota su cosa resta scoperto.** Le pagine `/store/*` erano già quasi orfane
+prima di questa modifica, e lo sono ancora: misurato sul build, `/store/`
+`via-martiri-della-liberta-na`, `via-martiri-della-liberta-nola-na` e
+`via-san-massimo-na` hanno **un solo link in entrata** (da
+`/type_stores/showroom-cat/`), e le due di **Via Argine non ne hanno nessuno**.
+La fascia rimossa non le linkava — puntava alla tassonomia, non alle sedi —
+quindi non è un peggioramento, ma è il difetto che la proposta "riusare la
+fascia per le sedi" risolveva.
+
+### 2. I rami si chiamano come li chiama il proprietario
+
+"Showroom" e "Rivendita edile" erano i titoli generati da WordPress. I nomi con
+cui il proprietario descrive il gruppo sono **Ceramiche e Bagno** ed **Edilizia**,
+e da B01 stavano solo nell'hero: due nomi per la stessa cosa, a seconda di dove
+si guardava. Ora sono quelli dappertutto — hero, menu, footer, `<h1>` della
+pagina del ramo. **Le rotte non cambiano, quindi nessun 301.**
+
+Il nome sta scritto **una volta sola**, in `rami.ts`, e gli altri lo leggono da
+`nomeDelRamoPerRotta()`. Non è pignoleria: scritto a mano in quattro posti si
+era già scollato — il footer diceva "Progettazione Ristrutturazione edile" e il
+menu "Progettazione e ristrutturazione edile". Ora entrambi dicono
+"Progettazione e Ristrutturazione", come l'hero.
+
+### Un difetto trovato mentre si cambiavano i titoli
+
+Le **cinque** pagine `type_stores` si portavano dietro dall'originale il
+`<title>` che Yoast genera per gli archivi di tassonomia, con dentro la parola
+"Archivi":
+
+| rotta | prima | ora |
+|---|---|---|
+| `showroom-cat` | `Showroom Archivi - …` | `Ceramiche e Bagno: showroom a Napoli e Nola - …` |
+| `rivendita-edile` | `Rivendita edile Archivi - …` | `Edilizia: rivendita edile a Napoli - …` |
+| `ferramenta` | `Ferramenta Archivi - …` | `Ferramenta a Napoli e Portici - …` |
+| `progettazione-…-edile` | `Progettazione e ristrutturazione edile Archivi - …` | `Progettazione e ristrutturazione edile - …` |
+| `marchi` | `Marchi Archivi - …` | `I marchi che trattiamo - …` |
+
+Cinque pagine indicizzate con "Archivi" nel titolo dei risultati di ricerca.
+
+**Il `<title>` non segue l'`<h1>`, di proposito.** L'`h1` è il nome del ramo
+("Edilizia"); il `title` tiene anche la parola che la gente cerca ("rivendita
+edile", "showroom"), perché è quella che porta traffico e il nome nuovo non deve
+costare posizioni. Il campo è `titleSeo` in `pagine.ts`, e quando c'è batte il
+`<title>` estratto dal mirror.
+
+### Verifica
+
+`astro check`: 0 errori. `npm run build`: 52 pagine.
+`check-build.js`: **52 rotte × 3 viewport, nessun problema.**
+
+Impronta confrontata con quella di prima della modifica: **6 pagine**, ed è
+esattamente quello che è stato deciso — la homepage perde quattro immagini e il
+titoletto "store", le cinque pagine dei rami cambiano `<title>` e tre di loro
+l'`<h1>`. Nessun'altra pagina si muove, nessuna parola di contenuto persa.
+Baseline visiva rigenerata: 156 catture.
