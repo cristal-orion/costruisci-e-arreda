@@ -7,8 +7,10 @@
 > homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la
 > velatura è stata rifatta, la fascia "store" doppione è via e i rami si chiamano
 > come li chiama il proprietario — voci **B01–B07** del CHANGELOG.
-> **Il lavoro aperto è uno: il deploy** su Coolify + cutover DNS. Le modifiche
-> volute dal cliente sono state fatte tutte (B01–B07).
+> **Il deploy è fatto** (voci D01–D03): il sito è online sul dominio demo
+> `https://costruisciearreda.57.128.243.135.sslip.io`. Restano
+> `PUBLIC_FORM_ENDPOINT` e il cutover DNS. Le modifiche volute dal cliente sono
+> state fatte tutte (B01–B07).
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
 >
 > ### ⏭ Dove si è arrivati, e cosa c'è adesso
@@ -17,7 +19,7 @@
 > proprietario sono state prese ed eseguite — la fascia "store" doppione è
 > rimossa, e i nomi dei rami sono quelli suoi su tutto il sito (hero, menu,
 > footer, `<h1>`), scritti una volta sola in `rami.ts`.
-> **Il lavoro in corso è il deploy** (sezione "Il deploy", più sotto).
+> **Il deploy è fatto** (sezione "Il deploy", più sotto).
 >
 > Due cose restano da far decidere, e non bloccano il deploy:
 > - le pagine **`/store/*`** (le sedi fisiche) sono quasi orfane: tre hanno un
@@ -127,16 +129,20 @@
 > `npx astro dev stop && rm -rf node_modules/.vite && npm run dev`.
 > Verificato due volte in sessione, con `getComputedStyle` (il build era corretto).
 >
-> ### Il deploy — scritto, provato a metà (voce D01)
-> **I file ci sono tutti. Il container non è mai stato costruito**: su questa
-> macchina il demone Docker è fermo e l'utente non è nel gruppo `docker`.
-> Quello che **è** stato provato è la Content-Security-Policy, con
+> ### Il deploy — fatto (voci D01–D03)
+> **Il sito è online sul dominio demo**, `https://costruisciearreda.57.128.243.135.sslip.io`,
+> e il cancello di qualità del server passa **contro l'indirizzo pubblicato**:
+> 34 controlli, nessun problema, 54 rotte aperte in un browser senza una
+> violazione della CSP né un errore JavaScript.
+> Prima del deploy era stata provata solo la Content-Security-Policy, con
 > `_migrazione/prova-csp.js`, che applica la politica vera alle risposte del
 > `npm run preview`: alla prima esecuzione ha trovato **5 violazioni** sulle due
 > pagine legali (l'embed di Iubenda restava senza fogli di stile), corrette; ora
 > 53 rotte, zero violazioni. Build a freddo misurato: **107 secondi**.
-> Quello che **non** è stato provato è il comportamento di nginx — redirect,
-> intestazioni, cache, 404: **non andare in produzione senza la prova qui sotto.**
+> Quello che non si era potuto provare — il comportamento di nginx: redirect,
+> intestazioni, cache, 404 — al primo giro ha bocciato, e la correzione è la
+> voce **D02** (`absolute_redirect off`, sotto). **Ogni modifica a `deploy/`
+> vuole di nuovo la prova qui sotto**, e non solo in locale.
 >
 > | file | cos'è |
 > |---|---|
@@ -149,12 +155,10 @@
 > | `deploy/redirect.conf` · `redirect-map.conf` | generati da `build-redirect.js`: 7 redirect + 42 vecchi `?p=ID`. Due file perché i `location` vanno in `server` e la `map` in `http` |
 > | `public/robots.txt` · `src/pages/404.astro` | il robots con la sitemap; la 404 è una pagina del sito, con i link ai quattro rami |
 >
-> **Il deploy lo fa un'altra sessione, sulla VPS** (dove ci sono Coolify e i suoi
-> strumenti). Quello che segue è scritto per chi lo esegue lì.
->
 > Il repo è `github.com/cristal-orion/costruisci-e-arreda`. **Gli originali delle
 > immagini sono nel repo** (735 file in `costruisciearreda-static/…/wp-content/uploads/`,
 > tracciati): un clone ha tutto il necessario per costruire, non serve altro.
+> Il checkout sulla VPS sta in `/home/debian/costruisci-e-arreda`.
 >
 > **La prova, prima di pubblicare:**
 > ```bash
@@ -170,20 +174,21 @@
 > aprire le 53 rotte e raccogliere le violazioni della CSP, quindi va installato
 > lì. Senza, lo script muore sul `require('playwright')`.
 >
-> **Su Coolify:** applicazione di tipo **Dockerfile**, base directory `/`,
-> Dockerfile `Dockerfile`, porta **80**, TLS Let's Encrypt. Il build ci mette
-> circa due minuti a freddo; la cache delle immagini è una cache mount, quindi i
-> deploy successivi sono molto più rapidi solo se il builder conserva le cache
-> mount fra un build e l'altro — se Coolify le butta, il tempo resta quello.
+> **Su Coolify** (già configurata): progetto **Costruisci e Arreda**,
+> applicazione `costruisciearreda` — tipo **Dockerfile**, base directory `/`,
+> Dockerfile `Dockerfile`, porta **80**, TLS Let's Encrypt, health check su `/`.
+> Collegata alla **GitHub App** `coolify-pawmatch`: un push su `main` fa partire
+> il deploy da sé. Il build ci mette **circa 200 secondi**, e non è sceso fra un
+> deploy e l'altro: Coolify non conserva le cache mount, quindi i 2.101 WebP
+> vengono riconvertiti ogni volta.
 >
-> **Le due cose che la prova deve dire, e che qui non si sono potute vedere:**
-> 1. `/contatti` **senza** barra finale deve rispondere **301** verso `/contatti/`.
->    Se risponde 200, la stessa pagina sta su due URL e va aggiunta la regola in
->    `deploy/nginx.conf` (lo script lo segnala esplicitamente).
-> 2. Gli asset di `_astro/` devono uscire **con** le intestazioni di sicurezza. In
->    nginx un `add_header` dentro una `location` cancella quelli di sopra: il file
->    `deploy/intestazioni.conf` è incluso apposta in ognuna, ma è il tipo di cosa
->    che si verifica, non si spera.
+> **Le due cose che la prova doveva dire, e cosa ha detto:**
+> 1. `/contatti` senza barra finale: **301 verso `/contatti/`**, come sperato — ma
+>    con `Location` **assoluto e in `http://`**, e valeva per tutti e 49 i
+>    redirect. Dietro il proxy è un salto all'indietro su http, verso una porta
+>    che da fuori non esiste. Corretto in **D02** con `absolute_redirect off`.
+> 2. Gli asset di `_astro/` escono **con** le intestazioni di sicurezza: gli
+>    `include` dentro ogni `location` reggono. Verificato, non sperato.
 > `prova-deploy.js` è il cancello di qualità del **server**, come `check-build.js`
 > lo è delle pagine: controlla i 7 redirect e tutti e 42 i vecchi `?p=ID`, lo
 > stato 404 con la pagina giusta, le intestazioni di sicurezza **anche sugli
@@ -192,13 +197,10 @@
 > blocca qualcosa. Un hash sbagliato non dà errori nel server: blocca il menu e
 > basta.
 >
-> **Una domanda aperta che solo quella prova chiude:** `/contatti` senza barra
-> finale. Le rotte canoniche la hanno tutte; il `try_files` dovrebbe rispondere
-> 301 verso la forma con la barra, ma dipende da come nginx lo risolve. La prova
-> lo dice e, se serve, si aggiunge la regola.
->
-> Poi: Coolify, applicazione di tipo **Dockerfile**, base directory `/`, porta 80,
-> TLS Let's Encrypt.
+> **`prova-deploy.js` va eseguito anche contro l'indirizzo pubblicato**, non solo
+> sul container locale: il proxy sta in mezzo, e le due cose che può rovinare —
+> portarsi via le intestazioni, o ricevere un redirect che rimanda su http — in
+> locale non si vedono. Lo script segue lo schema dell'URL che gli passi (D03).
 >
 > **Prima del cutover**: impostare `PUBLIC_FORM_ENDPOINT` — che è una variabile di
 > **build**, non di runtime: va messa fra le build variable di Coolify, altrimenti
