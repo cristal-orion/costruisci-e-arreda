@@ -2266,3 +2266,69 @@ cache come gli altri nomi fissi.
 
 Il vecchio `favicon.ico` di Astro era un PNG con l'estensione sbagliata
 (`file` diceva `PNG image data, 32 x 32`). Ora è un ICO davvero.
+
+---
+
+## B09 — "Shop Online" fuori dalla navigazione (2026-09-11)
+
+Ultima voce del menu principale, portava fuori dal sito su
+`https://www.costruisciearreda.com/`. Tolta per decisione del proprietario.
+
+La modifica è **una riga di dati**, non di markup: la voce stava in
+`menuPrincipale` (`src/data/menu.ts`) ed era resa come un link qualsiasi —
+nessuno stile dedicato, nessuna regola CSS che la trattasse da bottone. Via
+la voce, non resta CSS morto.
+
+### Quel tasto non portava a nessun negozio: tornava qui
+
+Il proprietario ha fatto notare che sul sito ancora online il tasto «non porta
+da nessuna parte». Misurato, ed è peggio di un link morto — è un giro:
+
+```
+https://www.costruisciearreda.com/  → 301 → https://www.costruisciearreda.it/
+                                    → 301 → https://costruisciearreda.it/   200
+```
+
+Chi cliccava "Shop Online" finiva sulla **homepage dello stesso sito** da cui
+era partito. Non un 404, che almeno si vede: un giro che sembra un click non
+riuscito.
+
+Quindi la voce non era ridondante, era una promessa non mantenuta, e toglierla
+non toglie niente a nessuno.
+
+### Conseguenze sui dati
+
+- `site.shopUrl` **rimosso** da `site.ts`. Era già inutilizzato — il footer non
+  l'ha mai linkato — ma il commento diceva "e-commerce su dominio separato, non
+  fa parte di questo sito", e non è vero: dietro quel dominio non c'è un
+  e-commerce, c'è un redirect a qui. Un campo inutilizzato con un valore che
+  gira su sé stesso è un invito a rilinkarlo per sbaglio. Al suo posto, sopra
+  `email`, sta la misura.
+- `shop@costruisciearreda.com` **resta**: è una casella di posta, e il dominio
+  di una email non dice niente su cosa serva il web di quel dominio.
+- Il campo `external?: boolean` di `VoceMenu` e il ramo che lo rende in
+  `Header.astro` (`target="_blank" rel="noopener noreferrer"`) **restano**:
+  oggi non li usa nessuno, ma sono la gestione dei link in uscita del menu, non
+  codice legato a questa voce.
+
+### Da sapere al cutover: il `.com` sta su un altro host
+
+I due domini non stanno sulla stessa macchina:
+
+| dominio | IP | cos'è |
+|---|---|---|
+| `costruisciearreda.it`, `www` | `89.40.173.77` | il sito WordPress di oggi |
+| `costruisciearreda.com`, `www` | `46.252.158.196` | solo il 301 verso il `.it` |
+
+Spostare il DNS del `.it` sulla VPS **non tocca il `.com`**: quel redirect
+continuerà a funzionare e porterà al sito nuovo, perché punta al nome, non
+all'indirizzo. Ma vive su un hosting separato: **se quel secondo hosting viene
+dismesso insieme al vecchio, il `.com` muore.** Chi lo controlla deve tenerlo,
+o rifare il 301 altrove.
+
+### Verifica
+
+`check-build.js` su 52 rotte × 3 viewport: **nessun problema**. Sulla pagina
+servita non compare più la stringa "Shop Online", e i soli riferimenti a
+`costruisciearreda.com` sono il `mailto:` e l'indirizzo email nel footer.
+Menu controllato a 1440px: si chiude su "Richiedi Preventivo".

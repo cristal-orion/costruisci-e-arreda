@@ -74,7 +74,11 @@ export const menuPrincipale: VoceMenu[] = [
   { label: 'Realizzazioni', href: '/i-nostri-lavori/' },
   { label: 'News and Event', href: '/category/ultime-news-e-articoli/' },
   { label: 'Richiedi Preventivo', href: '/richiedi-preventivo/' },
-  { label: 'Shop Online', href: 'https://www.costruisciearreda.com/', external: true },
+  // **Modifica voluta (fase B, voce B09):** "Shop Online" è tolto dalla
+  // navigazione per decisione del proprietario. Non era un link a un negozio:
+  // `https://www.costruisciearreda.com/` fa 301 su `www.costruisciearreda.it`
+  // e poi su `costruisciearreda.it` — riportava cioè alla homepage di questo
+  // stesso sito. Misurato il 2026-09-11.
 ];
 
 /**

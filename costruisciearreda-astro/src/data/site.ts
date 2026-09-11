@@ -23,9 +23,14 @@ export const company = {
   phone: '+393762024360',
   /** Come lo scrive l'originale, senza spazi dentro il numero. */
   phoneLabel: '+39 3762024360',
+  /**
+   * L'indirizzo è su `costruisciearreda.com`, ma **non c'è nessun e-commerce
+   * dietro quel dominio**: misurato il 2026-09-11, `www.costruisciearreda.com`
+   * fa 301 su `www.costruisciearreda.it` e poi su `costruisciearreda.it` —
+   * torna cioè a questo stesso sito. Qui resta solo la casella di posta.
+   * Il campo `shopUrl` che c'era è stato tolto per questo (voce B09).
+   */
   email: 'shop@costruisciearreda.com',
-  /** E-commerce su dominio separato, non fa parte di questo sito. */
-  shopUrl: 'https://costruisciearreda.com',
   credits: 'Vibgroup',
 } as const;
 

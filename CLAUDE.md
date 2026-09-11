@@ -7,11 +7,11 @@
 > homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la
 > velatura è stata rifatta, la fascia "store" doppione è via e i rami si chiamano
 > come li chiama il proprietario, e in cima alla scheda del browser c'è il
-> marchio rosso invece del logo di Astro — voci **B01–B08** del CHANGELOG.
+> marchio rosso invece del logo di Astro — voci **B01–B09** del CHANGELOG.
 > **Il deploy è fatto** (voci D01–D03): il sito è online sul dominio demo
 > `https://costruisciearreda.57.128.243.135.sslip.io`. Restano
 > `PUBLIC_FORM_ENDPOINT` e il cutover DNS. Le modifiche volute dal cliente sono
-> state fatte tutte (B01–B08).
+> state fatte tutte (B01–B09).
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
 >
 > ### ⏭ Dove si è arrivati, e cosa c'è adesso
@@ -105,6 +105,19 @@
 > più nella `location` dei file di servizio — quindi la prova del server è
 > stata rifatta: 34 controlli, nessun problema.
 >
+> **B09 (2026-09-11) — "Shop Online" fuori dalla navigazione.** Una riga di dati
+> in `menuPrincipale` (`src/data/menu.ts`), nessuno stile dedicato da ripulire.
+> **Dietro quel tasto non c'è nessun negozio** (misurato):
+> `www.costruisciearreda.com` → 301 → `www.costruisciearreda.it` → 301 →
+> `costruisciearreda.it`. Chi cliccava tornava sulla homepage dello stesso sito.
+> Per questo è stato tolto anche `site.shopUrl`, che era già inutilizzato ma
+> diceva "e-commerce su dominio separato": non è vero. L'email
+> `shop@costruisciearreda.com` resta — è una casella, non un sito.
+> **Al cutover:** il `.com` sta su un **altro host** (`46.252.158.196`, il `.it`
+> è su `89.40.173.77`). Spostare il DNS del `.it` non lo tocca e il redirect
+> continuerà a portare al sito nuovo; ma se quell'hosting viene dismesso
+> insieme al vecchio, il `.com` muore. Chi lo controlla deve tenerlo.
+>
 > ### Peso reale misurato nel browser (byte trasferiti, 1440px, scroll completo)
 > Rimisurato in **B06** su entrambi i lati con `_migrazione/misura-peso.js`, che
 > ora è nel repo: i numeri di prima venivano da uno script che non c'era più.
@@ -124,7 +137,7 @@
 > Design system **misurato** (non letto dal CSS): `src/styles/{fonts,tokens,base,global}.css`.
 > Pagina di controllo dei token: `/design-system/` (noindex).
 > Misure, deviazioni dichiarate e verifiche: `_migrazione/CHANGELOG.md`, voci **A00–A08**
-> per la fase A, **B01–B08** per le modifiche volute.
+> per la fase A, **B01–B09** per le modifiche volute.
 >
 > Comandi: `cd costruisciearreda-astro && npm run dev` · `npm run build` · `npm run preview`.
 > Cancello di qualità: `cd _migrazione && node check-build.js http://localhost:4321`
@@ -218,6 +231,12 @@
 > **build**, non di runtime: va messa fra le build variable di Coolify, altrimenti
 > non finisce nell'HTML. Senza, i form mostrano i recapiti al posto del modulo (è
 > voluto). La CSP si allarga da sola all'origine dell'endpoint.
+>
+> **E il dominio `.com`**: non è sul vecchio host del sito, è su una macchina sua
+> (`46.252.158.196` contro `89.40.173.77`), e l'unica cosa che fa è un 301 verso
+> `costruisciearreda.it`. Spostando il DNS del `.it` continuerà a funzionare da
+> sé, **ma solo finché quell'hosting resta acceso**: va tenuto, o il 301 va
+> rifatto altrove. Vedi voce B09.
 >
 > ### Deciso: `/promo-casa/` è stata ritirata (2026-09-02)
 > L'offerta era scaduta ("€ 166 al mese, valida fino al 31 Dicembre"), e la pagina
@@ -363,7 +382,10 @@ punto edile, ferramenta, servizi di progettazione e ristrutturazione.
 - Sedi: Showroom Via Martiri della Libertà 11, Napoli · Via San Massimo (Mercury Center), Nola ·
   Ferramenta Corso Ponticelli 28/C, Napoli e Via della Libertà 56, Portici ·
   Punto edile Via Argine 625, Napoli · Uffici Via Gennaro Paparo 74, Massa di Somma
-- Social: LinkedIn, Facebook, Instagram · Shop e-commerce **separato**: `costruisciearreda.com`
+- Social: LinkedIn, Facebook, Instagram
+- **`costruisciearreda.com` non è un e-commerce** (misurato il 2026-09-11, voce B09):
+  fa 301 su `www.costruisciearreda.it` e poi su `costruisciearreda.it`, cioè torna a
+  questo stesso sito. È il dominio della casella `shop@costruisciearreda.com`, niente altro.
 - Credits tema: Vibgroup
 
 ### Mappa pagine (56 pagine reali, escluse feed/duplicati)
