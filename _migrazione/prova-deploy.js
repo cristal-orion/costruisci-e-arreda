@@ -124,7 +124,11 @@ const chiedi = (percorso, intestazioni = {}) =>
 
   // --- 5. Le intestazioni sull'HTML ----------------------------------------
   const attese = {
-    'content-security-policy': (v) => v.includes("script-src 'self' 'sha256-"),
+    // `'strict-dynamic'` sta fra `'self'` e gli hash: lo mette genera-csp.js
+    // perché su /privacy-policy/ iubenda.js inserisce uno script che non si può
+    // autorizzare per hash. Il controllo guarda i due pezzi separatamente,
+    // altrimenti torna a fallire al prossimo termine aggiunto alla direttiva.
+    'content-security-policy': (v) => v.includes("script-src 'self'") && v.includes("'sha256-"),
     'x-content-type-options': (v) => v === 'nosniff',
     'referrer-policy': (v) => v === 'strict-origin-when-cross-origin',
     'x-frame-options': (v) => v === 'SAMEORIGIN',
