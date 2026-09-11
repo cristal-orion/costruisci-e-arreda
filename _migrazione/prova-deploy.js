@@ -20,6 +20,7 @@
  * Esce con 1 se qualcosa non torna.
  */
 const http = require('node:http');
+const https = require('node:https');
 const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require('playwright');
@@ -35,12 +36,20 @@ const segna = (condizione, descrizione, dettaglio = '') =>
 /**
  * Una richiesta cruda: niente redirect seguiti, niente decompressione
  * automatica. Servono le intestazioni **come arrivano**.
+ *
+ * Lo schema lo decide l'indirizzo passato, non il codice: con un URL `https://`
+ * — il sito pubblicato dietro il proxy di Coolify — parlare http sulla porta 80
+ * prende il redirect del proxy, e allora **ogni** controllo fallisce con un 302
+ * che non c'entra nulla col sito. Ed è proprio lì che vanno provate le cose che
+ * in locale non si vedono: le intestazioni che il proxy potrebbe togliere, e i
+ * redirect, che nascono relativi e devono restare su https.
  */
 const chiedi = (percorso, intestazioni = {}) =>
   new Promise((risolvi, rifiuta) => {
     const u = new URL(percorso, BASE);
-    const req = http.request(
-      { hostname: u.hostname, port: u.port || 80, path: u.pathname + u.search, method: 'GET', headers: intestazioni },
+    const tls = u.protocol === 'https:';
+    const req = (tls ? https : http).request(
+      { hostname: u.hostname, port: u.port || (tls ? 443 : 80), path: u.pathname + u.search, method: 'GET', headers: intestazioni },
       (res) => {
         const pezzi = [];
         res.on('data', (c) => pezzi.push(c));
