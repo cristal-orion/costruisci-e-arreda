@@ -1,0 +1,131 @@
+---
+/**
+ * Pagina 404.
+ *
+ * Nell'originale non esiste: WordPress serviva il template `404.php` del tema,
+ * che nel mirror non è stato catturato da nessuna parte. Qui è una pagina del
+ * sito come le altre — header, footer, `<h1>` — perché un 404 nudo di nginx
+ * manda fuori dal sito chi ci arriva.
+ *
+ * Chi ci arriva viene da tre posti, e sono tre casi diversi:
+ *  - un link vecchio che il rebuild non serve più (ma per quelli indicizzati c'è
+ *    un **301**: vedi `redirect.conf`, questa pagina è la rete di sicurezza);
+ *  - un indirizzo digitato a mano con un errore di battitura;
+ *  - un link condiviso che puntava a una pagina ritirata (la landing con
+ *    l'offerta scaduta, per esempio).
+ * In tutti e tre i casi la cosa utile è **dire dove sono le quattro cose** che
+ * si cercano su questo sito, non scusarsi.
+ *
+ * `noindex`: una 404 in indice è un difetto. Il server risponde comunque con lo
+ * stato 404 (`error_page 404 /404.html` in `deploy/nginx.conf`), che è quello
+ * che conta per i motori — il meta robots è la cintura in più.
+ */
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Titoletto from '../components/Titoletto.astro';
+import Button from '../components/Button.astro';
+import { rami } from '../data/rami';
+---
+
+<SiteLayout
+  title="Pagina non trovata"
+  description="La pagina cercata non esiste o è stata spostata. Da qui si arriva ai quattro rami del gruppo, al preventivo e ai contatti."
+  noindex={true}
+>
+  <section class="section quattroQuattro">
+    <div class="container">
+      <Titoletto as="h1" size="lg" tone="muted">Pagina non trovata</Titoletto>
+
+      <p class="quattroQuattro__testo">
+        L'indirizzo che hai aperto non corrisponde a nessuna pagina del sito: può essere un
+        link vecchio, o un errore di battitura. Da qui ci si rimette in strada.
+      </p>
+
+      <h2 class="quattroQuattro__sottotitolo">I quattro rami</h2>
+      <ul class="quattroQuattro__rami">
+        {
+          rami.map((r) => (
+            <li>
+              <a class="quattroQuattro__ramo" href={r.href}>
+                <span class="quattroQuattro__ramoNome">{r.nome}</span>
+                <span class="quattroQuattro__ramoCosa">{r.descrizione}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="quattroQuattro__azioni">
+        <Button href="/" variant="solid">Torna alla homepage</Button>
+        <Button href="/richiedi-preventivo/">Richiedi un preventivo</Button>
+        <Button href="/contatti/" variant="text">Contatti</Button>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .quattroQuattro__testo {
+    max-width: 60ch;
+    margin: var(--s-8) 0 0;
+    font-size: var(--t-lg);
+    line-height: var(--t-lg-lh);
+  }
+
+  .quattroQuattro__sottotitolo {
+    margin: var(--s-12) 0 var(--s-6);
+    font-size: var(--t-sm);
+    font-weight: var(--w-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-ink-soft);
+  }
+
+  .quattroQuattro__rami {
+    display: grid;
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /* stesse fughe da 1px della parete in homepage: è lo stesso oggetto, i rami */
+    background: var(--c-border);
+  }
+  @media (min-width: 769px) {
+    .quattroQuattro__rami {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .quattroQuattro__rami li {
+    margin: 0;
+  }
+
+  .quattroQuattro__ramo {
+    display: grid;
+    gap: var(--s-2);
+    height: 100%;
+    padding: var(--s-6);
+    background: var(--c-surface-alt);
+    text-decoration: none;
+    transition: background var(--dur) var(--ease);
+  }
+  .quattroQuattro__ramo:hover {
+    background: var(--c-white);
+  }
+  .quattroQuattro__ramoNome {
+    color: var(--c-ink);
+    font-size: var(--t-base);
+    font-weight: var(--w-semibold);
+    text-transform: uppercase;
+  }
+  .quattroQuattro__ramoCosa {
+    color: var(--c-ink-soft);
+    font-size: var(--t-sm);
+    line-height: var(--t-sm-lh);
+  }
+
+  .quattroQuattro__azioni {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    margin-top: var(--s-12);
+  }
+</style>

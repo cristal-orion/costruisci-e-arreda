@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# generato dal build (hash degli script in linea): lo riscrive deploy/genera-csp.js
+deploy/csp.conf

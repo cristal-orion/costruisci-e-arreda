@@ -1,0 +1,32 @@
+# Il contesto di build deve contenere due cose: l'app Astro e gli originali
+# delle immagini. Tutto il resto del repo — il mirror completo, le baseline,
+# gli script di misura — è lavoro di analisi che non serve a costruire il sito,
+# e sono centinaia di MB.
+#
+# La sequenza "escludi tutto, poi riammetti" ha bisogno di riammettere anche le
+# cartelle intermedie: Docker non entra in una cartella esclusa.
+
+*
+
+!costruisciearreda-astro
+
+!costruisciearreda-static
+costruisciearreda-static/*
+!costruisciearreda-static/costruisciearreda.it
+costruisciearreda-static/costruisciearreda.it/*
+!costruisciearreda-static/costruisciearreda.it/wp-content
+costruisciearreda-static/costruisciearreda.it/wp-content/*
+!costruisciearreda-static/costruisciearreda.it/wp-content/uploads
+
+# Dentro l'app: niente dipendenze installate in locale (le reinstalla `npm ci`
+# dal lock, per la piattaforma giusta), niente build vecchi, niente cache.
+costruisciearreda-astro/node_modules
+costruisciearreda-astro/dist
+costruisciearreda-astro/.astro
+costruisciearreda-astro/deploy/csp.conf
+costruisciearreda-astro/.env
+costruisciearreda-astro/.env.production
+
+# Il .env non entra nell'immagine di proposito: `PUBLIC_FORM_ENDPOINT` è una
+# variabile di build (finisce nell'HTML), quindi va passata a `docker build`
+# come build arg o impostata nelle variabili dell'applicazione su Coolify.

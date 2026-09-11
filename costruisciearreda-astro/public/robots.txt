@@ -1,0 +1,16 @@
+# Costruisci & Arreda S.R.L. — https://costruisciearreda.it
+
+User-agent: *
+Allow: /
+
+# Niente Disallow sulle pagine che non devono andare in indice (le thank-you,
+# la pagina di controllo dei token): hanno `noindex` nell'HTML, ed è la strada
+# giusta. Una pagina bloccata qui non viene letta, quindi il `noindex` non
+# viene nemmeno visto: l'URL resta indicizzabile senza titolo né descrizione.
+
+# Il robots.txt dell'originale conteneva solo `Crawl-delay: 10` per Bingbot e
+# msnbot, e nessun riferimento alla sitemap. Il crawl-delay serviva a proteggere
+# WordPress: qui è HTML statico servito da nginx, rallentare i motori non ha
+# motivo e ritarda l'indicizzazione delle pagine nuove.
+
+Sitemap: https://costruisciearreda.it/sitemap-index.xml

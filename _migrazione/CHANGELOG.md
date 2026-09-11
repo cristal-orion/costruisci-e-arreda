@@ -2032,3 +2032,160 @@ esattamente quello che è stato deciso — la homepage perde quattro immagini e 
 titoletto "store", le cinque pagine dei rami cambiano `<title>` e tre di loro
 l'`<h1>`. Nessun'altra pagina si muove, nessuna parola di contenuto persa.
 Baseline visiva rigenerata: 156 catture.
+
+---
+
+# Deploy
+
+## D01 — Il sito dentro un'immagine: nginx, redirect, intestazioni
+
+**2026-09-11**
+
+> **Stato: scritto, non provato.** Su questa macchina il demone Docker è fermo e
+> l'utente non è nel gruppo `docker`: l'immagine **non è mai stata costruita né
+> avviata**. Tutto quello che segue è scritto con cura e verificato dove si
+> poteva senza un server (i contenuti del build, le misure di compressione, gli
+> hash della CSP), ma il comportamento di nginx non è stato osservato.
+> `prova-deploy.js` esiste apposta e va fatto girare prima di andare online.
+
+### Cosa c'è
+
+| file | cosa fa |
+|---|---|
+| `Dockerfile` (radice) | build Astro con node:22-alpine, poi nginx:alpine che serve `dist/` |
+| `.dockerignore` | contesto ridotto all'app più gli originali delle immagini |
+| `deploy/nginx.conf` | blocco `server`: compressione, cache, `try_files`, 404 |
+| `deploy/intestazioni.conf` | le intestazioni di sicurezza, incluse in ogni `location` |
+| `deploy/genera-csp.js` | genera la CSP dal build, con gli hash degli script in linea |
+| `deploy/redirect.conf` + `redirect-map.conf` | generati: 7 redirect e 42 vecchi `?p=ID` |
+| `public/robots.txt` | con il riferimento alla sitemap |
+| `src/pages/404.astro` | la 404 come pagina del sito |
+| `_migrazione/prova-deploy.js` | il cancello di qualità del server |
+
+### Le scelte, e perché
+
+**nginx e non Caddy.** Non per preferenza: i redirect sono **generati** da
+`build-redirect.js` in sintassi nginx, mappa dei `?p=ID` compresa, e il file
+dice in testa di non modificarlo a mano. Passare a Caddy significa riscrivere il
+generatore per un secondo formato — lavoro vero per un guadagno nullo.
+
+**Il Dockerfile sta nella radice del repo, non nell'app.**
+`costruisciearreda-astro/src/assets/uploads` è un **symlink** a
+`costruisciearreda-static/costruisciearreda.it/wp-content/uploads`. Con il
+contesto di build limitato alla cartella dell'app quel symlink punta fuori e il
+build produrrebbe un sito senza immagini — senza errori, il che è peggio.
+
+**I redirect sono diventati due file.** Erano uno solo, e non era includibile da
+nessuna parte: `location` vuole il contesto `server`, `map` vuole `http`.
+`build-redirect.js` ora ne scrive due, ognuno pronto da includere dov'è il suo
+posto.
+
+**La CSP si genera dal build.** Il sito ha 7 script in linea (menu, form,
+gallerie, contatori, carosello, il caricatore di Iubenda, lo script che declassa
+l'`<h1>` iniettato nelle legal). Autorizzarli con `'unsafe-inline'` vuol dire
+non avere una CSP; autorizzarli con gli hash scritti a mano vuol dire che al
+primo componente toccato il browser blocca lo script **in silenzio** — il menu
+non si apre e nei log del server non c'è niente. Quindi gli hash li calcola
+`genera-csp.js` leggendo `dist/`, a ogni build. Stessa logica per l'endpoint dei
+form: quando `PUBLIC_FORM_ENDPOINT` è impostata, la sua origine entra da sola in
+`form-action` e `connect-src`, invece di aspettare che qualcuno se ne ricordi il
+giorno del cutover.
+
+`style-src` tiene `'unsafe-inline'`: 18 pagine hanno attributi `style="…"`, e per
+gli attributi gli hash non valgono. Uno stile in linea non esegue codice.
+
+**Le intestazioni di sicurezza sono ripetute in ogni `location`.** In nginx
+`add_header` non si somma: una `location` che ne dichiara uno suo perde tutti
+quelli del blocco `server`. Siccome la `location` degli asset imposta il
+`Cache-Control`, senza questa accortezza il 99% delle richieste del sito
+uscirebbe senza CSP e senza `nosniff`. È un file incluso, e `prova-deploy.js`
+controlla proprio questo caso.
+
+**HSTS senza `includeSubDomains` e senza `preload`.** Non sappiamo cosa risponde
+sui sottodomini di `costruisciearreda.it` — webmail, pannelli, posta del vecchio
+hosting. Forzare HTTPS su tutto il dominio dalla configurazione di questo sito è
+un modo di rompere roba di qualcun altro. Si allarga quando qualcuno ha
+verificato, non prima.
+
+**Niente brotli, e con un numero.** Il modulo non c'è nell'immagine nginx
+ufficiale. Misurato su questo sito, brotli -q 11 contro gzip -9: homepage 8.172
+contro 9.366 byte, CSS 8.058 contro 8.957. Circa il 13%, cioè **2 KB** sul primo
+caricamento. Non vale una build custom di nginx da mantenere. I file statici
+vengono comunque precompressi con `gzip -9` durante il build e serviti con
+`gzip_static`, quindi la compressione non si ripete a ogni richiesta.
+
+**Cache: un anno sugli asset, zero sull'HTML.** Tutto quello che sta in `_astro/`
+ha l'hash del contenuto nel nome (2.101 WebP, il 99% del peso), quindi
+`immutable` per un anno. L'HTML ha `max-age=0, must-revalidate`: il browser
+ricontrolla sempre ma, se l'ETag combacia, riceve un 304. Tenere l'HTML in cache
+significa servire un menu vecchio dopo un deploy.
+
+**La 404 è una pagina del sito.** Header, footer, un `<h1>`, e i quattro rami con
+la loro descrizione: chi ci arriva ha sbagliato indirizzo, la cosa utile è
+dirgli dov'è quello che cerca. `check-build.js` ora la controlla insieme alle
+altre — Astro la scrive come `404.html` e non come cartella, quindi il giro delle
+rotte non la vedeva: **53 rotte × 3 viewport, nessun problema**.
+
+**`robots.txt`: via il crawl-delay, dentro la sitemap.** Quello dell'originale
+aveva solo `Crawl-delay: 10` per Bing e msnbot e nessuna sitemap. Il crawl-delay
+proteggeva WordPress; qui è HTML statico servito da nginx, e rallentare i motori
+ritarda soltanto l'indicizzazione.
+
+### La CSP, provata senza Docker — e infatti era sbagliata
+
+Senza il container la politica sarebbe rimasta l'unico pezzo del deploy scritto
+e mai eseguito, cioè proprio quello che rompe le cose in silenzio. Quindi
+`prova-csp.js`: prende la politica da `deploy/csp.conf` — lo stesso file che
+finisce in nginx — e la **appiccica alle risposte** mentre il browser carica le
+53 rotte dal `npm run preview`. L'HTML è quello vero, quindi gli hash sono
+quelli veri.
+
+Alla prima esecuzione: **5 violazioni**, tutte sulle due pagine legali.
+
+| pagina | direttiva | cosa bloccava |
+|---|---|---|
+| privacy e cookie | `style-src-elem` | `www.iubenda.com/assets/privacy_policy.css` |
+| privacy e cookie | `style-src-elem` | `cdn.iubenda.com/iubenda_badge.css` |
+| privacy | `script-src-elem` | uno script in linea inserito da `iubenda.js` |
+
+Il documento legale sarebbe uscito **senza impaginazione**, e nessun log del
+server l'avrebbe detto. Due correzioni:
+
+- i due domini di Iubenda aggiunti anche a `style-src` (c'erano solo in
+  `script-src`: l'embed non carica solo codice, carica anche fogli di stile);
+- **`'strict-dynamic'`** in `script-src`, perché lo script che `iubenda.js`
+  inserisce non si può autorizzare per hash — non si sa cosa contiene prima che
+  esista. Con `'strict-dynamic'` la fiducia si propaga per discendenza: il
+  nostro caricatore è autorizzato per hash, lui carica `iubenda.js`, e quello
+  che `iubenda.js` crea a sua volta è autorizzato di conseguenza.
+  `'unsafe-inline'` non sarebbe stato nemmeno una scorciatoia: **quando in una
+  politica ci sono degli hash, i browser lo ignorano.**
+
+Il prezzo di `'strict-dynamic'` è che `'self'` e i domini elencati valgono solo
+per gli script creati da altri script, non per quelli scritti nel markup.
+Verificato sul build: nel sito **non c'è un solo `<script src>`**, tutto il
+JavaScript è in linea (2,9 KB in tutto), quindi non cambia niente.
+
+Seconda esecuzione: **53 rotte, nessuna violazione.**
+
+### Quanto ci mette a costruirsi
+
+Misurato cancellando la cache delle immagini e rifacendo tutto da zero:
+**107 secondi** per 53 pagine e 2.102 immagini convertite (2.410 varianti, poi
+potate a 2.121). La cache pesa 120 MB e nel Dockerfile è una cache mount, quindi
+fra un deploy e l'altro sopravvive e si riconvertono solo le immagini nuove.
+Un deploy su Coolify senza cache costa quindi meno di due minuti di build, più
+`npm ci` e i layer dell'immagine.
+
+### Cosa resta da verificare, e come
+
+`prova-deploy.js` contro il container: 7 redirect, tutti e 42 i vecchi `?p=ID`,
+404 con la pagina giusta, intestazioni sull'HTML **e sugli asset**, cache,
+compressione, `robots.txt` e sitemap, e infine le 53 rotte aperte in un browser
+per raccogliere le violazioni della CSP.
+
+**Una domanda che solo quella prova chiude:** `/contatti` senza barra finale. Le
+rotte canoniche la hanno tutte; `try_files $uri $uri/ =404` dovrebbe portare a un
+301 verso la forma con la barra, ma dipende da come nginx risolve la cosa. Se
+invece risponde 200, la stessa pagina sta su due URL e va aggiunta la regola.
+Lo script lo segnala esplicitamente invece di darlo per buono.

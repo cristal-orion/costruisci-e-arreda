@@ -127,16 +127,56 @@
 > `npx astro dev stop && rm -rf node_modules/.vite && npm run dev`.
 > Verificato due volte in sessione, con `getComputedStyle` (il build era corretto).
 >
-> ### Il deploy, quando si vuole (indipendente dalla fase B)
-> 1. **Dockerfile** con nginx o Caddy che serve `dist/`, includendo
->    `costruisciearreda-astro/redirect.conf` (generato: 5 redirect + mappa dei 44
->    vecchi URL `?p=ID`).
-> 2. `robots.txt` con il riferimento alla sitemap.
-> 3. Config server: gzip + brotli, `Cache-Control` lungo sugli asset con hash e
->    breve sull'HTML, `try_files`, pagina 404, header di sicurezza.
-> 4. Coolify: app di tipo Dockerfile, TLS Let's Encrypt.
-> 5. **Prima del cutover**: impostare `PUBLIC_FORM_ENDPOINT` (senza, i form
->    mostrano i recapiti al posto del modulo — è voluto).
+> ### Il deploy — scritto, provato a metà (voce D01)
+> **I file ci sono tutti. Il container non è mai stato costruito**: su questa
+> macchina il demone Docker è fermo e l'utente non è nel gruppo `docker`.
+> Quello che **è** stato provato è la Content-Security-Policy, con
+> `_migrazione/prova-csp.js`, che applica la politica vera alle risposte del
+> `npm run preview`: alla prima esecuzione ha trovato **5 violazioni** sulle due
+> pagine legali (l'embed di Iubenda restava senza fogli di stile), corrette; ora
+> 53 rotte, zero violazioni. Build a freddo misurato: **107 secondi**.
+> Quello che **non** è stato provato è il comportamento di nginx — redirect,
+> intestazioni, cache, 404: **non andare in produzione senza la prova qui sotto.**
+>
+> | file | cos'è |
+> |---|---|
+> | `Dockerfile` (radice del repo) | build Astro + nginx. Sta nella radice perché `src/assets/uploads` è un symlink agli originali, che stanno fuori dall'app |
+> | `.dockerignore` | tiene fuori mirror, baseline e misure: il contesto è l'app + gli originali delle immagini |
+> | `deploy/nginx.conf` | il blocco `server`: compressione, cache, try_files, 404 |
+> | `deploy/intestazioni.conf` | intestazioni di sicurezza, incluse in **ogni** location (in nginx un `add_header` locale cancella quelli di sopra) |
+> | `deploy/genera-csp.js` | genera la CSP **dal build**, con gli hash dei 7 script in linea |
+> | `_migrazione/prova-csp.js` | prova la CSP senza Docker, sul `preview` (già eseguito: pulito) |
+> | `deploy/redirect.conf` · `redirect-map.conf` | generati da `build-redirect.js`: 7 redirect + 42 vecchi `?p=ID`. Due file perché i `location` vanno in `server` e la `map` in `http` |
+> | `public/robots.txt` · `src/pages/404.astro` | il robots con la sitemap; la 404 è una pagina del sito, con i link ai quattro rami |
+>
+> **La prova, da fare per prima cosa** (il demone Docker qui è fermo, va acceso):
+> ```bash
+> sudo systemctl start docker
+> sudo docker build -t costruisciearreda .            # dalla radice del repo
+> sudo docker run --rm -d -p 8080:80 --name ca-prova costruisciearreda
+> node _migrazione/prova-deploy.js http://127.0.0.1:8080
+> sudo docker rm -f ca-prova
+> ```
+> `prova-deploy.js` è il cancello di qualità del **server**, come `check-build.js`
+> lo è delle pagine: controlla i 7 redirect e tutti e 42 i vecchi `?p=ID`, lo
+> stato 404 con la pagina giusta, le intestazioni di sicurezza **anche sugli
+> asset** (è lì che si perdono), la cache lunga sugli hash e corta sull'HTML, la
+> compressione, e apre tutte le 53 rotte in un browser per vedere se la CSP
+> blocca qualcosa. Un hash sbagliato non dà errori nel server: blocca il menu e
+> basta.
+>
+> **Una domanda aperta che solo quella prova chiude:** `/contatti` senza barra
+> finale. Le rotte canoniche la hanno tutte; il `try_files` dovrebbe rispondere
+> 301 verso la forma con la barra, ma dipende da come nginx lo risolve. La prova
+> lo dice e, se serve, si aggiunge la regola.
+>
+> Poi: Coolify, applicazione di tipo **Dockerfile**, base directory `/`, porta 80,
+> TLS Let's Encrypt.
+>
+> **Prima del cutover**: impostare `PUBLIC_FORM_ENDPOINT` — che è una variabile di
+> **build**, non di runtime: va messa fra le build variable di Coolify, altrimenti
+> non finisce nell'HTML. Senza, i form mostrano i recapiti al posto del modulo (è
+> voluto). La CSP si allarga da sola all'origine dell'endpoint.
 >
 > ### Deciso: `/promo-casa/` è stata ritirata (2026-09-02)
 > L'offerta era scaduta ("€ 166 al mese, valida fino al 31 Dicembre"), e la pagina

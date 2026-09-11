@@ -42,6 +42,12 @@ const cammina = (dir) => {
 cammina(DIST);
 rotte.sort();
 
+/* La 404 non è una cartella con dentro `index.html` — Astro la scrive come
+   `404.html` — quindi il giro qui sopra non la vedrebbe, ed è una pagina del
+   sito come le altre: un `<h1>`, niente scorrimento orizzontale, immagini che
+   si caricano. Va controllata anche lei. */
+if (fs.existsSync(path.join(DIST, '404.html'))) rotte.push('/404.html');
+
 const controlla = () => {
   const problemi = [];
   const px = (v) => Math.round(v);

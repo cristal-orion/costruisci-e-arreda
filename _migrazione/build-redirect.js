@@ -15,7 +15,9 @@
  * onesto che un 301 sbagliato.
  *
  *   node build-redirect.js
- * Scrive `baseline/redirect.json` e `costruisciearreda-astro/redirect.conf`.
+ * Scrive `baseline/redirect.json`, `costruisciearreda-astro/deploy/redirect.conf`
+ * (i `location`, contesto server) e `deploy/redirect-map.conf` (la mappa dei
+ * vecchi `?p=ID`, contesto http).
  */
 const fs = require('fs');
 const path = require('path');
@@ -25,7 +27,10 @@ const DIST = path.resolve(BASE, '..', 'costruisciearreda-astro', 'dist');
 const SITEMAP = path.resolve(BASE, 'live-sitemap', 'all-urls.txt');
 const ROTTE_TS = path.resolve(BASE, '..', 'costruisciearreda-astro', 'src', 'data', 'rotte-legacy.ts');
 const OUT_JSON = path.resolve(BASE, 'baseline', 'redirect.json');
-const OUT_CONF = path.resolve(BASE, '..', 'costruisciearreda-astro', 'redirect.conf');
+/* Due file e non uno: nginx vuole i `location` nel blocco `server` e la `map`
+   nel blocco `http`. Un file unico non è includibile da nessuna parte. */
+const OUT_CONF = path.resolve(BASE, '..', 'costruisciearreda-astro', 'deploy', 'redirect.conf');
+const OUT_MAP = path.resolve(BASE, '..', 'costruisciearreda-astro', 'deploy', 'redirect-map.conf');
 
 /** Le rotte che il build produce. */
 const rotteBuild = () => {
@@ -144,30 +149,44 @@ const main = () => {
     },
   };
   fs.mkdirSync(path.dirname(OUT_JSON), { recursive: true });
+  fs.mkdirSync(path.dirname(OUT_CONF), { recursive: true });
   fs.writeFileSync(OUT_JSON, JSON.stringify(report, null, 2) + '\n');
 
-  /* Configurazione per nginx: una riga per redirect, con il perché a fianco.
-     Va inclusa nel blocco `server` dell'immagine che serve il sito. */
-  const righe = [
+  /* Configurazione per nginx, in due file perché i due pezzi vanno in due
+     contesti diversi: i `location` e l'`if` dentro `server`, la `map` dentro
+     `http`. Scritti così sono includibili tali e quali, senza ritocchi. */
+  const intestazione = (dove) => [
     '# GENERATO da _migrazione/build-redirect.js — non modificare a mano.',
     '#',
     '# Redirect 301 per il cutover. Le destinazioni vengono dalla sitemap del sito',
     '# live (i 56 URL indicizzati) confrontata con le rotte che il rebuild produce.',
-    '# Da includere nel blocco `server` di nginx.',
+    `# ${dove}`,
     '',
+  ];
+
+  const righeServer = [
+    ...intestazione('Da includere nel blocco `server` di nginx.'),
     '# --- URL che il rebuild non serve più ---',
     ...redirect.flatMap((r) => [`# ${r.perche}`, `location = ${r.da} { return 301 ${r.a}; }`, '']),
     '# --- Vecchi URL nella forma /?p=ID (WordPress) ---',
+    '# La mappa sta in redirect-map.conf (contesto http); qui si usa il risultato.',
+    '# `if` a livello di server con un solo `return` è uno dei due usi sicuri.',
+    'if ($rotta_per_id != "") { return 301 $rotta_per_id; }',
+    '',
+  ];
+  fs.writeFileSync(OUT_CONF, righeServer.join('\n'));
+
+  const righeMap = [
+    ...intestazione('Da includere nel blocco `http` di nginx (in conf.d/ ci finisce da sé).'),
     '# nginx non instrada sui parametri: serve una mappa sul valore di $arg_p.',
+    '# Il risultato lo usa redirect.conf, dentro il blocco server.',
     'map $arg_p $rotta_per_id {',
     '    default "";',
     ...perIdValidi.map((x) => `    ${x.id} "${x.rotta}";`),
     '}',
-    '# e nel blocco server:',
-    '#   if ($rotta_per_id != "") { return 301 $rotta_per_id; }',
     '',
   ];
-  fs.writeFileSync(OUT_CONF, righe.join('\n'));
+  fs.writeFileSync(OUT_MAP, righeMap.join('\n'));
 
   console.log(`URL indicizzati: ${indicizzati.length}`);
   console.log(`  serviti dal rebuild: ${serviti.length}`);
@@ -178,6 +197,7 @@ const main = () => {
   console.log(`mappa ?p=ID: ${perIdValidi.length} voci`);
   console.log(`\nScritto ${OUT_JSON}`);
   console.log(`Scritto ${OUT_CONF}`);
+  console.log(`Scritto ${OUT_MAP}`);
 };
 
 main();
