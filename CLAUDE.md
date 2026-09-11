@@ -6,11 +6,12 @@
 > indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B in corso**: la
 > homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la
 > velatura è stata rifatta, la fascia "store" doppione è via e i rami si chiamano
-> come li chiama il proprietario — voci **B01–B07** del CHANGELOG.
+> come li chiama il proprietario, e in cima alla scheda del browser c'è il
+> marchio rosso invece del logo di Astro — voci **B01–B08** del CHANGELOG.
 > **Il deploy è fatto** (voci D01–D03): il sito è online sul dominio demo
 > `https://costruisciearreda.57.128.243.135.sslip.io`. Restano
 > `PUBLIC_FORM_ENDPOINT` e il cutover DNS. Le modifiche volute dal cliente sono
-> state fatte tutte (B01–B07).
+> state fatte tutte (B01–B08).
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
 >
 > ### ⏭ Dove si è arrivati, e cosa c'è adesso
@@ -93,6 +94,17 @@
 >   Ha anche chiuso un difetto: le 5 pagine `type_stores` avevano ancora il
 >   `<title>` di Yoast per gli archivi, con dentro la parola "Archivi".
 >
+> **B08 (2026-09-11) — il favicon era ancora quello di Astro.** Ora è il marchio
+> rosso del logo, **estratto dal vettore** (`src/assets/logo.svg`, i tre soli
+> tracciati `#c20e1a`), non ricampionato dal PNG a 32px dell'originale.
+> `public/favicon.svg` è il marchio in un `viewBox` quadrato senza margine —
+> l'inquadratura dell'originale, misurata. `favicon.ico` (16/32/48) e
+> `apple-touch-icon.png` (180px su bianco, iOS appiattisce la trasparenza sul
+> nero) **si rigenerano**: `node scripts/genera-favicon.mjs`, ogni misura
+> renderizzata dal vettore. `deploy/nginx.conf` è stato toccato — un nome in
+> più nella `location` dei file di servizio — quindi la prova del server è
+> stata rifatta: 34 controlli, nessun problema.
+>
 > ### Peso reale misurato nel browser (byte trasferiti, 1440px, scroll completo)
 > Rimisurato in **B06** su entrambi i lati con `_migrazione/misura-peso.js`, che
 > ora è nel repo: i numeri di prima venivano da uno script che non c'era più.
@@ -112,7 +124,7 @@
 > Design system **misurato** (non letto dal CSS): `src/styles/{fonts,tokens,base,global}.css`.
 > Pagina di controllo dei token: `/design-system/` (noindex).
 > Misure, deviazioni dichiarate e verifiche: `_migrazione/CHANGELOG.md`, voci **A00–A08**
-> per la fase A, **B01–B07** per le modifiche volute.
+> per la fase A, **B01–B08** per le modifiche volute.
 >
 > Comandi: `cd costruisciearreda-astro && npm run dev` · `npm run build` · `npm run preview`.
 > Cancello di qualità: `cd _migrazione && node check-build.js http://localhost:4321`

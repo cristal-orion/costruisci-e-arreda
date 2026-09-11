@@ -2189,3 +2189,80 @@ rotte canoniche la hanno tutte; `try_files $uri $uri/ =404` dovrebbe portare a u
 301 verso la forma con la barra, ma dipende da come nginx risolve la cosa. Se
 invece risponde 200, la stessa pagina sta su due URL e va aggiunta la regola.
 Lo script lo segnala esplicitamente invece di darlo per buono.
+
+---
+
+## B08 — Il favicon era ancora quello di Astro (2026-09-11)
+
+`public/favicon.svg` era il logo viola di Astro, rimasto dallo scaffold, e
+`public/favicon.ico` il suo gemello: in cima alla scheda del browser il sito
+firmava con il marchio di un altro. Il sito originale invece un favicon ce
+l'aveva, ed era giusto —
+`themes/costruisciarreda-child/images/favicon/favicon-32x32.png`: **il marchio
+rosso del logo**, a tutta altezza, senza margine.
+
+### Cosa è entrato
+
+Il marchio non è stato ridisegnato né ricampionato dal PNG a 32px: è **estratto
+dal vettore**. In `src/assets/logo.svg` il marchio sono i primi tre tracciati,
+i soli con `fill="#c20e1a"` (`Tracciato_10`, `_11`, `_12`); il resto del file è
+la scritta "COSTRUISCI & ARREDA" in `#333`. Riquadro misurato sui tracciati:
+**31,949 × 53,166** unità.
+
+| file | cos'è |
+|---|---|
+| `public/favicon.svg` | i tre tracciati, `viewBox="-10.6085 0 53.166 53.166"` — quadrato, marchio a tutta altezza e centrato in orizzontale. 542 byte |
+| `public/favicon.ico` | contenitore ICO con payload PNG, **16/32/48** px |
+| `public/apple-touch-icon.png` | 180 px su fondo bianco |
+| `scripts/genera-favicon.mjs` | genera i due raster dall'SVG |
+
+Il `viewBox` fa tutto il lavoro di inquadratura: nessuna trasformazione
+aggiunta sopra i tracciati originali, così il marchio resta quello del logo e
+non una sua copia ritoccata. Il quadrato è `53,166` (l'altezza del marchio) e
+`minX = (31,949 − 53,166) / 2 = −10,6085`.
+
+**Il margine è zero, di proposito.** È l'inquadratura dell'originale, misurata:
+il riquadro alfa di `favicon-32x32.png` è `(6, 0, 26, 32)` — il marchio tocca
+sopra e sotto. A 16 px ogni margine si mangia un pixel su otto, e il marchio è
+già stretto (rapporto 0,60).
+
+**Le tre misure dell'ICO sono renderizzate ognuna dal vettore**, non ricavate
+per riduzione da una più grande: su un marchio fatto di quarti di cerchio la
+differenza a 16 px si vede. `apple-touch-icon.png` invece ha il fondo bianco —
+iOS appiattisce la trasparenza sul nero, e il bianco è il fondo su cui il logo
+sta nell'header del sito.
+
+`scripts/genera-favicon.mjs` usa `sharp`, che arriva con Astro (servizio
+immagini) e non è una dipendenza diretta: se un giorno Astro smettesse di
+portarlo, lo script va aggiornato. È scritto nel commento in testa al file.
+
+### Nel `<head>` e in nginx
+
+`BaseLayout.astro` aveva un solo `<link rel="icon">`, all'SVG. Ora sono tre —
+`.ico` con `sizes="32x32"`, l'SVG con il suo `type`, e l'apple-touch-icon.
+L'SVG vince dove è supportato; il `.ico` copre il resto ed è comunque quello
+che i browser chiedono da soli su `/favicon.ico`.
+
+In `deploy/nginx.conf` la `location` dei file di servizio elencava
+`favicon\.(ico|svg)`: `apple-touch-icon.png` sarebbe finito in `location /`,
+con `max-age=0, must-revalidate`. Aggiunto all'elenco, così prende l'ora di
+cache come gli altri nomi fissi.
+
+### Verifica
+
+- **Marchio giusto:** i tre tracciati renderizzati a 320 px combaciano con il
+  logo in testa al sito, e con `favicon-32x32.png` dell'originale.
+- **Reso nel browser vero** (Playwright, `deviceScaleFactor: 4`) a 16, 32 e
+  64 px, su bianco e su `#292a2d` (la scheda scura di Chrome): il `viewBox`
+  con `minX` negativo non dà problemi.
+- **ICO valido:** riletto con PIL, `sizes()` → `[(16,16), (32,32), (48,48)]`.
+- **Cancello delle pagine:** `check-build.js` su 52 rotte × 3 viewport,
+  nessun problema.
+- **Cancello del server:** immagine ricostruita e `prova-deploy.js` contro il
+  container, **34 controlli passati, nessun problema** — la regola è che ogni
+  modifica a `deploy/` vuole di nuovo quella prova, e questa la tocca.
+  Le tre icone escono con il MIME giusto, le intestazioni di sicurezza e
+  `Cache-Control: public, max-age=3600`.
+
+Il vecchio `favicon.ico` di Astro era un PNG con l'estensione sbagliata
+(`file` diceva `PNG image data, 32 x 32`). Ora è un ICO davvero.
