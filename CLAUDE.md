@@ -10,13 +10,14 @@
 > cliente (fase B) e il deploy su Coolify + cutover DNS.
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
 >
-> ### ⏭ Da fare per prima cosa domani
-> 1. **`cd _migrazione && node check-build.js http://localhost:4321`** — il cancello
->    di qualità **non** è stato rieseguito dopo il cambio di velatura di B06.
->    Il preview si lega a `localhost`, non a `127.0.0.1`: passare l'indirizzo.
-> 2. Rigenerare le **baseline**: `fingerprint-astro.json` e le catture. Il contenuto
->    non è cambiato, ma nove immagini sì.
-> 3. Poi si riprende con le modifiche volute (sotto, "Altro aperto").
+> ### ⏭ Il prossimo passo: due decisioni del proprietario
+> B06 è **chiusa e verificata** (cancello di qualità 52 rotte × 3 viewport, baseline
+> rigenerate, impronta confrontata: nessuna parola persa). Il lavoro tecnico aperto
+> sulla parete non c'è più. Quello che resta della fase B sono **due scelte che
+> non sono tecniche**, elencate qui sotto in "Altro aperto": la fascia "store" che
+> ora è un doppione dell'hero, e i nomi dei rami ("Ceramiche e Bagno" / "Edilizia"
+> contro "Showroom" / "Rivendita edile"). Vanno chieste, non decise.
+> L'altro lavoro indipendente è il **deploy** (sezione più sotto).
 >
 > ### Fase B — in corso
 > **B01–B05 (2026-09-04) — la homepage apre con i rami.** Il carosello a 3 slide
@@ -53,7 +54,13 @@
 > breakpoint) va rimisurata: `_migrazione/misure-b06/altezze-insegna.js` per le
 > altezze, `_migrazione/misura-contrasto-parete.js` per il verdetto — 216 misure,
 > esce con 1 se una non passa. Oggi passa con margine +2,20 a riposo e +1,21
-> puntata, 0,0% di area sotto soglia.
+> puntata, 0,0% di area sotto soglia. Puntando una campata la foto si schiarisce
+> del 16-17% di luminanza media: la risposta al gesto si vede.
+>
+> Le nove immagini nuove hanno portato con sé **due miglioramenti nelle pagine
+> interne**, registrati nella verifica di B06: l'hero dei cinque store non è più
+> un'insegna generica ma la prima foto dello store, e gli otto articoli hanno la
+> propria copertina invece del banner "Ultime news".
 >
 > **B05 — la riga del `Titoletto` ha una manopola.** Sfonda fino al bordo della
 > finestra (segno grafico del sito) e va bene solo se il titolo è al bordo
@@ -91,10 +98,14 @@
 > Design system **misurato** (non letto dal CSS): `src/styles/{fonts,tokens,base,global}.css`.
 > Pagina di controllo dei token: `/design-system/` (noindex).
 > Misure, deviazioni dichiarate e verifiche: `_migrazione/CHANGELOG.md`, voci **A00–A08**
-> per la fase A, **B01–B05** per le modifiche volute.
+> per la fase A, **B01–B06** per le modifiche volute.
 >
 > Comandi: `cd costruisciearreda-astro && npm run dev` · `npm run build` · `npm run preview`.
-> Cancello di qualità: `cd _migrazione && node check-build.js` (52 rotte × 3 viewport).
+> Cancello di qualità: `cd _migrazione && node check-build.js http://localhost:4321`
+> (52 rotte × 3 viewport). Baseline visiva del build:
+> `node screenshot.js http://localhost:4321 baseline/shots-astro baseline/routes-astro.txt`
+> — il terzo argomento **serve**: senza, legge l'elenco del mirror (66 rotte, con
+> le pagine ritirate e senza `/design-system/`) e una quindicina danno 404.
 > **Attenzione:** non mandare gli script di `_migrazione/` in pipe a `head` — la pipe
 > chiusa li interrompe a metà e i file restano scritti solo in parte.
 > **Attenzione 2:** l'HMR del dev server **non prende i cambi dentro il blocco

@@ -1,7 +1,13 @@
-// Baseline visiva: screenshot full-page desktop + mobile di ogni pagina.
-// Uso: node screenshot.js <baseUrl> <outDir>
+// Baseline visiva: screenshot full-page desktop + tablet + mobile di ogni pagina.
+// Uso: node screenshot.js <baseUrl> <outDir> [elencoRotte]
 //   node screenshot.js http://127.0.0.1:8099 baseline/shots-mirror
-//   node screenshot.js http://localhost:4321  baseline/shots-astro
+//   node screenshot.js http://localhost:4321  baseline/shots-astro baseline/routes-astro.txt
+//
+// I due lati hanno due elenchi di rotte, e non è un dettaglio: il mirror ne ha
+// 66 (comprese le 8 di archivio data, l'author page e le pagine ritirate),
+// il build 52 — meno quelle non replicate per scelta, più `/design-system/`.
+// Puntare il build sull'elenco del mirror produce una quindicina di 404 per
+// viewport, che sembrano guasti e non lo sono.
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
@@ -14,7 +20,8 @@ const VIEWPORTS = [
   { name: 'mobile', width: 390, height: 844 },
 ];
 
-const urls = fs.readFileSync(path.join(__dirname, 'baseline', 'routes.txt'), 'utf8')
+const ROTTE = process.argv[4] || path.join('baseline', 'routes.txt');
+const urls = fs.readFileSync(path.resolve(__dirname, ROTTE), 'utf8')
   .split('\n').map(s => s.trim()).filter(Boolean);
 
 (async () => {

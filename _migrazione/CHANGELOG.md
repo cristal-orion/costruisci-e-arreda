@@ -1909,3 +1909,44 @@ righe qui sopra sono quelle riportate a video.)
 - La velatura è tarata su **queste** foto e su **questi** testi. Se cambia una
   descrizione, l'insegna cambia altezza e `--velo-base` va rimisurata con
   `misure-b06/altezze-insegna.js`.
+
+### B06 — verifica chiusa e baseline rigenerate (2026-09-11)
+
+Il cancello di qualità mancava: ora c'è. **`check-build.js`: 52 rotte × 3
+viewport, nessun problema** (errori JS, scorrimento orizzontale, immagini non
+caricate, `<h1>` diverso da uno, title e meta description, canonical assoluto,
+link interni rotti, `alt` mancanti).
+
+**Baseline visiva rigenerata**: 156 catture (52 rotte × 3 viewport), 0 fallite.
+Nel farlo è emerso che `screenshot.js` leggeva **sempre** `baseline/routes.txt`,
+che è l'elenco del mirror: 66 rotte, comprese le 8 di archivio data, l'author
+page e le pagine ritirate, e senza `/design-system/`. Puntato sul build
+produceva una quindicina di 404 per viewport, che sembrano guasti e non lo sono.
+Ora l'elenco è il terzo argomento e il build ha il suo,
+`baseline/routes-astro.txt` (52 rotte, generato da `dist`).
+
+**Impronta di contenuto rigenerata** e confrontata con la versione in git, così
+il delta è solo quello di B01–B06 e non si mescola alle differenze della fase A.
+30 pagine con differenze, **tutte immagini, nessuna parola persa**:
+
+- le tre slide del carosello e i due loghi SVG della homepage escono di scena,
+  entrano le nove immagini nuove;
+- `hero-ceramiche-bagno` è riusata come hero di `/type_stores/showroom-cat/`:
+  la foto del ramo e la pagina del ramo mostrano la stessa cosa;
+- **due immagini generiche in meno, ed è un miglioramento.** L'hero dei cinque
+  store era `Raggruppa-1648-1`, un'insegna buona per tutti; ora è la prima foto
+  dello store stesso (`DSC03145-scaled` per Via San Massimo). Gli otto articoli
+  avevano `Raggruppa-1648-3`, un banner "Ultime news"; ora hanno la propria
+  copertina. In entrambi i casi l'immagine era già nella pagina, quindi
+  l'impronta segna un'immagine in meno e zero nuove.
+
+Unica differenza di testo: `/realizzazioni/appartamento-moderno-prima-e-dopo/`
+passa da 71 a 75 parole. Sono le quattro dell'occhiello dell'hero ("I NOSTRI
+PROGETTI", "REALIZZAZIONI"), che ora si vedono perché quella pagina ha un'hero:
+nell'originale era `background-image: url('')`, 750px di bianco su bianco, e nel
+rebuild era rimasta senza immagine. Ora è `007-VISTA-SALONE-CUCINA-scaled`.
+
+**Quanto si schiarisce la foto quando si punta una campata**, misurato sulla
+luminanza media del cielo (dalla cima della campata all'insegna): +17,1% su
+Ceramiche, +16,0% su Edilizia, +16,4% su Ferramenta, +17,5% su Progettazione.
+La risposta al gesto si vede, e il contrasto del testo regge (voce sopra).
