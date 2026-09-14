@@ -10,6 +10,9 @@
  *  - **Telefono ed email non stanno nel footer** dell'originale (era annotato di
  *    sì): stanno nel blocco "Realizza con noi il tuo progetto" sopra il footer.
  *  - Il link "Company profile" dell'originale punta a `#`: è morto, ed è omesso.
+ *  - La riga legale porta **due** crediti, ed è voluto: `credits` (Vibgroup) è
+ *    il credits del tema WordPress dell'originale, `realizzatoDa` (Two Bee) è
+ *    chi ha costruito questo sito. Voce B10 del CHANGELOG.
  *  - Il form newsletter dell'originale è il **CF7 467** (non il 95: quello è il
  *    form del blocco contatti nel corpo pagina). Va rifatto: arriva al passo
  *    "Form" del piano, insieme agli altri cinque.
@@ -121,6 +124,12 @@ const iconeSocial: Record<string, string> = {
         }
       </p>
       <p class="footer__legalTesto">
+        Realizzato da <a
+          href={company.realizzatoDa.url}
+          target="_blank"
+          rel="noopener noreferrer">{company.realizzatoDa.nome}</a
+        >
+        {' | '}
         Credits: <a href="http://www.vibgroup.it" target="_blank" rel="noopener noreferrer">{company.credits}</a>
       </p>
     </div>

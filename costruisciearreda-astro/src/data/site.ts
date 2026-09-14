@@ -32,6 +32,11 @@ export const company = {
    */
   email: 'shop@costruisciearreda.com',
   credits: 'Vibgroup',
+  /**
+   * Chi ha costruito **questo** sito (il rebuild Astro), distinto da `credits`,
+   * che era il credits del tema WordPress dell'originale.
+   */
+  realizzatoDa: { nome: 'Two Bee', url: 'https://www.twobee.it' },
 } as const;
 
 export type Sede = {

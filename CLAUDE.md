@@ -2,16 +2,17 @@
 
 > ## ⏯ PUNTO DI RIPRESA — leggere per primo
 >
-> **Ultima sessione: 2026-09-11.** **Fase A completa** (52 rotte, tutti i 56 URL
+> **Ultima sessione: 2026-09-14.** **Fase A completa** (52 rotte, tutti i 56 URL
 > indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B in corso**: la
 > homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la
 > velatura è stata rifatta, la fascia "store" doppione è via e i rami si chiamano
-> come li chiama il proprietario, e in cima alla scheda del browser c'è il
-> marchio rosso invece del logo di Astro — voci **B01–B09** del CHANGELOG.
+> come li chiama il proprietario, in cima alla scheda del browser c'è il
+> marchio rosso invece del logo di Astro, e in fondo a ogni pagina c'è la firma
+> di chi ha costruito il sito — voci **B01–B10** del CHANGELOG.
 > **Il deploy è fatto** (voci D01–D03): il sito è online sul dominio demo
 > `https://costruisciearreda.57.128.243.135.sslip.io`. Restano
 > `PUBLIC_FORM_ENDPOINT` e il cutover DNS. Le modifiche volute dal cliente sono
-> state fatte tutte (B01–B09).
+> state fatte tutte (B01–B10).
 > Non serve rianalizzare il sito né chiedere conferma del piano: è tutto in questo file.
 >
 > ### ⏭ Dove si è arrivati, e cosa c'è adesso
@@ -104,6 +105,15 @@
 > renderizzata dal vettore. `deploy/nginx.conf` è stato toccato — un nome in
 > più nella `location` dei file di servizio — quindi la prova del server è
 > stata rifatta: 34 controlli, nessun problema.
+>
+> **B10 (2026-09-14) — la firma di Two Bee in fondo a ogni pagina.** "Realizzato
+> da **Two Bee**" con il link a `https://www.twobee.it`, nella **riga legale** del
+> footer accanto a `Credits: Vibgroup`, su tutte e 53 le pagine. Dato in
+> `company.realizzatoDa` (`src/data/site.ts`), nessun CSS nuovo: eredita lo stile
+> dei crediti che c'erano già. **I due crediti restano entrambi**, e sono cose
+> diverse — Vibgroup è il credits del *tema WordPress* dell'originale, di cui nel
+> rebuild non è rimasto niente. Se vada tolto è una decisione del proprietario:
+> vedi "Da far decidere al proprietario".
 >
 > **B09 (2026-09-11) — "Shop Online" fuori dalla navigazione.** Una riga di dati
 > in `menuPrincipale` (`src/data/menu.ts`), nessuno stile dedicato da ripulire.
@@ -247,6 +257,11 @@
 > testi e i campi del form sono lì.
 >
 > ### Da far decidere al proprietario
+> - **Il credits "Vibgroup"** nella riga legale del footer: è il credits del tema
+>   WordPress dell'originale, e nel rebuild non è rimasto niente di quel tema.
+>   Ora sta accanto a "Realizzato da Two Bee" (B10), e i due insieme fanno
+>   sembrare il sito opera di due fornitori. Toglierlo è una riga in `site.ts` e
+>   una nel footer; non è stato toccato perché è una scelta sua.
 > - **Endpoint dei form**: il form `775` di `/lavora-con-noi/` ha un **allegato**
 >   (curriculum), quindi EmailJS non basta.
 > - **Alt delle immagini**: scritti quelli delle sezioni principali; restano da

@@ -2332,3 +2332,59 @@ o rifare il 301 altrove.
 servita non compare più la stringa "Shop Online", e i soli riferimenti a
 `costruisciearreda.com` sono il `mailto:` e l'indirizzo email nel footer.
 Menu controllato a 1440px: si chiude su "Richiedi Preventivo".
+
+---
+
+## B10 — La firma di chi ha costruito questo sito (2026-09-14)
+
+Richiesta del proprietario: in fondo al sito deve comparire il nome dell'azienda
+che l'ha realizzato, **Two Bee**, con il link a `www.twobee.it`.
+
+### Dove
+
+Nella **riga legale** del footer, la fascia sotto il bordo che già portava i
+crediti — colonna destra, accanto a `Credits: Vibgroup`:
+
+```
+© 2026 Costruisci & Arreda S.R.L. – P.IVA:08562161219 | Privacy Policy | Cookie Policy
+                                      Realizzato da Two Bee | Credits: Vibgroup
+```
+
+È il posto dove un lettore cerca la firma, ed è una fascia che compare su
+**tutte e 53 le pagine** senza aggiungere un elemento nuovo al layout: i due
+crediti stanno nello stesso `<p>`, separati dal `|` che la riga già usa fra i
+link legali.
+
+### Due crediti, ed è voluto
+
+`credits: 'Vibgroup'` era già lì: è il credits del **tema WordPress**
+dell'originale, trascritto dal footer del mirror. `realizzatoDa` è chi ha
+costruito **questo** sito. Sono due cose diverse e restano distinte, entrambe in
+`company` (`src/data/site.ts`), con il commento che dice quale è quale.
+
+**Da far decidere al proprietario:** del vecchio sito, nel rebuild, non è rimasto
+niente di Vibgroup — non il tema, non il CSS, non il markup. Tenere quel credits
+accanto a quello di Two Bee dice al lettore che il sito è opera di due fornitori.
+Toglierlo è una riga (`credits` in `site.ts` e il suo link nel footer), ma è una
+decisione sua, non tecnica: qui non è stato toccato.
+
+### Misure
+
+Riga legale a 1440 / 900 / 390 px, valori calcolati nel browser:
+
+| larghezza | i due paragrafi si sovrappongono | dove finisce il credit |
+|---|---|---|
+| 1440 | no | in riga, a destra (`x=1119`, 249 px) |
+| 900 | no | in riga, a destra (`x=606`) |
+| 390 | no | va a capo sotto i legali, a sinistra |
+
+Il link eredita lo stile dei crediti esistenti — 12 px, `#333`, sottolineato,
+`target="_blank"` con `rel="noopener noreferrer"` — quindi nessun CSS nuovo.
+`https://www.twobee.it` e `https://twobee.it` rispondono entrambi **200 senza
+redirect**: la forma con `www`, che è come l'ha scritta il proprietario, non
+costa un salto.
+
+### Verifica
+
+`check-build.js` su **53 rotte × 3 viewport: nessun problema**. La stringa
+"Realizzato da Two Bee" compare in tutte e 53 le pagine costruite.
