@@ -2368,6 +2368,10 @@ accanto a quello di Two Bee dice al lettore che il sito è opera di due fornitor
 Toglierlo è una riga (`credits` in `site.ts` e il suo link nel footer), ma è una
 decisione sua, non tecnica: qui non è stato toccato.
 
+> **Deciso lo stesso giorno: va tolto.** Vedi la voce **B11**, qui sotto. Quanto
+> resta di questa sezione vale come storia, non come stato: oggi in fondo alla
+> pagina c'è una firma sola.
+
 ### Misure
 
 Riga legale a 1440 / 900 / 390 px, valori calcolati nel browser:
@@ -2388,3 +2392,50 @@ costa un salto.
 
 `check-build.js` su **53 rotte × 3 viewport: nessun problema**. La stringa
 "Realizzato da Two Bee" compare in tutte e 53 le pagine costruite.
+
+
+---
+
+## B11 — Il credits "Vibgroup" via dalla riga legale (2026-09-14)
+
+Deciso dal proprietario subito dopo B10, che aveva lasciato aperta la domanda.
+`Credits: Vibgroup` era il credits del **tema WordPress** del sito originale
+(`jeansolutions` + child `costruisciarreda-child`), trascritto dal footer del
+mirror insieme al resto.
+
+Nel rebuild di quel tema non è rimasto niente: non il CSS — i 685 KB di
+Elementor sono stati riscritti da zero — non il markup, non i template, non il
+JS. Restava solo la firma. Accanto a "Realizzato da Two Bee" diceva al lettore
+una cosa non vera, cioè che il sito è opera di due fornitori.
+
+### Cosa è uscito
+
+| dove | cosa |
+|---|---|
+| `src/data/site.ts` | il campo `company.credits` |
+| `src/components/Footer.astro` | il secondo `<a>` della riga legale, con il link a `http://www.vibgroup.it`, e il separatore `\|` |
+
+Nessun altro punto del sito leggeva `company.credits`: cercato su `src/`,
+`public/`, `deploy/` e sugli script di `_migrazione/` prima di togliere il campo.
+Nessun CSS diventa morto — la classe `.footer__legalTesto` regge entrambi i
+paragrafi della riga, e il paragrafo di destra resta, con dentro la firma.
+
+Il dato su chi ha fatto il **tema dell'originale** non si perde: resta scritto in
+`CLAUDE.md`, nella sezione che descrive il sito di partenza, con la nota che nel
+rebuild non compare più.
+
+### Misure
+
+Riga legale rimisurata a 1440 / 900 / 390 px, valori calcolati nel browser:
+
+| larghezza | i due paragrafi si sovrappongono | il credit |
+|---|---|---|
+| 1440 | no | in riga, a destra (`x=1234`, 134 px — erano 249) |
+| 900 | no | in riga, a destra (`x=721`) |
+| 390 | no | va a capo sotto i legali, a sinistra |
+
+### Verifica
+
+`check-build.js` su **53 rotte × 3 viewport: nessun problema**. Nelle 53 pagine
+costruite la stringa "Vibgroup" e il dominio `vibgroup.it` non compaiono più
+(**0 pagine**); "Realizzato da Two Bee" compare in **tutte e 53**.

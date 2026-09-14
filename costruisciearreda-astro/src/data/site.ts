@@ -31,10 +31,11 @@ export const company = {
    * Il campo `shopUrl` che c'era è stato tolto per questo (voce B09).
    */
   email: 'shop@costruisciearreda.com',
-  credits: 'Vibgroup',
   /**
-   * Chi ha costruito **questo** sito (il rebuild Astro), distinto da `credits`,
-   * che era il credits del tema WordPress dell'originale.
+   * Chi ha costruito questo sito. Al suo posto, nel footer del mirror, c'era
+   * `credits: 'Vibgroup'` — il credits del **tema WordPress** dell'originale,
+   * rimosso per decisione del proprietario (voce B11): di quel tema nel rebuild
+   * non è rimasto niente, né CSS né markup né template.
    */
   realizzatoDa: { nome: 'Two Bee', url: 'https://www.twobee.it' },
 } as const;
