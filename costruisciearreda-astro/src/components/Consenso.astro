@@ -1,0 +1,112 @@
+---
+/**
+ * Banner dei cookie (Iubenda) e Google Tag Manager **dietro il consenso**.
+ *
+ * Perché serve: il contenitore GTM aggiunto il 2026-09-25 accende GA4 e il
+ * Meta Pixel su ogni pagina, e il rebuild non aveva più un banner — quello
+ * dell'originale era un plugin WordPress. Cookie di misurazione e marketing
+ * senza consenso preventivo non sono ammessi (Linee guida del Garante sui
+ * cookie, 10 giugno 2021).
+ *
+ * Come funziona:
+ *  1. **Google Consent Mode v2** parte con tutto negato, prima di ogni altra cosa;
+ *  2. si carica il banner di Iubenda, con consenso per finalità: "Accetta" e
+ *     "Rifiuta" hanno lo stesso peso, la X chiude rifiutando, e il pulsante
+ *     flottante permette di cambiare idea in ogni momento;
+ *  3. **GTM non viene nemmeno scaricato** finché la persona non ha dato il
+ *     consenso a misurazione (finalità 4) o marketing (5). Prima della scelta,
+ *     o dopo un rifiuto, non parte nessuna richiesta verso Google o Meta;
+ *  4. Iubenda aggiorna il Consent Mode finalità per finalità
+ *     (`googleConsentMode`): GA4 lo rispetta da sé.
+ *
+ * **Limite, che sta dentro GTM e non qui:** il Meta Pixel è un tag HTML
+ * personalizzato, e un tag così ignora il Consent Mode. Chi accetta solo la
+ * misurazione caricherebbe anche il pixel. Nel contenitore, al tag del pixel va
+ * impostato "Consenso aggiuntivo richiesto: `ad_storage`".
+ *
+ * Il `<noscript>` di GTM dell'originale non c'è, di proposito: senza JavaScript
+ * il banner non può comparire, e l'iframe traccerebbe senza chiedere niente.
+ *
+ * Tutto in **un** script in linea, con gli ID da `data/site.ts`: la CSP lo
+ * autorizza per hash, e gli script che inserisce passano per `'strict-dynamic'`.
+ * Un `<script src>` scritto nell'HTML, invece, `'strict-dynamic'` lo blocca.
+ */
+import { tracciamento } from '../data/site';
+
+const config = {
+  siteId: tracciamento.iubenda.siteId,
+  cookiePolicyId: tracciamento.iubenda.cookiePolicyId,
+  lang: 'it',
+  perPurposeConsent: true,
+  googleConsentMode: true,
+  floatingPreferencesButtonDisplay: 'bottom-left',
+  floatingPreferencesButtonCaption: 'Preferenze cookie',
+  banner: {
+    position: 'float-bottom-center',
+    acceptButtonDisplay: true,
+    rejectButtonDisplay: true,
+    customizeButtonDisplay: true,
+    closeButtonRejects: true,
+    explicitWithdrawal: true,
+    listPurposes: true,
+    showTitle: false,
+    // i colori del sito: fondo chiaro, bottoni grigio scuro come i submit dei
+    // form. Accetta e Rifiuta identici: nessuno dei due deve sembrare "quello giusto"
+    backgroundColor: '#FFFFFF',
+    textColor: '#333333',
+    acceptButtonColor: '#333333',
+    acceptButtonCaptionColor: '#FFFFFF',
+    rejectButtonColor: '#333333',
+    rejectButtonCaptionColor: '#FFFFFF',
+    customizeButtonColor: '#F5F5F5',
+    customizeButtonCaptionColor: '#333333',
+  },
+};
+
+const codice = `
+(function (w, d) {
+  w.dataLayer = w.dataLayer || [];
+  w.gtag = function () { w.dataLayer.push(arguments); };
+  w.gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'denied',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+
+  var gtmCaricato = false;
+  var caricaGtm = function () {
+    if (gtmCaricato) return;
+    gtmCaricato = true;
+    w.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    var s = d.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtm.js?id=${tracciamento.gtm}';
+    d.head.appendChild(s);
+  };
+
+  var config = ${JSON.stringify(config)};
+  config.callback = {
+    onPreferenceExpressedOrNotNeeded: function (pref) {
+      if (!pref) return;
+      var f = pref.purposes || {};
+      if (pref.consent === true || f[4] === true || f[5] === true) caricaGtm();
+    }
+  };
+  w._iub = w._iub || [];
+  w._iub.csConfiguration = config;
+
+  var cs = d.createElement('script');
+  cs.async = true;
+  cs.charset = 'UTF-8';
+  cs.src = 'https://cdn.iubenda.com/cs/iubenda_cs.js';
+  d.head.appendChild(cs);
+})(window, document);
+`;
+---
+
+<script is:inline set:html={codice} />

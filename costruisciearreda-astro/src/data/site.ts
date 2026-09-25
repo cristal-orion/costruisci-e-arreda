@@ -121,6 +121,22 @@ export const sediPerTipo = (['Showroom', 'Ferramenta', 'Punto edile', 'Uffici'] 
   (tipo) => ({ tipo, sedi: sedi.filter((s) => s.tipo === tipo) }),
 );
 
+/**
+ * Tracciamento e consenso.
+ *
+ * - `gtm`: il contenitore Google Tag Manager aggiunto il 2026-09-25. Dentro,
+ *   misurato scaricando il contenitore pubblico: un tag Google (GA4
+ *   `G-2241MMD122`) e un tag HTML personalizzato con il Meta Pixel
+ *   `421449629929560`, entrambi su **tutte le pagine**.
+ * - `iubenda`: l'account del sito originale (stessi ID del mirror). Da lì
+ *   vengono il banner dei cookie e i testi di privacy e cookie policy: le due
+ *   pagine legali sono un embed di quella policy, non testo nel repo.
+ */
+export const tracciamento = {
+  gtm: 'GTM-N5NSRTX2',
+  iubenda: { siteId: 3729690, cookiePolicyId: 19235990 },
+} as const;
+
 /** URL social esatti presi dal footer del mirror. */
 export const social = [
   { nome: 'LinkedIn', url: 'https://it.linkedin.com/company/costruisci-e-arreda-srl' },

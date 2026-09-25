@@ -2518,3 +2518,68 @@ blocco per pagina, 53 su 53 validi come JSON.
 - Il testo della homepage (contenuto dell'originale) dice "**quattro** showroom";
   la storia e il footer ne contano tre. Va deciso quale è giusto.
 - Gli `alt` delle gallerie restano il nome del file (`DSC03145`), come prima.
+
+
+---
+
+## B13 — Banner dei cookie, e GTM solo dopo il consenso (2026-09-25)
+
+Il commit remoto `d7e82c6` ("Aggiunto Google Tag Manager al sito") metteva lo
+snippet standard di GTM in `BaseLayout.astro`, prima del `<meta charset>`, più
+l'iframe `<noscript>`. Scaricato il contenitore pubblico `GTM-N5NSRTX2`, dentro
+ci sono **due tag su tutte le pagine**: GA4 `G-2241MMD122` e un tag HTML con il
+Meta Pixel `421449629929560`. Nessuna condizione di consenso.
+
+### Cosa succedeva
+
+- **Tracciamento senza consenso**: il rebuild non aveva un banner dei cookie
+  (quello dell'originale era il plugin Iubenda di WordPress). GTM scriveva i
+  cookie `_ga` e `_fbp` alla prima visita.
+- **E comunque non funzionava**: la CSP non ammetteva Google né Meta.
+  `prova-csp.js` con GTM dentro: **13 violazioni**, fra cui ogni `/g/collect` di
+  GA4. Le statistiche sarebbero rimaste a zero senza un errore visibile.
+- Nel tag HTML del pixel il `<noscript>` usa un **altro ID**
+  (`1648496886937862`) rispetto a `fbq('init', '421449629929560')`.
+
+### Fatto
+
+- `src/components/Consenso.astro` sostituisce lo snippet: **Google Consent
+  Mode v2** con tutto negato, poi il banner Iubenda dell'account originale
+  (`siteId 3729690`, `cookiePolicyId 19235990`) con consenso per finalità,
+  Accetta e Rifiuta dello stesso peso, X che rifiuta, pulsante per cambiare
+  idea. **GTM non si scarica** finché non c'è il consenso a misurazione (4) o
+  marketing (5). Il `<noscript>` di GTM è tolto: senza JavaScript il banner non
+  compare, e l'iframe traccerebbe senza chiedere niente.
+- ID in `tracciamento` (`src/data/site.ts`).
+- `deploy/genera-csp.js`: origini di Iubenda, Google e Meta in `img-src` /
+  `connect-src` (e Iubenda in `font-src` e `frame-src`). Gli script non si
+  elencano: li inserisce lo script autorizzato per hash, e `'strict-dynamic'`
+  li lascia passare. La CSP passa da 7 a 8 hash.
+- `_migrazione/prova-consenso.js`: tre visite con la CSP vera (prima della
+  scelta, Rifiuta, Accetta).
+
+### Verifica
+
+| prova | esito |
+|---|---|
+| prima della scelta: banner visibile, richieste a Google/Meta | **0** |
+| Rifiuta, e pagina successiva: richieste a Google/Meta | **0** |
+| consenso simulato (Consent Mode aggiornato + callback): GTM, gtag, GA4 `/collect` con `gcs=G111`, `fbevents.js` | tutto caricato, **0 violazioni** |
+| `check-build.js` | 53 rotte × 3 viewport, nessun problema |
+| `prova-csp.js` | 53 rotte, nessuna violazione |
+| container + `prova-deploy.js` | 34 controlli, nessun problema |
+
+### Aperto — sta **fuori dal repo**
+
+- **La policy Iubenda non dichiara GA4 né il Meta Pixel.** Dichiara solo
+  Google Tag Manager e Google Fonts, quindi il banner chiede il consenso solo
+  per le finalità "tecniche" ed "esperienza": cliccando **Accetta**, GTM
+  giustamente non parte. `prova-consenso.js` lo segnala al punto 3. Nel
+  pannello Iubenda vanno **aggiunti Google Analytics 4 (misurazione) e il
+  Pixel di Meta (marketing)**, e **tolto Google Fonts**, che il rebuild non usa
+  più (i font sono serviti dal sito). Le pagine `/privacy-policy/` e
+  `/cookie-policy/` sono un embed di quella policy: si aggiornano da sole.
+- **Nel contenitore GTM**, al tag del Meta Pixel va impostato "Consenso
+  aggiuntivo richiesto: `ad_storage`". Un tag HTML personalizzato ignora il
+  Consent Mode: chi accetta solo la misurazione caricherebbe anche il pixel.
+  E va corretto l'ID nel suo `<noscript>`.

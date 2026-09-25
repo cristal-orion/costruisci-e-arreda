@@ -111,17 +111,30 @@ if (endpoint) {
  * dei form il giorno del cutover, ed è il tipo di guasto che si scopre dal
  * cliente che non riceve più richieste.
  */
+/**
+ * Le origini di terze parti, per servizio. Google e Meta ci sono perché GTM,
+ * **dopo il consenso** dato nel banner Iubenda, carica GA4 e il Meta Pixel
+ * (vedi `src/components/Consenso.astro`): senza queste righe la CSP bloccava
+ * ogni invio, e le statistiche restavano a zero senza un errore visibile.
+ * Gli script non vanno elencati: li inserisce uno script autorizzato per hash,
+ * e `'strict-dynamic'` li lascia passare.
+ */
+const IUBENDA = 'https://cdn.iubenda.com https://www.iubenda.com https://*.iubenda.com';
+const GOOGLE =
+  'https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com';
+const META = 'https://www.facebook.com https://connect.facebook.net';
+
 const direttive = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'self'",
-  "img-src 'self' data:",
-  "font-src 'self'",
-  "style-src 'self' 'unsafe-inline' https://cdn.iubenda.com https://www.iubenda.com",
-  `script-src 'self' 'strict-dynamic' ${hashes.join(' ')} https://cdn.iubenda.com https://www.iubenda.com`,
-  `connect-src 'self' https://cdn.iubenda.com https://www.iubenda.com${origineForm}`,
-  'frame-src https://www.iubenda.com',
+  `img-src 'self' data: ${IUBENDA} ${GOOGLE} ${META}`,
+  `font-src 'self' ${IUBENDA}`,
+  `style-src 'self' 'unsafe-inline' ${IUBENDA}`,
+  `script-src 'self' 'strict-dynamic' ${hashes.join(' ')} ${IUBENDA}`,
+  `connect-src 'self' ${IUBENDA} ${GOOGLE} ${META}${origineForm}`,
+  `frame-src ${IUBENDA}`,
   `form-action 'self'${origineForm}`,
   'upgrade-insecure-requests',
 ];
