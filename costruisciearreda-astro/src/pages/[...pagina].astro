@@ -22,6 +22,9 @@ import Blocchi from '../components/Blocchi.astro';
 import { pagineOneOff } from '../data/pagine';
 import { isNoindex } from '../data/noindex';
 import { immagine } from '../lib/immagini';
+import { rami } from '../data/rami';
+import { sedi } from '../data/site';
+import { sedeLd, tutteLeSediLd, type TipoPagina } from '../lib/seo';
 
 export async function getStaticPaths() {
   return pagineOneOff.map((p) => ({
@@ -102,6 +105,26 @@ const classeContenuto =
    portavano dietro il titolo generato da Yoast per gli archivi di tassonomia,
    con la parola "Archivi" dentro. */
 const titleFull = meta.titleSeo ? undefined : (pagina.data.titleCompleto ?? undefined);
+
+/** Il tipo schema.org delle pagine che non sono una pagina qualunque. */
+const tipiPagina: Record<string, TipoPagina> = {
+  '/la-nostra-storia/': 'AboutPage',
+  '/il-nostro-team/': 'AboutPage',
+  '/contatti/': 'ContactPage',
+  '/i-nostri-lavori/': 'CollectionPage',
+  '/dalla-progettazione-alla-realizzazione/': 'CollectionPage',
+};
+
+/* Le sedi da dichiarare nella pagina: tutte nei contatti; nella pagina di un
+   ramo, quelle di quel ramo (la pagina "Ferramenta" dice dove sono le due
+   ferramenta). Sono gli stessi nodi dell'organizzazione, con lo stesso `@id`. */
+const ramo = rami.find((r) => r.href === meta.rotta);
+const schema =
+  meta.rotta === '/contatti/'
+    ? tutteLeSediLd()
+    : ramo?.tipoSede
+      ? sedi.filter((s) => s.tipo === ramo.tipoSede).map((s) => sedeLd(s))
+      : [];
 ---
 
 <SiteLayout
@@ -110,6 +133,12 @@ const titleFull = meta.titleSeo ? undefined : (pagina.data.titleCompleto ?? unde
   description={pagina.data.metaDescription ?? meta.descrizione}
   noindex={meta.noindex || isNoindex(meta.rotta)}
   bloccoContatti={!meta.senzaBloccoContatti}
+  nomeBreve={meta.h1}
+  briciole={[]}
+  image={heroImg}
+  imageAlt={meta.h1}
+  tipoPagina={tipiPagina[meta.rotta]}
+  {schema}
 >
   {
     heroImg && slide && (

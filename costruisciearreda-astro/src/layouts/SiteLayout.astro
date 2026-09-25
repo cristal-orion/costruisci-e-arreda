@@ -4,19 +4,16 @@
  * Le pagine usano questo; `BaseLayout` resta per i casi senza cornice
  * (thank-you page essenziali, pagine di controllo interne).
  */
+import type { ComponentProps } from 'astro/types';
 import BaseLayout from './BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BloccoContatti from '../components/BloccoContatti.astro';
 
-interface Props {
-  title: string;
-  /** `<title>` verbatim, dove l'originale non seguiva "titolo - nome sito". */
-  titleFull?: string;
-  description: string;
-  image?: string;
-  noindex?: boolean;
-  bodyClass?: string;
+type PropsBase = ComponentProps<typeof BaseLayout>;
+
+/** Le prop di `BaseLayout` (titolo, SEO, dati strutturati) passano tali e quali. */
+interface Props extends PropsBase {
   /**
    * Il blocco "Realizza con noi il tuo progetto" sta su **ogni** pagina
    * dell'originale, sopra il footer. Si toglie solo dove sarebbe fuori posto
@@ -25,18 +22,10 @@ interface Props {
   bloccoContatti?: boolean;
 }
 
-const {
-  title,
-  titleFull,
-  description,
-  image,
-  noindex,
-  bodyClass,
-  bloccoContatti = true,
-}: Props = Astro.props;
+const { bloccoContatti = true, ...base }: Props = Astro.props;
 ---
 
-<BaseLayout {title} {titleFull} {description} {image} {noindex} {bodyClass}>
+<BaseLayout {...base}>
   <slot name="head" slot="head" />
   <Header slot="header" pathname={Astro.url.pathname} />
   <slot />

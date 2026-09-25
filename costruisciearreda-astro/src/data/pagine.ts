@@ -71,8 +71,8 @@ export const pagineOneOff: PaginaOneOff[] = [
     rotta: '/la-nostra-storia/',
     h1: 'La nostra storia',
     descrizione:
-      'Da una piccola ferramenta a Ponticelli a quattro showroom in Campania: la storia, ' +
-      'la missione e i valori di Costruisci e Arreda.',
+      'Dal 2000, da una ferramenta di 65 mq a Ponticelli a tre showroom, due ferramenta e ' +
+      'un punto edile in Campania: la storia di Costruisci e Arreda.',
     impaginazione: 'colonna',
   },
   {
@@ -107,9 +107,8 @@ export const pagineOneOff: PaginaOneOff[] = [
     rotta: '/dalla-progettazione-alla-realizzazione/',
     h1: 'Dalla progettazione alla realizzazione',
     descrizione:
-      'Gli otto servizi di Costruisci e Arreda: sopralluogo e rilievo, progetto, ' +
-      'rendering, consulenza finiture, disbrigo pratiche, direzione lavori, impianti, ' +
-      'certificazioni.',
+      'Gli otto servizi di Costruisci e Arreda, dal sopralluogo al collaudo: progetto, ' +
+      'rendering, finiture, pratiche, direzione lavori, impianti e certificazioni.',
     impaginazione: 'colonna',
   },
   {
@@ -164,7 +163,7 @@ export const pagineOneOff: PaginaOneOff[] = [
     h1: nomeRamo('/type_stores/showroom-cat/'),
     titleSeo: 'Ceramiche e Bagno: showroom a Napoli e Nola',
     descrizione:
-      'I quattro showroom di Costruisci e Arreda a Napoli e Nola: ceramiche, pavimenti, ' +
+      'Gli showroom di Costruisci e Arreda a Napoli e Nola: ceramiche, pavimenti, ' +
       'rivestimenti e arredo bagno da toccare con mano.',
     impaginazione: 'colonna',
   },

@@ -23,6 +23,7 @@ import Card from './Card.astro';
 import Form from './Form.astro';
 import { estratto, immagine, rotta } from '../lib/immagini';
 import { formPerIdCf7, forms } from '../data/form';
+import { marchioDaLogo } from '../data/marchi';
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
@@ -91,13 +92,15 @@ const conBr = (testo: string) => escapeHtml(testo).split('\n').join('<br /> ');
     (() => {
       const img = immagine(b.path);
       if (!img) return null;
+      /* I loghi dei marchi hanno `alt=""` nell'originale: il nome sta in `data/marchi.ts`. */
+      const alt = b.alt || marchioDaLogo(b.path) || '';
       const url = rotta(b.href);
       const media = isSvg(b.path) ? (
-        <img src={img.src} width={img.width} height={img.height} alt={b.alt} loading="lazy" decoding="async" />
+        <img src={img.src} width={img.width} height={img.height} {alt} loading="lazy" decoding="async" />
       ) : (
         <Image
           src={img}
-          alt={b.alt}
+          {alt}
           widths={[400, 640, 960]}
           sizes={sizes}
           format="webp"

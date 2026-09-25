@@ -25,6 +25,7 @@ import Titoletto from '../../components/Titoletto.astro';
 import Gallery from '../../components/Gallery.astro';
 import { immagine } from '../../lib/immagini';
 import { site } from '../../data/site';
+import { descrizioneDa, testoDaHtml } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const voci = await getCollection('realizzazioni');
@@ -47,18 +48,25 @@ const galleria = dati.gallery
   .filter((g): g is { img: NonNullable<typeof g.img>; full: string | null; alt: string } => !!g.img)
   .map((g) => ({ src: g.img, alt: g.alt }));
 
-const primoTesto = dati.corpo[0]?.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
+/* Senza testo (5 realizzazioni su 7) la descrizione di ripiego era titolo +
+   descrizione del sito: 200 caratteri e più, tagliati a metà nei risultati. */
+const primoTesto = testoDaHtml(dati.corpo[0]?.html);
 const descrizione =
   dati.metaDescription ??
-  (primoTesto
-    ? primoTesto.slice(0, 155).trim() + '…'
-    : `${dati.title}: una realizzazione di ${site.shortName}. ${site.description}`);
+  descrizioneDa(
+    primoTesto ||
+      `${dati.title}: una realizzazione di ${site.brand}, dalla progettazione alla ` +
+        `ristrutturazione. Foto del progetto finito, materiali e finiture.`,
+  );
 ---
 
 <SiteLayout
   title={dati.title}
   titleFull={dati.seoTitleCompleto ?? undefined}
   description={descrizione}
+  image={copertina ?? heroImg ?? galleria[0]?.src}
+  imageAlt={dati.title}
+  tipoPagina="ItemPage"
 >
   {
     heroImg && dati.hero && (

@@ -2439,3 +2439,82 @@ Riga legale rimisurata a 1440 / 900 / 390 px, valori calcolati nel browser:
 `check-build.js` su **53 rotte × 3 viewport: nessun problema**. Nelle 53 pagine
 costruite la stringa "Vibgroup" e il dominio `vibgroup.it` non compaiono più
 (**0 pagine**); "Realizzato da Two Bee" compare in **tutte e 53**.
+
+
+---
+
+## B12 — SEO e GEO: dati strutturati, anteprime, titoli, `llms.txt` (2026-09-25)
+
+Controllo SEO fatto **sul build**, pagina per pagina (title, description, `<h1>`,
+Open Graph, JSON-LD, `alt`, link in entrata). Cosa non andava, e cosa si è fatto.
+
+### Trovato
+
+| difetto | pagine |
+|---|---|
+| **nessun dato strutturato** (JSON-LD): né azienda, né sedi, né articoli, né briciole | 53 su 53 |
+| **nessuna immagine di anteprima** (`og:image`): link nudo su WhatsApp e LinkedIn | 45 su 53 |
+| descrizioni tagliate **a metà parola** ("…estetica e funzi…"), o oltre 200 caratteri | 18 |
+| `<title>` oltre i ~60 caratteri, con il nome dell'azienda troncato in coda | 12 |
+| homepage con `<title>` "Homepage - Costruisci e Arreda S.r.l." | 1 |
+| loghi dei marchi con `alt=""`: la pagina dei marchi era una griglia di 106 immagini senza nome | 3 |
+| articoli firmati **"di admin"** (il nome utente di WordPress) | 8 |
+| "Gres?Quando sceglierlo?" senza spazio, nel `<h1>` e nel `<title>` | 1 |
+| store con `<title>` = indirizzo, senza la parola "showroom" | 3 |
+| store raggiungibili da **un solo link** in tutto il sito | 3 |
+| meta description con "**quattro** showroom": le sedi dichiarate e la storia ne contano tre | 3 |
+
+### Fatto
+
+- **JSON-LD su ogni pagina**, in `src/lib/seo.ts`, tutto derivato da `site.ts`:
+  `Organization` (ragione sociale, P.IVA, fondazione 2000, fondatore, logo,
+  contatti, social, area servita) · `WebSite` · `WebPage` (o `AboutPage`,
+  `ContactPage`, `CollectionPage`, `ItemPage`) · `BreadcrumbList` · e per tipo:
+  `BlogPosting` sugli articoli, `Service` sui servizi, le sedi come
+  `HomeGoodsStore` / `HardwareStore` con `PostalAddress` (store, contatti,
+  homepage, pagine dei rami). Ogni sede ha un `@id` stabile e compare fra i
+  `department` dell'organizzazione, così i nodi si fondono.
+  **Senza orari e senza coordinate, di proposito:** non stanno da nessuna parte
+  nel sito, e un orario inventato finisce sulla scheda di Google come vero.
+- Le sedi in `site.ts` hanno ora l'**indirizzo scomposto** (`via`, `cap`,
+  `comune`, `provincia`) e, dove c'è, la `pagina`.
+- **`og:image` su tutte le pagine**: JPEG 1200×630 ritagliato dall'hero della
+  pagina, o dalla foto del primo ramo; con `og:image:width/height/alt`. Gli
+  articoli hanno `og:type=article` e `article:published_time`.
+- **`<title>`**: il nome in coda è "Costruisci e Arreda" (senza "S.r.l.", che
+  resta in `legalName`) e si aggiunge **solo se ci sta** nei 60 caratteri
+  (`titoloPagina()`). Homepage: "Costruisci e Arreda: edilizia, ceramiche e
+  bagno a Napoli". Store: "Showroom ceramiche e bagno a Nola", ecc.; l'`<h1>`
+  resta l'indirizzo.
+- **Descrizioni** tagliate fra due parole (`descrizioneDa()`), e "tre" showroom
+  dove le descrizioni scritte nel rebuild dicevano quattro.
+- **`alt` dei loghi**: `src/data/marchi.ts`, 101 marchi letti **guardando i
+  loghi**, non dal nome del file (`0008_Ellisse-1.png` è Boero).
+- Gli articoli si firmano **Costruisci e Arreda**; `?` seguito da lettera prende
+  lo spazio.
+- **Footer**: gli indirizzi dei tre showroom portano alla loro pagina. Stile
+  invariato, si leggono come testo.
+- **`/llms.txt`** (formato llmstxt.org), generato a ogni build: azienda, sedi con
+  indirizzo, rami, servizi, marchi, realizzazioni, articoli. È la parte "GEO":
+  un assistente AI legge lì in poche righe ciò che nelle pagine è sparso fra le
+  gallerie.
+- `deploy/genera-csp.js` **salta i blocchi `application/ld+json`**: sono dati,
+  il browser non li esegue. Contarli voleva dire un hash per pagina.
+
+### Verifica
+
+`check-build.js`: **53 rotte × 3 viewport, nessun problema**. `prova-csp.js`:
+53 rotte, **nessuna violazione**, CSP sempre a 7 hash. Container Docker +
+`prova-deploy.js`: **34 controlli, nessun problema**; `/llms.txt` esce 200,
+`text/plain; charset=utf-8`, con le intestazioni di sicurezza. JSON-LD: un
+blocco per pagina, 53 su 53 validi come JSON.
+
+### Da far decidere al proprietario
+
+- **Orari di apertura** e, se si vuole, le coordinate di ogni sede: sono il dato
+  che manca di più per i risultati locali. Si aggiungono in `site.ts`.
+- **Google Business Profile**: le schede delle sedi vanno verificate e il loro
+  URL messo in `sameAs`.
+- Il testo della homepage (contenuto dell'originale) dice "**quattro** showroom";
+  la storia e il footer ne contano tre. Va deciso quale è giusto.
+- Gli `alt` delle gallerie restano il nome del file (`DSC03145`), come prima.

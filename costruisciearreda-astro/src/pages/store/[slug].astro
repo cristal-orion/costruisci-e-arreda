@@ -24,6 +24,8 @@ import Gallery from '../../components/Gallery.astro';
 import { immagine } from '../../lib/immagini';
 import { isNoindex } from '../../data/noindex';
 import { site } from '../../data/site';
+import { descrizioneDa, sedeLd, sedePerPagina, testoDaHtml } from '../../lib/seo';
+import { getImage } from 'astro:assets';
 
 export async function getStaticPaths() {
   const voci = await getCollection('stores');
@@ -41,19 +43,43 @@ const galleria = dati.gallery
 const tipo = dati.campi.tipo ?? null;
 const indirizzo = dati.campi.indirizzo ?? dati.title;
 
-const primoTesto = dati.corpo[0]?.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
+/* Il `<title>` dell'originale era l'indirizzo ("Via San Massimo Mercury Center,
+   Nola (NA) - Costruisci e Arreda S.r.l.", 70 caratteri): la parola che si
+   cerca, "showroom", non c'era, e il nome dell'azienda finiva troncato.
+   L'`<h1>` resta l'indirizzo, che è ciò che serve a chi è già sulla pagina. */
+const titoliSeo: Record<string, string> = {
+  'via-martiri-della-liberta-na': 'Showroom ceramiche e bagno a Napoli',
+  'via-martiri-della-liberta-nola-na': 'Showroom Home a Napoli: illuminazione e parati',
+  'via-san-massimo-na': 'Showroom ceramiche e bagno a Nola',
+};
+
+const primoTesto = testoDaHtml(dati.corpo[0]?.html);
 const descrizione =
   dati.metaDescription ??
-  (primoTesto
-    ? primoTesto.slice(0, 155).trim() + '…'
-    : `${tipo ?? 'Punto vendita'} ${indirizzo} — ${site.shortName}.`);
+  descrizioneDa(primoTesto || `${tipo ?? 'Punto vendita'} ${indirizzo} — ${site.brand}.`);
+
+/* La sede di questa pagina, con le foto e la descrizione: è il nodo che
+   Google lega alla scheda del negozio. L'`@id` è lo stesso con cui la sede
+   compare fra i `department` dell'organizzazione, quindi i due si fondono. */
+const sede = sedePerPagina(`/store/${dati.slug}/`);
+const fotoLd = await Promise.all(
+  galleria.slice(0, 3).map(async (g) =>
+    new URL((await getImage({ src: g.src, width: Math.min(1200, g.src.width), format: 'jpg', quality: 78 })).src, Astro.site).href,
+  ),
+);
+const schema = sede
+  ? [sedeLd(sede, { description: descrizione, ...(fotoLd.length ? { image: fotoLd } : {}) })]
+  : [];
 ---
 
 <SiteLayout
-  title={dati.title}
-  titleFull={dati.seoTitleCompleto ?? undefined}
+  title={titoliSeo[dati.slug] ?? dati.seoTitleCompleto ?? dati.title}
+  nomeBreve={dati.title}
   description={descrizione}
   noindex={isNoindex(`/store/${dati.slug}/`)}
+  image={heroImg}
+  imageAlt={`${tipo ?? 'Store'} ${indirizzo}`}
+  {schema}
 >
   {
     heroImg && dati.hero && (

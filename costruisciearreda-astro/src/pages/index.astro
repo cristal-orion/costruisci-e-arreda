@@ -41,6 +41,7 @@ import Counter from '../components/Counter.astro';
 import Button from '../components/Button.astro';
 import Card from '../components/Card.astro';
 import { estratto, immagine, rotta } from '../lib/immagini';
+import { tutteLeSediLd } from '../lib/seo';
 
 const pagina = await getEntry('pagine', 'home');
 if (!pagina) throw new Error('Contenuto della homepage assente: eseguire _migrazione/extract-pages.js');
@@ -95,11 +96,19 @@ const posts = (await getCollection('posts'))
 
 const descrizione =
   pagina.data.metaDescription ??
-  'Edilizia, arredo bagno, ceramiche e ferramenta in Campania. Quattro showroom, ' +
-    'punto edile, ferramenta e un servizio completo di progettazione e ristrutturazione.';
+  'Edilizia, ceramiche, arredo bagno e ferramenta a Napoli e Nola: showroom, punto ' +
+    'edile, ferramenta e un servizio completo di progettazione e ristrutturazione.';
+
+/* Il `<title>` dell'originale era "Homepage - Costruisci e Arreda S.r.l.": la
+   parola "Homepage" è l'unica che non cerca nessuno. Qui il nome e cosa fa. */
+const titoloPagina = 'Costruisci e Arreda: edilizia, ceramiche e bagno a Napoli';
 ---
 
-<SiteLayout title="Homepage" titleFull={pagina.data.titleCompleto ?? undefined} description={descrizione}>
+<SiteLayout
+  title={titoloPagina}
+  description={descrizione}
+  schema={tutteLeSediLd()}
+>
   <HeroRami />
 
   {primo('servizinumerati') && <ServiziNumerati voci={primo('servizinumerati')!.voci} />}

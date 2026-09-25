@@ -73,6 +73,9 @@ const heroImg = immagine(voci.find((v) => v.hero?.imagePath)?.hero?.imagePath);
 <SiteLayout
   title={`Realizzazioni: ${etichetta}`}
   description={DESCRIZIONI[tassonomia] ?? `Le realizzazioni di Costruisci e Arreda: ${etichetta}.`}
+  nomeBreve={etichetta}
+  tipoPagina="CollectionPage"
+  image={heroImg}
 >
   {
     heroImg && (

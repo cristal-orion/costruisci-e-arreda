@@ -36,8 +36,11 @@ const html = (dir) =>
 
 /* `<script>` senza `src`: sono quelli che la CSP deve autorizzare per hash.
    Il corpo va preso **esattamente** come sta nel file, byte per byte: uno
-   spazio in più e l'hash è un altro. */
-const INLINE = /<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g;
+   spazio in più e l'hash è un altro.
+   I blocchi `application/ld+json` restano fuori: sono dati, il browser non li
+   esegue e la CSP non li guarda. Contarli voleva dire un hash per pagina (il
+   grafo cambia da una pagina all'altra) e un'intestazione da 53 hash. */
+const INLINE = /<script(?![^>]*\bsrc=)(?![^>]*\btype="application\/ld\+json")[^>]*>([\s\S]*?)<\/script>/g;
 
 const pagine = html(DIST);
 const hash = new Map(); // hash -> quante pagine lo usano

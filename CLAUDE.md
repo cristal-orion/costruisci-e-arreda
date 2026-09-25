@@ -2,7 +2,12 @@
 
 > ## ⏯ PUNTO DI RIPRESA — leggere per primo
 >
-> **Ultima sessione: 2026-09-14.** **Fase A completa** (52 rotte, tutti i 56 URL
+> **Ultima sessione: 2026-09-25 — B12, SEO e GEO** (JSON-LD su ogni pagina da
+> `src/lib/seo.ts`, `og:image` 1200×630 ovunque, titoli entro 60 caratteri,
+> `alt` dei 103 loghi in `src/data/marchi.ts`, `/llms.txt` generato dal build,
+> indirizzi degli showroom linkati nel footer). Mancano **orari e coordinate
+> delle sedi**: non inventarli, vanno chiesti. Dettagli nella voce B12.
+> **Sessione precedente: 2026-09-14.** **Fase A completa** (52 rotte, tutti i 56 URL
 > indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B in corso**: la
 > homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la
 > velatura è stata rifatta, la fascia "store" doppione è via e i rami si chiamano

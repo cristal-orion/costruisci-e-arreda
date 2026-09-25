@@ -89,9 +89,19 @@ const iconeSocial: Record<string, string> = {
             <ul class="footer__sedi">
               {gruppo.sedi.map((s) => (
                 <li>
-                  {s.righe[0]}
-                  <br />
-                  {s.righe[1]}
+                  {s.pagina ? (
+                    <a href={s.pagina}>
+                      {s.righe[0]}
+                      <br />
+                      {s.righe[1]}
+                    </a>
+                  ) : (
+                    <>
+                      {s.righe[0]}
+                      <br />
+                      {s.righe[1]}
+                    </>
+                  )}
                 </li>
               ))}
             </ul>
@@ -213,8 +223,16 @@ const iconeSocial: Record<string, string> = {
     color: var(--c-ink);
     text-decoration: none;
   }
-  .footer__lista a:hover {
+  .footer__lista a:hover,
+  .footer__sedi a:hover {
     color: var(--c-brand);
+  }
+  /* Gli indirizzi degli showroom portano alla pagina della sede: erano le
+     pagine meno linkate del sito (una sola pagina in entrata). Si leggono
+     come testo, come gli indirizzi senza pagina accanto. */
+  .footer__sedi a {
+    color: inherit;
+    text-decoration: none;
   }
   .footer__sedi {
     gap: var(--s-4);

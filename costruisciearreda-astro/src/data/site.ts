@@ -7,6 +7,13 @@ export const site = {
   /** Nome usato dal template dei title: "%titolo% - %nome%" (schema Yoast originale) */
   name: 'Costruisci e Arreda S.r.l.',
   shortName: 'Costruisci & Arreda',
+  /**
+   * Il nome in coda al `<title>` e in `og:site_name`. Senza "S.r.l.": nei
+   * risultati di ricerca la forma societaria sono sette caratteri che spingono
+   * il titolo oltre i ~60 visibili, e nessuno cerca "Arreda S.r.l.".
+   * La ragione sociale completa resta in `company.legalName` e nei dati strutturati.
+   */
+  brand: 'Costruisci e Arreda',
   /** Dominio di destinazione al cutover. */
   url: 'https://costruisciearreda.it',
   lang: 'it-IT',
@@ -38,12 +45,23 @@ export const company = {
    * non è rimasto niente, né CSS né markup né template.
    */
   realizzatoDa: { nome: 'Two Bee', url: 'https://www.twobee.it' },
+  /** Dalla pagina "La nostra storia": fondata nel 2000 da Giorgio Gallo, a Ponticelli. */
+  fondazione: '2000',
+  fondatore: 'Giorgio Gallo',
 } as const;
 
 export type Sede = {
   tipo: 'Showroom' | 'Ferramenta' | 'Punto edile' | 'Uffici';
   /** Righe dell'indirizzo come le stampa il footer dell'originale. */
   righe: [string, string];
+  /**
+   * L'indirizzo scomposto, per i dati strutturati (`PostalAddress`): le `righe`
+   * sono testo da stampare, e ricavarne CAP e comune con una regex si è già
+   * visto quanto regge (vedi `comuneDi` in `rami.ts`).
+   */
+  indirizzo: { via: string; cap: string; comune: string; provincia: 'NA' };
+  /** La pagina della sede, se ne ha una indicizzata. */
+  pagina?: string;
   nota?: string;
 };
 
@@ -56,13 +74,46 @@ export type Sede = {
  * se è un doppione va chiesto al proprietario, non deciso qui.
  */
 export const sedi: Sede[] = [
-  { tipo: 'Showroom', righe: ['Via Martiri della Libertà, 11', '80147 – Napoli (NA)'] },
-  { tipo: 'Showroom', righe: ['Via Martiri della Libertà (Home)', '11, 80147 – Napoli (NA)'] },
-  { tipo: 'Showroom', righe: ['Via San Massimo, SNC', 'Mercury Center, 80035 – Nola (NA)'] },
-  { tipo: 'Ferramenta', righe: ['Corso Ponticelli, 28/C', '80147 – Napoli (NA)'] },
-  { tipo: 'Ferramenta', righe: ['Via della Libertà, 56', '80055 – Portici (NA)'] },
-  { tipo: 'Punto edile', righe: ['Via Argine, 625', '80147 – Napoli (NA)'] },
-  { tipo: 'Uffici', righe: ['Via Gennaro Paparo, 74', '80040 – Massa di Somma (NA)'] },
+  {
+    tipo: 'Showroom',
+    righe: ['Via Martiri della Libertà, 11', '80147 – Napoli (NA)'],
+    indirizzo: { via: 'Via Martiri della Libertà, 11', cap: '80147', comune: 'Napoli', provincia: 'NA' },
+    pagina: '/store/via-martiri-della-liberta-na/',
+  },
+  {
+    tipo: 'Showroom',
+    righe: ['Via Martiri della Libertà (Home)', '11, 80147 – Napoli (NA)'],
+    indirizzo: { via: 'Via Martiri della Libertà, 11', cap: '80147', comune: 'Napoli', provincia: 'NA' },
+    // lo slug dice "nola", ma la pagina è lo showroom Home di Napoli: titolo e testo lo confermano
+    pagina: '/store/via-martiri-della-liberta-nola-na/',
+  },
+  {
+    tipo: 'Showroom',
+    righe: ['Via San Massimo, SNC', 'Mercury Center, 80035 – Nola (NA)'],
+    indirizzo: { via: 'Via San Massimo, SNC – Mercury Center', cap: '80035', comune: 'Nola', provincia: 'NA' },
+    pagina: '/store/via-san-massimo-na/',
+  },
+  {
+    tipo: 'Ferramenta',
+    righe: ['Corso Ponticelli, 28/C', '80147 – Napoli (NA)'],
+    indirizzo: { via: 'Corso Ponticelli, 28/C', cap: '80147', comune: 'Napoli', provincia: 'NA' },
+  },
+  {
+    tipo: 'Ferramenta',
+    righe: ['Via della Libertà, 56', '80055 – Portici (NA)'],
+    indirizzo: { via: 'Via della Libertà, 56', cap: '80055', comune: 'Portici', provincia: 'NA' },
+  },
+  {
+    tipo: 'Punto edile',
+    righe: ['Via Argine, 625', '80147 – Napoli (NA)'],
+    indirizzo: { via: 'Via Argine, 625', cap: '80147', comune: 'Napoli', provincia: 'NA' },
+    // niente `pagina`: le due pagine di Via Argine sono vuote e in noindex
+  },
+  {
+    tipo: 'Uffici',
+    righe: ['Via Gennaro Paparo, 74', '80040 – Massa di Somma (NA)'],
+    indirizzo: { via: 'Via Gennaro Paparo, 74', cap: '80040', comune: 'Massa di Somma', provincia: 'NA' },
+  },
 ];
 
 /** Le sedi raggruppate per tipo, nell'ordine in cui appaiono nel footer. */

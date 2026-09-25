@@ -19,6 +19,7 @@ import Hero from '../../components/Hero.astro';
 import Titoletto from '../../components/Titoletto.astro';
 import { immagine } from '../../lib/immagini';
 import { site } from '../../data/site';
+import { descrizioneDa, ID, testoDaHtml } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const voci = await getCollection('services');
@@ -34,15 +35,30 @@ const marchio = immagine('2024/06/LogoServizio.png');
 /* La meta description manca su tutte e 8 le pagine nell'originale: in attesa dei
    testi definitivi si ricava dal primo paragrafo. Resta segnata come "da
    scrivere" nel report dell'estrazione. */
-const primoTesto = dati.corpo[0]?.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
+const primoTesto = testoDaHtml(dati.corpo[0]?.html);
 const descrizione =
-  dati.metaDescription ?? (primoTesto ? primoTesto.slice(0, 155).trim() + '…' : site.description);
+  dati.metaDescription ?? (primoTesto ? descrizioneDa(primoTesto) : site.description);
+
+const url = new URL(Astro.url.pathname, Astro.site).href;
+const servizioLd = {
+  '@type': 'Service',
+  '@id': `${url}#servizio`,
+  name: dati.title,
+  serviceType: dati.title,
+  description: descrizione,
+  url,
+  provider: { '@id': ID.organizzazione },
+  areaServed: { '@type': 'AdministrativeArea', name: 'Campania' },
+  mainEntityOfPage: { '@id': ID.pagina(url) },
+};
 ---
 
 <SiteLayout
   title={dati.title}
   titleFull={dati.seoTitleCompleto ?? undefined}
   description={descrizione}
+  image={heroImg}
+  schema={[servizioLd]}
 >
   {
     heroImg && dati.hero && (
