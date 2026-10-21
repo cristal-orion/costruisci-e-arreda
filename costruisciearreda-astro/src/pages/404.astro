@@ -13,8 +13,9 @@
  *  - un indirizzo digitato a mano con un errore di battitura;
  *  - un link condiviso che puntava a una pagina ritirata (la landing con
  *    l'offerta scaduta, per esempio).
- * In tutti e tre i casi la cosa utile è **dire dove sono le quattro cose** che
- * si cercano su questo sito, non scusarsi.
+ * In tutti e tre i casi la cosa utile è **dire dove sono le cose** che si
+ * cercano su questo sito — i rami del gruppo, il preventivo, i contatti — non
+ * scusarsi.
  *
  * `noindex`: una 404 in indice è un difetto. Il server risponde comunque con lo
  * stato 404 (`error_page 404 /404.html` in `deploy/nginx.conf`), che è quello
@@ -28,7 +29,7 @@ import { rami } from '../data/rami';
 
 <SiteLayout
   title="Pagina non trovata"
-  description="La pagina cercata non esiste o è stata spostata. Da qui si arriva ai quattro rami del gruppo, al preventivo e ai contatti."
+  description="La pagina cercata non esiste o è stata spostata. Da qui si arriva ai rami del gruppo, al preventivo e ai contatti."
   noindex={true}
 >
   <section class="section quattroQuattro">
@@ -40,7 +41,7 @@ import { rami } from '../data/rami';
         link vecchio, o un errore di battitura. Da qui ci si rimette in strada.
       </p>
 
-      <h2 class="quattroQuattro__sottotitolo">I quattro rami</h2>
+      <h2 class="quattroQuattro__sottotitolo">I rami del gruppo</h2>
       <ul class="quattroQuattro__rami">
         {
           rami.map((r) => (
@@ -96,6 +97,13 @@ import { rami } from '../data/rami';
   }
   .quattroQuattro__rami li {
     margin: 0;
+  }
+  /* Con un numero dispari di rami (cinque, da B14) l'ultimo resterebbe solo in
+     una riga da due colonne, e la cella vuota mostrerebbe il grigio delle fughe. */
+  @media (min-width: 769px) {
+    .quattroQuattro__rami li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
   }
 
   .quattroQuattro__ramo {

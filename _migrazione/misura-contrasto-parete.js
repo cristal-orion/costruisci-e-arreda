@@ -71,6 +71,10 @@ const analizza = (page, b64, alpha, soglia) => page.evaluate(async ({ b64, alpha
       const ctx = await browser.newContext({ viewport: { width: w, height: 900 } });
       const page = await ctx.newPage();
       await page.goto(BASE + '/', { waitUntil: 'load' });
+      /* Il banner dei cookie (B13) è un riquadro bianco fisso in basso: finisce
+         dentro il ritaglio e il fondo misurato diventa bianco, cioè 1.00:1 su
+         tutto. Lo script è del B06, prima del banner. Non è parte della parete. */
+      await page.addStyleTag({ content: '#iubenda-cs-banner { display: none !important; }' });
       await page.waitForTimeout(500);
       await page.evaluate(() => Promise.all(
         [...document.querySelectorAll('.parete__foto')].map((i) => i.decode().catch(() => {}))));

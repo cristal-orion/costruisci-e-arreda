@@ -44,11 +44,17 @@ interface Props {
 
 const {
   claim = 'Edilizia, design e ferramenta',
-  lead =
-    'Professionisti del settore, materie prime di qualità, estetica e funzionalità: ' +
-    'quattro rami e un solo interlocutore, dal materiale al progetto finito.',
+  lead: leadDato,
   voci = tuttiIRami,
 }: Props = Astro.props;
+
+/* Il numero dei rami è quello dei rami: scritto "quattro" a mano, aggiungere
+   Home Design avrebbe lasciato nell'hero un conto sbagliato (voce B14). */
+const inParole = ['zero', 'un', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto'];
+const lead =
+  leadDato ??
+  'Professionisti del settore, materie prime di qualità, estetica e funzionalità: ' +
+    `${inParole[voci.length] ?? voci.length} rami e un solo interlocutore, dal materiale al progetto finito.`;
 
 const campate = voci.map((r) => ({
   ...r,
@@ -61,7 +67,7 @@ const campate = voci.map((r) => ({
 ---
 
 <section class="parete" aria-label="I rami del gruppo">
-  <div class="parete__griglia">
+  <div class="parete__griglia" style={`--n: ${voci.length}`} data-n={voci.length}>
     <div class="parete__insegnaGruppo">
       <div class="container">
         <h1 class="parete__claim"><span class="parete__claimTesto">{claim}</span></h1>
@@ -105,7 +111,9 @@ const campate = voci.map((r) => ({
           <div class="parete__insegna">
             <h2 class="parete__nome">{r.nome}</h2>
             <p class="parete__cosa">{r.descrizione}</p>
-            {r.dettaglio && <p class="parete__dove">{r.dettaglio}</p>}
+            {/* Sempre presente: vuota (Home Design non ha un indirizzo) tiene il posto
+                della riga, così il suo titolo sta sulla stessa linea degli altri. */}
+            <p class="parete__dove" aria-hidden={r.dettaglio ? undefined : 'true'}>{r.dettaglio}</p>
           </div>
         </a>
       ))
@@ -136,10 +144,28 @@ const campate = voci.map((r) => ({
     .parete__griglia {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+    /* Cinque campate su due colonne lasciavano l'ultima da sola a tutta
+       larghezza: una feritoia da 3:1 su cui `cover` taglia quasi tutta la foto.
+       Su sei colonne stanno tre sopra e due sotto, e le campate restano fra
+       0,85 e 1,5 di proporzione — dentro l'intervallo misurato in B03. */
+    .parete__griglia[data-n='5'] {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+    .parete__griglia[data-n='5'] > .parete__campata {
+      grid-column: span 2;
+    }
+    .parete__griglia[data-n='5'] > .parete__campata:nth-of-type(n + 4) {
+      grid-column: span 3;
+    }
   }
   @media (min-width: 1200px) {
-    .parete__griglia {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+    .parete__griglia,
+    .parete__griglia[data-n='5'] {
+      grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr));
+    }
+    .parete__griglia[data-n='5'] > .parete__campata,
+    .parete__griglia[data-n='5'] > .parete__campata:nth-of-type(n + 4) {
+      grid-column: auto;
     }
   }
 
@@ -229,7 +255,10 @@ const campate = voci.map((r) => ({
   @media (min-width: 769px) {
     .parete__campata {
       min-height: clamp(18.75rem, 31vw, 24rem); /* 300 → 384px */
-      padding: var(--s-10) var(--s-8);
+      /* 24px ai lati e non 32: con cinque campate (B14) le colonne sono tre sul
+         tablet e cinque sul desktop, e a 32px la descrizione di Edilizia
+         arrivava a sei righe a 769px e a cinque a 900. */
+      padding: var(--s-10) var(--s-6);
     }
   }
   /* 464px + l'insegna del gruppo ≈ i 750px dell'hero misurato. A quest'altezza
@@ -275,12 +304,15 @@ const campate = voci.map((r) => ({
   }
   @media (min-width: 769px) {
     .parete__campata {
-      --velo-base: 210px;
+      /* era 210: con cinque campate l'insegna sale fino a 218px (Edilizia a
+         769px), cioè oltre il punto in cui la velatura è piena */
+      --velo-base: 230px;
     }
   }
   @media (min-width: 1200px) {
     .parete__campata {
-      --velo-base: 320px;
+      /* era 320: Progettazione sale fino a 330px a 1280px (B14) */
+      --velo-base: 340px;
     }
   }
 
@@ -393,7 +425,10 @@ const campate = voci.map((r) => ({
     color: inherit;
     /* 20 → 26px. Il tetto è deciso dalla parola più lunga: "RISTRUTTURAZIONE"
        è 16 caratteri e in una campata da 359px con 32px di padding ha 295px.
-       A 32px di corpo sfondava, e `overflow: clip` la troncava a metà. */
+       A 32px di corpo sfondava, e `overflow: clip` la troncava a metà.
+       Con la quinta campata (B14) le colonne sono più strette, quindi il corpo
+       scende da 769px in su: a tre colonne (769-1199) e a cinque (da 1200) la
+       parola più lunga deve stare nel testo disponibile, misurato. */
     font-size: clamp(1.25rem, 1.9vw, 1.625rem);
     font-weight: var(--w-light);
     line-height: 1.1;
@@ -404,6 +439,17 @@ const campate = voci.map((r) => ({
     overflow-wrap: break-word;
     transition: border-color var(--dur) var(--ease);
   }
+  @media (min-width: 769px) {
+    .parete__nome {
+      font-size: clamp(1rem, 1.9vw, 1.625rem);
+    }
+  }
+  @media (min-width: 1200px) {
+    .parete__nome {
+      font-size: clamp(1rem, 1.3vw, 1.5rem);
+    }
+  }
+
   /* Il rosso del brand vuol dire "questa qui": compare solo sotto il nome della
      campata puntata, e sotto il claim. In nessun altro punto della parete. */
   .parete__campata:hover .parete__nome,
@@ -421,16 +467,49 @@ const campate = voci.map((r) => ({
 
   /* Le insegne sono allineate in basso, quindi una descrizione più corta alza
      il proprio nome e la fila risulta scalinata. Misurato con le righe reali:
-     a 1200px+ (campate da 359px) le quattro descrizioni stanno su 4, 4, 3 e 3
-     righe, quindi qui vanno riservate quattro righe; a 900px e a 390px stanno
-     tutte su tre e la riserva lascerebbe solo un buco sopra la riga del dove.
-     Se le descrizioni cambiano, va rimisurato. */
+     a 1200px+ con quattro campate da 359px le descrizioni stavano su 4, 4, 3 e
+     3 righe, e si riservavano quattro righe; a 900px e a 390px stavano tutte su
+     tre e la riserva lasciava solo un buco sopra la riga del dove.
+     Con cinque campate (B14) è cambiato il conto, rimisurato a 14 larghezze:
+     5 righe da 1200 a 1599px (6 solo per Edilizia a 1200-1250px, dove resta uno
+     scalino da una riga), 4 da 1600px. Se le descrizioni cambiano, va
+     rimisurato. */
   @media (min-width: 1200px) {
+    .parete__cosa {
+      min-height: calc(5 * var(--t-sm-lh) * var(--t-sm));
+    }
+  }
+  /* Con cinque campate le colonne sono 240-290px fra 1200 e 1599, e le
+     descrizioni vanno a 4-6 righe (rimisurato in B14); da 1600px la colonna è
+     da 320px e stanno tutte su quattro. */
+  @media (min-width: 1600px) {
     .parete__cosa {
       min-height: calc(4 * var(--t-sm-lh) * var(--t-sm));
     }
   }
 
+  /* Home Design non ha una sede: la riga è vuota, ma dove le campate stanno
+     sulla stessa fila deve occupare lo stesso posto, altrimenti il suo titolo
+     scende di una riga rispetto agli altri. Sul telefono le campate sono
+     impilate e non c'è niente da allineare. */
+  /* Stessa cosa per le descrizioni della fila alta del tablet (tre campate
+     affiancate, 769-1099px): a 900 e 992 stanno su quattro righe, a 769 su
+     cinque. Da 1100px ne bastano tre e la riserva sarebbe solo un buco. */
+  @media (min-width: 769px) and (max-width: 1099px) {
+    .parete__griglia[data-n='5'] > .parete__campata:nth-of-type(-n + 3) .parete__cosa {
+      min-height: calc(4 * var(--t-sm-lh) * var(--t-sm));
+    }
+  }
+
+  .parete__dove:empty {
+    display: none;
+  }
+  @media (min-width: 769px) {
+    .parete__dove:empty {
+      display: block;
+      min-height: calc(var(--t-xs) * var(--t-xs-lh));
+    }
+  }
   .parete__dove {
     margin: 0;
     color: rgb(255 255 255 / 72%);

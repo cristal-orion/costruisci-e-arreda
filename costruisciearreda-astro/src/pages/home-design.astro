@@ -1,0 +1,200 @@
+---
+/**
+ * Home Design — la landing del quinto ramo (**voce B14**).
+ *
+ * Una pagina sola, non un archivio: hero, una presentazione, la galleria
+ * dello store (a lamelle: vedi `GalleriaLamelle.astro`, voce B15). Il contatto lo porta il blocco "Realizza con noi il tuo
+ * progetto" che il layout mette su ogni pagina, quindi qui non c'è un secondo
+ * form a due scroll di distanza dal primo.
+ *
+ * **Cosa la pagina non dice, di proposito:** nessun indirizzo, orario, marchio
+ * o storia. L'indirizzo di Home Design non è dichiarato nei dati del sito e non
+ * va inventato (vedi `rami.ts`); i marchi dei prodotti non sono stati
+ * confermati. Quando l'indirizzo c'è, si aggiunge la sede in `site.ts` e qui il
+ * `schema` può dichiararla come fa `store/[slug].astro`.
+ *
+ * Le foto vengono dallo store (`Costruisci_e_Arreda_foto/`), ridotte a
+ * 2000–2400px; gli `alt` sono scritti guardandole. Sono registrate in
+ * `lib/immagini-locali.ts`. Le facciate e le foto con marchi leggibili sono
+ * rimaste fuori.
+ *
+ * Testi da far rivedere al proprietario, come le meta description: descrivono
+ * ciò che le foto mostrano, non promettono altro.
+ *
+ * Questa è una rotta statica: vince su `[...pagina]`, che genera solo gli slug
+ * di `pagineOneOff`, quindi la pagina non va aggiunta lì.
+ */
+import { Image } from 'astro:assets';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Hero from '../components/Hero.astro';
+import Titoletto from '../components/Titoletto.astro';
+import GalleriaLamelle from '../components/GalleriaLamelle.astro';
+import Button from '../components/Button.astro';
+import { immagineObbligatoria } from '../lib/immagini';
+import { rami } from '../data/rami';
+
+const ramo = rami.find((r) => r.slug === 'home-design');
+if (!ramo) throw new Error('Il ramo "home-design" manca in data/rami.ts');
+
+const foto = (nome: string) => immagineObbligatoria(`2026/10/${nome}.jpg`, 'home-design.astro');
+
+const heroImg = foto('home-design-teste-di-moro');
+const heroAlt =
+  'Due teste di moro in ceramica smaltata, nere con corone gialle, e una pigna gialla su una mensola illuminata di blu.';
+const fotoStore = foto('hero-home-design');
+
+/**
+ * Nell'ordine in cui compaiono: prima il colore, poi la luce, poi i dettagli.
+ * `nome` è la parola sulla lamella; `fuoco` dice dove sta il soggetto in
+ * verticale, perché la lamella aperta (4:5) taglia le foto in piedi.
+ */
+const galleria = [
+  { nome: 'Sedute a coniglio', fuoco: '50% 58%', src: foto('home-design-sedute-coniglio'), alt: 'Sedute a forma di coniglio lilla e sgabello nero accanto a un tavolo con un orsetto viola e sedie gialle.' },
+  { nome: 'Bulldog pop', fuoco: '50% 35%', src: foto('home-design-bulldog-pop'), alt: 'Statua di bulldog francese in stile pop con occhiali da sole, accanto a un orsetto viola.' },
+  { nome: 'Vaso a righe', fuoco: '50% 58%', src: foto('home-design-vaso-a-righe'), alt: 'Vaso in ceramica a righe bianche e nere con base verde e un mazzo di tulipani rossi, su un ripiano di vetro.' },
+  { nome: 'Orologi da parete', fuoco: '50% 50%', src: foto('home-design-orologi'), alt: 'Tre orologi da parete di grandi dimensioni, con quadrante effetto marmo e numeri romani dorati.' },
+  { nome: 'Lampada dorata', fuoco: '50% 55%', src: foto('home-design-lampada-oro'), alt: 'Lampada da tavolo dorata a forma di figura seduta, accanto a un vaso di vetro blu a coste.' },
+  { nome: 'Vasi cubisti', fuoco: '50% 50%', src: foto('home-design-vasi-cubisti'), alt: 'Vasi e volti in ceramica bianca e nera di ispirazione cubista su una mensola dorata.' },
+  { nome: 'Sedia coniglio', fuoco: '50% 72%', src: foto('home-design-coniglio-rosa'), alt: 'Sedia a forma di coniglio in velluto fucsia davanti a una parete bordeaux.' },
+  { nome: 'Carte da parati', fuoco: '50% 68%', src: foto('home-design-carte-da-parati'), alt: 'Espositore con i campioni di carta da parati, in fantasie botaniche dalle tinte scure e chiare.' },
+  { nome: 'Lampade coniglio', fuoco: '50% 50%', src: foto('home-design-lampade-coniglio'), alt: 'Due lampade da tavolo con figure di coniglio, una dorata e una bianca, con paralume chiaro e rosa.' },
+  { nome: 'Ali dorate', fuoco: '50% 38%', src: foto('home-design-ali-oro'), alt: 'Busto bianco con grandi ali dorate sopra una scaffalatura di ceramiche e oggetti decorativi, su una parete rosa.' },
+  { nome: 'Quadro dorato', fuoco: '50% 40%', src: foto('home-design-quadro-oro'), alt: 'Quadro con il ritratto di una donna con decorazioni dorate, accanto a un orologio da parete e a una scultura colorata.' },
+];
+
+/* Il titolo sta sotto i 60 caratteri col nome del sito (55): oltre, il layout
+   toglie il suffisso e il brand sparisce dal risultato di ricerca. */
+const titolo = 'Home Design: arredo e complementi';
+const descrizione =
+  'Home Design di Costruisci e Arreda: complementi d’arredo, ceramiche decorative, ' +
+  'lampade, orologi, quadri e carte da parati per dare carattere alla casa.';
+---
+
+<SiteLayout
+  title={titolo}
+  description={descrizione}
+  nomeBreve={ramo.nome}
+  briciole={[]}
+  image={heroImg}
+  imageAlt={heroAlt}
+>
+  <Hero class="hd__hero" title={ramo.nome} kicker="Store" image={heroImg} imageAlt={heroAlt} />
+
+  <section class="section hd__presentazione">
+    <div class="container hd__duePer">
+      <Image
+        class="hd__fotoStore"
+        src={fotoStore}
+        alt={ramo.fotoAlt}
+        widths={[480, 720, 1080]}
+        sizes="(min-width: 992px) 46vw, 92vw"
+        format="webp"
+        quality={78}
+        loading="lazy"
+        decoding="async"
+        style={ramo.fuoco ? `object-position: ${ramo.fuoco}` : undefined}
+      />
+      <div class="hd__testo">
+        <Titoletto as="h2" size="sm" tone="muted">Dettagli che cambiano una stanza</Titoletto>
+        <p class="hd__paragrafo">
+          Home Design raccoglie quello che rende una casa riconoscibile: complementi
+          d’arredo, ceramiche decorative, lampade, orologi da parete, quadri e un
+          campionario di carte da parati.
+        </p>
+        <p class="hd__paragrafo">
+          Vieni a vedere gli oggetti dal vivo. I nostri consulenti ti aiutano ad abbinarli
+          a pavimenti, rivestimenti e finiture, dal singolo pezzo al progetto completo.
+        </p>
+        <p class="hd__azioni">
+          <Button href="/contatti/" variant="solid">Contattaci</Button>
+          <Button href="/services/consulenza-finiture/" variant="outline-dark">
+            Consulenza finiture
+          </Button>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sfondo scuro: le foto sono colorate e a luci spente risaltano. -->
+  <section class="section section--dark hd__galleria">
+    <div class="container">
+      <Titoletto as="h2" size="sm" tone="light" class="hd__galleriaTitolo">Dentro lo store</Titoletto>
+    </div>
+    <GalleriaLamelle items={galleria} label="Galleria fotografica di Home Design" />
+  </section>
+</SiteLayout>
+
+<style>
+  /* La velatura dell'`Hero` è un 45% nero solo in basso. Su questa foto il
+     titolo bianco cade sulla pigna e sulle corone gialle: misurato, il
+     contrasto stava fra 1,9 e 2,4 a 1 sul primo percentile, sotto il 3 a 1 del
+     testo grande. Qui la foto è un po' scurita e il velo è più denso dalla
+     parte del titolo. Vale solo per questa pagina: le altre foto dell'hero non
+     ne hanno bisogno.
+     `:global` perché il `<section>` appartiene a `Hero` e porta solo il suo
+     identificatore di scope, non quello della pagina: un selettore scoped qui
+     non lo raggiunge (verificato: la prima versione non cambiava un pixel). */
+  :global(section.hero.hd__hero .hero__img) {
+    filter: brightness(0.92);
+  }
+  :global(section.hero.hd__hero.hero--scrim)::after {
+    background:
+      linear-gradient(to top, rgb(0 0 0 / 50%) 0%, rgb(0 0 0 / 0%) 65%),
+      linear-gradient(to right, rgb(0 0 0 / 30%) 0%, rgb(0 0 0 / 0%) 65%);
+  }
+  /* Sul telefono l'hero è basso e il titolo sta a metà altezza, non in fondo:
+     il velo va lungo tutta la foto. */
+  @media (max-width: 768px) {
+    :global(section.hero.hd__hero.hero--scrim)::after {
+      background: linear-gradient(to top, rgb(0 0 0 / 62%) 0%, rgb(0 0 0 / 34%) 100%);
+    }
+  }
+
+  .hd__duePer {
+    display: grid;
+    gap: var(--s-12);
+    align-items: center;
+  }
+  @media (min-width: 992px) {
+    .hd__duePer {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-20);
+    }
+  }
+
+  .hd__fotoStore {
+    width: 100%;
+    /* la foto è verticale: tagliata a 4:5 non diventa un muro di 840px */
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .hd__testo {
+    display: grid;
+    gap: var(--s-6);
+    align-content: start;
+  }
+  /* Il titolo sta nella colonna destra: la riga del titoletto, che di norma
+     sfonda fino al bordo della finestra, attraverserebbe la foto (voce B05).
+     Contenuta solo da 992px, dove le due colonne esistono davvero. */
+  @media (min-width: 992px) {
+    .hd__testo {
+      --titoletto-rule-width: 100%;
+    }
+  }
+  .hd__paragrafo {
+    margin: 0;
+    font-size: var(--t-base);
+    line-height: var(--t-base-lh);
+  }
+  .hd__azioni {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    margin: var(--s-4) 0 0;
+  }
+
+  .hd__galleriaTitolo {
+    margin-bottom: var(--s-15);
+  }
+</style>

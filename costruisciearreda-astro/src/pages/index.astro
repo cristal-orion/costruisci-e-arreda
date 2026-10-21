@@ -3,7 +3,7 @@
  * Homepage.
  *
  * Struttura, dai blocchi estratti (`src/content/pagine/home.json`):
- *   **hero con i 4 rami del gruppo** · card dei 4 servizi numerati · titolo
+ *   **hero con i 5 rami del gruppo** · card dei servizi numerati (4 + Home Design) · titolo
  *   "Realizziamo il progetto dei tuoi sogni" con il disegno tecnico ·
  *   "La nostra storia" · "Dal progetto alla realizzazione" · highlights con i
  *   4 contatori · "Le nostre realizzazioni" · i 3 riquadri di tassonomia ·
@@ -41,6 +41,7 @@ import Counter from '../components/Counter.astro';
 import Button from '../components/Button.astro';
 import Card from '../components/Card.astro';
 import { estratto, immagine, rotta } from '../lib/immagini';
+import { rami } from '../data/rami';
 import { tutteLeSediLd } from '../lib/seo';
 
 const pagina = await getEntry('pagine', 'home');
@@ -94,6 +95,25 @@ const posts = (await getCollection('posts'))
   .sort((a, b) => (b.data ?? '').localeCompare(a.data ?? ''))
   .slice(0, 3);
 
+/**
+ * La fascia numerata: i quattro servizi estratti dall'originale, più Home
+ * Design come quinta voce (**modifica voluta, B14**). La voce non sta in
+ * `home.json` perché quel file lo riscrive l'estrattore; il nome e la rotta si
+ * leggono da `rami.ts`, dove sono dichiarati una volta.
+ */
+const homeDesign = rami.find((r) => r.slug === 'home-design');
+const serviziEstratti = primo('servizinumerati')?.voci ?? [];
+const serviziNumerati = homeDesign
+  ? [
+      ...serviziEstratti,
+      {
+        numero: String(serviziEstratti.length + 1).padStart(2, '0'),
+        titolo: homeDesign.nome,
+        href: homeDesign.href,
+      },
+    ]
+  : serviziEstratti;
+
 const descrizione =
   pagina.data.metaDescription ??
   'Edilizia, ceramiche, arredo bagno e ferramenta a Napoli e Nola: showroom, punto ' +
@@ -111,7 +131,7 @@ const titoloPagina = 'Costruisci e Arreda: edilizia, ceramiche e bagno a Napoli'
 >
   <HeroRami />
 
-  {primo('servizinumerati') && <ServiziNumerati voci={primo('servizinumerati')!.voci} />}
+  {serviziNumerati.length > 0 && <ServiziNumerati voci={serviziNumerati} />}
 
   <!-- Realizziamo il progetto dei tuoi sogni -->
   <section class="section home__claim">

@@ -1,8 +1,9 @@
 /**
  * I rami del gruppo — fonte unica.
  *
- * Costruisci & Arreda non è un negozio: è un gruppo con quattro attività
- * distinte, che sul sito originale erano raggiungibili **solo** dal sottomenu
+ * Costruisci & Arreda non è un negozio: è un gruppo con più attività distinte
+ * (quattro sul sito originale, cinque da B14 con Home Design), che sul sito
+ * originale erano raggiungibili **solo** dal sottomenu
  * "Store" o da tre loghi SVG a metà homepage. Chi arrivava sulla home non
  * capiva quali fossero i rami né dove entrare.
  *
@@ -135,6 +136,34 @@ export const rami: Ramo[] = [
     // Non è un punto vendita: mostrare l'indirizzo degli uffici sarebbe fuorviante.
     tipoSede: null,
     dettaglio: 'Otto servizi, dal rilievo alle certificazioni',
+  },
+  /*
+   * Quinto ramo, **voce B14**: la sezione di arredo e complementi di design,
+   * che sul sito non c'era. Le foto vengono dallo store, non sono generate.
+   *
+   * Il testo della descrizione è scritto da ciò che le foto mostrano (ceramiche
+   * decorative, lampade, orologi, quadri, campionario di carte da parati): è da
+   * far rivedere al proprietario, come le meta description.
+   *
+   * `tipoSede: null` e nessun `dettaglio`: **l'indirizzo di Home Design non è
+   * noto** e non va inventato. Senza, la campata non ha la riga "dove" e la
+   * pagina non dichiara nessuna sede nei dati strutturati. Quando c'è, si
+   * aggiunge la sede in `site.ts` (con il suo `tipo`) e qui basta `tipoSede`.
+   * La rotta è nuova e pulita: non è una `type_stores` ereditata, quindi non
+   * deve rispettare la forma delle altre quattro.
+   */
+  {
+    slug: 'home-design',
+    nome: 'Home Design',
+    descrizione:
+      'Complementi d’arredo, ceramiche decorative, lampade, orologi, quadri e ' +
+      'carte da parati per dare carattere alla casa.',
+    href: '/home-design/',
+    foto: '2026/10/hero-home-design.jpg',
+    fotoAlt:
+      'Interno dello store Home Design: una giraffa nera a grandezza naturale, sedute a forma di coniglio e un lampadario dorato.',
+    fuoco: '50% 42%',
+    tipoSede: null,
   },
 ];
 

@@ -79,7 +79,12 @@ const controlla = () => {
       // le immagini molto sotto la piega con loading=lazy non sono un errore
       const r = img.getBoundingClientRect();
       const fuori = r.top > window.innerHeight * 3;
-      if (!fuori) rotte.push((img.currentSrc || img.src || '(senza src)').split('/').pop());
+      /* Stessa cosa di lato: una fila che scorre in orizzontale (la galleria di
+         Home Design sul telefono) ha le ultime foto oltre il bordo, e il
+         lazy-load non le ha ancora avviate. Si distingue da un'immagine rotta
+         perché quella è `complete` con larghezza 0; questa non è partita. */
+      const fuoriDiLato = !img.complete && r.left >= window.innerWidth;
+      if (!fuori && !fuoriDiLato) rotte.push((img.currentSrc || img.src || '(senza src)').split('/').pop());
     }
     if (img.getAttribute('alt') === null) {
       problemi.push(`immagine senza attributo alt: ${(img.getAttribute('src') || '').split('/').pop()}`);

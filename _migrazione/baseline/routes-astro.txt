@@ -12,6 +12,7 @@
 /design-system/
 /grande-novita-una-nuova-area-formativa-nel-nostro-store-di-via-argine/
 /gres-costruisciearreda-consigli/
+/home-design/
 /il-nostro-team/
 /i-nostri-lavori/
 /la-nostra-storia/

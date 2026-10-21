@@ -1,6 +1,7 @@
 ---
 /**
- * La card bianca sotto l'hero della homepage: 4 servizi numerati.
+ * La card bianca sotto l'hero della homepage: i servizi numerati (quattro
+ * nell'originale, cinque da B14 con Home Design).
  *
  * Misurato sull'originale (`.listProducts`): 970×150px, sovrapposta al bordo
  * inferiore dell'hero, numero 16px nel rosso del brand, titolo 16px peso 700
@@ -32,7 +33,7 @@ const risolte = voci
   risolte.length > 0 && (
     <div class:list={['sn', extraClass]}>
       <div class="container">
-        <ul class="sn__lista">
+        <ul class="sn__lista" style={`--n: ${risolte.length}`} data-n={risolte.length}>
           {risolte.map((v) => (
             <li class="sn__voce">
               <a class="sn__link" href={v.url}>
@@ -67,10 +68,24 @@ const risolte = voci
   }
   @media (min-width: 769px) {
     .sn__lista {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr));
       /* la riga di separazione fra le voci è il fondo che traspare dal gap */
       background: var(--c-border);
       box-shadow: 0 8px 30px rgb(0 0 0 / 8%);
+    }
+  }
+  /* Cinque voci (con Home Design, voce B14) in cinque colonne non stanno sotto
+     i 992px: "CERTIFICAZIONI" sfonda la cella. Lì passano a sei colonne, tre
+     sopra e due sotto, così nessuna cella resta vuota. */
+  @media (min-width: 769px) and (max-width: 991px) {
+    .sn__lista[data-n='5'] {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+    .sn__lista[data-n='5'] > .sn__voce {
+      grid-column: span 2;
+    }
+    .sn__lista[data-n='5'] > .sn__voce:nth-child(n + 4) {
+      grid-column: span 3;
     }
   }
 

@@ -12,6 +12,21 @@
 > a Google e Meta, prova in `_migrazione/prova-consenso.js`. **Aperto, fuori dal
 > repo:** la policy Iubenda non dichiara GA4 né il Meta Pixel, quindi Accetta
 > non accende niente finché non si aggiungono nel pannello Iubenda.
+> **Poi B14, 2026-10-21 — Home Design:** quinto ramo in `rami.ts`, quinta
+> campata nell'hero (cinque colonne da 1200px, tre+due sul tablet), "05" nella
+> fascia dei servizi numerati, landing `/home-design/` (`src/pages/home-design.astro`,
+> 13 foto in `uploads/2026/10/`). **Aperto, da chiedere:** nel sito esiste già lo
+> **Showroom Home** (`/store/via-martiri-della-liberta-nola-na/`, Via Martiri
+> della Libertà 11, 35 foto, indicizzato), con ogni probabilità lo stesso negozio:
+> la landing non dichiara nessun indirizzo e le due pagine non sono collegate.
+> I testi di Home Design li ho scritti io dalle foto, vanno riletti. Voce B14.
+> **B15:** la galleria della landing è una parete di lamelle
+> (`GalleriaLamelle.astro`, da 992px; fila da scorrere sotto), non più la
+> masonry di `Gallery`, che resta per gli store. `deploy/csp.conf` è generato e
+> ignorato da git: dopo aver aggiunto uno script in linea va rigenerato
+> (`node deploy/genera-csp.js dist deploy/csp.conf`) prima di `prova-csp.js`.
+> `misura-contrasto-parete.js` ora nasconde il banner dei cookie (prima misurava
+> il bianco del banner: 1.00:1 ovunque).
 > **Sessione precedente: 2026-09-14.** **Fase A completa** (52 rotte, tutti i 56 URL
 > indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B in corso**: la
 > homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la

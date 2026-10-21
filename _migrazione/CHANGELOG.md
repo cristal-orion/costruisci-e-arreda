@@ -2583,3 +2583,196 @@ Meta Pixel `421449629929560`. Nessuna condizione di consenso.
   aggiuntivo richiesto: `ad_storage`". Un tag HTML personalizzato ignora il
   Consent Mode: chi accetta solo la misurazione caricherebbe anche il pixel.
   E va corretto l'ID nel suo `<noscript>`.
+
+
+## B14 — Home Design: il quinto ramo, nell'hero, nella fascia e in una landing (2026-10-21)
+
+Richiesta del proprietario: aggiungere la sezione **Home Design** (arredo e
+complementi di design, "ceramiche e arreda") nell'hero della homepage e nella
+fascia dei servizi numerati, e costruire la pagina dello store **solo come
+landing**. Le foto vengono da `Costruisci_e_Arreda_foto/` (36 file, 343 MB,
+non tracciati).
+
+### Prima cosa da sapere — esiste già uno "Showroom Home"
+
+Scritto **dopo** aver chiesto al proprietario dell'indirizzo, e quindi dopo che la
+risposta ("nessun indirizzo per ora") era stata data: nel sito c'è già
+`/store/via-martiri-della-liberta-nola-na/`, "Showroom Home a Napoli:
+illuminazione e parati", Via Martiri della Libertà 11, con testo "oggettistica,
+illuminazione, parati e tendaggi" e **35 foto**, indicizzata. Le foto di Home
+Design mostrano lampade, carte da parati e oggetti: è con ogni probabilità lo
+stesso negozio. **Non è stato deciso nulla in merito**: la landing non dichiara
+nessun indirizzo, e le due pagine non sono collegate fra loro. Va chiesto se sono
+la stessa cosa (indirizzo da mostrare, e che fare della pagina vecchia: tenerla,
+fonderla, un 301) — due pagine sulle stesse ricerche competono.
+
+### Fatto
+
+- **`data/rami.ts`**: quinto ramo `home-design`, rotta nuova e pulita
+  `/home-design/` (non è una `type_stores` ereditata). `tipoSede: null`, nessun
+  `dettaglio`: l'indirizzo non è dichiarato e non si inventa. Menu "Store",
+  footer, 404 e `llms.txt` lo prendono da soli, perché leggono `rami`.
+- **Foto**: 13 scelte (solo scatti Sony, senza marchi leggibili — fuori Nike,
+  Chanel, Louis Vuitton — e senza le facciate, perché non si sa di quale sede
+  siano), ridotte a 2000–2400px sul lato lungo, convertite in sRGB (tre erano
+  Adobe RGB) e senza metadati. **3,6 MB in tutto**, in
+  `wp-content/uploads/2026/10/`, registrate in `lib/immagini-locali.ts`. I
+  quattro render e i file con tag "Picasa" sono rimasti fuori: la provenienza
+  non è chiara. `foto_06` e `foto_36` sono lo stesso file.
+- **`HeroRami.astro`**: la parete passa a cinque campate.
+  - da 1200px: cinque colonne (`--n` dal numero delle voci);
+  - 769–1199px: sei colonne, **tre campate sopra e due sotto** (a due colonne
+    l'ultima restava sola a 3:1, la feritoia che B03 aveva misurato come
+    il caso peggiore); le proporzioni restano fra 0,85 e 1,6;
+  - padding laterale 24px da 769px (con 32 la descrizione di Edilizia andava a
+    sei righe a 769px);
+  - corpo del nome: `clamp(1rem, 1.9vw, 1.625rem)` da 769px e
+    `clamp(1rem, 1.3vw, 1.5rem)` da 1200px: "RISTRUTTURAZIONE" non sfonda (la
+    colonna da 288px a 1440 lascia 240px al testo);
+  - la riga "dove" è sempre nel markup: vuota per Home Design, tiene il posto
+    così il suo titolo non scende di una riga;
+  - riserva delle righe della descrizione **rimisurata a 14 larghezze**: 5 da
+    1200 a 1599px, 4 da 1600px, 4 per la fila alta a 769–1099px. Resta uno
+    scalino da una riga solo per Edilizia a 1200–1250px;
+  - `--velo-base` da 210 a **230px** (769–1199) e da 320 a **340px** (da 1200):
+    l'insegna sale fino a 218 e 330px, oltre il punto di velatura piena;
+  - la riga di apertura conta i rami (`cinque rami e un solo interlocutore`)
+    invece di dirli quattro.
+- **`ServiziNumerati.astro`**: la quinta voce, "05 Home Design", aggiunta in
+  `index.astro` (non in `home.json`, che l'estrattore riscrive); nome e rotta da
+  `rami.ts`. Cinque colonne da 992px, tre sopra e due sotto fra 769 e 991.
+- **`404.astro`**: non dice più "quattro rami"; l'ultima cella a tutta larghezza
+  quando i rami sono dispari (altrimenti la cella vuota mostrava il grigio delle
+  fughe).
+- **`pages/home-design.astro`**: la landing. Hero con le teste di moro, una
+  presentazione con la foto dello store e due bottoni (Contattaci, Consulenza
+  finiture), galleria di 11 foto con lightbox. **Nessun indirizzo, orario,
+  marchio o storia**; nessun secondo form (il blocco "Realizza con noi il tuo
+  progetto" è già su ogni pagina). Indicizzabile: è la pagina del ramo, linkata
+  da hero, menu e footer. Titolo di 55 caratteri col nome del sito. Rotta
+  statica, quindi non va in `pagineOneOff`.
+  - **Velatura dell'hero propria** (foto scurita al 92% e velo più denso dalla
+    parte del titolo): il titolo bianco cadeva sulla pigna gialla, con il
+    primo percentile del contrasto a **1,9–2,4:1**. Ora 3,8–5,3:1 sul titolo
+    (soglia 3) e 3,6→5,1:1 o più sul titoletto "Store" (soglia 4,5). Gli
+    stili sono `:global(section.hero.hd__hero…)`: il `<section>` appartiene a
+    `Hero` e porta solo il suo identificatore di scope, e un selettore scoped
+    nella pagina **non lo raggiunge** — la prima versione non cambiava un pixel,
+    e lo mostravano misure identiche prima e dopo.
+
+### Strumenti
+
+- **`misura-contrasto-parete.js` non era più affidabile da B13**: il banner dei
+  cookie, bianco e fisso in basso, finisce dentro il ritaglio e il fondo
+  misurato diventa bianco: 96 misure a **1.00:1**. Ora nasconde
+  `#iubenda-cs-banner`. Senza questa correzione lo script bocciava tutto,
+  qualunque fosse la parete.
+- La cache di Playwright (`~/.cache/ms-playwright`) non c'era più:
+  `npx playwright install chromium` dentro `_migrazione/` (114,7 MiB).
+- `baseline/routes-astro.txt`: aggiunta `/home-design/` (ora 53 rotte; il
+  build ne ha 54 con la 404).
+
+### Verifica
+
+| prova | esito |
+|---|---|
+| build | 54 pagine, `/home-design/` in sitemap |
+| `check-build.js` | 54 rotte × 3 viewport, nessun problema |
+| `misura-contrasto-parete.js` (216 misure, banner nascosto) | **PASSA**: a riposo margine **+2,14**, puntata **+1,06**, 0,0% di area sotto soglia (prima di B14: +2,20 e +1,21) |
+| `prova-csp.js` | 54 rotte, nessuna violazione |
+| peso reale (`misura-peso.js`) | homepage **0,33 MB · 20 richieste**; landing **0,59 MB · 18** |
+| colonne dell'hero: nome più lungo fuori dalla campata | mai, a 14 larghezze |
+
+**Non eseguito:** `fingerprint.py diff` (ogni pagina cambia per menu e footer,
+e le differenze sono volute), `prova-deploy.js` contro il container (`deploy/`
+non è stato toccato), la baseline visiva (le `shots-astro` non sono tracciate).
+
+### Aperto
+
+- **Lo Showroom Home esiste già** (vedi sopra): indirizzo, duplicazione, 301.
+- **I testi di Home Design sono miei**, scritti da ciò che le foto mostrano
+  (descrizione della campata, presentazione della landing, meta description):
+  vanno riletti dal proprietario, come le altre meta description. Gli `alt` sono
+  scritti guardando le foto.
+- La **riga "dove"** della campata e i dati strutturati della sede mancano
+  finché non c'è un indirizzo: `tipoSede` in `rami.ts` più la sede in `site.ts`.
+- Home Design è **l'ultimo** dei cinque, come nella fascia ("05"): l'ordine è
+  quello dell'array `rami`.
+
+
+## B15 — La galleria di Home Design diventa una parete di lamelle (2026-10-21)
+
+Richiesta del proprietario dopo aver visto B14: la galleria (masonry a tre
+colonne, la stessa degli store) doveva essere "più interattiva e particolare",
+per una sezione più creativa. Sostituita solo in `/home-design/`: `Gallery.astro`
+resta com'è e continua a servire gli store e le realizzazioni.
+
+### Cosa è
+
+`src/components/GalleriaLamelle.astro`, zero librerie. Le 11 foto stanno in piedi
+una accanto all'altra, come i listelli di legno dello store e come le campate
+dell'hero, con fughe da 1px su fondo scuro (`section--dark`).
+
+- **Da 992px, una parete.** Una sola lamella è aperta (482px a 1440), le altre
+  sono strette (80px), scurite e senza colore, con il nome scritto in verticale
+  come sul dorso di un libro. Si apre al passaggio del mouse (con 90ms di
+  attesa, per non aprirle tutte attraversandola di corsa), al focus della
+  tastiera o al tocco; ridà il colore e mostra nome e "Ingrandisci", con la riga
+  rossa sotto il nome — il rosso che vuol dire "questa qui", come nell'hero. Un
+  clic sulla lamella aperta ingrandisce la foto; sul tablet il primo tocco apre,
+  il secondo ingrandisce. Frecce, Home e End spostano il fuoco fra le lamelle.
+- **Sotto 992px, una fila da scorrere** con `scroll-snap`, la didascalia sempre
+  visibile e la fila che sfonda ai bordi della finestra.
+- **La foto ha larghezza fissa**, pari a quella della lamella aperta (`cqw`), e
+  sta centrata: aprendo la lamella non si ingrandisce, **si scopre**. Con
+  `object-fit: cover` su una larghezza che cambia, la foto cambiava scala a ogni
+  fotogramma. La transizione è del solo `flex-grow`.
+- **Ingresso**: le lamelle salgono una dopo l'altra quando la galleria entra
+  nella finestra; solo con movimento non ridotto.
+- Lightbox `<dialog>` come quello di `Gallery`, **copiato** e non condiviso, per
+  non toccare gli store: se serve in un terzo posto va estratto in un componente.
+- Ogni foto ha un `nome` breve e un `fuoco` verticale (dove sta il soggetto) in
+  `home-design.astro`; i nomi sono descrizioni di ciò che si vede.
+
+### Difetti trovati provandola in un browser
+
+- **8px di fondo in vista sopra tutte le lamelle tranne la prima**: `base.css` dà
+  un margine sopra ogni `<li>` dal secondo in poi (la 404 azzera lo stesso
+  margine). Misurato: `li` di 632px contro 640.
+- **Chiudendo il lightbox con il mouse fermo, si riapriva la lamella sotto il
+  puntatore** e batteva la foto appena vista: il browser dichiara il mouse
+  "entrato" appena il dialogo sparisce. Ora la lamella si segue di nuovo solo
+  quando il mouse si muove davvero (`movementX/Y` diversi da 0).
+- **Il nome verticale e quello orizzontale si sovrapponevano** per un attimo
+  durante la chiusura: il verticale riappare a lamella chiusa.
+- **Contrasto del numero**: sulle foto chiare il bianco del numero stava a 2,2:1
+  anche con un velo in alto. Ora ha una sua etichetta scura (74%).
+- **Il lightbox non aveva l'hash nella CSP**: `deploy/csp.conf` è generato dal
+  build (nel Dockerfile ci pensa `genera-csp.js`) e quello locale era vecchio;
+  `prova-csp.js` segnalava 1 violazione. Rigenerato: nessuna. Il file è in
+  `.gitignore`, quindi niente da committare.
+- **Sul telefono le foto oltre la quarta restavano `lazy`**, e scorrendo si
+  sarebbero visti riquadri vuoti. Quando la galleria entra in vista si caricano
+  tutte; chi non ci arriva non le scarica (6/11 prima, 11/11 dopo).
+
+### Strumenti
+
+- `check-build.js` segnalava 5 immagini "non caricate" nella fila: sono lazy e
+  fuori dallo schermo **di lato**, come l'esenzione che già c'era per quelle
+  molto in basso. Ora le esenta se `!img.complete && left >= innerWidth`: un'immagine
+  rotta è `complete` con larghezza 0 e viene segnalata comunque.
+
+### Verifica
+
+| prova | esito |
+|---|---|
+| `check-build.js` | 54 rotte × 3 viewport, nessun problema |
+| `prova-csp.js` (dopo aver rigenerato `csp.conf`) | 54 rotte, nessuna violazione |
+| contrasto di numero, nome verticale, nome e "Ingrandisci" (1% dei pixel, a 6 stati della parete e 8 posizioni della fila) | **tutti sopra 4,5:1**; il caso peggiore è il nome nella fila a 768px, **5,90:1** (+1,40) |
+| movimento ridotto | transizione 0s, lamelle visibili subito, la parete si apre comunque |
+| tocco sul telefono, tastiera, lightbox, Esc, ritorno del fuoco | provati in un browser, nessun errore JavaScript |
+| peso `/home-design/` | 0,72 MB · 18 richieste a 1440 (prima 0,59): ora le 11 foto sono tutte in vista |
+
+**Non eseguito:** `prova-deploy.js` contro il container (`deploy/` non toccato).
+Senza JavaScript la prima lamella è aperta e ogni lamella è un link alla foto
+grande: guardato in uno scatto, non misurato.
