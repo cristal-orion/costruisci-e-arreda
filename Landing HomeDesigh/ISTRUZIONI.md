@@ -19,17 +19,35 @@ nessuna parte.
 
 ## 1. Collegare il foglio (circa 5 minuti, una volta sola)
 
+### Come è collegato oggi (2026-11-12)
+
+- **Il foglio** "CANALE DI ARRIVO CLIENTI - Ceramiche & Home Design" è del
+  cliente. Two Bee ha il permesso di **modifica**.
+- **Lo script** è un progetto Apps Script **a parte**, "Registrazione Home
+  Design", nell'account **Two Bee** che ha il permesso di modifica. Non sta dentro il foglio:
+  un editor non può pubblicare uno script che sta in un file di un altro
+  proprietario (Google risponde "Non disponi dell'autorizzazione necessaria").
+- Il progetto sa quale foglio aprire dalla **proprietà dello script
+  `ID_FOGLIO`** (Impostazioni progetto → Proprietà dello script). L'ID non è nel
+  codice, perché il codice sta in un repository pubblico.
+- L'app web è pubblicata con **Esegui come: Me** e **Chi ha accesso: Chiunque**.
+  Il suo indirizzo `/exec` è in `costruisciearreda-astro/src/data/registrazione.ts`.
+- **Se l'account twobee.it perde il permesso di modifica sul foglio, le
+  registrazioni si fermano.** Lo script scrive a nome di chi l'ha pubblicato.
+
+### Rifarlo da capo (se servisse)
+
 **Le schede sono già impostate nello script**, per numero (`gid`), così
 reggono anche se vengono rinominate. Se una delle due viene cancellata, lo
 script dà errore invece di scrivere altrove.
 
-L'indirizzo del foglio **non** è scritto nello script, di proposito: questo
-codice sta in un repository pubblico. Non serve, perché lo script si crea
-dal foglio stesso (punto 2) e il foglio lo trova da solo.
-
 L'account che fa questi passi deve poter **modificare** il foglio.
 
-1. Apri il foglio "CANALE DI ARRIVO CLIENTI - Ceramiche & Home Design".
+1. Se sei il **proprietario** del foglio: aprilo e vai al punto 2. Se sei un
+   **editor**: crea invece un progetto nuovo su `script.google.com` → **Nuovo
+   progetto**, e in **Impostazioni progetto → Proprietà dello script** aggiungi
+   `ID_FOGLIO` = la parte dell'indirizzo del foglio fra `/d/` e `/edit`. Poi
+   salta al punto 3.
 2. Menu **Estensioni → Apps Script**. Si apre l'editor in una nuova scheda.
 3. Cancella tutto quello che c'è nel file `Codice.gs` e incolla il contenuto di
    **`google-apps-script/Codice.gs`** (in questa cartella).
@@ -48,7 +66,9 @@ L'account che fa questi passi deve poter **modificare** il foglio.
 6. **Pubblica:** in alto a destra **Esegui il deployment → Nuovo deployment**.
    - Ingranaggio accanto a "Seleziona tipo" → **App web**;
    - Descrizione: `Registrazione Home Design`;
-   - **Esegui come: Me**;
+   - **Esegui come: Me**. Non "Utente che accede all'applicazione web": ogni
+     cliente dovrebbe accedere con Google e autorizzare lo script. Scegli "Me"
+     **prima** di "Chi ha accesso", altrimenti la voce "Chiunque" non compare;
    - **Chi ha accesso: Chiunque** ← proprio "Chiunque", **non** "Chiunque con
      account Google". Con l'altra scelta i clienti senza Google, o non
      collegati, vedrebbero un errore;

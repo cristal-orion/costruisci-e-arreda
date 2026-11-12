@@ -3036,3 +3036,23 @@ schede: queste due e le due "Cartaceo".
   posto i recapiti; `check-build.js` 55 × 3 pulito; `prova-csp.js` nessuna
   violazione. **Docker non provato in locale** (l'utente non è nel gruppo
   `docker`): la prova del server va fatta contro l'indirizzo pubblicato.
+
+### 2026-11-12 — il collegamento al foglio vero
+
+- Lo script dentro il foglio del cliente **non si poteva pubblicare**: Two Bee
+  è editor, il proprietario del foglio è il cliente, e "Nuovo deployment"
+  rispondeva subito "Non disponi dell'autorizzazione necessaria" (letto nella
+  panoramica del progetto: Proprietario = il cliente, Il tuo ruolo = Editor).
+  Far pubblicare il cliente era escluso.
+- Soluzione: progetto Apps Script **a parte** nell'account Two Bee, con la
+  **proprietà dello script `ID_FOGLIO`**. `Codice.gs` legge l'ID in quest'ordine:
+  `IMPOSTAZIONI.ID_FOGLIO` (vuoto nel repo), proprietà dello script, foglio
+  contenitore. Codice identico al repo (verificato con SHA-256 nell'editor).
+  `prova-codice.mjs` 57 (+2: l'ID viene dalla proprietà, senza spazi; senza
+  proprietà si usa il foglio contenitore).
+- Pubblicato con Esegui come: Me, Chi ha accesso: Chiunque. Il `doGet`
+  risponde `ok` con le due schede. L'URL `/exec` è in `data/registrazione.ts`.
+  La CSP lo autorizza da sola (`script.google.com`, `script.googleusercontent.com`).
+- **Dipendenza da ricordare:** lo script scrive come l'account Two Bee. Se
+  quell'account perde il permesso di modifica sul foglio, le registrazioni si
+  fermano.

@@ -36,9 +36,13 @@
 var IMPOSTAZIONI = {
   /**
    * L'ID del file (la parte dell'indirizzo fra /d/ e /edit). **Lasciato vuoto
-   * di proposito:** lo script si crea dal foglio (Estensioni → Apps Script) e
-   * il file lo trova da solo. Questo codice sta in un repository pubblico:
-   * l'ID qui dentro renderebbe raggiungibile il foglio dei clienti.
+   * di proposito:** questo codice sta in un repository pubblico, e l'ID qui
+   * dentro renderebbe raggiungibile il foglio dei clienti. Il file si trova
+   * così, nell'ordine:
+   *  1. la **proprietà dello script** `ID_FOGLIO` (Impostazioni progetto →
+   *     Proprietà dello script): serve quando il progetto è **a parte**, non
+   *     creato dal foglio, ed è il caso di Home Design (voce B16);
+   *  2. il foglio da cui è stato creato lo script (Estensioni → Apps Script).
    */
   ID_FOGLIO: '',
   /**
@@ -225,12 +229,18 @@ function controlla_(d) {
  * Il foglio e le sue colonne.
  * ------------------------------------------------------------------------- */
 
+/** L'ID del foglio: dalle impostazioni, poi dalla proprietà dello script; '' se nessuna delle due. */
+function idFoglio_() {
+  if (IMPOSTAZIONI.ID_FOGLIO) return IMPOSTAZIONI.ID_FOGLIO;
+  if (typeof PropertiesService === 'undefined') return '';
+  return String(PropertiesService.getScriptProperties().getProperty('ID_FOGLIO') || '').trim();
+}
+
 /** La scheda per nome di provenienza ('sito' o 'negozio'), cercata per gid. */
 function scheda_(nome) {
-  var file = IMPOSTAZIONI.ID_FOGLIO
-    ? SpreadsheetApp.openById(IMPOSTAZIONI.ID_FOGLIO)
-    : SpreadsheetApp.getActiveSpreadsheet();
-  if (!file) throw new Error('Foglio non trovato: crea lo script dal foglio (Estensioni → Apps Script) o imposta ID_FOGLIO.');
+  var id = idFoglio_();
+  var file = id ? SpreadsheetApp.openById(id) : SpreadsheetApp.getActiveSpreadsheet();
+  if (!file) throw new Error('Foglio non trovato: imposta la proprietà dello script ID_FOGLIO, o crea lo script dal foglio (Estensioni → Apps Script).');
   if (!Object.prototype.hasOwnProperty.call(IMPOSTAZIONI.SCHEDE, nome)) throw new Error('Scheda sconosciuta: "' + nome + '".');
   var gid = Number(IMPOSTAZIONI.SCHEDE[nome]);
   var schede = file.getSheets();

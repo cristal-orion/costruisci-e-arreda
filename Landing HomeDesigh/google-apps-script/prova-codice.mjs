@@ -98,16 +98,19 @@ function nuovoFoglio(righe = [], gid = 659565949) {
   };
 }
 
-function ambiente(foglio, prima = []) {
+function ambiente(foglio, prima = [], proprieta = {}) {
   const cache = new Map();
+  const aperti = [];
   const ctx = {
     console: { log() {}, error() {} },
     SpreadsheetApp: {
       // `prima`: le schede che nel file vengono prima di quella giusta.
       getActiveSpreadsheet: () => ({ getSheets: () => [...prima, foglio], getSheetByName: () => foglio }),
-      openById: () => ({ getSheets: () => [...prima, foglio], getSheetByName: () => foglio }),
+      openById: (id) => (aperti.push(id), { getSheets: () => [...prima, foglio], getSheetByName: () => foglio }),
       flush() {},
     },
+    PropertiesService: { getScriptProperties: () => ({ getProperty: (k) => proprieta[k] ?? null }) },
+    aperti,
     LockService: { getScriptLock: () => ({ tryLock: () => true, releaseLock() {} }) },
     CacheService: { getScriptCache: () => ({ get: (k) => cache.get(k) ?? null, put: (k, v) => cache.set(k, v) }) },
     ContentService: {
@@ -327,6 +330,16 @@ const intatte = (t) => t.cartaceo.getLastRow() === 1 && t.cartaceo.getLastColumn
   const nomiGs = Object.keys(vm.runInContext('IMPOSTAZIONI.SCHEDE', ctx)).sort().join(',');
   verifica(nomiSito === nomiGs && nomiGs === 'negozio,sito', `le schede del sito (${nomiSito}) sono quelle di Codice.gs (${nomiGs})`);
   verifica(vm.runInContext('IMPOSTAZIONI.ID_FOGLIO', ctx) === '', 'ID_FOGLIO vuoto: il repository è pubblico');
+}
+
+console.log('\nProgetto a parte (non creato dal foglio): il file viene dalla proprietà dello script');
+{
+  const ctx = ambiente(nuovoFoglio([], 659565949), [nuovoFoglio([], 1058875551)], { ID_FOGLIO: '  ID-DI-PROVA ' });
+  const r = invia(ctx, buono({ _id: 'p1' }));
+  verifica(r.ok && ctx.aperti.length > 0 && ctx.aperti.every((x) => x === 'ID-DI-PROVA'), 'apre il foglio con l\'ID della proprietà, senza spazi');
+  const ctx2 = ambiente(nuovoFoglio([], 659565949), [nuovoFoglio([], 1058875551)]);
+  invia(ctx2, buono({ _id: 'p2' }));
+  verifica(ctx2.aperti.length === 0, 'senza proprietà usa il foglio da cui è stato creato lo script');
 }
 
 console.log(falliti ? `\n${falliti} verifiche NON passate` : '\nTutte le verifiche passate');

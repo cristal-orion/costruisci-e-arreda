@@ -22,7 +22,11 @@
  */
 
 /** Indirizzo dell'app web di Apps Script: `https://script.google.com/macros/s/…/exec`. */
-export const ENDPOINT_REGISTRAZIONE = '';
+/* Progetto Apps Script "Registrazione Home Design", nell'account di Two Bee
+   (il foglio è del cliente: il progetto legge il file dalla proprietà dello
+   script ID_FOGLIO). Pubblicato il 2026-11-12. */
+export const ENDPOINT_REGISTRAZIONE =
+  'https://script.google.com/macros/s/AKfycbxfCOxxpY-SEYcl2nc_E7sqvhwua-r_dOS8B9U_ah-m64jjRmXkKX3043kW05lKus8/exec';
 
 export const endpointRegistrazione = (): string =>
   (import.meta.env.PUBLIC_REGISTRAZIONE_ENDPOINT ?? '').trim() || ENDPOINT_REGISTRAZIONE.trim();
