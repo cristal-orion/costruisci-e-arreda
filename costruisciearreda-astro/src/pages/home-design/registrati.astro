@@ -1,0 +1,282 @@
+---
+/**
+ * La pagina del QR di Home Design (voce B16).
+ *
+ * In negozio il commerciante mostra un QR che apre questa pagina; il cliente
+ * si registra dal suo telefono e la riga arriva nel Google Foglio. È pensata
+ * per quel momento: in piedi, con una mano sola, magari con poca rete. Quindi
+ * il form è subito sotto il nome, senza niente da scorrere prima, e i campi
+ * sono alti e grandi (vedi `Registrazione.astro`).
+ *
+ * Il QR porta qui con l'indirizzo pulito; per distinguere più QR (una cassa,
+ * una vetrina, una fiera) basta aggiungere `?fonte=…`, che finisce nella
+ * colonna "Fonte" del foglio al posto di `qr-negozio`.
+ *
+ * `noindex`: è uno strumento del negozio, non una pagina da trovare su Google.
+ */
+import '@fontsource-variable/epilogue/wght.css';
+import '../../styles/home-design.css';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Registrazione from '../../components/home-design/Registrazione.astro';
+import { fotoHD } from '../../data/home-design';
+import { FONTE, SCHEDA } from '../../data/registrazione';
+import { company } from '../../data/site';
+
+const F = fotoHD;
+const anno = new Date().getFullYear();
+---
+
+<BaseLayout
+  title="Registrati da Home Design"
+  description="Registrati da Home Design, il negozio di complementi d’arredo di Costruisci e Arreda: ti scriviamo quando arrivano pezzi nuovi."
+  nomeBreve="Registrati"
+  briciole={[{ nome: 'Home Design', url: '/home-design/' }]}
+  image={F.coniglioRosa.src}
+  imageAlt={F.coniglioRosa.alt}
+  noindex
+  bodyClass="hd"
+>
+  <div class="qr">
+    <div class="qr__foto">
+      <Image
+        src={F.coniglioRosa.src}
+        alt={F.coniglioRosa.alt}
+        widths={[480, 720, 960, 1280]}
+        sizes="(min-width: 900px) 45vw, 100vw"
+        format="webp"
+        quality={76}
+        loading="eager"
+        fetchpriority="high"
+        style="object-position: 50% 62%"
+      />
+    </div>
+
+    <div class="qr__colonna">
+      <h1 class="qr__nome"><span>Home</span> <span>Design</span></h1>
+      <p class="qr__benvenuto">
+        Benvenuto in negozio. Lasciaci i tuoi dati: ti scriviamo quando arrivano pezzi nuovi.
+      </p>
+
+      <div class="qr__scheda">
+        <Registrazione fonte={FONTE.negozio} scheda={SCHEDA.negozio} id="registrazione-negozio" />
+      </div>
+
+      {/* Sotto il form, non sopra: chi apre il QR è venuto per registrarsi, e
+          le foto (pigre) non rubano banda al form su una rete lenta. */}
+      <ul class="qr__fila" aria-label="Alcuni oggetti di Home Design">
+        {[F.testeDiMoro, F.aliOro, F.lampadaOro].map((f) => (
+          <li>
+            <Image
+              src={f.src}
+              alt={f.alt}
+              widths={[320, 480, 640]}
+              sizes="(min-width: 900px) 17vw, 33vw"
+              format="webp"
+              quality={74}
+              loading="lazy"
+              decoding="async"
+            />
+          </li>
+        ))}
+      </ul>
+
+      <p class="qr__scopri">
+        <a class="hd-link" href="/home-design/">Guarda la collezione <span aria-hidden="true">→</span></a>
+      </p>
+
+      <p class="qr__legale">
+        {company.legalName} · P.IVA {company.vat}
+        {' · '}<a href="/privacy-policy/">Privacy</a>
+        {' · '}<a href="/cookie-policy/">Cookie</a>
+        <br />© {anno} · Realizzato da{' '}
+        <a href={company.realizzatoDa.url} rel="noopener">{company.realizzatoDa.nome}</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .qr {
+    display: grid;
+    min-height: 100svh;
+  }
+  @media (min-width: 900px) {
+    .qr {
+      grid-template-columns: 45fr 55fr;
+    }
+  }
+
+  .qr__foto {
+    position: relative;
+    height: 30svh;
+    min-height: 200px;
+    overflow: hidden;
+    order: 2;
+  }
+  .qr__foto :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (min-width: 900px) {
+    .qr__foto {
+      order: 0;
+      position: sticky;
+      top: 0;
+      height: 100svh;
+    }
+  }
+
+  .qr__colonna {
+    display: grid;
+    align-content: start;
+    gap: 26px;
+    padding: 20px 16px 40px;
+  }
+  @media (min-width: 900px) {
+    .qr__colonna {
+      gap: 32px;
+      padding: 28px clamp(28px, 5vw, 80px) 40px;
+    }
+  }
+
+  /* Il nome su una riga, le due parole ai due estremi: lo stesso segno della
+     landing, dove stanno agli angoli opposti. */
+  .qr__nome {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.22em;
+    font-size: clamp(3rem, 12vw, 7.5rem);
+    line-height: 0.85;
+  }
+  @media (min-width: 900px) {
+    .qr__nome {
+      font-size: clamp(3.5rem, 6.6vw, 7.5rem);
+    }
+  }
+
+  .qr__benvenuto {
+    max-width: 34ch;
+    font-size: var(--hd-t-lead);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .qr__scheda {
+    padding: 28px 20px 24px;
+    color: var(--hd-navy);
+    background: var(--hd-rosa);
+  }
+  @media (min-width: 900px) {
+    .qr__scheda {
+      max-width: 560px;
+      padding: 36px 32px 32px;
+    }
+  }
+
+  /* All'apertura nome, benvenuto e scheda salgono uno dopo l'altro: è il
+     momento in cui il cliente ha appena inquadrato il QR. Senza animazioni
+     sono semplicemente lì. */
+  @media (prefers-reduced-motion: no-preference) {
+    .qr__nome,
+    .qr__benvenuto,
+    .qr__scheda {
+      animation: qr-sale 700ms var(--hd-ease) both;
+    }
+    .qr__benvenuto {
+      animation-delay: 90ms;
+    }
+    .qr__scheda {
+      animation-delay: 180ms;
+    }
+    .qr__foto :global(img) {
+      animation: qr-tela 1100ms var(--hd-ease) 120ms both;
+    }
+  }
+  @keyframes qr-tela {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+
+  .qr__fila {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  @media (min-width: 900px) {
+    /* All'apertura nome, benvenuto e scheda salgono uno dopo l'altro: è il
+     momento in cui il cliente ha appena inquadrato il QR. Senza animazioni
+     sono semplicemente lì. */
+  @media (prefers-reduced-motion: no-preference) {
+    .qr__nome,
+    .qr__benvenuto,
+    .qr__scheda {
+      animation: qr-sale 700ms var(--hd-ease) both;
+    }
+    .qr__benvenuto {
+      animation-delay: 90ms;
+    }
+    .qr__scheda {
+      animation-delay: 180ms;
+    }
+    .qr__foto :global(img) {
+      animation: qr-tela 1100ms var(--hd-ease) 120ms both;
+    }
+  }
+  @keyframes qr-tela {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+
+  .qr__fila {
+      max-width: 560px;
+    }
+  }
+  .qr__fila :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .qr__fila li {
+        animation: qr-sale linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 30%;
+      }
+    }
+  }
+  @keyframes qr-sale {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .qr__legale {
+    font-size: var(--hd-t-testo);
+    line-height: 1.6;
+    color: var(--hd-rosa-tenue);
+  }
+  .qr__legale a {
+    text-decoration: none;
+  }
+  .qr__legale a:hover {
+    text-decoration: underline;
+  }
+</style>

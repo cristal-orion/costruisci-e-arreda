@@ -1,0 +1,511 @@
+---
+/**
+ * Form di registrazione dei clienti di Home Design → Google Fogli (voce B16).
+ *
+ * Usato in due posti: la pagina del QR (`/home-design/registrati/`) e il fondo
+ * della landing. Cambiano la `fonte`, che finisce in una colonna del foglio, e
+ * la `scheda`, cioè in quale scheda del foglio va la riga.
+ *
+ * **Le cose che possono andare storte, e cosa fa il form:**
+ *  - *la rete del negozio è lenta o cade*: l'invio si interrompe dopo 20
+ *    secondi e il messaggio dice di riprovare. I dati scritti restano nei campi;
+ *  - *la risposta si perde ma la riga è stata scritta* (succede col timeout):
+ *    ogni compilazione porta un identificativo (`_id`), lo stesso a ogni nuovo
+ *    tentativo, e lo script nel foglio non scrive due volte lo stesso. Il
+ *    cliente può premere di nuovo senza creare doppioni;
+ *  - *doppio tocco sul bottone*: il bottone si disabilita durante l'invio;
+ *  - *dati sbagliati*: il browser controlla prima (campi obbligatori, email,
+ *    telefono), lo script nel foglio ricontrolla con le **stesse** regole
+ *    (`data/registrazione.ts`), così un "registrato" sul telefono vuol dire una
+ *    riga nel foglio;
+ *  - *un programma automatico*: campo trappola invisibile, come negli altri form;
+ *  - *niente JavaScript*: il form fa una POST normale e lo script risponde con
+ *    una pagina di conferma invece che con il JSON (`_modo`).
+ *
+ * **I consensi sono due e separati**, perché lo chiede la legge: la presa
+ * visione dell'informativa è obbligatoria per registrarsi, il consenso a
+ * ricevere email promozionali è facoltativo e parte non spuntato (art. 130 del
+ * Codice privacy, e il GDPR vuole un consenso libero: non può essere la
+ * condizione per registrarsi). Nel foglio sono due colonne: a chi ha detto "no"
+ * le newsletter non si mandano.
+ */
+import { company } from '../../data/site';
+import { EMAIL_VALIDA, TELEFONO_VALIDO, endpointRegistrazione, type Scheda } from '../../data/registrazione';
+
+interface Props {
+  /** Valore della colonna "Fonte" del foglio. */
+  fonte: string;
+  /** La scheda del foglio in cui va la riga: `SCHEDA.sito` o `SCHEDA.negozio`. */
+  scheda: Scheda;
+  /** `id` del form: due form nella stessa pagina non devono condividere gli id dei campi. */
+  id?: string;
+  /** Testo del bottone. */
+  invio?: string;
+  class?: string;
+}
+
+const { fonte, scheda, id = 'registrazione', invio = 'Registrati', class: extraClass }: Props = Astro.props;
+const endpoint = endpointRegistrazione();
+---
+
+{
+  endpoint ? (
+    <div class:list={['reg', extraClass]} data-reg>
+      <form
+        class="reg__form"
+        id={id}
+        action={endpoint}
+        method="post"
+        accept-charset="utf-8"
+        data-reg-form
+      >
+        <input type="hidden" name="fonte" value={fonte} data-reg-fonte />
+        <input type="hidden" name="_scheda" value={scheda} />
+        <input type="hidden" name="pagina" value="" data-reg-pagina />
+        <input type="hidden" name="_modo" value="pagina" data-reg-modo />
+        <input type="hidden" name="_id" value="" data-reg-idinvio />
+        {/* Campo trappola: i programmi lo compilano, le persone non lo vedono. */}
+        <div class="reg__trappola" aria-hidden="true">
+          <label for={`${id}-url`}>Non compilare questo campo</label>
+          <input id={`${id}-url`} type="text" name="_url" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="reg__griglia">
+          <div class="reg__campo">
+            <label for={`${id}-nome`}>Nome</label>
+            <input
+              id={`${id}-nome`}
+              name="nome"
+              type="text"
+              required
+              maxlength="80"
+              autocomplete="given-name"
+              autocapitalize="words"
+              enterkeyhint="next"
+            />
+          </div>
+          <div class="reg__campo">
+            <label for={`${id}-cognome`}>Cognome</label>
+            <input
+              id={`${id}-cognome`}
+              name="cognome"
+              type="text"
+              required
+              maxlength="80"
+              autocomplete="family-name"
+              autocapitalize="words"
+              enterkeyhint="next"
+            />
+          </div>
+          <div class="reg__campo reg__campo--intero">
+            <label for={`${id}-email`}>Email</label>
+            <input
+              id={`${id}-email`}
+              name="email"
+              type="email"
+              required
+              maxlength="254"
+              pattern={EMAIL_VALIDA}
+              autocomplete="email"
+              autocapitalize="off"
+              spellcheck="false"
+              inputmode="email"
+              enterkeyhint="next"
+              aria-describedby={`${id}-email-errore`}
+            />
+            <p class="reg__errore" id={`${id}-email-errore`} data-reg-errore="email" hidden>
+              Controlla l’email: deve essere come nome@esempio.it
+            </p>
+          </div>
+          <div class="reg__campo reg__campo--intero">
+            <label for={`${id}-telefono`}>
+              Telefono <span class="reg__facoltativo">(facoltativo)</span>
+            </label>
+            <input
+              id={`${id}-telefono`}
+              name="telefono"
+              type="tel"
+              maxlength="20"
+              pattern={TELEFONO_VALIDO}
+              autocomplete="tel"
+              inputmode="tel"
+              enterkeyhint="done"
+              aria-describedby={`${id}-telefono-errore`}
+            />
+            <p class="reg__errore" id={`${id}-telefono-errore`} data-reg-errore="telefono" hidden>
+              Il numero può avere solo cifre, spazi e il prefisso con il +.
+            </p>
+          </div>
+
+          <div class="reg__scelta reg__campo--intero">
+            <input id={`${id}-privacy`} type="checkbox" name="privacy" value="si" required />
+            <label for={`${id}-privacy`}>
+              Ho letto l’<a href="/privacy-policy/" target="_blank" rel="noopener">informativa sulla privacy</a>
+            </label>
+          </div>
+          <div class="reg__scelta reg__campo--intero">
+            <input id={`${id}-marketing`} type="checkbox" name="marketing" value="si" />
+            <label for={`${id}-marketing`}>
+              Voglio ricevere via email le novità e le iniziative di Home Design{' '}
+              <span class="reg__facoltativo">(facoltativo)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="reg__invio">
+          <button class="reg__bottone" type="submit" data-reg-invio>{invio}</button>
+          <p class="reg__stato" role="status" aria-live="polite" data-reg-stato></p>
+        </div>
+      </form>
+
+      {/* Dopo l'invio riuscito il form lascia il posto alla conferma. */}
+      <div class="reg__fatto" data-reg-fatto hidden tabindex="-1">
+        <p class="reg__fattoTitolo" data-reg-fatto-titolo>Grazie, sei registrato.</p>
+        <p class="reg__fattoTesto">
+          Ti scriveremo all’indirizzo <strong data-reg-fatto-email></strong>.
+        </p>
+        <button class="reg__altro" type="button" data-reg-altro>Registra un’altra persona</button>
+      </div>
+    </div>
+  ) : (
+    <div class:list={['reg', 'reg--recapiti', extraClass]}>
+      <p>La registrazione online non è ancora attiva. Lasciaci i tuoi dati in negozio, oppure scrivici:</p>
+      <p>
+        <a href={`mailto:${company.email}`}>{company.email}</a>
+        <br />
+        <a href={`tel:${company.phone}`}>{company.phoneLabel}</a>
+      </p>
+    </div>
+  )
+}
+
+<style>
+  /* I colori arrivano dal contenitore (la scheda in cui il form sta):
+     `--reg-ink` per il testo, `--reg-fondo` per i campi, `--reg-accento` per il
+     bottone. Così il form si adatta alla landing e alla pagina del QR. */
+  .reg {
+    --reg-ink: var(--hd-navy, #1a2039);
+    --reg-campo: #fff;
+    --reg-accento: var(--hd-navy, #1a2039);
+    --reg-accento-ink: var(--hd-rosa, #f9a3c0);
+    color: var(--reg-ink);
+  }
+
+  .reg__griglia {
+    display: grid;
+    gap: 18px;
+  }
+  @media (min-width: 480px) {
+    .reg__griglia {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .reg__campo {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+  }
+  .reg__campo--intero {
+    grid-column: 1 / -1;
+  }
+
+  .reg label {
+    font-size: var(--hd-t-testo, 17px);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+  .reg__facoltativo {
+    font-weight: 400;
+    opacity: 0.8;
+  }
+
+  /* 16px nei campi non è estetica: sotto, Safari su iPhone ingrandisce la
+     pagina quando si tocca il campo, e la registrazione in negozio si fa lì. */
+  .reg input[type='text'],
+  .reg input[type='email'],
+  .reg input[type='tel'] {
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: var(--hd-t-testo, 17px);
+    color: var(--hd-navy, #1a2039);
+    background: var(--reg-campo);
+    border: 2px solid transparent;
+    border-radius: 0;
+    transition: border-color 160ms ease;
+  }
+  .reg input:focus-visible {
+    border-color: var(--reg-accento);
+    outline: 3px solid var(--reg-accento);
+    outline-offset: 2px;
+  }
+  /* Rosso solo dopo che la persona ci ha messo mano o ha provato a inviare. */
+  .reg input:user-invalid {
+    border-color: #b3123a;
+  }
+
+  .reg__errore {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: #8f0e2e;
+  }
+
+  .reg__scelta {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .reg__scelta input {
+    width: 24px;
+    height: 24px;
+    margin: 1px 0 0;
+    accent-color: var(--reg-accento);
+  }
+  .reg__scelta label {
+    font-weight: 400;
+  }
+  .reg a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .reg__invio {
+    display: grid;
+    gap: 12px;
+    margin-top: 26px;
+  }
+  .reg__bottone,
+  .reg__altro {
+    min-height: 56px;
+    padding: 0 28px;
+    font: inherit;
+    font-size: var(--hd-t-testo, 17px);
+    font-weight: 700;
+    color: var(--reg-accento-ink);
+    background: var(--reg-accento);
+    border: 0;
+    border-radius: 0;
+    cursor: pointer;
+    transition:
+      transform 140ms ease,
+      opacity 140ms ease;
+  }
+  .reg__bottone:hover,
+  .reg__altro:hover {
+    opacity: 0.9;
+  }
+  .reg__bottone:active,
+  .reg__altro:active {
+    transform: scale(0.98);
+  }
+  .reg__bottone:focus-visible,
+  .reg__altro:focus-visible {
+    outline: 3px solid var(--reg-accento);
+    outline-offset: 3px;
+  }
+  .reg__bottone:disabled {
+    cursor: progress;
+    opacity: 0.65;
+  }
+
+  .reg__stato {
+    min-height: 1.4em;
+    margin: 0;
+    font-size: var(--hd-t-testo, 17px);
+    line-height: 1.4;
+  }
+  .reg__stato[data-esito='errore'] {
+    font-weight: 600;
+    color: #8f0e2e;
+  }
+
+  .reg__fatto {
+    display: grid;
+    gap: 14px;
+    outline: none;
+  }
+  .reg__fatto[hidden] {
+    display: none;
+  }
+  .reg__fattoTitolo {
+    margin: 0;
+    font-size: var(--hd-t-sotto, 2.75rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+  .reg__fattoTesto {
+    margin: 0;
+  }
+  .reg__fattoTesto strong {
+    overflow-wrap: anywhere;
+  }
+  .reg__altro {
+    justify-self: start;
+    margin-top: 10px;
+  }
+
+  .reg__trappola {
+    position: absolute;
+    width: 1px;
+    height: 1px; /* taste-skill-ignore: campo trappola nascosto, non una riga */
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .reg--recapiti p {
+    margin: 0 0 12px;
+  }
+</style>
+
+<script>
+  /**
+   * Invio con `fetch` allo script di Apps Script.
+   *
+   * Il corpo è `application/x-www-form-urlencoded`: è una richiesta "semplice"
+   * per il browser, quindi **niente preflight OPTIONS**, che Apps Script non sa
+   * gestire (risponderebbe con un errore CORS e il form sembrerebbe rotto).
+   * Apps Script risponde con un 302 verso `script.googleusercontent.com`, che il
+   * browser segue da sé; quella risposta porta `Access-Control-Allow-Origin: *`
+   * e il JSON si legge.
+   */
+  const ATTESA_MASSIMA = 20000;
+
+  const nuovoId = () =>
+    (crypto.randomUUID?.() ?? `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`);
+
+  /* `?fonte=cassa-2` sul QR: passa solo se è fatta di lettere, cifre e trattini. */
+  const fonteDaUrl = (() => {
+    const f = new URLSearchParams(location.search).get('fonte') ?? '';
+    return /^[a-z0-9-]{1,40}$/i.test(f) ? f.toLowerCase() : '';
+  })();
+
+  for (const radice of document.querySelectorAll<HTMLElement>('[data-reg]')) {
+    const form = radice.querySelector<HTMLFormElement>('[data-reg-form]');
+    const fatto = radice.querySelector<HTMLElement>('[data-reg-fatto]');
+    const bottone = radice.querySelector<HTMLButtonElement>('[data-reg-invio]');
+    const stato = radice.querySelector<HTMLElement>('[data-reg-stato]');
+    const idInvio = radice.querySelector<HTMLInputElement>('[data-reg-idinvio]');
+    if (!form || !fatto || !bottone || !stato || !idInvio) continue;
+
+    /* I campi nascosti si riscrivono anche dopo `form.reset()`, che li
+       riporterebbe al valore del markup: `_modo` tornerebbe "pagina" e la
+       seconda registrazione riceverebbe una pagina HTML invece del JSON. */
+    const preparaNascosti = () => {
+      radice.querySelector<HTMLInputElement>('[data-reg-modo]')!.value = 'json';
+      radice.querySelector<HTMLInputElement>('[data-reg-pagina]')!.value = location.pathname;
+      if (fonteDaUrl) radice.querySelector<HTMLInputElement>('[data-reg-fonte]')!.value = fonteDaUrl;
+      idInvio.value = nuovoId();
+    };
+    preparaNascosti();
+
+    /* I messaggi sotto email e telefono: il fumetto del browser sparisce dopo
+       due secondi, e su un telefono in mano a un cliente non basta. */
+    const errori = new Map<string, HTMLElement>();
+    for (const p of radice.querySelectorAll<HTMLElement>('[data-reg-errore]')) {
+      errori.set(p.dataset.regErrore!, p);
+    }
+    const aggiornaErrore = (campo: HTMLInputElement) => {
+      const p = errori.get(campo.name);
+      if (p) p.hidden = campo.validity.valid || campo.value === '';
+    };
+    for (const nome of errori.keys()) {
+      const campo = form.elements.namedItem(nome) as HTMLInputElement | null;
+      campo?.addEventListener('blur', () => aggiornaErrore(campo));
+      campo?.addEventListener('input', () => {
+        if (!errori.get(nome)!.hidden) aggiornaErrore(campo);
+      });
+    }
+
+    /* Spazi tolti prima del controllo: chi incolla l'email dal telefono si
+       porta dietro uno spazio finale, e `type=email` lo boccerebbe. */
+    const ripulisci = () => {
+      for (const n of ['nome', 'cognome', 'email', 'telefono']) {
+        const c = form.elements.namedItem(n) as HTMLInputElement | null;
+        if (c) c.value = c.value.trim().replace(/\s{2,}/g, ' ');
+      }
+      const email = form.elements.namedItem('email') as HTMLInputElement | null;
+      if (email) email.value = email.value.toLowerCase();
+    };
+
+    const errore = (testo: string) => {
+      stato.dataset.esito = 'errore';
+      stato.textContent = testo;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      ripulisci();
+      if (!form.checkValidity()) {
+        for (const nome of errori.keys()) {
+          const c = form.elements.namedItem(nome) as HTMLInputElement | null;
+          if (c) aggiornaErrore(c);
+        }
+        form.reportValidity();
+        return;
+      }
+
+      bottone.disabled = true;
+      delete stato.dataset.esito;
+      stato.textContent = 'Invio in corso…';
+
+      const interrompi = new AbortController();
+      const timer = setTimeout(() => interrompi.abort(), ATTESA_MASSIMA);
+
+      try {
+        const risposta = await fetch(form.action, {
+          method: 'POST',
+          body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>),
+          signal: interrompi.signal,
+          redirect: 'follow',
+          credentials: 'omit',
+        });
+        let dati: { ok?: boolean; messaggio?: string } = {};
+        try {
+          dati = await risposta.json();
+        } catch {
+          /* risposta non JSON: la tratta il controllo sotto */
+        }
+        if (!risposta.ok || dati.ok !== true) {
+          errore(
+            dati.messaggio ??
+              'Non siamo riusciti a registrarti. Riprova tra qualche istante, oppure chiedi in negozio.',
+          );
+          return;
+        }
+
+        const nome = (form.elements.namedItem('nome') as HTMLInputElement).value;
+        const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+        radice.querySelector('[data-reg-fatto-titolo]')!.textContent = `Grazie ${nome}, sei registrato.`;
+        radice.querySelector('[data-reg-fatto-email]')!.textContent = email;
+        form.hidden = true;
+        fatto.hidden = false;
+        fatto.focus();
+        stato.textContent = '';
+      } catch (err) {
+        errore(
+          (err as Error).name === 'AbortError'
+            ? 'La connessione è troppo lenta e l’invio si è interrotto. Premi di nuovo “Registrati”: i dati sono ancora qui.'
+            : 'Sembra che manchi la connessione. Controlla la rete e premi di nuovo “Registrati”: i dati sono ancora qui.',
+        );
+      } finally {
+        clearTimeout(timer);
+        bottone.disabled = false;
+      }
+    });
+
+    /* In negozio lo stesso telefono o tablet può passare di mano in mano. */
+    radice.querySelector('[data-reg-altro]')?.addEventListener('click', () => {
+      form.reset();
+      preparaNascosti();
+      for (const p of errori.values()) p.hidden = true;
+      fatto.hidden = true;
+      form.hidden = false;
+      (form.elements.namedItem('nome') as HTMLInputElement).focus();
+    });
+  }
+</script>

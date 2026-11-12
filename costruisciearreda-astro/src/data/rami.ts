@@ -145,10 +145,12 @@ export const rami: Ramo[] = [
    * decorative, lampade, orologi, quadri, campionario di carte da parati): è da
    * far rivedere al proprietario, come le meta description.
    *
-   * `tipoSede: null` e nessun `dettaglio`: **l'indirizzo di Home Design non è
-   * noto** e non va inventato. Senza, la campata non ha la riga "dove" e la
-   * pagina non dichiara nessuna sede nei dati strutturati. Quando c'è, si
-   * aggiunge la sede in `site.ts` (con il suo `tipo`) e qui basta `tipoSede`.
+   * **L'indirizzo ora è noto** (voce B16): Home Design è lo Showroom Home di
+   * Via Martiri della Libertà 11bis, già fra le sedi di `site.ts`. La landing lo
+   * legge da lì (`sedeHomeDesign` in `data/home-design.ts`). Qui `tipoSede`
+   * resta `null` di proposito: `'Showroom'` mostrerebbe i comuni di **tutti**
+   * gli showroom (anche Nola), e una riga "dove" nuova cambierebbe l'altezza
+   * dell'insegna, che obbliga a rimisurare la velatura della parete (B06).
    * La rotta è nuova e pulita: non è una `type_stores` ereditata, quindi non
    * deve rispettare la forma delle altre quattro.
    */

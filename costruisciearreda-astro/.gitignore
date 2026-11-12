@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # generato dal build (hash degli script in linea): lo riscrive deploy/genera-csp.js
 deploy/csp.conf
+
+# lavoro della skill tasteskill (direzione estratta, screenshot dell'ispettore)
+.taste-skill/

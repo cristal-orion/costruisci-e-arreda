@@ -1,0 +1,167 @@
+/* =============================================================================
+   Home Design — l'identità propria della landing (voce B16).
+
+   La landing ha un link suo, da condividere, e per decisione del proprietario
+   **non segue lo stile del resto del sito**: niente Montserrat, niente rosso del
+   gruppo, niente header e footer comuni. Tutto quello che c'è qui sta sotto
+   `.hd` (la classe del `<body>` delle due pagine di Home Design), perché il CSS
+   del sito è un file solo (`cssCodeSplit: false`) e una regola senza ambito
+   arriverebbe su tutte le 54 rotte.
+
+   I colori: un blu notte di fondo e un rosa, più i **colori delle pareti dello
+   store**, campionati dalle foto (la parete rosa cipria delle ali dorate, il
+   bordeaux del coniglio fucsia, il petrolio delle teste di moro, la prugna
+   della lampada dorata, la senape del vaso a righe…). Ogni pannello prende il
+   colore della parete su cui l'oggetto è stato fotografato.
+
+   Il carattere: Epilogue, self-hosted da @fontsource (niente Google Fonts: è
+   una richiesta a un server americano a ogni visita, e la CSP non la ammette).
+   ========================================================================== */
+
+.hd {
+  --hd-navy: #1a2039;
+  --hd-navy-2: #232b4b;
+  --hd-rosa: #f9a3c0;
+  --hd-rosa-tenue: #d9a2b8;
+
+  /* pareti dello store, dalle foto */
+  --hd-cipria: #ecd0bb;
+  --hd-bordeaux: #661728;
+  --hd-petrolio: #05314e;
+  --hd-prugna: #53042d;
+  --hd-senape: #c4902f;
+  --hd-sabbia: #d7bba1;
+  --hd-panna: #e8d6c6;
+  --hd-nero: #1c1812;
+
+  --hd-font: 'Epilogue Variable', 'Epilogue', system-ui, sans-serif;
+
+  /* sei misure in tutto */
+  --hd-t-piccolo: 15px;
+  --hd-t-testo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --hd-t-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.75rem);
+  --hd-t-sotto: 2.75rem; /* titoli nelle schede e voci del menu in fondo */
+  --hd-t-titolo: clamp(2.5rem, 1.2rem + 5vw, 5.5rem);
+  --hd-t-nome: clamp(4rem, 10vw, 9.75rem);
+
+  --hd-margine: clamp(16px, 2vw, 28px);
+  --hd-ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+
+  margin: 0;
+  font-family: var(--hd-font);
+  font-size: var(--hd-t-testo);
+  line-height: 1.5;
+  color: var(--hd-rosa);
+  background: var(--hd-navy);
+}
+
+/* Il CSS del sito dà ai titoli maiuscolo, peso leggero e il grigio del testo,
+   ai link il rosso del gruppo, e un margine sopra ogni `<li>`: qui no. */
+.hd h1,
+.hd h2,
+.hd h3 {
+  margin: 0;
+  font-family: var(--hd-font);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: none;
+  color: inherit;
+}
+.hd p {
+  margin: 0;
+}
+.hd ul,
+.hd ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hd li + li {
+  margin-top: 0;
+}
+.hd a {
+  color: inherit;
+}
+.hd a:hover {
+  color: inherit;
+}
+.hd ::selection {
+  color: var(--hd-navy);
+  background: var(--hd-rosa);
+}
+.hd :focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Il bottone della landing: pieno, angoli vivi, alto 52px. */
+.hd .hd-bottone {
+  display: inline-flex;
+  gap: 0.35em;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  font-size: var(--hd-t-testo);
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--hd-navy);
+  background: var(--hd-rosa);
+  border: 0;
+  transition:
+    transform 140ms var(--hd-ease),
+    background-color 200ms ease;
+}
+.hd .hd-bottone:hover {
+  color: var(--hd-navy);
+  background: #ffc2d6;
+}
+.hd .hd-bottone:active {
+  transform: scale(0.97);
+}
+
+/* Link di testo con la freccia che si sposta al passaggio. */
+.hd .hd-link {
+  display: inline-flex;
+  gap: 0.4em;
+  align-items: baseline;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+.hd .hd-link span {
+  display: inline-block;
+  transition: transform 200ms var(--hd-ease);
+}
+.hd .hd-link:hover span {
+  transform: translateX(5px);
+}
+
+/* Ingressi: le parti di ogni sezione salgono una dopo l'altra quando la
+   sezione entra nella finestra. Solo con movimento non ridotto, e solo per gli
+   elementi che lo script trova **sotto** la finestra al caricamento: quello che
+   si vede subito non sparisce e riappare. Senza JavaScript non succede niente
+   e tutto è visibile. */
+@media (prefers-reduced-motion: no-preference) {
+  .hd [data-entra='attesa'] {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  .hd [data-entra='dentro'] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 700ms var(--hd-ease),
+      transform 700ms var(--hd-ease);
+    transition-delay: var(--ritardo, 0ms);
+  }
+}
+
+/* Il link "Salta al contenuto" del sito è rosso: sul blu notte non si legge. */
+.hd .skip-link,
+.hd .skip-link:focus {
+  color: var(--hd-navy);
+  background: var(--hd-rosa);
+}

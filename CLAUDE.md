@@ -27,6 +27,25 @@
 > (`node deploy/genera-csp.js dist deploy/csp.conf`) prima di `prova-csp.js`.
 > `misura-contrasto-parete.js` ora nasconde il banner dei cookie (prima misurava
 > il bianco del banner: 1.00:1 ovunque).
+> **B16, 2026-11-11 — Home Design ha un'identità sua + registrazione su Google
+> Fogli.** La landing non usa più header, footer né stile del sito (`BaseLayout`,
+> Epilogue, blu notte e rosa, colori delle pareti dello store; CSS sotto `.hd` in
+> `styles/home-design.css`), fatta con la skill **tasteskill v2**. Nuova pagina
+> del QR `/home-design/registrati/` (noindex) e lo stesso form in fondo alla
+> landing → Apps Script `Landing HomeDesigh/google-apps-script/Codice.gs` →
+> foglio. **Aperto:** l'URL `/exec` dell'app web va messo in
+> `src/data/registrazione.ts` (oggi vuoto: il form mostra telefono ed email).
+> Istruzioni per il proprietario e QR in `Landing HomeDesigh/`. Prove:
+> `prova-codice.mjs` (43) e `_migrazione/prova-registrazione.js` (33). La CSP
+> legge da sola gli `action` dei form. `GalleriaLamelle` (B15) è stata tolta.
+> **Home Design = Showroom Home**, Via Martiri della Libertà **11bis** (non 11,
+> corretto in `site.ts`): l'indirizzo è sulla landing, cliccabile verso Google
+> Maps (`mappaSede()`). Il bottone principale porta in negozio e c'è la sezione
+> `#dove` con due foto dell'interno. **Da chiedere:** orari, e se `foto_15`/`foto_28`
+> (facciate) sono di Via Martiri. **Due schede (2026-11-12):** landing → "Codice QR sito"
+> (`gid=1058875551`), pagina del QR → "Codice QR negozio" (`gid=659565949`), campo
+> `_scheda`. **Repo pubblico: mai l'ID del foglio nel codice.** Manca l'URL `/exec`. Da decidere: link o 301 fra la vecchia pagina dello
+> store `/store/via-martiri-della-liberta-nola-na/` e la landing.
 > **Sessione precedente: 2026-09-14.** **Fase A completa** (52 rotte, tutti i 56 URL
 > indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B in corso**: la
 > homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la

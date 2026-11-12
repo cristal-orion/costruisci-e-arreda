@@ -51,3 +51,4 @@
 /type_stores/progettazione-e-ristrutturazione-edile/
 /type_stores/rivendita-edile/
 /type_stores/showroom-cat/
+/home-design/registrati/

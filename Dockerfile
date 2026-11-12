@@ -40,6 +40,11 @@ WORKDIR /app/costruisciearreda-astro
 # Su Coolify: variabile dell'applicazione con "Build Variable" attivo.
 ARG PUBLIC_FORM_ENDPOINT=""
 ENV PUBLIC_FORM_ENDPOINT=$PUBLIC_FORM_ENDPOINT
+# L'app web di Google Apps Script che scrive le registrazioni di Home Design
+# nel foglio (voce B16). Facoltativa: l'indirizzo può stare anche in
+# `src/data/registrazione.ts`; se c'è anche qui, vince questa.
+ARG PUBLIC_REGISTRAZIONE_ENDPOINT=""
+ENV PUBLIC_REGISTRAZIONE_ENDPOINT=$PUBLIC_REGISTRAZIONE_ENDPOINT
 
 # `node_modules/.astro` è la cache delle immagini convertite: 126 MB, ed è la
 # parte lenta del build (2.101 WebP generati dai 476 originali). Con la cache

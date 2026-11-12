@@ -78,6 +78,35 @@ if (endpoint) {
 }
 
 /**
+ * Le origini a cui i form del build inviano davvero, lette dall'`action`.
+ *
+ * Copre il form di registrazione di Home Design (voce B16), il cui indirizzo
+ * può stare scritto in `src/data/registrazione.ts` invece che in una variabile
+ * d'ambiente: la CSP lo trova nell'HTML, dove finisce in ogni caso. Se
+ * l'origine è Google Apps Script serve anche `script.googleusercontent.com`:
+ * Apps Script risponde con un 302 verso quel dominio, e la CSP vale anche per
+ * l'indirizzo dopo il redirect — senza, l'invio arriva al foglio ma il browser
+ * blocca la risposta e il cliente legge "non riuscito".
+ */
+const ACTION = /<form\b[^>]*\baction="(https?:\/\/[^"]+)"/g;
+const originiAction = new Set();
+for (const f of pagine) {
+  for (const m of fs.readFileSync(f, 'utf8').matchAll(ACTION)) {
+    try {
+      originiAction.add(new URL(m[1].replaceAll('&amp;', '&')).origin);
+    } catch {
+      console.error(`action non valida in ${f}: ${m[1]}`);
+      process.exit(1);
+    }
+  }
+}
+if (originiAction.has('https://script.google.com')) {
+  originiAction.add('https://script.googleusercontent.com');
+}
+if (origineForm) originiAction.delete(origineForm.trim());
+const origineAction = [...originiAction].sort().map((o) => ' ' + o).join('');
+
+/**
  * Le direttive.
  *
  * `style-src` tiene `'unsafe-inline'` e non è una resa: 18 pagine hanno
@@ -133,9 +162,9 @@ const direttive = [
   `font-src 'self' ${IUBENDA}`,
   `style-src 'self' 'unsafe-inline' ${IUBENDA}`,
   `script-src 'self' 'strict-dynamic' ${hashes.join(' ')} ${IUBENDA}`,
-  `connect-src 'self' ${IUBENDA} ${GOOGLE} ${META}${origineForm}`,
+  `connect-src 'self' ${IUBENDA} ${GOOGLE} ${META}${origineForm}${origineAction}`,
   `frame-src ${IUBENDA}`,
-  `form-action 'self'${origineForm}`,
+  `form-action 'self'${origineForm}${origineAction}`,
   'upgrade-insecure-requests',
 ];
 
@@ -147,6 +176,7 @@ const righe = [
   '# questo file cambia con lui. Scritto a mano si scollerebbe in silenzio.',
   '#',
   `# Endpoint dei form: ${endpoint || '(non configurato — i form mostrano i recapiti)'}`,
+  `# Origini lette dagli action dei form: ${origineAction.trim() || '(nessuna)'}`,
   '#',
   ...[...hash.entries()]
     .sort((a, b) => b[1] - a[1])

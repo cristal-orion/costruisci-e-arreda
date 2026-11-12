@@ -2776,3 +2776,263 @@ dell'hero, con fughe da 1px su fondo scuro (`section--dark`).
 **Non eseguito:** `prova-deploy.js` contro il container (`deploy/` non toccato).
 Senza JavaScript la prima lamella è aperta e ogni lamella è un link alla foto
 grande: guardato in uno scatto, non misurato.
+
+
+## B16 — Home Design ha un'identità sua, e la registrazione dei clienti va su Google Fogli (2026-11-11)
+
+Richiesta del proprietario: la landing avrà **un link suo, da condividere**, e
+quindi non deve restare in linea con il resto del sito; va resa più adatta a
+un negozio di arredo di design molto particolare (carattere, hero, galleria).
+In più, un **form per raccogliere le email** dei clienti che entrano in
+negozio: il commerciante mostra un QR, il QR apre la pagina, la riga arriva in
+un Google Foglio già impostato. "Tutto senza errori."
+
+Restyling fatto con la skill **tasteskill v2** (`design-taste-frontend`):
+direzione *The pinned poster* (seme 44530956), carattere Epilogue, palette
+blu notte e rosa. Nessun elemento della direzione è stato riestratto.
+
+### L'idea
+
+Il nome sta fermo agli angoli della finestra — **"Home" in alto a sinistra,
+"Design" in basso a destra** — mentre sotto passano gli oggetti, ognuno sul
+**colore della parete dove è stato fotografato**. I colori sono campionati
+dalle foto con `magick … -colors 5`: il rosa cipria delle ali dorate, il
+petrolio delle teste di moro, la prugna della lampada dorata, la senape del
+vaso a righe, il bordeaux del coniglio fucsia. Una catena di negozi qualsiasi
+non ha queste pareti.
+
+### Cosa è cambiato in `/home-design/`
+
+- **Niente header e footer del sito**: la pagina usa `BaseLayout`, non
+  `SiteLayout`. Il fondo è suo (`components/home-design/PiedeHD.astro`), con
+  ragione sociale, P.IVA, privacy e cookie, la firma Two Bee e un link al
+  sito del gruppo.
+- **Epilogue** (variabile, self-hosted da `@fontsource-variable/epilogue`, nuova
+  dipendenza) al posto di Montserrat, solo su queste due pagine. Tutto il CSS
+  comune sta in `styles/home-design.css` **sotto `.hd`**, la classe del
+  `<body>`: il CSS del sito è un file solo e una regola senza ambito
+  arriverebbe su tutte le rotte.
+- **Sei misure di carattere** in tutto (15 · 17–19 · 20–28 · 44 · 40–88 ·
+  64–156 px), misurate dall'ispettore.
+- Sezioni: il **manifesto** (apertura + pannello cipria, il nome fermo per due
+  schermate, con il colore scelto angolo per angolo dalla parete che ci sta
+  sotto — `elementsFromPoint`, perché il livello dei nomi è trasparente ai
+  clic); la **presentazione** su petrolio con le teste di moro; la
+  **collezione**, quattro oggetti a tutto schermo che si aprono come un
+  otturatore (animazione CSS legata allo scroll, solo dove il browser la
+  supporta e senza movimento ridotto); **"Cosa trovi in negozio"**, sette voci
+  che cambiano foto e colore della sezione; la **registrazione** su una scheda
+  rosa sopra la foto dello store; il fondo.
+- Sul telefono il nome sta in una **fascia in cima** che prende il colore
+  della parete sotto: agli angoli opposti coprirebbe il testo.
+- **`GalleriaLamelle.astro` (B15) è stata tolta**: non la usava più nessuno.
+  È nel commit `9e0906c` se servisse altrove.
+- Il vecchio ritocco del velo dell'`Hero` per questa pagina non c'è più (la
+  pagina non usa più `Hero`).
+
+**Difetti trovati con l'ispettore e corretti:** il nome fermo per 4 schermate
+(ridotto a 2, le teste di moro sono passate alla presentazione); "Home" sopra
+la foto orizzontale; il sipario dell'estrazione originale (teli fermi uno
+sull'altro) copriva ogni titolo con il telo successivo — sostituito
+dall'otturatore; sul telefono la foto ferma dell'elenco copriva il titolo
+"Cosa trovi in negozio"; mezzo schermo di colore vuoto sotto ogni oggetto sul
+telefono; due frasi grandi oltre le tre righe; 13 misure di carattere.
+
+**Avvisi dell'ispettore lasciati, con il perché:** *nessun video* (non esiste
+un filmato vero dello store, e uno di repertorio sarebbe falso); *il nome resta
+sullo schermo per 3 rilevazioni* (il manifesto è lungo due schermate, la terza
+rilevazione lo coglie mentre esce). Sulla pagina del QR: *poco movimento* (è
+un form da compilare in piedi in negozio) e *"Salta al contenuto" letto come
+etichetta* (è il link di accessibilità, fuori schermo finché non prende il
+fuoco). Per misurare senza il banner dei cookie, che copriva ogni screenshot,
+l'ispettore è passato da un proxy locale che toglie il caricatore di Iubenda.
+
+### La registrazione → Google Fogli
+
+- **`/home-design/registrati/`**: la pagina del QR. Nome, una riga di
+  benvenuto e subito il form; tre foto **sotto**, pigre. `noindex`, fuori dalla
+  sitemap. `?fonte=…` sull'indirizzo (lettere, cifre, trattini) cambia la
+  colonna Fonte, per distinguere più QR.
+- **Lo stesso form in fondo alla landing**, con fonte `landing-home-design`.
+- `components/home-design/Registrazione.astro`: nome, cognome, email, telefono
+  facoltativo, **due consensi separati** (informativa obbligatoria, email
+  promozionali facoltative e non spuntate). Campi alti 52px a 17px (sotto i
+  16px Safari ingrandisce la pagina al tocco), messaggi sotto i campi,
+  timeout di 20 s, bottone disabilitato durante l'invio, un `_id` per invio
+  che lo script usa per **non scrivere due volte** la stessa registrazione se
+  la risposta si perde, "Registra un'altra persona" per il telefono che passa
+  di mano. Senza JavaScript fa una POST normale e riceve una pagina di
+  conferma.
+- Il corpo è `application/x-www-form-urlencoded`: richiesta **semplice**,
+  niente preflight OPTIONS, che Apps Script non gestisce.
+- Il ricevente è **`Landing HomeDesigh/google-apps-script/Codice.gs`**, da
+  incollare nel foglio e pubblicare come app web (istruzioni in
+  `Landing HomeDesigh/ISTRUZIONI.md`). Trova le colonne **dal nome
+  dell'intestazione**, aggiunge in fondo quelle che mancano, rispetta le
+  colonne del proprietario, segna "Già registrato", neutralizza le formule
+  (`=…`, `+…`) scritte nei campi, scrive sotto un lucchetto.
+- **Indirizzo dell'app web:** `ENDPOINT_REGISTRAZIONE` in
+  `src/data/registrazione.ts`, oppure la variabile di build
+  `PUBLIC_REGISTRAZIONE_ENDPOINT` (aggiunta al `Dockerfile` e a
+  `.env.example`). **Oggi è vuoto**: il form non si rende e la pagina mostra
+  telefono ed email.
+- **`deploy/genera-csp.js` legge dal build gli `action` dei form** e allarga
+  `connect-src` e `form-action` da sé; per Apps Script aggiunge anche
+  `script.googleusercontent.com`, dove Google rimanda la risposta col 302 (la
+  CSP vale anche dopo il redirect).
+- **QR** in `Landing HomeDesigh/qr/` (SVG e PNG 2000 px, blu notte e bianco e
+  nero, correzione d'errore Q), verso
+  `https://costruisciearreda.it/home-design/registrati/`. Riletti con
+  `zbarimg`, anche ridotti a 160 px.
+
+### Verifiche
+
+| cosa | esito |
+|---|---|
+| `prova-codice.mjs` (Codice.gs su foglio simulato) | **43/43** |
+| `prova-registrazione.js` (browser + CSP di produzione + finto Apps Script che esegue il vero Codice.gs) | **33/33**, nessun OPTIONS, nessuna violazione |
+| `check-build.js` (55 rotte × 3) | nessun problema |
+| `prova-csp.js` | 55 rotte, nessuna violazione |
+| `astro check` | 0 errori |
+| ispettore tasteskill, `/home-design/` | 0 FAIL, 2 WARN (sopra) |
+| contrasto testo/fondo, 13 coppie | tutte ≥ 4,5:1 (minimo 4,86, l'errore sul rosa) |
+| peso (`misura-peso.js`, 1440) | landing **1,23 MB · 20** (prima 0,72: foto a tutto schermo); QR **0,14 MB · 8** |
+
+**Tre cose che `prova-registrazione.js` ha insegnato** (tutte del banco di
+prova, non del form, e annotate nello script): il finto Apps Script deve dare
+`Access-Control-Allow-Origin` **anche sul 302**, come Google; Chromium blocca le
+richieste da una pagina servita con `route.fulfill` verso `localhost` (Local
+Network Access, spento solo nel browser di prova); `upgrade-insecure-requests`
+porta il redirect locale su https, ed è l'unica direttiva tolta dalla CSP di
+prova.
+
+**Non eseguito:** la prova contro **il vero deployment Google** (non esiste
+ancora: lo crea il proprietario dal suo foglio); `prova-deploy.js` contro il
+container (il `Dockerfile` ha solo un `ARG` in più).
+
+### Aperto
+
+- **L'URL dell'app web** di Apps Script, da mettere in `registrazione.ts`.
+  Dopo il deploy: una registrazione di prova dal telefono e un'occhiata al
+  foglio.
+- Il QR punta a una pagina che esiste solo **dopo il push** di questo lavoro.
+- I testi nuovi (frase d'apertura, descrizioni dei quattro oggetti, voci
+  dell'elenco) descrivono le foto: vanno riletti dal proprietario.
+- L'informativa privacy di Iubenda dovrebbe citare questa raccolta di dati
+  (finalità: contatto e, con consenso, email promozionali).
+
+### Aggiunta, stesso giorno — l'indirizzo, cliccabile verso Google Maps
+
+Il proprietario ha dato l'indirizzo di Home Design: **Via Martiri della
+Libertà (Home) 11bis, 80147 Napoli**. È lo **Showroom Home** che il sito aveva
+già fra le sedi, e questo chiude la domanda aperta da B14: Home Design e
+Showroom Home sono lo stesso negozio.
+
+- **"11bis", non "11"**: corretto nella sede di `site.ts` (e nel testo della
+  pagina Contatti, `contatti.json`). Il mirror scriveva "11" per tutti e due
+  gli showroom di questa via. Il footer di tutte le pagine, la pagina
+  `/store/via-martiri-della-liberta-nola-na/` e i dati strutturati lo prendono
+  da lì.
+- `mappaSede()` in `site.ts`: il link "Maps URLs" di Google (`api=1`, nessuna
+  chiave), che cerca **l'indirizzo** e non il nome del negozio. Sul telefono
+  apre l'app.
+- Sulla landing l'indirizzo compare **tre volte**: in basso a sinistra nella
+  prima schermata (a misura di testo, in grassetto), sotto il form di
+  registrazione ("Oppure vieni a trovarci") e nel fondo ("Dove siamo"). La
+  sede è letta da `sedeHomeDesign` (`data/home-design.ts`), non riscritta.
+- La landing ora dichiara la sede nei **dati strutturati** (`sedeLd`, lo
+  stesso nodo della pagina dello store, stesso `@id`).
+- Non toccati di proposito: la **campata dell'hero** in homepage (una riga
+  "dove" cambierebbe l'altezza dell'insegna e obbligherebbe a rimisurare la
+  velatura, B06) e la pagina del QR (chi la apre è già in negozio).
+
+Verifiche: `check-build.js` 55 rotte × 3, nessun problema; ispettore 0 FAIL;
+il link a Maps risponde 200.
+
+**Ancora da decidere:** la vecchia pagina dello Showroom Home
+(`/store/via-martiri-della-liberta-nola-na/`, 35 foto, indicizzata) e la
+landing parlano dello stesso negozio e non si linkano. Proposta: un link dalla
+pagina dello store alla landing, o un 301 se la landing la sostituisce.
+
+### Aggiunta, stesso giorno — il negozio al centro
+
+Richiesta del proprietario: "l'obiettivo è portare gente in negozio". Quindi:
+
+- **Prima schermata:** il bottone principale ora è **"Come arrivare ↗"**, che
+  apre Google Maps; "Lascia la tua email" passa a link secondario. Nel menu
+  della prima schermata e nel fondo c'è la voce **"Dove siamo"**.
+- **Sezione nuova `#dove`, "Ti aspettiamo in negozio"**, fra l'elenco e la
+  registrazione, sul bordeaux della parete del coniglio (rosa su bordeaux
+  6,42:1): indirizzo cliccabile, bottone "Portami in negozio ↗", telefono, e
+  **due foto larghe dell'interno** (`DSC09950`, `DSC09953`, dalla galleria
+  della vecchia pagina dello Showroom Home, che conferma che è lo stesso
+  negozio: stessi oggetti, stessa sala della giraffa). Geometria diversa dalle
+  sezioni vicine: testo e foto larga a sinistra, foto alta a destra.
+- `.hd-bottone` ha uno spazio fra testo e freccia (`gap`): nel flex lo spazio
+  dentro il link spariva ("negozio↗").
+- **Non messo, di proposito:** gli **orari** (non li ha detti nessuno) e le
+  **facciate** di `Costruisci_e_Arreda_foto/` (`foto_15`, `foto_28`: insegna
+  "COSTRUISCI E ARREDA" su un edificio nero). Non è confermato che siano di Via
+  Martiri: nella stessa cartella c'è un piazzale con i muletti, cioè un'altra
+  sede. Chiesto al proprietario.
+
+Verifiche: ispettore 0 FAIL (restano i due WARN di prima: nessun video, nome
+fermo per tre schermate); `check-build.js` 55 × 3 pulito; CSP rigenerata,
+`prova-csp.js` 55 rotte senza violazioni; registrazione dalla pagina del QR
+aperta via rete locale arrivata al finto foglio.
+
+### Aggiunta, stesso giorno — il foglio vero
+
+Il proprietario ha dato il foglio: "CANALE DI ARRIVO CLIENTI - Ceramiche &
+Home Design", scheda **"Codice QR - Home Design"**
+(`gid=659565949`, vuota). Il file ha **tre schede**, e la prima è "HOME
+DESIGN", la tabella dei clienti compilata a mano (AUTORIZZAZIONE, VENDITRICE,
+NOME… COME CI HAI CONOSCIUTO). Lo script come era scriveva nella prima scheda,
+cioè **dentro quella tabella**. Quindi:
+
+- `Codice.gs`: `ID_FOGLIO` impostato e nuovo **`ID_SCHEDA: 659565949`**. La
+  scheda si cerca per gid, non per nome, quindi regge a una rinomina. Se non
+  c'è, errore: **niente ripiego sulla prima scheda**.
+- `prova-codice.mjs`: 49 verifiche (+6): il file con le tre schede scrive solo
+  nella scheda del QR; se quella manca, errore e nessuna scrittura altrove. I
+  finti fogli di `prova-registrazione.js` e del preview conoscono `getSheetId`
+  e `openById`. `prova-registrazione.js` 33/33.
+- `ISTRUZIONI.md`: i passi per questo file, e un avviso. **Il file è leggibile
+  da chiunque abbia il link** (l'export CSV risponde senza accesso), con nomi,
+  email e telefoni dei clienti. Allo script la condivisione non serve: va messa
+  "Con limitazioni".
+
+Lette solo le intestazioni delle schede, non i dati dei clienti. **Manca
+ancora** l'URL `/exec`: lo crea chi pubblica lo script con il proprio account
+Google, e va in `src/data/registrazione.ts`.
+
+### 2026-11-12 — due schede, due pubblici
+
+Decisione del proprietario: **chi si registra dalla landing** (il QR delle ads
+porta lì, e ci si può registrare anche senza essere passati dal negozio) va
+nella scheda **"Codice QR sito - Home Design"** (`gid=1058875551`); **chi si
+registra in negozio** dalla pagina del QR `/home-design/registrati/` va in
+**"Codice QR negozio - Home Design"** (`gid=659565949`). Il file ora ha quattro
+schede: queste due e le due "Cartaceo".
+
+- Ogni form porta un campo nascosto **`_scheda`** (`sito` | `negozio`), scritto
+  nella pagina dal build (`SCHEDA` in `data/registrazione.ts`, prop `scheda` di
+  `Registrazione.astro`, obbligatoria). Non dipende da JavaScript, quindi vale
+  anche per l'invio senza script. `?fonte=` cambia la colonna Fonte, non la scheda.
+- `Codice.gs`: `SCHEDE: { sito, negozio }` per gid. Un invio con scheda
+  mancante o sconosciuta **non viene scritto da nessuna parte**. `doGet` dice i
+  nomi delle due schede, o quale manca. `provaRegistrazione` scrive una riga di
+  prova in ognuna. "Già registrato" guarda la scheda in cui scrive: i due
+  elenchi sono separati.
+- **`ID_FOGLIO` vuoto, di proposito:** il repository GitHub è **pubblico** e il
+  foglio si apre con il solo link. L'ID nel codice avrebbe reso leggibili i
+  dati dei clienti a chiunque. Lo script si crea dal foglio, quindi non serve.
+  Tolto anche da `ISTRUZIONI.md`.
+- Prove: `prova-codice.mjs` 55 (le quattro schede; scheda mancante o
+  sconosciuta: nessuna scrittura; le chiavi di `SCHEDA` del sito coincidono con
+  `SCHEDE` di Codice.gs; `ID_FOGLIO` vuoto). `prova-registrazione.js` 36, con
+  due schede simulate: la landing scrive solo in "sito", la pagina del QR solo
+  in "negozio". Build di produzione **senza** endpoint: nessun `<form>`, al suo
+  posto i recapiti; `check-build.js` 55 × 3 pulito; `prova-csp.js` nessuna
+  violazione. **Docker non provato in locale** (l'utente non è nel gruppo
+  `docker`): la prova del server va fatta contro l'indirizzo pubblicato.

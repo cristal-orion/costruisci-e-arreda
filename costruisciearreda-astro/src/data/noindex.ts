@@ -23,6 +23,10 @@ export const noindexRoutes: string[] = [
   '/design-system/',
   ...daPagine,
 
+  // la pagina del QR di Home Design (voce B16): uno strumento del negozio,
+  // non una pagina da trovare in una ricerca
+  '/home-design/registrati/',
+
   // root di archivio dei custom post type: thin, titolo generico
   '/services/',
   '/realizzazioni/',

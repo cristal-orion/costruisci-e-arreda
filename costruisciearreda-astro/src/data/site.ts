@@ -82,8 +82,11 @@ export const sedi: Sede[] = [
   },
   {
     tipo: 'Showroom',
-    righe: ['Via Martiri della Libertà (Home)', '11, 80147 – Napoli (NA)'],
-    indirizzo: { via: 'Via Martiri della Libertà, 11', cap: '80147', comune: 'Napoli', provincia: 'NA' },
+    // **11bis**, non 11: corretto dal proprietario il 2026-11-11 (voce B16). Il
+    // mirror scriveva "11" per tutti e due gli showroom di questa via.
+    // È anche il negozio di **Home Design** (`/home-design/`): stesso posto.
+    righe: ['Via Martiri della Libertà (Home)', '11bis, 80147 – Napoli (NA)'],
+    indirizzo: { via: 'Via Martiri della Libertà, 11bis', cap: '80147', comune: 'Napoli', provincia: 'NA' },
     // lo slug dice "nola", ma la pagina è lo showroom Home di Napoli: titolo e testo lo confermano
     pagina: '/store/via-martiri-della-liberta-nola-na/',
   },
@@ -115,6 +118,20 @@ export const sedi: Sede[] = [
     indirizzo: { via: 'Via Gennaro Paparo, 74', cap: '80040', comune: 'Massa di Somma', provincia: 'NA' },
   },
 ];
+
+/**
+ * Il link che apre la sede in Google Maps (sul telefono, nell'app).
+ *
+ * Cerca l'**indirizzo**, non il nome del negozio: se la scheda Google
+ * dell'attività ha un nome diverso, una ricerca per nome può portare altrove;
+ * l'indirizzo porta sempre alla porta giusta. Formato documentato da Google
+ * ("Maps URLs", `api=1`): non serve nessuna chiave.
+ */
+export const mappaSede = (s: Sede): string => {
+  const { via, cap, comune, provincia } = s.indirizzo;
+  const query = `${via.replace(',', '')}, ${cap} ${comune} ${provincia}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+};
 
 /** Le sedi raggruppate per tipo, nell'ordine in cui appaiono nel footer. */
 export const sediPerTipo = (['Showroom', 'Ferramenta', 'Punto edile', 'Uffici'] as const).map(

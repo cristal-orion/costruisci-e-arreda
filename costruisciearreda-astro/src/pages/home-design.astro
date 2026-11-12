@@ -1,200 +1,1177 @@
 ---
 /**
- * Home Design — la landing del quinto ramo (**voce B14**).
+ * Home Design — la landing del quinto ramo (voci B14, B15, **B16**).
  *
- * Una pagina sola, non un archivio: hero, una presentazione, la galleria
- * dello store (a lamelle: vedi `GalleriaLamelle.astro`, voce B15). Il contatto lo porta il blocco "Realizza con noi il tuo
- * progetto" che il layout mette su ogni pagina, quindi qui non c'è un secondo
- * form a due scroll di distanza dal primo.
+ * Dalla voce B16 la pagina ha **un'identità sua**: un link proprio da
+ * condividere, e per decisione del proprietario non deve somigliare al resto
+ * del sito. Niente header e footer comuni (usa `BaseLayout`, non
+ * `SiteLayout`), niente Montserrat, niente rosso del gruppo: Epilogue nero, un
+ * blu notte e un rosa, e i colori delle pareti dello store. Gli stili comuni
+ * alle due pagine di Home Design sono in `styles/home-design.css`.
  *
- * **Cosa la pagina non dice, di proposito:** nessun indirizzo, orario, marchio
- * o storia. L'indirizzo di Home Design non è dichiarato nei dati del sito e non
- * va inventato (vedi `rami.ts`); i marchi dei prodotti non sono stati
- * confermati. Quando l'indirizzo c'è, si aggiunge la sede in `site.ts` e qui il
- * `schema` può dichiararla come fa `store/[slug].astro`.
+ * **L'idea:** il nome sta fermo agli angoli della finestra — "Home" in alto a
+ * sinistra, "Design" in basso a destra — mentre sotto passano gli oggetti,
+ * ognuno sul colore della parete dove è stato fotografato. Poi la collezione,
+ * quattro oggetti a tutto schermo che si aprono come un otturatore; poi
+ * l'elenco di cosa c'è in negozio, dove toccare una voce cambia foto e colore
+ * della sezione; in fondo la registrazione, sulla foto dello store.
  *
- * Le foto vengono dallo store (`Costruisci_e_Arreda_foto/`), ridotte a
- * 2000–2400px; gli `alt` sono scritti guardandole. Sono registrate in
- * `lib/immagini-locali.ts`. Le facciate e le foto con marchi leggibili sono
- * rimaste fuori.
+ * Lo scroll non viene mai dirottato: il nome fermo è `position: sticky`,
+ * l'otturatore è un'animazione CSS legata allo scroll. Lo script
+ * della pagina fa tre cose sole — sceglie il colore del nome angolo per angolo,
+ * cambia foto nell'elenco, fa salire le sezioni — e senza di lui la pagina si
+ * legge tutta.
  *
- * Testi da far rivedere al proprietario, come le meta description: descrivono
- * ciò che le foto mostrano, non promettono altro.
+ * **L'indirizzo** è quello dello Showroom Home, Via Martiri della Libertà
+ * 11bis (confermato dal proprietario, voce B16), letto da `site.ts` tramite
+ * `sedeHomeDesign`: sta nella prima schermata, nella scheda di registrazione e
+ * nel fondo, e apre Google Maps. **Cosa la pagina non dice, di proposito:**
+ * orari e marchi, che nessuno ha confermato. I testi descrivono ciò che le
+ * foto mostrano: vanno riletti dal proprietario.
  *
  * Questa è una rotta statica: vince su `[...pagina]`, che genera solo gli slug
  * di `pagineOneOff`, quindi la pagina non va aggiunta lì.
  */
+import '@fontsource-variable/epilogue/wght.css';
+import '../styles/home-design.css';
 import { Image } from 'astro:assets';
-import SiteLayout from '../layouts/SiteLayout.astro';
-import Hero from '../components/Hero.astro';
-import Titoletto from '../components/Titoletto.astro';
-import GalleriaLamelle from '../components/GalleriaLamelle.astro';
-import Button from '../components/Button.astro';
-import { immagineObbligatoria } from '../lib/immagini';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Registrazione from '../components/home-design/Registrazione.astro';
+import PiedeHD from '../components/home-design/PiedeHD.astro';
+import { fotoHD, sedeHomeDesign } from '../data/home-design';
 import { rami } from '../data/rami';
+import { FONTE, SCHEDA } from '../data/registrazione';
+import { company, mappaSede } from '../data/site';
+import { sedeLd } from '../lib/seo';
 
 const ramo = rami.find((r) => r.slug === 'home-design');
 if (!ramo) throw new Error('Il ramo "home-design" manca in data/rami.ts');
 
-const foto = (nome: string) => immagineObbligatoria(`2026/10/${nome}.jpg`, 'home-design.astro');
+const F = fotoHD;
 
-const heroImg = foto('home-design-teste-di-moro');
-const heroAlt =
-  'Due teste di moro in ceramica smaltata, nere con corone gialle, e una pigna gialla su una mensola illuminata di blu.';
-const fotoStore = foto('hero-home-design');
+/* L'indirizzo, da `site.ts`: "Via Martiri della Libertà 11bis". */
+const sede = sedeHomeDesign;
+const via = sede.indirizzo.via.replace(',', '');
+const mappa = mappaSede(sede);
+const etichettaMappa = `${via}, ${sede.indirizzo.cap} ${sede.indirizzo.comune}: apri in Google Maps`;
 
-/**
- * Nell'ordine in cui compaiono: prima il colore, poi la luce, poi i dettagli.
- * `nome` è la parola sulla lamella; `fuoco` dice dove sta il soggetto in
- * verticale, perché la lamella aperta (4:5) taglia le foto in piedi.
- */
-const galleria = [
-  { nome: 'Sedute a coniglio', fuoco: '50% 58%', src: foto('home-design-sedute-coniglio'), alt: 'Sedute a forma di coniglio lilla e sgabello nero accanto a un tavolo con un orsetto viola e sedie gialle.' },
-  { nome: 'Bulldog pop', fuoco: '50% 35%', src: foto('home-design-bulldog-pop'), alt: 'Statua di bulldog francese in stile pop con occhiali da sole, accanto a un orsetto viola.' },
-  { nome: 'Vaso a righe', fuoco: '50% 58%', src: foto('home-design-vaso-a-righe'), alt: 'Vaso in ceramica a righe bianche e nere con base verde e un mazzo di tulipani rossi, su un ripiano di vetro.' },
-  { nome: 'Orologi da parete', fuoco: '50% 50%', src: foto('home-design-orologi'), alt: 'Tre orologi da parete di grandi dimensioni, con quadrante effetto marmo e numeri romani dorati.' },
-  { nome: 'Lampada dorata', fuoco: '50% 55%', src: foto('home-design-lampada-oro'), alt: 'Lampada da tavolo dorata a forma di figura seduta, accanto a un vaso di vetro blu a coste.' },
-  { nome: 'Vasi cubisti', fuoco: '50% 50%', src: foto('home-design-vasi-cubisti'), alt: 'Vasi e volti in ceramica bianca e nera di ispirazione cubista su una mensola dorata.' },
-  { nome: 'Sedia coniglio', fuoco: '50% 72%', src: foto('home-design-coniglio-rosa'), alt: 'Sedia a forma di coniglio in velluto fucsia davanti a una parete bordeaux.' },
-  { nome: 'Carte da parati', fuoco: '50% 68%', src: foto('home-design-carte-da-parati'), alt: 'Espositore con i campioni di carta da parati, in fantasie botaniche dalle tinte scure e chiare.' },
-  { nome: 'Lampade coniglio', fuoco: '50% 50%', src: foto('home-design-lampade-coniglio'), alt: 'Due lampade da tavolo con figure di coniglio, una dorata e una bianca, con paralume chiaro e rosa.' },
-  { nome: 'Ali dorate', fuoco: '50% 38%', src: foto('home-design-ali-oro'), alt: 'Busto bianco con grandi ali dorate sopra una scaffalatura di ceramiche e oggetti decorativi, su una parete rosa.' },
-  { nome: 'Quadro dorato', fuoco: '50% 40%', src: foto('home-design-quadro-oro'), alt: 'Quadro con il ritratto di una donna con decorazioni dorate, accanto a un orologio da parete e a una scultura colorata.' },
+/* --- La collezione a sipario: quattro oggetti, quattro pareti ------------- */
+const sipario = [
+  {
+    nome: 'Bulldog pop',
+    testo: 'Un bulldog francese con gli occhiali da sole e i colori accesi. Fa sorridere chi entra.',
+    foto: F.bulldog,
+    fuoco: '50% 38%',
+    campo: 'var(--hd-senape)',
+    ink: 'var(--hd-navy)',
+  },
+  {
+    nome: 'Lampada dorata',
+    testo: 'Una figura seduta, tutta d’oro, che regge la luce. Accanto, un vaso di vetro blu a coste.',
+    foto: F.lampadaOro,
+    fuoco: '50% 55%',
+    campo: 'var(--hd-prugna)',
+    ink: 'var(--hd-rosa)',
+  },
+  {
+    nome: 'Vasi cubisti',
+    testo: 'Volti e vasi in ceramica bianca e nera, scomposti come in un quadro di inizio Novecento.',
+    foto: F.vasiCubisti,
+    fuoco: '50% 50%',
+    campo: 'var(--hd-panna)',
+    ink: 'var(--hd-navy)',
+  },
+  {
+    nome: 'Orologi da parete',
+    testo: 'Grandi quadranti effetto marmo, con i numeri romani dorati. Da soli riempiono una parete.',
+    foto: F.orologi,
+    fuoco: '50% 50%',
+    campo: 'var(--hd-nero)',
+    ink: 'var(--hd-rosa)',
+  },
+];
+
+/* --- Cosa c'è in negozio: l'elenco con la foto che cambia ----------------- */
+const elenco = [
+  { voce: 'Sedute', cosa: 'Conigli in velluto fucsia e lilla, sgabelli', foto: F.seduteConiglio, fuoco: '50% 60%', campo: 'var(--hd-sabbia)', ink: 'var(--hd-navy)' },
+  { voce: 'Ceramiche', cosa: 'Teste di moro, pigne, vasi a righe e volti cubisti', foto: F.vasoARighe, fuoco: '50% 58%', campo: 'var(--hd-senape)', ink: 'var(--hd-navy)' },
+  { voce: 'Sculture', cosa: 'Bulldog pop, busti con ali dorate, orsetti', foto: F.aliOro, fuoco: '50% 30%', campo: 'var(--hd-cipria)', ink: 'var(--hd-navy)' },
+  { voce: 'Lampade', cosa: 'Figure dorate e lampade a forma di coniglio', foto: F.lampadeConiglio, fuoco: '50% 50%', campo: 'var(--hd-panna)', ink: 'var(--hd-navy)' },
+  { voce: 'Orologi', cosa: 'Quadranti grandi, effetto marmo, numeri romani', foto: F.orologi, fuoco: '50% 50%', campo: 'var(--hd-nero)', ink: 'var(--hd-rosa)' },
+  { voce: 'Quadri', cosa: 'Ritratti con decorazioni dorate', foto: F.quadroOro, fuoco: '50% 40%', campo: 'var(--hd-bordeaux)', ink: 'var(--hd-rosa)' },
+  { voce: 'Carte da parati', cosa: 'Fantasie botaniche, in tinte scure e chiare', foto: F.carteDaParati, fuoco: '50% 62%', campo: 'var(--hd-petrolio)', ink: 'var(--hd-rosa)' },
 ];
 
 /* Il titolo sta sotto i 60 caratteri col nome del sito (55): oltre, il layout
    toglie il suffisso e il brand sparisce dal risultato di ricerca. */
 const titolo = 'Home Design: arredo e complementi';
 const descrizione =
-  'Home Design di Costruisci e Arreda: complementi d’arredo, ceramiche decorative, ' +
-  'lampade, orologi, quadri e carte da parati per dare carattere alla casa.';
+  'Home Design di Costruisci e Arreda: sedute a forma di coniglio, teste di moro, ' +
+  'lampade dorate, orologi, quadri e carte da parati per dare carattere alla casa.';
 ---
 
-<SiteLayout
+<BaseLayout
   title={titolo}
   description={descrizione}
   nomeBreve={ramo.nome}
   briciole={[]}
-  image={heroImg}
-  imageAlt={heroAlt}
+  image={F.testeDiMoro.src}
+  imageAlt={F.testeDiMoro.alt}
+  schema={[sedeLd(sede, { description: descrizione })]}
+  bodyClass="hd"
 >
-  <Hero class="hd__hero" title={ramo.nome} kicker="Store" image={heroImg} imageAlt={heroAlt} />
+  <!-- ==================== Il manifesto: il nome agli angoli ==================== -->
+  <div class="poster">
+    <h1 class="angoli" data-angoli>
+      <span class="angoli__a" data-angolo>Home</span>
+      <span class="angoli__b" data-angolo>Design</span>
+    </h1>
 
-  <section class="section hd__presentazione">
-    <div class="container hd__duePer">
+    <section class="apertura" data-campo style="--campo: var(--hd-navy); --ink: var(--hd-rosa)" aria-label="Home Design">
       <Image
-        class="hd__fotoStore"
-        src={fotoStore}
-        alt={ramo.fotoAlt}
-        widths={[480, 720, 1080]}
-        sizes="(min-width: 992px) 46vw, 92vw"
+        class="apertura__foto"
+        src={F.coniglioRosa.src}
+        alt={F.coniglioRosa.alt}
+        widths={[480, 720, 960, 1280]}
+        sizes="(min-width: 769px) 42vw, 100vw"
+        format="webp"
+        quality={78}
+        loading="eager"
+        fetchpriority="high"
+        style="object-position: 50% 62%"
+      />
+      <div class="apertura__testo">
+        <p class="apertura__frase">
+          Conigli di velluto, teste di moro, ali dorate: oggetti scelti per non passare
+          inosservati.
+        </p>
+        <p class="apertura__azioni">
+          <a class="hd-bottone" href={mappa} target="_blank" rel="noopener" aria-label={etichettaMappa}>
+            Come arrivare <span aria-hidden="true">↗</span>
+          </a>
+          <a class="hd-link" href="#registrati">Lascia la tua email <span aria-hidden="true">→</span></a>
+        </p>
+      </div>
+      <nav class="apertura__nav" aria-label="Sezioni della pagina">
+        <a href="#collezione">Collezione</a>
+        <a href="#in-negozio">In negozio</a>
+        <a href="#dove">Dove siamo</a>
+        <a href="#registrati">Registrati</a>
+      </nav>
+      <p class="apertura__gruppo">
+        <a class="apertura__indirizzo" href={mappa} target="_blank" rel="noopener" aria-label={etichettaMappa}>
+          {via}, {sede.indirizzo.comune} <span aria-hidden="true">↗</span>
+        </a>
+        <span>Un negozio <a href="/">Costruisci &amp; Arreda</a></span>
+      </p>
+    </section>
+
+    <section class="pannello" data-campo style="--campo: var(--hd-cipria); --ink: var(--hd-navy)" aria-label="Ali dorate">
+      <figure class="pannello__figura">
+        <Image
+          class="pannello__foto"
+          src={F.aliOro.src}
+          alt={F.aliOro.alt}
+          widths={[480, 720, 960]}
+          sizes="(min-width: 769px) 36vw, 92vw"
+          format="webp"
+          quality={78}
+          loading="lazy"
+          decoding="async"
+          style="object-position: 50% 22%"
+        />
+        <figcaption>Ali dorate su una parete rosa cipria.</figcaption>
+      </figure>
+    </section>
+
+  </div>
+
+  <!-- ==================== Che cos'è ==================== -->
+  <section class="intro" data-campo style="--campo: var(--hd-petrolio); --ink: var(--hd-rosa)" aria-labelledby="intro-titolo">
+    <h2 class="visually-hidden" id="intro-titolo">Che cos’è Home Design</h2>
+    <div class="intro__colonna">
+    <p class="intro__frase" data-entra>
+      Home Design è il negozio di Costruisci &amp; Arreda per gli oggetti che danno carattere a
+      una stanza.
+    </p>
+    <div class="intro__testo" data-entra>
+      <p>
+        Complementi d’arredo, ceramiche decorative, lampade, orologi da parete, quadri e un
+        campionario di carte da parati.
+      </p>
+      <p>
+        Vieni a vederli dal vivo: i nostri consulenti ti aiutano ad abbinarli a pavimenti,
+        rivestimenti e finiture, dal singolo pezzo al progetto completo.
+      </p>
+      <p>
+        <a class="hd-link" href="/services/consulenza-finiture/">La consulenza sulle finiture <span aria-hidden="true">→</span></a>
+      </p>
+    </div>
+    </div>
+    <figure class="intro__figura" data-entra>
+      <Image
+        class="intro__foto"
+        src={F.testeDiMoro.src}
+        alt={F.testeDiMoro.alt}
+        widths={[640, 960, 1280, 1600]}
+        sizes="(min-width: 769px) 50vw, 100vw"
         format="webp"
         quality={78}
         loading="lazy"
         decoding="async"
-        style={ramo.fuoco ? `object-position: ${ramo.fuoco}` : undefined}
       />
-      <div class="hd__testo">
-        <Titoletto as="h2" size="sm" tone="muted">Dettagli che cambiano una stanza</Titoletto>
-        <p class="hd__paragrafo">
-          Home Design raccoglie quello che rende una casa riconoscibile: complementi
-          d’arredo, ceramiche decorative, lampade, orologi da parete, quadri e un
-          campionario di carte da parati.
-        </p>
-        <p class="hd__paragrafo">
-          Vieni a vedere gli oggetti dal vivo. I nostri consulenti ti aiutano ad abbinarli
-          a pavimenti, rivestimenti e finiture, dal singolo pezzo al progetto completo.
-        </p>
-        <p class="hd__azioni">
-          <Button href="/contatti/" variant="solid">Contattaci</Button>
-          <Button href="/services/consulenza-finiture/" variant="outline-dark">
-            Consulenza finiture
-          </Button>
-        </p>
-      </div>
+      <figcaption>Teste di moro in ceramica, con le corone gialle.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ==================== La collezione ==================== -->
+  <section class="sipario" id="collezione" aria-labelledby="collezione-titolo">
+    <h2 class="visually-hidden" id="collezione-titolo">La collezione</h2>
+    {
+      sipario.map((o, i) => (
+        <article
+          class:list={['telo', { 'telo--destra': i % 2 === 1 }]}
+          data-campo
+          style={`--campo: ${o.campo}; --ink: ${o.ink}`}
+        >
+          <Image
+            class="telo__foto"
+            src={o.foto.src}
+            alt={o.foto.alt}
+            widths={[640, 960, 1280]}
+            sizes="(min-width: 769px) 50vw, 100vw"
+            format="webp"
+            quality={78}
+            loading="lazy"
+            decoding="async"
+            style={`object-position: ${o.fuoco}`}
+          />
+          <div class="telo__testo">
+            <h3 data-entra>{o.nome}</h3>
+            <p data-entra>{o.testo}</p>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <!-- ==================== Cosa trovi in negozio ==================== -->
+  <section
+    class="elenco"
+    id="in-negozio"
+    data-campo
+    data-elenco
+    style={`--campo: ${elenco[0].campo}; --ink: ${elenco[0].ink}`}
+    aria-labelledby="elenco-titolo"
+  >
+    <div class="elenco__cornice" aria-hidden="true">
+      {
+        elenco.map((r, i) => (
+          <Image
+            class:list={['elenco__foto', { 'is-on': i === 0 }]}
+            data-elenco-foto={i}
+            src={r.foto.src}
+            alt=""
+            widths={[480, 720, 960]}
+            sizes="(min-width: 769px) 40vw, 100vw"
+            format="webp"
+            quality={76}
+            loading="lazy"
+            decoding="async"
+            style={`object-position: ${r.fuoco}`}
+          />
+        ))
+      }
+    </div>
+    <div class="elenco__lista">
+      <h2 id="elenco-titolo" data-entra>Cosa trovi in negozio</h2>
+      <p class="elenco__aiuto" data-entra>Tocca una voce per vederla.</p>
+      <ul>
+        {
+          elenco.map((r, i) => (
+            <li>
+              <button
+                type="button"
+                class="elenco__riga"
+                data-elenco-voce={i}
+                data-campo-voce={r.campo}
+                data-ink-voce={r.ink}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+              >
+                <span class="elenco__voce">{r.voce}</span>
+                <span class="elenco__cosa">{r.cosa}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
-  <!-- Sfondo scuro: le foto sono colorate e a luci spente risaltano. -->
-  <section class="section section--dark hd__galleria">
-    <div class="container">
-      <Titoletto as="h2" size="sm" tone="light" class="hd__galleriaTitolo">Dentro lo store</Titoletto>
+  <!-- ==================== Dove siamo: il negozio ==================== -->
+  <section class="dove" id="dove" data-campo style="--campo: var(--hd-bordeaux); --ink: var(--hd-rosa)" aria-labelledby="dove-titolo">
+    <div class="dove__testo">
+      <h2 id="dove-titolo" data-entra>Ti aspettiamo in negozio</h2>
+      <p data-entra>
+        Velluto, ceramica smaltata, oro sotto le luci: certe cose vanno viste dal vivo.
+      </p>
+      <p class="dove__indirizzo" data-entra>
+        <a href={mappa} target="_blank" rel="noopener" aria-label={etichettaMappa}>
+          {via}<br />{sede.indirizzo.cap} {sede.indirizzo.comune} ({sede.indirizzo.provincia})
+        </a>
+      </p>
+      <p class="dove__azioni" data-entra>
+        <a class="hd-bottone" href={mappa} target="_blank" rel="noopener" aria-label={etichettaMappa}>
+          Portami in negozio <span aria-hidden="true">↗</span>
+        </a>
+        <a class="hd-link" href={`tel:${company.phone}`}>Chiama il {company.phoneLabel}</a>
+      </p>
     </div>
-    <GalleriaLamelle items={galleria} label="Galleria fotografica di Home Design" />
+    <figure class="dove__ampia" data-entra>
+      <Image
+        src={F.negozioAli.src}
+        alt={F.negozioAli.alt}
+        widths={[640, 960, 1280]}
+        sizes="(min-width: 769px) 50vw, 100vw"
+        format="webp"
+        quality={76}
+        loading="lazy"
+        decoding="async"
+        style="object-position: 40% 50%"
+      />
+      <figcaption>Le ali dorate e le nicchie ad arco.</figcaption>
+    </figure>
+    <figure class="dove__alta" data-entra>
+      <Image
+        src={F.negozioVetrate.src}
+        alt={F.negozioVetrate.alt}
+        widths={[480, 720, 960]}
+        sizes="(min-width: 769px) 38vw, 100vw"
+        format="webp"
+        quality={76}
+        loading="lazy"
+        decoding="async"
+        style="object-position: 30% 60%"
+      />
+      <figcaption>Verso le vetrate, fra i conigli di velluto.</figcaption>
+    </figure>
   </section>
-</SiteLayout>
+
+  <!-- ==================== Registrazione ==================== -->
+  <section class="registrati" id="registrati" aria-labelledby="registrati-titolo">
+    <Image
+      class="registrati__foto"
+      src={F.store.src}
+      alt={F.store.alt}
+      widths={[960, 1440, 1920]}
+      sizes="100vw"
+      format="webp"
+      quality={74}
+      loading="lazy"
+      decoding="async"
+      style="object-position: 50% 46%"
+    />
+    <div class="registrati__scheda">
+      <h2 id="registrati-titolo">Restiamo in contatto</h2>
+      <p class="registrati__testo">
+        Lasciaci la tua email: ti scriviamo quando arrivano pezzi nuovi in negozio.
+      </p>
+      <Registrazione fonte={FONTE.landing} scheda={SCHEDA.sito} id="registrazione-landing" />
+      <p class="registrati__dove">
+        Oppure vieni a trovarci:{' '}
+        <a href={mappa} target="_blank" rel="noopener" aria-label={etichettaMappa}>
+          {via}, {sede.indirizzo.cap} {sede.indirizzo.comune}
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <PiedeHD
+    slot="footer"
+    foto={F.lampadeConiglio.src}
+    fotoAlt={F.lampadeConiglio.alt}
+    fuoco="50% 40%"
+    sede={sede}
+    voci={[
+      { testo: 'Collezione', href: '#collezione' },
+      { testo: 'In negozio', href: '#in-negozio' },
+      { testo: 'Dove siamo', href: '#dove' },
+      { testo: 'Registrati', href: '#registrati' },
+      { testo: 'Costruisci & Arreda', href: '/' },
+    ]}
+  />
+</BaseLayout>
 
 <style>
-  /* La velatura dell'`Hero` è un 45% nero solo in basso. Su questa foto il
-     titolo bianco cade sulla pigna e sulle corone gialle: misurato, il
-     contrasto stava fra 1,9 e 2,4 a 1 sul primo percentile, sotto il 3 a 1 del
-     testo grande. Qui la foto è un po' scurita e il velo è più denso dalla
-     parte del titolo. Vale solo per questa pagina: le altre foto dell'hero non
-     ne hanno bisogno.
-     `:global` perché il `<section>` appartiene a `Hero` e porta solo il suo
-     identificatore di scope, non quello della pagina: un selettore scoped qui
-     non lo raggiunge (verificato: la prima versione non cambiava un pixel). */
-  :global(section.hero.hd__hero .hero__img) {
-    filter: brightness(0.92);
-  }
-  :global(section.hero.hd__hero.hero--scrim)::after {
-    background:
-      linear-gradient(to top, rgb(0 0 0 / 50%) 0%, rgb(0 0 0 / 0%) 65%),
-      linear-gradient(to right, rgb(0 0 0 / 30%) 0%, rgb(0 0 0 / 0%) 65%);
-  }
-  /* Sul telefono l'hero è basso e il titolo sta a metà altezza, non in fondo:
-     il velo va lungo tutta la foto. */
-  @media (max-width: 768px) {
-    :global(section.hero.hd__hero.hero--scrim)::after {
-      background: linear-gradient(to top, rgb(0 0 0 / 62%) 0%, rgb(0 0 0 / 34%) 100%);
-    }
+  /* =================== Il nome agli angoli =================== */
+  .poster {
+    position: relative;
   }
 
-  .hd__duePer {
+  /* Il livello fermo: alto quanto la finestra, tolto dal flusso con il margine
+     negativo, sopra i pannelli e trasparente ai clic. Resta fermo finché dura
+     `.poster` (tre schermate), poi se ne va con lei. */
+  .angoli {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    height: 100svh;
+    margin-bottom: -100svh;
+    pointer-events: none;
+    font-size: var(--hd-t-nome);
+    line-height: 0.85;
+  }
+  .angoli__a,
+  .angoli__b {
+    position: absolute;
+    color: var(--hd-rosa);
+    transition: color 260ms ease;
+  }
+  .angoli__a {
+    top: var(--hd-margine);
+    left: var(--hd-margine);
+  }
+  .angoli__b {
+    right: var(--hd-margine);
+    bottom: var(--hd-margine);
+  }
+
+  /* Ogni schermata ha la sua parete. */
+  [data-campo] {
+    color: var(--ink);
+    background: var(--campo);
+  }
+
+  /* Lo spazio che il nome occupa in basso: la foto si ferma sopra. */
+  .poster {
+    --zona-nome: calc(var(--hd-t-nome) * 0.85 + var(--hd-margine) * 2 + 12px);
+  }
+
+  /* --- La prima schermata --- */
+  .apertura {
+    position: relative;
     display: grid;
-    gap: var(--s-12);
-    align-items: center;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--hd-margine);
+    height: 100svh;
+    min-height: 620px;
+    padding: 0 var(--hd-margine);
   }
-  @media (min-width: 992px) {
-    .hd__duePer {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--s-20);
-    }
-  }
-
-  .hd__fotoStore {
-    width: 100%;
-    /* la foto è verticale: tagliata a 4:5 non diventa un muro di 840px */
-    aspect-ratio: 4 / 5;
+  /* La foto pende dall'alto e si ferma sopra "Design": il nome non passa mai
+     sopra la foto, e resta leggibile in un colore solo. */
+  .apertura__foto {
+    grid-column: 8 / -1;
+    grid-row: 1;
+    width: calc(100% + var(--hd-margine));
+    height: calc(100% - var(--zona-nome));
     object-fit: cover;
   }
-
-  .hd__testo {
+  .apertura__testo {
+    grid-column: 2 / 7;
+    grid-row: 1;
+    align-self: start;
+    margin-top: 40svh;
     display: grid;
-    gap: var(--s-6);
-    align-content: start;
+    gap: 32px;
   }
-  /* Il titolo sta nella colonna destra: la riga del titoletto, che di norma
-     sfonda fino al bordo della finestra, attraverserebbe la foto (voce B05).
-     Contenuta solo da 992px, dove le due colonne esistono davvero. */
-  @media (min-width: 992px) {
-    .hd__testo {
-      --titoletto-rule-width: 100%;
-    }
+  .apertura__frase {
+    max-width: 30ch;
+    font-size: var(--hd-t-lead);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
   }
-  .hd__paragrafo {
-    margin: 0;
-    font-size: var(--t-base);
-    line-height: var(--t-base-lh);
-  }
-  .hd__azioni {
+  .apertura__azioni {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--s-4);
-    margin: var(--s-4) 0 0;
+    gap: 16px 28px;
+    align-items: center;
+  }
+  .apertura__nav {
+    grid-column: 7;
+    grid-row: 1;
+    align-self: center;
+    justify-self: end;
+    display: grid;
+    gap: 10px;
+    text-align: right;
+    font-size: var(--hd-t-piccolo);
+    font-weight: 500;
+  }
+  .apertura__nav a {
+    text-decoration: none;
+  }
+  .apertura__nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .apertura__gruppo {
+    position: absolute;
+    left: var(--hd-margine);
+    bottom: var(--hd-margine);
+    display: grid;
+    gap: 6px;
+    font-size: var(--hd-t-piccolo);
+    font-weight: 500;
+  }
+  .apertura__gruppo a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  /* L'indirizzo a misura di testo: è la cosa che serve per venire in negozio. */
+  .apertura__gruppo .apertura__indirizzo {
+    font-size: var(--hd-t-testo);
+    font-weight: 700;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
+  }
+  .apertura__indirizzo span {
+    display: inline-block;
+    transition: transform 200ms var(--hd-ease);
+  }
+  .apertura__indirizzo:hover span {
+    transform: translate(3px, -3px);
   }
 
-  .hd__galleriaTitolo {
-    margin-bottom: var(--s-15);
+  /* --- I due pannelli che passano sotto il nome --- */
+  .pannello {
+    position: relative;
+    height: 100svh;
+    min-height: 620px;
+  }
+  .pannello__figura {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    /* stretta abbastanza da non arrivare sotto "Home", che finisce a un
+       terzo della larghezza */
+    width: min(32vw, 540px);
+    height: calc(100% - var(--zona-nome));
+    margin: 0;
+    transform: translateX(-50%);
+  }
+  .pannello__foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* La didascalia va nell'angolo libero, in basso a sinistra. */
+  .pannello__figura figcaption {
+    position: absolute;
+    bottom: calc(-1 * var(--zona-nome) + var(--hd-margine));
+    left: calc(var(--hd-margine) - 50vw + 50%);
+    max-width: 26ch;
+    font-size: var(--hd-t-piccolo);
+    font-weight: 500;
+  }
+
+  /* =================== Che cos'è =================== */
+  .intro {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--hd-margine);
+    row-gap: 48px;
+    padding: clamp(96px, 14vw, 200px) var(--hd-margine);
+  }
+  /* Frase e testo in una colonna sola, centrata sulla foto: in due righe
+     della griglia, la foto alta le allargava e apriva un vuoto fra le due. */
+  .intro__colonna {
+    grid-column: 1 / 7;
+    align-self: center;
+    display: grid;
+    gap: 32px;
+  }
+  .intro__frase {
+    max-width: 34ch;
+    font-size: var(--hd-t-lead);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .intro__testo {
+    display: grid;
+    gap: 18px;
+    max-width: 52ch;
+  }
+  .intro__figura {
+    grid-column: 7 / -1;
+    align-self: center;
+    margin: 0 calc(-1 * var(--hd-margine)) 0 0;
+  }
+  .intro__foto {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+  .intro__figura figcaption {
+    margin-top: 14px;
+    font-size: var(--hd-t-piccolo);
+    font-weight: 500;
+  }
+
+  /* =================== La collezione =================== */
+  /* Quattro schermate, foto da una parte e parete dall'altra, a lati
+     alterni. Entrando, la foto si apre come un otturatore (sotto, legato allo
+     scroll). Prima era un sipario di teli fermi uno sull'altro: ogni telo
+     copriva il titolo del precedente, e l'ispettore lo ha misurato come testo
+     coperto. */
+  .telo {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100svh;
+    min-height: 560px;
+    overflow: hidden;
+  }
+  .telo__foto {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+  }
+  .telo--destra .telo__foto {
+    order: 2;
+  }
+  .telo__testo {
+    display: grid;
+    align-content: end;
+    gap: 22px;
+    padding: var(--hd-margine) clamp(28px, 6vw, 96px) clamp(48px, 9vh, 96px);
+  }
+  .telo__testo h3 {
+    font-size: var(--hd-t-titolo);
+  }
+  .telo__testo p {
+    max-width: 30ch;
+    font-size: var(--hd-t-lead);
+    line-height: 1.35;
+  }
+
+  /* L'otturatore: solo dove il browser sa legare un'animazione allo scroll
+     (`animation-timeline: view()`), e solo con movimento non ridotto. Altrove
+     la foto è semplicemente lì. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .telo__foto {
+        animation: otturatore linear both;
+        animation-timeline: view();
+        animation-range: entry 5% cover 42%;
+      }
+    }
+  }
+  @keyframes otturatore {
+    from {
+      clip-path: inset(16% 12% 16% 12%);
+      transform: scale(1.1);
+    }
+    to {
+      clip-path: inset(0);
+      transform: scale(1);
+    }
+  }
+
+  /* La prima foto scende dall'alto come una tela appesa. */
+  @media (prefers-reduced-motion: no-preference) {
+    .apertura__foto {
+      animation: tela 1100ms var(--hd-ease) 120ms both;
+    }
+  }
+  @keyframes tela {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+
+  /* =================== L'elenco con la foto =================== */
+  .elenco {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--hd-margine);
+    padding: clamp(96px, 12vw, 180px) var(--hd-margine);
+    transition:
+      background-color 450ms ease,
+      color 450ms ease;
+  }
+  .elenco__cornice {
+    position: sticky;
+    top: 9svh;
+    grid-column: 1 / 6;
+    align-self: start;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    max-height: 82svh;
+    overflow: hidden;
+  }
+  .elenco__foto {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.04);
+    transition:
+      opacity 420ms ease,
+      transform 900ms var(--hd-ease);
+  }
+  .elenco__foto.is-on {
+    opacity: 1;
+    transform: none;
+  }
+  .elenco__lista {
+    grid-column: 7 / -1;
+    display: grid;
+    align-content: start;
+    gap: 20px;
+  }
+  .elenco__lista h2 {
+    font-size: var(--hd-t-titolo);
+  }
+  .elenco__aiuto {
+    margin-bottom: 28px;
+    font-size: var(--hd-t-piccolo);
+    font-weight: 500;
+  }
+  .elenco__riga {
+    display: grid;
+    grid-template-columns: 38% 1fr;
+    gap: 20px;
+    width: 100%;
+    padding: 14px 0;
+    font: inherit;
+    font-size: var(--hd-t-lead);
+    line-height: 1.2;
+    text-align: left;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition:
+      opacity 220ms ease,
+      transform 220ms var(--hd-ease);
+  }
+  .elenco__voce {
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .elenco__riga[aria-pressed='true'] .elenco__voce {
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .elenco ul:hover .elenco__riga:not(:hover) {
+      opacity: 0.55;
+    }
+    .elenco__riga:hover {
+      transform: translateX(8px);
+    }
+  }
+  .elenco__riga:active {
+    transform: translateX(4px) scale(0.99);
+  }
+
+  /* =================== Registrazione =================== */
+  .registrati {
+    position: relative;
+    display: grid;
+    justify-items: end;
+    align-items: start;
+    min-height: 100svh;
+    padding: 60px var(--hd-margine);
+  }
+  .registrati__foto {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .registrati__scheda {
+    position: relative;
+    width: min(480px, 100%);
+    padding: 36px 32px 32px;
+    color: var(--hd-navy);
+    background: var(--hd-rosa);
+  }
+  .registrati__scheda h2 {
+    margin-bottom: 14px;
+    font-size: var(--hd-t-sotto);
+  }
+  .registrati__testo {
+    margin-bottom: 26px;
+  }
+  .registrati__dove {
+    margin-top: 26px;
+  }
+  .registrati__dove a {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* =================== Dove siamo =================== */
+  /* Testo e foto larga a sinistra, foto alta a destra: un'altra geometria
+     rispetto all'elenco prima e alla foto a tutta pagina dopo. */
+  .dove {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: auto 1fr;
+    column-gap: var(--hd-margine);
+    row-gap: 56px;
+    padding: 120px var(--hd-margine);
+  }
+  .dove__testo {
+    grid-column: 1 / 7;
+    grid-row: 1;
+    display: grid;
+    gap: 22px;
+  }
+  .dove__testo > p {
+    max-width: 36rem;
+  }
+  .dove__testo h2 {
+    font-size: var(--hd-t-titolo);
+  }
+  .dove__indirizzo {
+    margin-top: 10px;
+    font-size: var(--hd-t-lead);
+    font-weight: 800;
+    line-height: 1.25;
+  }
+  .dove__indirizzo a {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+  .dove__indirizzo a:hover {
+    text-decoration-thickness: 4px;
+  }
+  .dove__azioni {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 28px;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .dove figure {
+    margin: 0;
+  }
+  .dove figure :global(img) {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+  }
+  .dove figcaption {
+    margin-top: 14px;
+    font-size: var(--hd-t-piccolo);
+    font-weight: 500;
+  }
+  .dove__ampia {
+    grid-column: 1 / 7;
+    grid-row: 2;
+    align-self: end;
+  }
+  .dove__ampia :global(img) {
+    aspect-ratio: 3 / 2;
+  }
+  .dove__alta {
+    grid-column: 8 / -1;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+  }
+  .dove__alta :global(img) {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+  }
+
+  /* =================== Telefono =================== */
+  @media (max-width: 768px) {
+    /* Il nome sta in una fascia in cima, "Home" a sinistra e "Design" a
+       destra, con il colore della parete che ci passa sotto. Agli angoli
+       opposti, su uno schermo stretto, coprirebbe il testo. */
+    .angoli {
+      --fascia: calc(12vw * 0.85 + 28px);
+      height: var(--fascia);
+      margin-bottom: calc(-1 * var(--fascia));
+      font-size: 12vw;
+      background: var(--angoli-fondo, var(--hd-navy));
+      transition: background-color 260ms ease;
+    }
+    .angoli__a {
+      top: 14px;
+      left: 16px;
+    }
+    .angoli__b {
+      top: 14px;
+      right: 16px;
+      bottom: auto;
+    }
+
+    .apertura {
+      display: flex;
+      flex-direction: column;
+      height: auto;
+      min-height: 0;
+      padding: calc(12vw * 0.85 + 28px) 0 56px;
+    }
+    .apertura__foto {
+      width: 100%;
+      height: 56svh;
+    }
+    .apertura__testo {
+      margin: 32px 16px 0;
+      gap: 26px;
+    }
+    .apertura__nav {
+      display: none;
+    }
+    .apertura__gruppo {
+      position: static;
+      margin: 36px 16px 0;
+    }
+
+    .pannello {
+      height: auto;
+      min-height: 0;
+      padding: calc(12vw * 0.85 + 44px) 16px 48px;
+    }
+    .pannello__figura {
+      position: static;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      transform: none;
+    }
+    .pannello__foto {
+      height: auto;
+      aspect-ratio: 4 / 5;
+    }
+    .pannello__figura figcaption {
+      position: static;
+      margin-top: 14px;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      padding: 96px 16px;
+    }
+    .intro__figura {
+      margin: 0 -16px;
+    }
+    .intro__figura figcaption {
+      padding: 0 16px;
+    }
+
+    /* Sul telefono il pannello è alto quanto foto e testo: a tutta altezza,
+       sotto le tre righe di testo restava mezzo schermo di colore vuoto. */
+    .telo {
+      grid-template-columns: 1fr;
+      grid-template-rows: 62svh auto;
+      height: auto;
+      min-height: 0;
+    }
+    .telo--destra .telo__foto {
+      order: 0;
+    }
+    .telo__testo {
+      align-content: start;
+      gap: 14px;
+      padding: 26px 16px 56px;
+    }
+
+    /* Titolo, poi la foto che resta in cima, poi le voci che le scorrono
+       sotto: con la foto prima del titolo, la foto ferma lo copriva. */
+    .elenco {
+      display: flex;
+      flex-direction: column;
+      padding: 88px 0 96px;
+    }
+    .elenco__lista {
+      display: contents;
+    }
+    .elenco__lista h2,
+    .elenco__aiuto {
+      order: -2;
+      padding: 0 16px;
+    }
+    .elenco__lista h2 {
+      margin-bottom: 14px;
+    }
+    .elenco__cornice {
+      order: -1;
+      top: 0;
+      z-index: 1;
+      height: 44svh;
+      max-height: none;
+      aspect-ratio: auto;
+    }
+    .elenco ul {
+      padding: 20px 16px 0;
+    }
+    .elenco__riga {
+      grid-template-columns: 1fr;
+      gap: 4px;
+      padding: 12px 0;
+    }
+    .elenco__cosa {
+      font-size: var(--hd-t-testo);
+    }
+
+    .dove {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 88px 16px 96px;
+    }
+    .dove__alta :global(img) {
+      flex: none;
+      height: auto;
+      aspect-ratio: 4 / 5;
+    }
+
+    .registrati {
+      display: block;
+      min-height: 0;
+      padding: 0 16px 64px;
+    }
+    .registrati__foto {
+      position: relative;
+      inset: auto;
+      width: calc(100% + 32px);
+      height: 62svh;
+      margin: 0 -16px;
+    }
+    .registrati__scheda {
+      width: 100%;
+      margin-top: -80px;
+      padding: 28px 20px 24px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .elenco,
+    .elenco__foto,
+    .angoli,
+    .angoli__a,
+    .angoli__b {
+      transition: none;
+    }
+    .elenco__foto {
+      transform: none;
+    }
   }
 </style>
+
+<script>
+  /**
+   * Tre cose, e la pagina si legge anche senza:
+   *  1. il colore del nome, angolo per angolo, preso dalla parete che ci sta
+   *     sotto in quel momento (rosa sul blu, blu sul rosa cipria…);
+   *  2. l'elenco "Cosa trovi in negozio": una voce cambia foto e colore;
+   *  3. gli ingressi delle sezioni.
+   */
+  const ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- 1. Il nome agli angoli --- */
+  const strato = document.querySelector<HTMLElement>('[data-angoli]');
+  const angoli = [...document.querySelectorAll<HTMLElement>('[data-angolo]')];
+  const telefono = matchMedia('(max-width: 768px)');
+
+  /* Il livello dei nomi ha `pointer-events: none`, quindi `elementsFromPoint`
+     lo salta e trova la parete che sta sotto. */
+  const pareteSotto = (x: number, y: number) =>
+    document
+      .elementsFromPoint(x, y)
+      .map((el) => el.closest<HTMLElement>('[data-campo]'))
+      .find(Boolean) ?? null;
+
+  let inAttesa = false;
+  const coloraAngoli = () => {
+    inAttesa = false;
+    if (!strato) return;
+    if (telefono.matches) {
+      const r = strato.getBoundingClientRect();
+      const parete = pareteSotto(innerWidth / 2, r.bottom + 2);
+      if (!parete) return;
+      const stile = getComputedStyle(parete);
+      strato.style.setProperty('--angoli-fondo', stile.backgroundColor);
+      for (const a of angoli) a.style.color = stile.color;
+      return;
+    }
+    strato.style.removeProperty('--angoli-fondo');
+    for (const a of angoli) {
+      const r = a.getBoundingClientRect();
+      const parete = pareteSotto(r.left + r.width / 2, r.top + r.height / 2);
+      if (parete) a.style.color = getComputedStyle(parete).color;
+    }
+  };
+  const chiedi = () => {
+    if (!inAttesa) {
+      inAttesa = true;
+      requestAnimationFrame(coloraAngoli);
+    }
+  };
+  addEventListener('scroll', chiedi, { passive: true });
+  addEventListener('resize', chiedi);
+  coloraAngoli();
+
+  /* --- 2. L'elenco --- */
+  const elenco = document.querySelector<HTMLElement>('[data-elenco]');
+  if (elenco) {
+    const voci = [...elenco.querySelectorAll<HTMLButtonElement>('[data-elenco-voce]')];
+    const foto = [...elenco.querySelectorAll<HTMLElement>('[data-elenco-foto]')];
+    const mostra = (i: number) => {
+      voci.forEach((v, j) => v.setAttribute('aria-pressed', String(i === j)));
+      foto.forEach((f, j) => f.classList.toggle('is-on', i === j));
+      elenco.style.setProperty('--campo', voci[i].dataset.campoVoce!);
+      elenco.style.setProperty('--ink', voci[i].dataset.inkVoce!);
+      chiedi();
+    };
+    voci.forEach((v, i) => {
+      v.addEventListener('click', () => mostra(i));
+      v.addEventListener('focus', () => mostra(i));
+      /* col mouse basta passarci sopra; un'attesa breve evita di cambiare
+         sei volte attraversando l'elenco di corsa */
+      let t = 0;
+      v.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        t = window.setTimeout(() => mostra(i), 70);
+      });
+      v.addEventListener('pointerleave', () => clearTimeout(t));
+    });
+  }
+
+  /* --- 3. Gli ingressi --- */
+  if (!ridotto && 'IntersectionObserver' in window) {
+    const sotto = [...document.querySelectorAll<HTMLElement>('[data-entra]')].filter(
+      (el) => el.getBoundingClientRect().top > innerHeight,
+    );
+    /* fratelli dello stesso blocco: uno dopo l'altro, 80ms di scarto */
+    const gruppi = new Map<Element | null, number>();
+    for (const el of sotto) {
+      const n = gruppi.get(el.parentElement) ?? 0;
+      gruppi.set(el.parentElement, n + 1);
+      el.style.setProperty('--ritardo', `${n * 80}ms`);
+      el.dataset.entra = 'attesa';
+    }
+    const io = new IntersectionObserver(
+      (voci) => {
+        for (const v of voci) {
+          if (!v.isIntersecting) continue;
+          (v.target as HTMLElement).dataset.entra = 'dentro';
+          io.unobserve(v.target);
+        }
+      },
+      { rootMargin: '0px 0px -12% 0px' },
+    );
+    sotto.forEach((el) => io.observe(el));
+  }
+</script>
