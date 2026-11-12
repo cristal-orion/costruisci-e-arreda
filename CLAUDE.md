@@ -46,8 +46,8 @@
 > (`gid=1058875551`), pagina del QR → "Codice QR negozio" (`gid=659565949`), campo
 > `_scheda`. **Repo pubblico: mai l'ID del foglio nel codice.** Collegato: progetto Apps Script
 > a parte nell'account Two Bee (il foglio è del cliente, Two Bee è editor), ID nella proprietà
-> `ID_FOGLIO`, URL `/exec` in `registrazione.ts`. Mancano i due QR (ads → `/home-design/`,
-> negozio → `/home-design/registrati/`). Da decidere: link o 301 fra la vecchia pagina dello
+> `ID_FOGLIO`, URL `/exec` in `registrazione.ts`. QR fatti in `Landing HomeDesigh/qr/`: ads →
+> `/home-design/?fonte=qr-ads`, negozio → `/home-design/registrati/`. Provato dal vivo il 2026-11-12. Da decidere: link o 301 fra la vecchia pagina dello
 > store `/store/via-martiri-della-liberta-nola-na/` e la landing.
 > **Sessione precedente: 2026-09-14.** **Fase A completa** (52 rotte, tutti i 56 URL
 > indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B in corso**: la

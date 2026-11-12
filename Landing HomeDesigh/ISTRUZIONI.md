@@ -132,16 +132,21 @@ limitazioni"** e aggiungi per nome solo le persone che devono vederlo.
 
 ## 2. I QR
 
-Due QR, uno per pagina:
+Due QR, uno per pagina, in `qr/`:
 
-| QR | Indirizzo | Dove va |
-|---|---|---|
-| **Pubblicità** | `https://costruisciearreda.it/home-design/` | nelle ads e nei materiali fuori dal negozio → scheda "sito" |
-| **Negozio** | `https://costruisciearreda.it/home-design/registrati/` | sul banco e in vetrina → scheda "negozio" |
+| QR | File | Indirizzo | Dove va |
+|---|---|---|---|
+| **Pubblicità** | `qr-home-design-ads.*` | `https://costruisciearreda.it/home-design/?fonte=qr-ads` | nelle ads e nei materiali fuori dal negozio → scheda "sito", fonte `qr-ads` |
+| **Negozio** | `qr-home-design-negozio.*` | `https://costruisciearreda.it/home-design/registrati/` | sul banco e in vetrina → scheda "negozio", fonte `qr-negozio` |
 
-I file stanno in `qr/`, in tre versioni ognuno: SVG per la stampa a qualsiasi
-misura, PNG 2000×2000 blu notte su bianco, PNG nero su bianco. Correzione
-d'errore "Q": regge anche se il cartello si rovina un po'.
+Ogni QR in tre versioni: `.svg` per la stampa a qualsiasi misura, `.png`
+2000×2000 blu notte su bianco, `-bn.png` nero su bianco. Riletti tutti con un
+lettore di QR, anche ridotti a 160 px. Correzione d'errore "Q": reggono anche
+se il cartello si rovina un po'.
+
+Il `?fonte=qr-ads` serve a distinguere, nella scheda "sito", chi ha
+inquadrato il QR della pubblicità (`qr-ads`) da chi è arrivato alla landing
+in un altro modo (`landing-home-design`).
 
 **Per la stampa:** almeno **3×3 cm**, meglio 5×5 su un cartello da banco.
 Lascia il bordo bianco intorno così com'è: senza, i telefoni fanno fatica a

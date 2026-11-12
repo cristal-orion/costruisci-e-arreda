@@ -3056,3 +3056,16 @@ schede: queste due e le due "Cartaceo".
 - **Dipendenza da ricordare:** lo script scrive come l'account Two Bee. Se
   quell'account perde il permesso di modifica sul foglio, le registrazioni si
   fermano.
+
+### 2026-11-12 — prova dal vivo e QR
+
+- Una registrazione vera da ogni pagina pubblicata (`?fonte=prova-claude-sito`
+  e `?fonte=prova-claude-negozio`): conferma in 5–6 secondi, e ogni riga nella
+  sua scheda ("sito" con pagina `/home-design/`, "negozio" con pagina
+  `/home-design/registrati/`). `prova-deploy.js` contro costruisciearreda.it:
+  34 controlli, nessun problema.
+- QR in `Landing HomeDesigh/qr/`, ognuno in SVG, PNG 2000 blu notte e PNG
+  nero, correzione Q, riletti con zbarimg anche ridotti a 160 px:
+  `qr-home-design-ads.*` → `/home-design/?fonte=qr-ads`;
+  `qr-home-design-negozio.*` → `/home-design/registrati/` (prendono il posto
+  dei `qr-home-design-registrati.*`, stesso indirizzo).
