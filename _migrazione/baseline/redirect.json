@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-11T08:38:31.957Z",
+  "generated": "2026-11-14T11:54:21.812Z",
   "indicizzati": 56,
-  "servitiDirettamente": 49,
+  "servitiDirettamente": 48,
   "redirect": [
     {
       "da": "/author/admin/",
@@ -40,6 +40,12 @@
       "fonte": "sitemap del live"
     },
     {
+      "da": "/store/via-martiri-della-liberta-nola-na/",
+      "a": "/home-design/",
+      "perche": "lo Showroom Home di Via Martiri 11bis è il negozio di Home Design: la landing /home-design/ prende il suo posto (decisione del 2026-11-14, voce B17)",
+      "fonte": "sitemap del live"
+    },
+    {
       "da": "/thankyou-promo-6500/",
       "a": "/richiedi-preventivo/",
       "perche": "thank-you della landing /promo-casa/: senza la landing non ha più senso",
@@ -49,7 +55,7 @@
   "daDecidere": [],
   "queryString": {
     "nota": "I vecchi URL nella forma /?p=ID vanno rediretti alla rotta corrispondente. La mappa è generata dal mirror, non scritta a mano.",
-    "voci": 42,
+    "voci": 45,
     "esempi": [
       {
         "id": "2",

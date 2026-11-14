@@ -26,6 +26,9 @@ const BASE = __dirname;
 const DIST = path.resolve(BASE, '..', 'costruisciearreda-astro', 'dist');
 const SITEMAP = path.resolve(BASE, 'live-sitemap', 'all-urls.txt');
 const ROTTE_TS = path.resolve(BASE, '..', 'costruisciearreda-astro', 'src', 'data', 'rotte-legacy.ts');
+/* Le pagine che il build ha smesso di generare (voce B17): la fonte è quel file,
+   letto qui con un'espressione regolare, così l'elenco non si scrive due volte. */
+const RITIRATE_TS = path.resolve(BASE, '..', 'costruisciearreda-astro', 'src', 'data', 'rotte-ritirate.ts');
 const OUT_JSON = path.resolve(BASE, 'baseline', 'redirect.json');
 /* Due file e non uno: nginx vuole i `location` nel blocco `server` e la `map`
    nel blocco `http`. Un file unico non è includibile da nessuna parte. */
@@ -93,8 +96,22 @@ const DECISE = {
   },
 };
 
+/** Le voci di `rotte-ritirate.ts`, nella forma di `DECISE`. */
+const rotteRitirate = () => {
+  const ts = fs.readFileSync(RITIRATE_TS, 'utf8');
+  const voci = [...ts.matchAll(/^\s*'(\/[^']+)':\s*\{\s*a:\s*'([^']+)',\s*perche:\s*"([^"]*)"\s*\}/gm)];
+  if (!voci.length) throw new Error(`Nessuna voce letta da ${RITIRATE_TS}: è cambiato il formato?`);
+  return Object.fromEntries(voci.map(([, da, a, perche]) => [da, { a, perche }]));
+};
+
 const main = () => {
   const build = rotteBuild();
+  for (const [da, d] of Object.entries(rotteRitirate())) {
+    if (DECISE[da]) throw new Error(`${da} è sia in DECISE sia in rotte-ritirate.ts`);
+    if (build.has(da)) throw new Error(`${da} è ritirata ma il build la genera ancora`);
+    if (!build.has(d.a)) throw new Error(`${da} → ${d.a}: la destinazione non è nel build`);
+    DECISE[da] = d;
+  }
   const indicizzati = fs
     .readFileSync(SITEMAP, 'utf8')
     .split(/\s+/)
@@ -130,7 +147,11 @@ const main = () => {
      dall'esterno o restare nella cronologia dei motori. */
   const ts = fs.readFileSync(ROTTE_TS, 'utf8');
   const perId = [...ts.matchAll(/'(\d+)':\s*"([^"]+)"/g)].map(([, id, rotta]) => ({ id, rotta }));
-  const perIdValidi = perId.filter((x) => build.has(x.rotta));
+  /* Un id la cui rotta ha un 301 va dritto alla destinazione del 301: un salto
+     solo, invece di ?p=ID → rotta ritirata → destinazione. */
+  const perIdValidi = perId
+    .map((x) => (DECISE[x.rotta] ? { ...x, rotta: DECISE[x.rotta].a } : x))
+    .filter((x) => build.has(x.rotta));
 
   redirect.sort((a, b) => a.da.localeCompare(b.da));
 

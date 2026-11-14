@@ -16,7 +16,7 @@ import { sedi } from './site';
  * dalle sedi di `site.ts`, non riscritto: l'indirizzo sta in un posto solo.
  */
 export const sedeHomeDesign = (() => {
-  const s = sedi.find((x) => x.pagina === '/store/via-martiri-della-liberta-nola-na/');
+  const s = sedi.find((x) => x.pagina === '/home-design/');
   if (!s) throw new Error('La sede dello Showroom Home manca in data/site.ts');
   return s;
 })();

@@ -87,8 +87,10 @@ export const sedi: Sede[] = [
     // È anche il negozio di **Home Design** (`/home-design/`): stesso posto.
     righe: ['Via Martiri della Libertà (Home)', '11bis, 80147 – Napoli (NA)'],
     indirizzo: { via: 'Via Martiri della Libertà, 11bis', cap: '80147', comune: 'Napoli', provincia: 'NA' },
-    // lo slug dice "nola", ma la pagina è lo showroom Home di Napoli: titolo e testo lo confermano
-    pagina: '/store/via-martiri-della-liberta-nola-na/',
+    // La sua pagina è la landing di Home Design. La vecchia
+    // `/store/via-martiri-della-liberta-nola-na/` (slug "nola", ma era questo
+    // negozio di Napoli) fa 301 qui: voce B17, `data/rotte-ritirate.ts`.
+    pagina: '/home-design/',
   },
   {
     tipo: 'Showroom',

@@ -22,6 +22,7 @@ import ServiziNumerati from './ServiziNumerati.astro';
 import Card from './Card.astro';
 import Form from './Form.astro';
 import { estratto, immagine, rotta } from '../lib/immagini';
+import { rottaAttuale } from '../data/rotte-ritirate';
 import { formPerIdCf7, forms } from '../data/form';
 import { marchioDaLogo } from '../data/marchi';
 import { getCollection } from 'astro:content';
@@ -270,7 +271,11 @@ const conBr = (testo: string) => escapeHtml(testo).split('\n').join('<br /> ');
           const url = rotta(v.href);
           /* Il testo di presentazione viene dalla voce della collezione con la
              stessa rotta: nell'originale stava nella card dello shortcode. */
-          const dati = url ? store.find((s) => s.urlOriginale === url) : undefined;
+          /* Per uno store ritirato `url` è già la destinazione: si confronta
+             anche la rotta originale riscritta allo stesso modo. */
+          const dati = url
+            ? store.find((s) => s.urlOriginale === url || (s.urlOriginale && rottaAttuale(s.urlOriginale) === url))
+            : undefined;
           return {
             ...v,
             url,

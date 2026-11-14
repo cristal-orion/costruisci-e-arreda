@@ -2,6 +2,7 @@ import type { ImageMetadata } from 'astro';
 import { immaginiGenerate } from './immagini-generate';
 import { immaginiLocali } from './immagini-locali';
 import { rottePerId } from '../data/rotte-legacy';
+import { rottaAttuale } from '../data/rotte-ritirate';
 
 /**
  * Risoluzione delle immagini del mirror.
@@ -65,12 +66,15 @@ export const rotta = (href: string | null | undefined): string | null => {
   if (/^(https?:|mailto:|tel:)/.test(h)) return h;
 
   const perId = h.match(/[?%]3?F?p=(\d+)/i) || h.match(/p=(\d+)/);
-  if (perId) return rottePerId[perId[1]] ?? null;
+  if (perId) {
+    const r = rottePerId[perId[1]];
+    return r ? rottaAttuale(r) : null;
+  }
 
   // link relativo al file: `../../type_stores/showroom-cat/index.html`
   const pulito = h.replace(/^(\.\.\/)+/, '').replace(/index\.html$/, '').replace(/^\/+/, '');
   if (!pulito) return '/';
-  return `/${pulito.replace(/\/+$/, '')}/`;
+  return rottaAttuale(`/${pulito.replace(/\/+$/, '')}/`);
 };
 
 /**

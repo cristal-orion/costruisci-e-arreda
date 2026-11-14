@@ -26,10 +26,15 @@ import { isNoindex } from '../../data/noindex';
 import { site } from '../../data/site';
 import { descrizioneDa, sedeLd, sedePerPagina, testoDaHtml } from '../../lib/seo';
 import { getImage } from 'astro:assets';
+import { rotteRitirate } from '../../data/rotte-ritirate';
 
 export async function getStaticPaths() {
   const voci = await getCollection('stores');
-  return voci.map((v) => ({ params: { slug: v.data.slug }, props: { dati: v.data } }));
+  /* Le pagine ritirate non si generano: al loro URL risponde il 301 di nginx
+     (`data/rotte-ritirate.ts`). Oggi è lo Showroom Home → `/home-design/`. */
+  return voci
+    .filter((v) => !rotteRitirate[`/store/${v.data.slug}/`])
+    .map((v) => ({ params: { slug: v.data.slug }, props: { dati: v.data } }));
 }
 
 const { dati } = Astro.props;
@@ -49,7 +54,6 @@ const indirizzo = dati.campi.indirizzo ?? dati.title;
    L'`<h1>` resta l'indirizzo, che è ciò che serve a chi è già sulla pagina. */
 const titoliSeo: Record<string, string> = {
   'via-martiri-della-liberta-na': 'Showroom ceramiche e bagno a Napoli',
-  'via-martiri-della-liberta-nola-na': 'Showroom Home a Napoli: illuminazione e parati',
   'via-san-massimo-na': 'Showroom ceramiche e bagno a Nola',
 };
 

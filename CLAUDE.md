@@ -47,8 +47,10 @@
 > `_scheda`. **Repo pubblico: mai l'ID del foglio nel codice.** Collegato: progetto Apps Script
 > a parte nell'account Two Bee (il foglio è del cliente, Two Bee è editor), ID nella proprietà
 > `ID_FOGLIO`, URL `/exec` in `registrazione.ts`. QR fatti in `Landing HomeDesigh/qr/`: ads →
-> `/home-design/?fonte=qr-ads`, negozio → `/home-design/registrati/`. Provato dal vivo il 2026-11-12. Da decidere: link o 301 fra la vecchia pagina dello
-> store `/store/via-martiri-della-liberta-nola-na/` e la landing.
+> `/home-design/?fonte=qr-ads`, negozio → `/home-design/registrati/`. Provato dal vivo il 2026-11-12.
+> **B17 (2026-11-14):** la vecchia pagina dello Showroom Home `/store/via-martiri-della-liberta-nola-na/`
+> non si genera più e fa **301 su `/home-design/`**. Le pagine ritirate stanno in `src/data/rotte-ritirate.ts`
+> (fonte unica: build, link dei contenuti e `build-redirect.js`).
 > **Sessione precedente: 2026-09-14.** **Fase A completa** (52 rotte, tutti i 56 URL
 > indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B in corso**: la
 > homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la

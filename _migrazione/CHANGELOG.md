@@ -3069,3 +3069,30 @@ schede: queste due e le due "Cartaceo".
   `qr-home-design-ads.*` → `/home-design/?fonte=qr-ads`;
   `qr-home-design-negozio.*` → `/home-design/registrati/` (prendono il posto
   dei `qr-home-design-registrati.*`, stesso indirizzo).
+
+## B17 — La vecchia pagina dello Showroom Home fa 301 su Home Design (2026-11-14)
+
+Decisione del proprietario: la landing `/home-design/` prende il posto di
+`/store/via-martiri-della-liberta-nola-na/`, la pagina dello Showroom Home di
+Via Martiri della Libertà 11bis, che è lo stesso negozio (B16). Era indicizzata.
+
+- **Fonte unica:** `src/data/rotte-ritirate.ts`, una voce per pagina ritirata
+  (da dove, verso dove, perché). La leggono:
+  - `pages/store/[slug].astro`, che non genera più la pagina (54 rotte, erano 55);
+  - `rotta()` in `lib/immagini.ts`, che riscrive verso `/home-design/` i link dei
+    contenuti estratti: la card dell'archivio `/type_stores/showroom-cat/`
+    (page-id 3317) porta ora alla landing, e tiene il suo testo;
+  - `_migrazione/build-redirect.js`, che ne fa il `location = … { return 301 … }`
+    di nginx. Il generatore si ferma se la pagina è ancora nel build o se la
+    destinazione non c'è.
+- La sede Home in `site.ts` ha per `pagina` `/home-design/`: footer, `llms.txt`
+  e dati strutturati (`@id` …/home-design/#sede) puntano alla landing.
+- **`?p=ID` in un salto solo:** un id la cui rotta ha un 301 va direttamente
+  alla destinazione. Così `?p=3317` → `/home-design/`; e, come effetto, tornano
+  rediretti anche 4 id che prima cadevano fuori dalla mappa: 110 e 4474/4540 →
+  `/richiedi-preventivo/`, 3149 → `/store/via-argine-625-80147-napoli-na/`
+  (le stesse destinazioni dei 301 sui loro URL). Mappa da 41 a 45 voci.
+- Prove: `check-build.js` 54×3 nessun problema, `prova-csp.js` 54 rotte nessuna
+  violazione. nginx non provato in locale (niente Docker): la riga è identica
+  alle altre sette; `prova-deploy.js` va eseguito contro il sito pubblicato
+  dopo il deploy.
