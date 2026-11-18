@@ -27,6 +27,10 @@ export const noindexRoutes: string[] = [
   // non una pagina da trovare in una ricerca
   '/home-design/registrati/',
 
+  // il mock-up del sito premi riservato ai clienti (/premi/): una bozza da
+  // mostrare al cliente, non una pagina da trovare in una ricerca
+  '/premi/',
+
   // root di archivio dei custom post type: thin, titolo generico
   '/services/',
   '/realizzazioni/',

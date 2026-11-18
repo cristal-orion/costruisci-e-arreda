@@ -1,0 +1,268 @@
+---
+/**
+ * /premi/ — demo noindex dell’area premi. Valori e movimenti fittizi;
+ * foto provvisorie fornite dal committente. Nessuna piattaforma collegata.
+ * CSS locale in public/premi/; gli script sono caricati come in B18 per la CSP.
+ */
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.svg';
+import portatile from '../assets/premi/portatile-hero.jpg';
+import smartphone from '../assets/premi/smartphone.jpg';
+import bici from '../assets/premi/bici-elettrica.jpg';
+import liquori from '../assets/premi/set-liquori.jpg';
+import cravatta from '../assets/premi/cravatta.jpg';
+
+const titolo = 'Area premi clienti | Costruisci e Arreda';
+const descrizione = 'Anteprima dell’area premi di Costruisci e Arreda: saldo, punti dagli acquisti di materiali e catalogo dei premi.';
+const og = new URL('/premi/share.jpg', Astro.site).href;
+
+const mesi = [
+  { nome: 'Giu', punti: 1020 }, { nome: 'Lug', punti: 1140 }, { nome: 'Ago', punti: 860 },
+  { nome: 'Set', punti: 1520 }, { nome: 'Ott', punti: 1780 }, { nome: 'Nov', punti: 2100 },
+];
+const saldo = mesi.reduce((somma, mese) => somma + mese.punti, 0);
+const scalaGrafico = Math.ceil((Math.max(...mesi.map(mese => mese.punti)) + 100) / 1000) * 1000;
+const euroPerPunto = 10;
+const ordineEuro = 6400;
+const ordine = { euro: ordineEuro, punti: Math.floor(ordineEuro / euroPerPunto) };
+const ultimiOrdini = [
+  { nome: 'Materiali edili', data: '16 novembre', punti: 350 },
+  { nome: 'Finiture e rivestimenti', data: '10 novembre', punti: 590 },
+  { nome: 'Fornitura per cantiere', data: '4 novembre', punti: 1160 },
+];
+const premi = [
+  { id: 'portatile', nome: 'Portatile', categoria: 'Tecnologia', costo: 9000, foto: portatile, alt: 'Portatile nero aperto, visto di fronte' },
+  { id: 'bici', nome: 'Bici elettrica', categoria: 'Mobilità', costo: 14000, foto: bici, alt: 'Ciclista su una bici elettrica azzurra sul lungomare' },
+  { id: 'smartphone', nome: 'Smartphone', categoria: 'Tecnologia', costo: 6500, foto: smartphone, alt: 'Smartphone visto di fronte e da dietro con tripla fotocamera' },
+  { id: 'liquori', nome: 'Set liquori', categoria: 'Casa', costo: 1800, foto: liquori, alt: 'Caraffa di cristallo e quattro bicchieri su un tavolo di legno' },
+  { id: 'cravatta', nome: 'Cravatta in seta', categoria: 'Accessori', costo: 900, foto: cravatta, alt: 'Cravatta blu a pois bianchi' },
+];
+const obiettivo = premi.filter(p => p.costo > saldo).sort((a, b) => a.costo - b.costo)[0];
+const percentuale = Math.floor(100 * saldo / obiettivo.costo);
+const formato = new Intl.NumberFormat('it-IT', { useGrouping: 'always' });
+const punti = (n: number) => formato.format(n);
+const stato = (costo: number) => costo <= saldo ? 'Disponibile' : `Mancano ${punti(costo - saldo)} punti`;
+---
+
+<!doctype html>
+<!-- Prodotto / other · logo, rosso e Archivo di B18 · entrata del kit e word-highlight.
+     Il ritmo qui segue il contenuto, non l’altezza della finestra: feedback sul mock-up B18. -->
+<html lang="it-IT" data-type="product" data-radius="soft" data-buttons="solid" data-motion>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{titolo}</title>
+    <meta name="description" content={descrizione} />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={titolo} />
+    <meta property="og:description" content={descrizione} />
+    <meta property="og:image" content={og} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#f2f2f2" />
+    <meta name="site-kind" content="other" />
+    <meta name="page-type" content="product" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="stylesheet" href="/assets/system.css" />
+    <link rel="stylesheet" href="/assets/motion/motion.css" />
+    <link rel="stylesheet" href="/assets/moments/word-highlight/moment.css" />
+    <link rel="stylesheet" href="/premi/premi.css" />
+    <link rel="preload" href="/premi/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <script is:inline>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+  </head>
+  <body>
+    <header class="nav premi-nav">
+      <div class="wrap nav__bar">
+        <a class="skip-link" href="#top">Salta al contenuto</a>
+        <a class="nav__logo" href="#top"><img src={logo.src} width={logo.width} height={logo.height} alt="Costruisci & Arreda" /></a>
+        <nav class="nav__links" aria-label="Principale" id="premi-menu">
+          <div class="nav__item"><a class="nav__link" href="#top">Riepilogo</a></div>
+          <div class="nav__item"><a class="nav__link" href="#premi">Catalogo</a></div>
+          <div class="nav__item"><a class="nav__link" href="#movimenti">Movimenti</a></div>
+          <div class="nav__item"><a class="nav__link" href="#punti">Come funziona</a></div>
+        </nav>
+        <span class="demo-tag"><span aria-hidden="true"></span> Modalità demo</span>
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="premi-menu" aria-label="Menu">
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="top" tabindex="-1" data-area data-saldo={saldo}>
+      <section class="hero premi-hero" data-enter aria-labelledby="hero-h">
+        <div class="wrap">
+          <div class="hero__in welcome">
+            <div>
+              <p class="kicker"><span aria-hidden="true"></span> Area premi clienti</p>
+              <h1 id="hero-h">I tuoi premi, ordine dopo ordine.</h1>
+              <p class="welcome__lead">Gli acquisti di materiali da Costruisci e Arreda ti fanno guadagnare punti da spendere in catalogo.</p>
+            </div>
+            <a class="btn btn--secondary" href="#premi">Sfoglia il catalogo <span aria-hidden="true">↓</span></a>
+          </div>
+
+          <div class="overview ui" data-enter-media role="group" aria-label="Riepilogo punti e prossimo premio">
+            <article class="overview__panel balance" aria-labelledby="balance-h">
+              <div class="panel-heading">
+                <p id="balance-h">Saldo disponibile</p>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M3 10h18m-5 5h2" /></svg>
+              </div>
+              <p class="balance__points" data-assumed><span data-balance>{punti(saldo)}</span><small>punti</small></p>
+
+              <div class="chart" data-assumed>
+                <div class="chart__legend"><span>Punti guadagnati</span><span>Ultimi 6 mesi</span></div>
+                <ul class="chart__bars" aria-label="Punti guadagnati per mese">
+                  {mesi.map(mese => (
+                    <li data-month={mese.punti}>
+                      <span class="chart__track" aria-hidden="true"><span style={`--level:${mese.punti / scalaGrafico}`}></span></span>
+                      <span>{mese.nome}</span>
+                      <span class="chart__value"><span data-month-value>{punti(mese.punti)}</span><span class="visually-hidden"> punti</span></span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="balance__actions">
+                <button class="btn btn--primary" type="button" data-add={ordine.punti} data-euro={ordine.euro} data-assumed disabled>
+                  <span aria-hidden="true">+</span> Simula un ordine
+                </button>
+                <button class="reset" type="button" data-reset disabled>Reimposta demo</button>
+              </div>
+              <p class="balance__note" data-demo-note data-assumed>Ordine di prova: {punti(ordine.euro)} € · +{punti(ordine.punti)} punti</p>
+            </article>
+
+            <article class="overview__panel goal" aria-labelledby="goal-h">
+              <div class="panel-heading">
+                <p id="goal-h" data-goal-heading>Prossimo premio da sbloccare</p>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1" /></svg>
+              </div>
+              <div class="goal__feature">
+                <div class="goal__copy">
+                  <p class="goal__type" data-goal-type>{obiettivo.categoria}</p>
+                  <p class="goal__name" data-goal-name>{obiettivo.nome}</p>
+                  <p data-goal-message data-assumed>Ti mancano <strong>{punti(obiettivo.costo - saldo)} punti</strong>.</p>
+                </div>
+                <div class="goal__photo" data-goal-photo data-prize={obiettivo.id}>
+                  <Image src={obiettivo.foto} alt={obiettivo.alt} widths={[320, 640]} sizes="(min-width: 640px) 310px, 40vw" format="webp" quality={83} loading="eager" fetchpriority="high" data-source="stand-in" />
+                </div>
+              </div>
+              <div class="goal__progress" data-goal-progress data-assumed>
+                <div class="goal__legend">
+                  <span data-goal-points>{punti(saldo)} / {punti(obiettivo.costo)} punti</span>
+                  <strong data-goal-percent>{percentuale}%</strong>
+                </div>
+                <div class="goal__meter" role="progressbar" aria-label={`Punti per ${obiettivo.nome}`} aria-valuemin="0" aria-valuemax={obiettivo.costo} aria-valuenow={saldo} data-meter>
+                  <span style={`--level:${saldo / obiettivo.costo}`}></span>
+                </div>
+              </div>
+              <a class="link goal__link" href={`#premio-${obiettivo.id}`} data-goal-link>Vedi il premio</a>
+            </article>
+          </div>
+          <p class="visually-hidden" role="status" data-status></p>
+        </div>
+      </section>
+
+      <section class="premi-section catalog" id="premi" aria-labelledby="catalog-h">
+        <div class="wrap">
+          <div class="premi-heading">
+            <div>
+              <h2 id="catalog-h">I premi da riscattare</h2>
+            </div>
+            <p data-available data-assumed>{premi.filter(p => p.costo <= saldo).length} premi disponibili con il tuo saldo</p>
+          </div>
+          <div class="catalog__grid" id="riscatto">
+            {premi.map(p => (
+              <article class="reward" id={`premio-${p.id}`} data-premio={p.id} data-nome={p.nome} data-categoria={p.categoria} data-costo={p.costo} data-state={p.costo <= saldo ? 'ready' : 'locked'}>
+                <div class={`tile__media reward__photo reward__photo--${p.id}`}>
+                  <Image src={p.foto} alt={p.alt} widths={[320, 480, 640]} sizes={`(min-width: 1160px) 235px, (min-width: 640px) 28vw, ${p.id === 'cravatta' ? '90vw' : '45vw'}`} format="webp" quality={82} loading="lazy" decoding="async" data-source="stand-in" />
+                </div>
+                <div class="reward__body">
+                  <p class="reward__type">{p.categoria}</p>
+                  <h3 tabindex="-1">{p.nome}</h3>
+                  <p class="reward__cost" data-assumed><strong>{punti(p.costo)}</strong> punti</p>
+                  <p class="reward__state" data-reward-state data-assumed>{stato(p.costo)}</p>
+                  <button class="btn btn--secondary reward__button" type="button" aria-label={p.costo <= saldo ? `Riscatta ${p.nome}` : undefined} data-redeem disabled>{p.costo <= saldo ? 'Riscatta' : 'Bloccato'}</button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="statement" aria-labelledby="statement-h">
+        <div class="wrap">
+          <p class="kicker"><span aria-hidden="true"></span> Il programma premi</p>
+          <h2 class="mo-wh__text" id="statement-h" data-moment="word-highlight">Puoi usare i punti per un premio oggi o tenerli da parte per quello che vuoi.</h2>
+        </div>
+      </section>
+
+      <section class="premi-section account" id="movimenti" aria-labelledby="movimenti-h">
+        <div class="wrap account__grid">
+          <div>
+            <h2 id="movimenti-h">Ultimi movimenti</h2>
+            <ul class="ledger" data-ledger>
+              {ultimiOrdini.map(m => (
+                <li data-assumed><span><strong>{m.nome}</strong><small>{m.data}</small></span><strong class="ledger__positive">+{punti(m.punti)} punti</strong></li>
+              ))}
+            </ul>
+          </div>
+          <div id="punti">
+            <h2 id="domande">Come funziona</h2>
+            <div class="questions">
+              <details open>
+                <summary>Come guadagno punti?</summary>
+                <p>Quando acquisti materiali da Costruisci e Arreda, i punti vengono aggiunti al saldo. <span data-assumed>In questa demo, ogni {euroPerPunto} € valgono 1 punto.</span></p>
+              </details>
+              <details>
+                <summary>Come riscatto un premio?</summary>
+                <p>Sceglilo dal catalogo e conferma. Il costo viene scalato dal saldo e compare nei movimenti.</p>
+              </details>
+              <details>
+                <summary>E se non ho abbastanza punti?</summary>
+                <p>Il catalogo ti dice quanti punti mancano. Il premio diventa disponibile quando il saldo raggiunge il suo costo.</p>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <dialog class="redeem-dialog" data-dialog aria-labelledby="dialog-h" aria-describedby="dialog-copy">
+        <form method="dialog">
+          <h2 id="dialog-h">Conferma il riscatto demo</h2>
+          <p id="dialog-copy" data-dialog-copy></p>
+          <div class="redeem-dialog__actions">
+            <button class="btn btn--secondary" value="annulla" autofocus>Annulla</button>
+            <button class="btn btn--primary" value="conferma">Conferma</button>
+          </div>
+        </form>
+      </dialog>
+    </main>
+
+    <footer class="footer premi-footer">
+      <div class="wrap">
+        <div class="premi-footer__row">
+          <a class="nav__logo" href="/"><img src={logo.src} width={logo.width} height={logo.height} alt="Costruisci & Arreda" loading="lazy" /></a>
+          <p>Anteprima del programma premi · Dati dimostrativi</p>
+          <a class="link" href="/privacy-policy/">Privacy</a>
+        </div>
+        <details class="credits">
+          <summary>Immagini dei premi di proprietà dei rispettivi titolari</summary>
+          <p>Fonti: notebookcheck.net (smartphone, concept), corriere.it (bici elettrica), microsoft.com (portatile), amazon.com (set liquori), emarinella.eu (cravatta). Foto provvisorie.</p>
+        </details>
+      </div>
+    </footer>
+
+    <!-- Script classico autorizzato per hash: inserisce i moduli senza rompere strict-dynamic. -->
+    <script is:inline>
+      (function () {
+        var src = ['/assets/system.js', '/assets/motion/motion.js', '/premi/premi.js'];
+        src.forEach(function (url) {
+          var s = document.createElement('script');
+          s.type = 'module';
+          s.src = url;
+          document.head.appendChild(s);
+        });
+      })();
+    </script>
+  </body>
+</html>

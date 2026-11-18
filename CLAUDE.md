@@ -51,6 +51,19 @@
 > **B17 (2026-11-14):** la vecchia pagina dello Showroom Home `/store/via-martiri-della-liberta-nola-na/`
 > non si genera più e fa **301 su `/home-design/`**. Le pagine ritirate stanno in `src/data/rotte-ritirate.ts`
 > (fonte unica: build, link dei contenuti e `build-redirect.js`).
+> **B18, 2026-11-17 — `/premi/`:** mock-up (noindex) del sito premi riservato ai clienti,
+> con **tasteskill v2**: documento a sé, kit in `public/assets`, CSS in `public/premi/`,
+> demo del riscatto in `public/premi/premi.js`. **Dati e foto sono di prova** (punti,
+> costi, saldo con `data-assumed`; foto da Google Immagini, diritti dei titolari): vanno
+> sostituiti. Due cose da ricordare per ogni pagina simile: `scripts/isola-pagine.mjs`
+> toglie dal build il CSS comune del sito, e la CSP (`strict-dynamic`) vuole i moduli
+> caricati da uno **script classico in linea** che crea gli elementi script, non da un
+> modulo in linea. Voce B18.
+> **B19, 2026-11-18 — `/premi/` ora si apre sull’area cliente.** Saldo e grafico
+> animati, prossimo premio, ordine simulato, catalogo riscattabile e storico.
+> Il primo ordine di prova accredita 640 punti e sblocca il portatile (9.000 punti).
+> Abbandonate le altezze a schermo intero per ridurre gli spazi tra sezioni.
+> Prova dedicata: `_migrazione/prova-premi.js`; contenuti sempre fittizi, nessun backend.
 > **Sessione precedente: 2026-09-14.** **Fase A completa** (52 rotte, tutti i 56 URL
 > indicizzati coperti: 49 diretti + 7 redirect 301) e **fase B in corso**: la
 > homepage apre con i quattro rami del gruppo, le foto della parete ci sono e la

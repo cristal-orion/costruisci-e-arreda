@@ -3096,3 +3096,67 @@ Via Martiri della Libertà 11bis, che è lo stesso negozio (B16). Era indicizzat
   violazione. nginx non provato in locale (niente Docker): la riga è identica
   alle altre sette; `prova-deploy.js` va eseguito contro il sito pubblicato
   dopo il deploy.
+
+## B18 — `/premi/`: il mock-up del sito premi per i clienti (2026-11-17)
+
+Una landing nuova, **da mostrare a Costruisci e Arreda**, per il sito premi
+riservato ai clienti che comprano da loro: i premi, il saldo, il riscatto. Gli
+acquisti e i punti vivono sulla piattaforma privata del gruppo, qui non c'entra
+niente: la pagina non parla con nessun server.
+
+- **Cos'è:** `src/pages/premi.astro`, `noindex` (in `src/data/noindex.ts`, quindi
+  fuori da sitemap), fatta con **tasteskill v2** (`design-taste-frontend`, genere
+  "prodotto"). Sette sezioni: hero col portatile, i tre passi, il catalogo
+  (smartphone, bici elettrica, set liquori, cravatta), la frase che si accende
+  (momento `word-highlight`), le domande, l'**area riservata** — una finestra
+  cliccabile (`public/premi/premi.js`) dove "Riscatta" scala il saldo.
+- **Identità sua, come `/home-design/`:** documento a sé (niente `BaseLayout`,
+  header e footer del sito), colori del cliente (rosso del logo `#c20e1a` su
+  `#f2f2f2`, che è anche lo sfondo esatto della foto del portatile), carattere
+  **Archivo** self-hosted in `public/premi/fonts`. Il kit della skill sta in
+  `public/assets/` (un sottoinsieme, copiato **senza modifiche**: la skill
+  controlla che non siano toccati); il CSS della pagina in `public/premi/premi.css`.
+- **`scripts/isola-pagine.mjs`** (nuovo, nel `build`): il CSS del sito è un file
+  solo (`cssCodeSplit: false`) e Astro lo attacca a **ogni** pagina del build,
+  anche a una che non importa niente. In `astro dev` il collegamento non c'è, quindi
+  la pagina sembrava giusta e nel build usciva con Montserrat e i titoli in
+  maiuscolo. Lo script lo toglie da `premi/index.html` e fallisce se ne resta uno.
+- **La CSP** (`script-src 'strict-dynamic'` + hash) blocca i tag script con `src`
+  **e anche gli `import` di un modulo in linea**, statici o dinamici: ereditano lo
+  stato "inserito dal parser". `prova-csp.js` ha dato 4 violazioni, poi 1, poi zero.
+  La soluzione è uno script classico in linea che crea gli elementi script (lo stesso
+  schema del caricatore di Iubenda). **Vale per ogni pagina che usi i moduli del kit.**
+- **I dati sono di prova**, tutti con `data-assumed`: 1 punto ogni 10 €, i costi dei
+  premi (900 / 1.800 / 6.500 / 8.000 / 14.000), il saldo d'esempio 8.420 (scelto perché
+  la bici elettrica mostri "mancano 5.580 punti"). **Da sostituire con i valori veri.**
+- **Le foto** sono quelle scelte dal proprietario (`src/assets/premi/`), prese da
+  Google Immagini: i diritti restano ai titolari (elenco nelle "Fonti" del piede della
+  pagina). La cravatta è ritagliata sopra l'etichetta del marchio; lo smartphone è un
+  concept grafico, nel testo è solo "Smartphone". **Da sostituire prima di una
+  pubblicazione vera.** Le cinque foto hanno sfondi diversi (nero, grigio, scuro caldo,
+  bianco): il controllo `photo-set` lo segnala.
+- **Prove:** gate della skill `PASS` (una rinuncia motivata: `copy-headings`, il
+  controllo cerca i nomi in un lessico inglese e non riconosce "materiali",
+  "Smartphone"…); `consistency` 1440: 1 FAIL (la stessa), 390: 0; `check.mjs` nessun
+  finding a 1440/1024/820/768/390; `perf` 334 KiB, 23 richieste, 0 FAIL;
+  `prova-csp.js` 55 rotte nessuna violazione. Aperti, dichiarati: il **ritmo a
+  schermate intere su tablet in verticale (768/820)** non è del tutto a norma (aria
+  fra sezioni, piede vuoto a metà); `hover-move` dice "nessun cambio" sulle card dei
+  premi, ma a mano l'hover funziona (foto 1.03, card su di 2px).
+- `_migrazione/baseline/routes-astro.txt`: aggiunta `/premi/` (serve a `prova-csp.js`).
+
+## B19 — `/premi/`: demo dell’area clienti (2026-11-18)
+
+- Il programma si prova dalla prima schermata. La dashboard mostra **8.420 punti**,
+  un grafico degli accrediti mensili e il portatile a **580 punti** dallo sblocco.
+  «Simula un ordine» accredita **640 punti**, rende il portatile riscattabile e
+  aggiorna il prossimo obiettivo, la bici elettrica.
+- I cinque premi usano le immagini già fornite. Confermare un riscatto scala il
+  saldo e registra il movimento, senza togliere punti al grafico degli accrediti.
+  Il ripristino annulla tutti i movimenti della demo.
+- Sezioni ad altezza di contenuto e spazi ridotti, su richiesta. Il gate del kit
+  resta aperto: richiede sezioni a schermo intero e una foto prodotto a tutta
+  larghezza, che qui metterebbe in secondo piano l’area cliente.
+- `prova-premi.js`: build con CSP di deploy, flusso completo, animazioni, fallback
+  senza JS e controlli del layout da 320 a 1440 px. La pagina resta `noindex`;
+  nessun ordine, punto o riscatto viene inviato a un server.

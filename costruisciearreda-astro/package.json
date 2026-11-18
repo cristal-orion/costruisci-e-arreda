@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/prune-assets.mjs",
+    "build": "astro build && node scripts/isola-pagine.mjs && node scripts/prune-assets.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "build:no-prune": "astro build"
